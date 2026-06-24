@@ -50,6 +50,29 @@ export type Profile = {
   updated_at?: string | null;
 };
 
+export type InsightType =
+  | "sleep_energy"
+  | "stress_mood"
+  | "exercise_energy"
+  | "alcohol_sleep";
+
+export type InsightConfidenceLevel =
+  | "Early Signal"
+  | "Moderate Confidence"
+  | "Strong Signal";
+
+export type UserInsight = {
+  id?: string;
+  user_id: string;
+  insight_type: InsightType;
+  title: string;
+  description: string;
+  confidence_level: InsightConfidenceLevel;
+  sample_size: number;
+  generated_at?: string | null;
+  is_active?: boolean | null;
+};
+
 export type HealthEvent = {
   id: string;
   user_id: string;
