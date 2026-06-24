@@ -9,25 +9,36 @@ export type HealthEventType =
 
 export type DailyCheckin = {
   id: string;
-  userId: string;
-  date: string;
-  energyScore: number;
-  moodScore: number;
-  sleepQuality: "poor" | "average" | "good" | "great";
-  exerciseLevel: "none" | "light" | "moderate" | "intense";
-  nutritionQuality: "poor" | "average" | "good" | "excellent";
-  stressLevel: "low" | "medium" | "high";
+  user_id: string;
+  checkin_date: string;
+  energy_score: number;
+  mood_score: number;
+  sleep_quality: "Poor" | "Average" | "Good" | "Great";
+  exercise_level: "None" | "No Workout" | "Light" | "Moderate" | "Intense";
+  nutrition_quality:
+    | "Poor"
+    | "Average"
+    | "Good"
+    | "Excellent"
+    | "Clean"
+    | "Balanced"
+    | "Great";
+  stress_level: "Low" | "Medium" | "High";
   alcohol: boolean;
+  notes?: string | null;
+  tags?: string[] | null;
   weight?: number | null;
-  createdAt: string;
-  updatedAt?: string | null;
+  created_at: string;
+  updated_at?: string | null;
 };
 
 export type HealthEvent = {
   id: string;
-  userId: string;
-  type: HealthEventType;
-  occurredAt: string;
+  user_id: string;
+  event_date: string;
+  event_time: string;
+  event_type: HealthEventType;
+  title: string;
   description?: string | null;
   amount?: string | null;
   dose?: string | null;
@@ -36,26 +47,27 @@ export type HealthEvent = {
   severity?: number | null;
   notes?: string | null;
   calories?: number | null;
-  proteinG?: number | null;
-  carbsG?: number | null;
-  fatG?: number | null;
-  supplementName?: string | null;
-  doseAmount?: number | null;
-  doseUnit?: string | null;
-  exerciseType?: string | null;
-  durationMinutes?: number | null;
+  protein_g?: number | null;
+  carbs_g?: number | null;
+  fat_g?: number | null;
+  supplement_name?: string | null;
+  dose_amount?: number | null;
+  dose_unit?: string | null;
+  exercise_type?: string | null;
+  duration_minutes?: number | null;
   distance?: number | null;
-  distanceUnit?: string | null;
+  distance_unit?: string | null;
   tags?: string[];
-  createdAt: string;
-  updatedAt?: string | null;
+  created_at: string;
 };
 
 export type HealthEventRow = {
   id: string;
   user_id: string;
-  type: HealthEventType;
-  occurred_at: string;
+  event_date: string;
+  event_time: string;
+  event_type: HealthEventType;
+  title?: string | null;
   description?: string | null;
   amount?: string | null;
   dose?: string | null;
@@ -76,5 +88,4 @@ export type HealthEventRow = {
   distance?: number | null;
   distance_unit?: string | null;
   created_at?: string | null;
-  updated_at?: string | null;
 };

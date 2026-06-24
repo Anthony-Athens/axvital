@@ -1,6 +1,39 @@
+"use client";
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { FormEvent, useState } from "react";
+import { createClient } from "@/lib/supabase/browser";
 
 export default function LoginPage() {
+  const router = useRouter();
+  const supabase = createClient();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function handleLogin(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setLoading(true);
+    setMessage("");
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    setLoading(false);
+
+    if (error) {
+      setMessage(error.message);
+      return;
+    }
+
+    router.push("/today");
+    router.refresh();
+  }
+
   return (
     <div className="mx-auto flex min-h-[calc(100dvh-10rem)] max-w-md items-center px-4 py-8">
       <section className="w-full rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
@@ -11,23 +44,54 @@ export default function LoginPage() {
           Welcome back
         </h1>
         <p className="mt-3 leading-7 text-slate-600">
-          Authentication is not implemented in this MVP. Continue into the
-          prototype experience.
+          Sign in to save check-ins, log events, and view your AXVital profile.
         </p>
-        <div className="mt-6 space-y-3">
-          <Link
-            href="/dashboard"
-            className="flex min-h-14 items-center justify-center rounded-2xl bg-emerald-500 px-6 text-base font-black text-white"
+
+        <form onSubmit={handleLogin} className="mt-6 space-y-4">
+          <label className="block">
+            <span className="text-sm font-black text-slate-700">Email</span>
+            <input
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              type="email"
+              autoComplete="email"
+              required
+              className="mt-2 min-h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+            />
+          </label>
+          <label className="block">
+            <span className="text-sm font-black text-slate-700">Password</span>
+            <input
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              type="password"
+              autoComplete="current-password"
+              required
+              className="mt-2 min-h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+            />
+          </label>
+
+          {message ? (
+            <p className="rounded-2xl bg-amber-50 p-4 text-sm font-black text-amber-900">
+              {message}
+            </p>
+          ) : null}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="flex min-h-14 w-full items-center justify-center rounded-2xl bg-emerald-500 px-6 text-base font-black text-white disabled:cursor-not-allowed disabled:bg-slate-400"
           >
-            Continue to Dashboard
-          </Link>
-          <Link
-            href="/checkin"
-            className="flex min-h-14 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 px-6 text-base font-black text-slate-900"
-          >
-            Start Check-In
-          </Link>
-        </div>
+            {loading ? "Signing in..." : "Login"}
+          </button>
+        </form>
+
+        <Link
+          href="/signup"
+          className="mt-3 flex min-h-14 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 px-6 text-base font-black text-slate-900"
+        >
+          Create account
+        </Link>
       </section>
     </div>
   );

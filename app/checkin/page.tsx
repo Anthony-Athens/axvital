@@ -25,7 +25,7 @@ type QuickAddField = {
 type LocalHealthEvent = {
   id: string;
   type: HealthEventType;
-  occurredAt: string;
+  eventTime: string;
   title: string;
   notes?: string | null;
   tags: string[];
@@ -34,8 +34,10 @@ type LocalHealthEvent = {
 type HealthEventRow = {
   id: string;
   user_id: string;
-  type: HealthEventType;
-  occurred_at: string;
+  event_date: string;
+  event_time: string;
+  event_type: HealthEventType;
+  title: string | null;
   description: string | null;
   amount: string | null;
   dose: string | null;
@@ -305,7 +307,7 @@ const initialTimeline: LocalHealthEvent[] = [
   {
     id: "sample-1",
     type: "supplement",
-    occurredAt: "08:00",
+    eventTime: "08:00",
     title: "Coffee + creatine",
     tags: ["caffeine", "supplement"],
     details: {},
@@ -313,7 +315,7 @@ const initialTimeline: LocalHealthEvent[] = [
   {
     id: "sample-2",
     type: "food",
-    occurredAt: "12:00",
+    eventTime: "12:00",
     title: "4 eggs + multivitamin",
     tags: ["high protein"],
     details: { protein_g: 28 },
@@ -321,7 +323,7 @@ const initialTimeline: LocalHealthEvent[] = [
   {
     id: "sample-3",
     type: "exercise",
-    occurredAt: "17:00",
+    eventTime: "17:00",
     title: "4-mile run",
     tags: [],
     details: { duration_minutes: 38, distance: 4, distance_unit: "miles" },
@@ -329,7 +331,7 @@ const initialTimeline: LocalHealthEvent[] = [
   {
     id: "sample-4",
     type: "symptom",
-    occurredAt: "21:30",
+    eventTime: "21:30",
     title: "Mild headache",
     tags: ["screen time", "late night"],
     details: { severity: 3 },
@@ -361,23 +363,66 @@ function todayDateString() {
   return new Date().toISOString().slice(0, 10);
 }
 
-function getTodayRange() {
-  const now = new Date();
-  const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const end = new Date(start);
-  end.setDate(start.getDate() + 1);
-  return { start: start.toISOString(), end: end.toISOString() };
+function eventTimeValue(time: string | null) {
+  return time || currentTimeValue();
 }
 
-function occurredAtFromTime(time: string | null) {
-  return new Date(`${todayDateString()}T${time || currentTimeValue()}:00`).toISOString();
+function trimmedValue(value: string | null | undefined) {
+  const trimmed = value?.trim();
+  return trimmed ? trimmed : null;
 }
 
-function timeValueFromIso(value: string) {
-  const date = new Date(value);
-  return `${String(date.getHours()).padStart(2, "0")}:${String(
-    date.getMinutes(),
-  ).padStart(2, "0")}`;
+function labelValue(value: string | null | undefined) {
+  const trimmed = trimmedValue(value);
+
+  if (!trimmed) {
+    return null;
+  }
+
+  return trimmed
+    .split(/\s+/)
+    .map((word) => word.slice(0, 1).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+}
+
+function exerciseLevelValue(value: string) {
+  const allowedExerciseLevels: Record<string, string> = {
+    None: "None",
+    "No Workout": "No Workout",
+    Light: "Light",
+    Moderate: "Moderate",
+    Intense: "Intense",
+  };
+
+  return allowedExerciseLevels[value] ?? "None";
+}
+
+function nutritionQualityValue(value: string | null | undefined) {
+  const normalized = trimmedValue(value)?.toLowerCase();
+
+  if (!normalized) {
+    return null;
+  }
+
+  const nutritionMap: Record<string, "Poor" | "Average" | "Good" | "Excellent"> = {
+    poor: "Poor",
+    bad: "Poor",
+    low: "Poor",
+    average: "Average",
+    okay: "Average",
+    ok: "Average",
+    fair: "Average",
+    balanced: "Good",
+    "balanced meal": "Good",
+    clean: "Good",
+    good: "Good",
+    great: "Excellent",
+    healthy: "Excellent",
+    excellent: "Excellent",
+    "very good": "Excellent",
+  };
+
+  return nutritionMap[normalized] ?? "Good";
 }
 
 function formValue(formData: FormData, key: string) {
@@ -467,15 +512,19 @@ function buildEventDetails(type: QuickAddType, formData: FormData) {
 }
 
 function titleFromRow(event: HealthEventRow) {
-  if (event.type === "supplement" && event.supplement_name) {
+  if (event.title) {
+    return event.title;
+  }
+
+  if (event.event_type === "supplement" && event.supplement_name) {
     return event.supplement_name;
   }
 
-  if (event.type === "exercise" && event.exercise_type) {
+  if (event.event_type === "exercise" && event.exercise_type) {
     return event.exercise_type;
   }
 
-  return event.description || event.notes || titleCase(event.type);
+  return event.description || event.notes || titleCase(event.event_type);
 }
 
 function detailsFromRow(event: HealthEventRow) {
@@ -502,8 +551,8 @@ function detailsFromRow(event: HealthEventRow) {
 function mapHealthEventRow(event: HealthEventRow): LocalHealthEvent {
   return {
     id: event.id,
-    type: event.type,
-    occurredAt: timeValueFromIso(event.occurred_at),
+    type: event.event_type,
+    eventTime: event.event_time,
     title: titleFromRow(event),
     notes: event.notes,
     tags: event.tags ?? [],
@@ -518,16 +567,19 @@ function buildHealthEventPayload(
   tags: string[],
 ) {
   const eventType = quickAddTypeToEventType(type);
-  const description = eventTitle(type, formData);
+  const title = eventTitle(type, formData);
   const doseAmount = numberValue(formData, "dose_amount");
   const doseUnit = formValue(formData, "dose_unit");
   const durationMinutes = integerValue(formData, "duration_minutes");
 
   return {
     user_id: userId,
-    type: eventType,
-    occurred_at: occurredAtFromTime(formValue(formData, "time")),
-    description,
+    event_date: todayDateString(),
+    event_time: eventTimeValue(formValue(formData, "time")),
+    event_type: eventType,
+    title,
+    description:
+      type === "Food" || type === "Fluid" ? formValue(formData, "description") : null,
     amount: type === "Fluid" ? formValue(formData, "amount") : null,
     dose:
       (type === "Supplement" || type === "Medication") && doseAmount && doseUnit
@@ -572,6 +624,8 @@ export default function CheckInPage() {
   });
   const [weight, setWeight] = useState("");
   const [saved, setSaved] = useState(false);
+  const [checkinMessage, setCheckinMessage] = useState("");
+  const [savingCheckin, setSavingCheckin] = useState(false);
   const [activeQuickAdd, setActiveQuickAdd] = useState<QuickAddType | null>(
     null,
   );
@@ -607,6 +661,7 @@ export default function CheckInPage() {
 
   function choose(questionId: string, option: string) {
     setSaved(false);
+    setCheckinMessage("");
     setAnswers((current) => ({ ...current, [questionId]: option }));
   }
 
@@ -618,20 +673,74 @@ export default function CheckInPage() {
   }
 
   async function loadTodayEvents(userId: string) {
-    const { start, end } = getTodayRange();
     const { data, error } = await supabase
       .from("health_events")
       .select(
-        "id,user_id,type,occurred_at,description,amount,dose,duration,intensity,severity,notes,tags,calories,protein_g,carbs_g,fat_g,supplement_name,dose_amount,dose_unit,exercise_type,duration_minutes,distance,distance_unit",
+        "id,user_id,event_date,event_time,event_type,title,description,amount,dose,duration,intensity,severity,notes,tags,calories,protein_g,carbs_g,fat_g,supplement_name,dose_amount,dose_unit,exercise_type,duration_minutes,distance,distance_unit",
       )
       .eq("user_id", userId)
-      .gte("occurred_at", start)
-      .lt("occurred_at", end)
-      .order("occurred_at", { ascending: true });
+      .eq("event_date", todayDateString())
+      .order("event_time", { ascending: true });
 
-    if (!error) {
-      setHealthEvents(((data ?? []) as HealthEventRow[]).map(mapHealthEventRow));
+    if (error) {
+      console.error("Failed to load health events", error);
+      setEventMessage(error.message);
+      return;
     }
+
+    setHealthEvents(((data ?? []) as HealthEventRow[]).map(mapHealthEventRow));
+  }
+
+  async function saveDailyCheckin() {
+    setSavingCheckin(true);
+    setCheckinMessage("");
+
+    const user = await getAuthenticatedUser();
+
+    if (!user) {
+      setSavingCheckin(false);
+      setCheckinMessage("Please log in before saving your daily check-in.");
+      return;
+    }
+
+    const parsedWeight = weight.trim() ? Number(weight) : null;
+    const payload = {
+      user_id: user.id,
+      checkin_date: todayDateString(),
+      energy_score: Number(answers.energy),
+      mood_score: Number(answers.mood),
+      sleep_quality: labelValue(answers.sleep),
+      exercise_level: exerciseLevelValue(answers.exercise.trim()),
+      nutrition_quality: nutritionQualityValue(answers.nutrition),
+      stress_level: labelValue(answers.stress),
+      alcohol: answers.alcohol === "Yes",
+      weight: parsedWeight !== null && !Number.isNaN(parsedWeight) ? parsedWeight : null,
+      notes: null,
+      tags: [],
+    };
+
+    console.log("Saving daily check-in payload", payload);
+    console.log("Daily check-in normalized values", {
+      nutrition_quality: payload.nutrition_quality,
+      exercise_level: payload.exercise_level,
+      sleep_quality: payload.sleep_quality,
+      stress_level: payload.stress_level,
+    });
+
+    const { error } = await supabase
+      .from("daily_checkins")
+      .upsert(payload, { onConflict: "user_id,checkin_date" });
+
+    setSavingCheckin(false);
+
+    if (error) {
+      console.error("Failed to save daily check-in", error);
+      setCheckinMessage(error.message);
+      return;
+    }
+
+    setSaved(true);
+    setCheckinMessage("Daily check-in saved.");
   }
 
   function openQuickAdd(type: QuickAddType) {
@@ -660,7 +769,7 @@ export default function CheckInPage() {
     const newEvent: LocalHealthEvent = {
       id: crypto.randomUUID(),
       type: quickAddTypeToEventType(activeQuickAdd),
-      occurredAt: formValue(formData, "time") ?? currentTimeValue(),
+      eventTime: formValue(formData, "time") ?? currentTimeValue(),
       title: eventTitle(activeQuickAdd, formData),
       notes: formValue(formData, "notes") ?? formValue(formData, "note_text"),
       tags: selectedTags,
@@ -677,6 +786,7 @@ export default function CheckInPage() {
       const { error } = await supabase.from("health_events").insert(payload);
 
       if (error) {
+        console.error("Failed to save health event", error);
         setEventMessage(error.message);
         return;
       }
@@ -690,7 +800,7 @@ export default function CheckInPage() {
 
     setHealthEvents((current) =>
       [...current, newEvent].sort((a, b) =>
-        a.occurredAt.localeCompare(b.occurredAt),
+        a.eventTime.localeCompare(b.eventTime),
       ),
     );
     setEventMessage("Event added to today's timeline.");
@@ -790,6 +900,7 @@ export default function CheckInPage() {
                 value={weight}
                 onChange={(event) => {
                   setSaved(false);
+                  setCheckinMessage("");
                   setWeight(event.target.value);
                 }}
                 inputMode="decimal"
@@ -802,15 +913,24 @@ export default function CheckInPage() {
           <div className="safe-bottom sticky bottom-[4.75rem] z-30 -mx-5 mt-5 border-t border-slate-200 bg-white/95 px-5 pt-3 backdrop-blur-xl md:bottom-4 md:mx-0 md:rounded-3xl md:border md:shadow-xl md:shadow-slate-200 lg:static lg:border-0 lg:bg-transparent lg:px-0 lg:pb-0 lg:shadow-none">
             {saved ? (
               <p className="mb-3 rounded-2xl bg-emerald-50 p-4 text-sm font-black text-emerald-700">
-                Daily check-in saved locally for this session.
+                {checkinMessage}
+              </p>
+            ) : checkinMessage ? (
+              <p className="mb-3 rounded-2xl bg-amber-50 p-4 text-sm font-black text-amber-900">
+                {checkinMessage}
               </p>
             ) : null}
             <button
               type="button"
-              onClick={() => setSaved(true)}
-              className="flex min-h-16 w-full items-center justify-center rounded-2xl bg-slate-950 px-6 text-lg font-black text-white transition active:scale-[0.99]"
+              onClick={saveDailyCheckin}
+              disabled={savingCheckin}
+              className="flex min-h-16 w-full items-center justify-center rounded-2xl bg-slate-950 px-6 text-lg font-black text-white transition active:scale-[0.99] disabled:cursor-not-allowed disabled:bg-slate-400"
             >
-              {saved ? "Daily Check-In Saved" : "Save Daily Check-In"}
+              {savingCheckin
+                ? "Saving..."
+                : saved
+                  ? "Daily Check-In Saved"
+                  : "Save Daily Check-In"}
             </button>
           </div>
         </section>
@@ -861,7 +981,7 @@ export default function CheckInPage() {
                     <div className="mt-1 h-3 w-3 shrink-0 rounded-full bg-emerald-500" />
                     <div>
                       <p className="text-sm font-black text-slate-500">
-                        {formatEventTime(item.occurredAt)} -{" "}
+                        {formatEventTime(item.eventTime)} -{" "}
                         {titleCase(item.type)}
                       </p>
                       <p className="mt-1 text-base font-black text-slate-950">

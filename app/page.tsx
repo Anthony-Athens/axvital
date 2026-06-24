@@ -40,7 +40,7 @@ export default function Home() {
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
-                href="/checkin"
+                href="/today"
                 className="flex min-h-14 items-center justify-center rounded-2xl bg-emerald-500 px-6 text-base font-black text-white shadow-lg shadow-emerald-200 transition hover:bg-emerald-600"
               >
                 Start Daily Check-In
@@ -155,7 +155,7 @@ export default function Home() {
               Build your baseline today.
             </h2>
             <Link
-              href="/checkin"
+              href="/today"
               className="mt-6 flex min-h-14 items-center justify-center rounded-2xl bg-emerald-500 px-6 text-base font-black text-white"
             >
               Complete Check-In
