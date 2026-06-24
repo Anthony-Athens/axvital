@@ -41,7 +41,7 @@ export default function SignupPage() {
     }
 
     setLoading(false);
-    router.push("/today");
+    router.push("/onboarding");
     router.refresh();
   }
 

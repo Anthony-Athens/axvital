@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
-const protectedRoutes = ["/today", "/dashboard", "/insights", "/profile"];
+const protectedRoutes = ["/today", "/dashboard", "/insights", "/profile", "/onboarding"];
 const authRoutes = ["/login", "/signup"];
 
 function isRoute(pathname: string, routes: string[]) {
@@ -49,9 +49,40 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  if (user && isRoute(pathname, protectedRoutes)) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("primary_goal,onboarding_completed")
+      .eq("id", user.id)
+      .maybeSingle();
+    const onboardingComplete =
+      Boolean(profile?.onboarding_completed) && Boolean(profile?.primary_goal?.trim());
+
+    if (!onboardingComplete && pathname !== "/onboarding") {
+      const url = request.nextUrl.clone();
+      url.pathname = "/onboarding";
+      return NextResponse.redirect(url);
+    }
+
+    if (onboardingComplete && pathname === "/onboarding") {
+      const url = request.nextUrl.clone();
+      url.pathname = "/today";
+      return NextResponse.redirect(url);
+    }
+  }
+
   if (user && isRoute(pathname, authRoutes)) {
     const url = request.nextUrl.clone();
-    url.pathname = "/today";
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("primary_goal,onboarding_completed")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    url.pathname =
+      profile?.onboarding_completed && profile.primary_goal?.trim()
+        ? "/today"
+        : "/onboarding";
     return NextResponse.redirect(url);
   }
 

@@ -2,16 +2,9 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/browser";
+import type { Profile } from "@/lib/types";
 
 type TrackingMode = "simple" | "advanced";
-type Profile = {
-  id: string;
-  email: string | null;
-  full_name: string | null;
-  preferred_name: string | null;
-  primary_goal: string | null;
-  tracking_mode: TrackingMode | null;
-};
 type DemoHealthEvent = {
   user_id: string;
   event_date: string;
@@ -37,6 +30,32 @@ type DemoHealthEvent = {
 const integrations = ["Garmin", "WHOOP", "Strava", "Apple Health"];
 const isDevelopment = process.env.NODE_ENV === "development";
 
+const goalOptions = [
+  "Energy",
+  "Weight loss",
+  "Muscle gain",
+  "Sleep",
+  "Mood",
+  "Stress",
+  "Symptoms",
+  "Athletic performance",
+  "General wellness",
+];
+const monthOptions = [
+  ["", "Month"],
+  ["1", "January"],
+  ["2", "February"],
+  ["3", "March"],
+  ["4", "April"],
+  ["5", "May"],
+  ["6", "June"],
+  ["7", "July"],
+  ["8", "August"],
+  ["9", "September"],
+  ["10", "October"],
+  ["11", "November"],
+  ["12", "December"],
+];
 const sleepOptions = ["Poor", "Average", "Good", "Great"];
 const exerciseOptions = ["None", "Light", "Moderate", "Intense"];
 const nutritionOptions = ["Poor", "Average", "Good", "Excellent"];
@@ -61,6 +80,17 @@ function boundedScore(value: number) {
 
 function pick<T>(items: T[]) {
   return items[Math.floor(Math.random() * items.length)];
+}
+
+function optionalNumber(value: string) {
+  const trimmed = value.trim();
+
+  if (!trimmed) {
+    return null;
+  }
+
+  const parsed = Number(trimmed);
+  return Number.isNaN(parsed) ? null : parsed;
 }
 
 function demoDailyCheckins(userId: string) {
@@ -183,6 +213,12 @@ export default function ProfilePage() {
   const [preferredName, setPreferredName] = useState("");
   const [primaryGoal, setPrimaryGoal] = useState("");
   const [trackingMode, setTrackingMode] = useState<TrackingMode>("simple");
+  const [birthMonth, setBirthMonth] = useState("");
+  const [birthYear, setBirthYear] = useState("");
+  const [currentWeight, setCurrentWeight] = useState("");
+  const [goalWeight, setGoalWeight] = useState("");
+  const [typicalSleepHours, setTypicalSleepHours] = useState("");
+  const [healthFocusNote, setHealthFocusNote] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -204,7 +240,9 @@ export default function ProfilePage() {
 
       const { data, error } = await supabase
         .from("profiles")
-        .select("id,email,full_name,preferred_name,primary_goal,tracking_mode")
+        .select(
+          "id,email,full_name,preferred_name,primary_goal,tracking_mode,birth_month,birth_year,current_weight,goal_weight,typical_sleep_hours,health_focus_note,onboarding_completed",
+        )
         .eq("id", user.id)
         .single();
 
@@ -224,6 +262,18 @@ export default function ProfilePage() {
       setPreferredName(loadedProfile.preferred_name ?? "");
       setPrimaryGoal(loadedProfile.primary_goal ?? "");
       setTrackingMode(loadedProfile.tracking_mode ?? "simple");
+      setBirthMonth(loadedProfile.birth_month ? String(loadedProfile.birth_month) : "");
+      setBirthYear(loadedProfile.birth_year ? String(loadedProfile.birth_year) : "");
+      setCurrentWeight(
+        loadedProfile.current_weight ? String(loadedProfile.current_weight) : "",
+      );
+      setGoalWeight(loadedProfile.goal_weight ? String(loadedProfile.goal_weight) : "");
+      setTypicalSleepHours(
+        loadedProfile.typical_sleep_hours
+          ? String(loadedProfile.typical_sleep_hours)
+          : "",
+      );
+      setHealthFocusNote(loadedProfile.health_focus_note ?? "");
       setLoading(false);
     }
 
@@ -251,6 +301,12 @@ export default function ProfilePage() {
         preferred_name: preferredName || null,
         primary_goal: primaryGoal || null,
         tracking_mode: trackingMode,
+        birth_month: optionalNumber(birthMonth),
+        birth_year: optionalNumber(birthYear),
+        current_weight: optionalNumber(currentWeight),
+        goal_weight: optionalNumber(goalWeight),
+        typical_sleep_hours: optionalNumber(typicalSleepHours),
+        health_focus_note: healthFocusNote.trim() || null,
       })
       .eq("id", profile.id);
 
@@ -409,11 +465,18 @@ export default function ProfilePage() {
             <span className="text-sm font-black text-slate-700">
               Primary goal
             </span>
-            <input
+            <select
               value={primaryGoal}
               onChange={(event) => setPrimaryGoal(event.target.value)}
               className="mt-2 min-h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
-            />
+            >
+              <option value="">Choose a focus</option>
+              {goalOptions.map((goal) => (
+                <option key={goal} value={goal}>
+                  {goal}
+                </option>
+              ))}
+            </select>
           </label>
           <label className="block">
             <span className="text-sm font-black text-slate-700">
@@ -430,6 +493,94 @@ export default function ProfilePage() {
               <option value="advanced">Advanced</option>
             </select>
           </label>
+
+          <section className="rounded-3xl border border-slate-100 bg-slate-50 p-4">
+            <h2 className="text-lg font-black tracking-tight">
+              Personalization context
+            </h2>
+            <p className="mt-1 text-sm font-semibold leading-6 text-slate-500">
+              Optional details AXVital can use later to personalize your
+              baseline.
+            </p>
+
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              <label className="block">
+                <span className="text-sm font-black text-slate-700">
+                  Birth month
+                </span>
+                <select
+                  value={birthMonth}
+                  onChange={(event) => setBirthMonth(event.target.value)}
+                  className="mt-2 min-h-14 w-full rounded-2xl border border-slate-200 bg-white px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+                >
+                  {monthOptions.map(([value, label]) => (
+                    <option key={label} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="block">
+                <span className="text-sm font-black text-slate-700">
+                  Birth year
+                </span>
+                <input
+                  value={birthYear}
+                  onChange={(event) => setBirthYear(event.target.value)}
+                  inputMode="numeric"
+                  className="mt-2 min-h-14 w-full rounded-2xl border border-slate-200 bg-white px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+                />
+              </label>
+            </div>
+
+            <div className="mt-4 grid gap-4 sm:grid-cols-3">
+              <label className="block">
+                <span className="text-sm font-black text-slate-700">
+                  Current weight
+                </span>
+                <input
+                  value={currentWeight}
+                  onChange={(event) => setCurrentWeight(event.target.value)}
+                  inputMode="decimal"
+                  className="mt-2 min-h-14 w-full rounded-2xl border border-slate-200 bg-white px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+                />
+              </label>
+              <label className="block">
+                <span className="text-sm font-black text-slate-700">
+                  Goal weight
+                </span>
+                <input
+                  value={goalWeight}
+                  onChange={(event) => setGoalWeight(event.target.value)}
+                  inputMode="decimal"
+                  className="mt-2 min-h-14 w-full rounded-2xl border border-slate-200 bg-white px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+                />
+              </label>
+              <label className="block">
+                <span className="text-sm font-black text-slate-700">
+                  Typical sleep hours
+                </span>
+                <input
+                  value={typicalSleepHours}
+                  onChange={(event) => setTypicalSleepHours(event.target.value)}
+                  inputMode="decimal"
+                  className="mt-2 min-h-14 w-full rounded-2xl border border-slate-200 bg-white px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+                />
+              </label>
+            </div>
+
+            <label className="mt-4 block">
+              <span className="text-sm font-black text-slate-700">
+                Main health focus note
+              </span>
+              <textarea
+                value={healthFocusNote}
+                onChange={(event) => setHealthFocusNote(event.target.value)}
+                rows={4}
+                className="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+              />
+            </label>
+          </section>
 
           {message ? (
             <p className="rounded-2xl bg-emerald-50 p-4 text-sm font-black text-emerald-700">

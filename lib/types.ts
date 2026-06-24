@@ -32,6 +32,24 @@ export type DailyCheckin = {
   updated_at?: string | null;
 };
 
+export type Profile = {
+  id: string;
+  email: string | null;
+  full_name: string | null;
+  preferred_name: string | null;
+  primary_goal: string | null;
+  tracking_mode: "simple" | "advanced" | null;
+  birth_month: number | null;
+  birth_year: number | null;
+  current_weight: number | null;
+  goal_weight: number | null;
+  typical_sleep_hours: number | null;
+  health_focus_note: string | null;
+  onboarding_completed: boolean | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+};
+
 export type HealthEvent = {
   id: string;
   user_id: string;

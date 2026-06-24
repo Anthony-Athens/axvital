@@ -49,8 +49,25 @@ export default function LoginPage() {
       return;
     }
 
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select("primary_goal,onboarding_completed")
+      .eq("id", session.user.id)
+      .maybeSingle();
+
+    if (profileError) {
+      console.error("Failed to load login profile", profileError);
+      setLoading(false);
+      setMessage(profileError.message);
+      return;
+    }
+
     setLoading(false);
-    router.push("/today");
+    router.push(
+      profile?.onboarding_completed && profile.primary_goal?.trim()
+        ? "/today"
+        : "/onboarding",
+    );
     router.refresh();
   }
 
