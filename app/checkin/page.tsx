@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { FormEvent, useMemo, useState } from "react";
+import type { HealthEventType } from "@/lib/types";
 
 type AnswerMap = Record<string, string>;
 type QuickAddType =
@@ -11,6 +12,23 @@ type QuickAddType =
   | "Symptom"
   | "Medication"
   | "Note";
+type FieldKind = "text" | "time" | "number" | "integer" | "select" | "textarea";
+type QuickAddField = {
+  label: string;
+  name: string;
+  placeholder: string;
+  kind?: FieldKind;
+  options?: string[];
+};
+type LocalHealthEvent = {
+  id: string;
+  type: HealthEventType;
+  occurredAt: string;
+  title: string;
+  notes?: string | null;
+  tags: string[];
+  details: Record<string, string | number | null>;
+};
 
 const questions = [
   {
@@ -74,54 +92,329 @@ const quickAddTypes: QuickAddType[] = [
   "Note",
 ];
 
-const quickAddFields: Record<
-  QuickAddType,
-  Array<{ label: string; placeholder: string; kind?: "text" | "time" | "number" }>
-> = {
+const tagOptions = [
+  "travel",
+  "sick",
+  "stress",
+  "vacation",
+  "injury",
+  "hot weather",
+  "cold weather",
+  "poor sleep",
+  "high protein",
+  "low carb",
+  "social event",
+  "work stress",
+  "screen time",
+  "late night",
+];
+
+const supplementOptions = [
+  "Creatine",
+  "Multivitamin",
+  "Vitamin D",
+  "Magnesium",
+  "Fish Oil",
+  "Protein Powder",
+  "Electrolytes",
+  "Caffeine",
+  "Melatonin",
+  "Zinc",
+  "Other",
+];
+
+const doseUnitOptions = [
+  "mg",
+  "g",
+  "mcg",
+  "IU",
+  "capsule",
+  "tablet",
+  "serving",
+  "scoop",
+  "drop",
+  "mL",
+  "oz",
+];
+
+const exerciseTypeOptions = [
+  "Run",
+  "Walk",
+  "Bike",
+  "Swim",
+  "Strength Training",
+  "HIIT",
+  "Yoga",
+  "Mobility",
+  "Sport",
+  "Other",
+];
+
+const intensityOptions = ["Light", "Moderate", "Intense"];
+const distanceUnitOptions = ["miles", "km", "meters", "yards"];
+
+const quickAddFields: Record<QuickAddType, QuickAddField[]> = {
   Food: [
-    { label: "Description", placeholder: "Coffee + creatine" },
-    { label: "Time", placeholder: "08:00", kind: "time" },
-    { label: "Optional notes", placeholder: "Anything worth remembering" },
+    { label: "Description", name: "description", placeholder: "4 eggs + avocado" },
+    { label: "Time", name: "time", placeholder: "08:00", kind: "time" },
+    { label: "Calories", name: "calories", placeholder: "520", kind: "integer" },
+    {
+      label: "Protein grams",
+      name: "protein_g",
+      placeholder: "32",
+      kind: "integer",
+    },
+    { label: "Carbs grams", name: "carbs_g", placeholder: "18", kind: "integer" },
+    { label: "Fat grams", name: "fat_g", placeholder: "34", kind: "integer" },
+    {
+      label: "Notes",
+      name: "notes",
+      placeholder: "Optional context",
+      kind: "textarea",
+    },
   ],
   Fluid: [
-    { label: "Description", placeholder: "Water, electrolytes, coffee" },
-    { label: "Amount", placeholder: "16 oz" },
-    { label: "Time", placeholder: "10:30", kind: "time" },
+    {
+      label: "Description",
+      name: "description",
+      placeholder: "Water, electrolytes, coffee",
+    },
+    { label: "Amount", name: "amount", placeholder: "16 oz" },
+    { label: "Time", name: "time", placeholder: "10:30", kind: "time" },
+    { label: "Notes", name: "notes", placeholder: "Optional context", kind: "textarea" },
   ],
   Supplement: [
-    { label: "Name", placeholder: "Creatine" },
-    { label: "Dose", placeholder: "5 g" },
-    { label: "Time", placeholder: "08:00", kind: "time" },
+    {
+      label: "Supplement name",
+      name: "supplement_name",
+      placeholder: "Select supplement",
+      kind: "select",
+      options: supplementOptions,
+    },
+    {
+      label: "Dose amount",
+      name: "dose_amount",
+      placeholder: "5",
+      kind: "number",
+    },
+    {
+      label: "Dose unit",
+      name: "dose_unit",
+      placeholder: "Select unit",
+      kind: "select",
+      options: doseUnitOptions,
+    },
+    { label: "Time", name: "time", placeholder: "08:00", kind: "time" },
+    { label: "Notes", name: "notes", placeholder: "Optional context", kind: "textarea" },
   ],
   Exercise: [
-    { label: "Type", placeholder: "Run, lift, walk" },
-    { label: "Duration", placeholder: "35 min" },
-    { label: "Intensity", placeholder: "Light, moderate, intense" },
-    { label: "Time", placeholder: "17:00", kind: "time" },
+    {
+      label: "Exercise type",
+      name: "exercise_type",
+      placeholder: "Select exercise",
+      kind: "select",
+      options: exerciseTypeOptions,
+    },
+    {
+      label: "Duration minutes",
+      name: "duration_minutes",
+      placeholder: "35",
+      kind: "integer",
+    },
+    {
+      label: "Intensity",
+      name: "intensity",
+      placeholder: "Select intensity",
+      kind: "select",
+      options: intensityOptions,
+    },
+    { label: "Distance", name: "distance", placeholder: "4", kind: "number" },
+    {
+      label: "Distance unit",
+      name: "distance_unit",
+      placeholder: "Select unit",
+      kind: "select",
+      options: distanceUnitOptions,
+    },
+    { label: "Time", name: "time", placeholder: "17:00", kind: "time" },
+    { label: "Notes", name: "notes", placeholder: "Optional context", kind: "textarea" },
   ],
   Symptom: [
-    { label: "Symptom", placeholder: "Headache" },
-    { label: "Severity 1-10", placeholder: "4", kind: "number" },
-    { label: "Time", placeholder: "21:30", kind: "time" },
-    { label: "Notes", placeholder: "Possible trigger or context" },
+    { label: "Symptom", name: "symptom", placeholder: "Headache" },
+    {
+      label: "Severity 1-10",
+      name: "severity",
+      placeholder: "4",
+      kind: "integer",
+    },
+    { label: "Time", name: "time", placeholder: "21:30", kind: "time" },
+    { label: "Notes", name: "notes", placeholder: "Optional context", kind: "textarea" },
   ],
   Medication: [
-    { label: "Name", placeholder: "Medication name" },
-    { label: "Dose", placeholder: "Dose" },
-    { label: "Time", placeholder: "09:00", kind: "time" },
+    { label: "Name", name: "name", placeholder: "Medication name" },
+    {
+      label: "Dose amount",
+      name: "dose_amount",
+      placeholder: "1",
+      kind: "number",
+    },
+    {
+      label: "Dose unit",
+      name: "dose_unit",
+      placeholder: "Select unit",
+      kind: "select",
+      options: doseUnitOptions,
+    },
+    { label: "Time", name: "time", placeholder: "09:00", kind: "time" },
+    { label: "Notes", name: "notes", placeholder: "Optional context", kind: "textarea" },
   ],
   Note: [
-    { label: "Note text", placeholder: "What happened?" },
-    { label: "Time", placeholder: "14:00", kind: "time" },
+    { label: "Note text", name: "note_text", placeholder: "What happened?", kind: "textarea" },
+    { label: "Time", name: "time", placeholder: "14:00", kind: "time" },
   ],
 };
 
-const timeline = [
-  { time: "8:00 AM", event: "Coffee + creatine", type: "Supplement" },
-  { time: "12:00 PM", event: "4 eggs + multivitamin", type: "Food" },
-  { time: "5:00 PM", event: "4-mile run", type: "Exercise" },
-  { time: "9:30 PM", event: "Mild headache", type: "Symptom" },
+const initialTimeline: LocalHealthEvent[] = [
+  {
+    id: "sample-1",
+    type: "supplement",
+    occurredAt: "08:00",
+    title: "Coffee + creatine",
+    tags: ["caffeine", "supplement"],
+    details: {},
+  },
+  {
+    id: "sample-2",
+    type: "food",
+    occurredAt: "12:00",
+    title: "4 eggs + multivitamin",
+    tags: ["high protein"],
+    details: { protein_g: 28 },
+  },
+  {
+    id: "sample-3",
+    type: "exercise",
+    occurredAt: "17:00",
+    title: "4-mile run",
+    tags: [],
+    details: { duration_minutes: 38, distance: 4, distance_unit: "miles" },
+  },
+  {
+    id: "sample-4",
+    type: "symptom",
+    occurredAt: "21:30",
+    title: "Mild headache",
+    tags: ["screen time", "late night"],
+    details: { severity: 3 },
+  },
 ];
+
+function titleCase(value: string) {
+  return value.slice(0, 1).toUpperCase() + value.slice(1);
+}
+
+function formatEventTime(value: string) {
+  const [hours = "0", minutes = "00"] = value.split(":");
+  const date = new Date();
+  date.setHours(Number(hours), Number(minutes), 0, 0);
+  return new Intl.DateTimeFormat("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(date);
+}
+
+function currentTimeValue() {
+  const now = new Date();
+  return `${String(now.getHours()).padStart(2, "0")}:${String(
+    now.getMinutes(),
+  ).padStart(2, "0")}`;
+}
+
+function formValue(formData: FormData, key: string) {
+  const value = formData.get(key);
+  return typeof value === "string" && value.trim() ? value.trim() : null;
+}
+
+function numberValue(formData: FormData, key: string) {
+  const value = formValue(formData, key);
+  if (!value) {
+    return null;
+  }
+
+  const parsed = Number(value);
+  return Number.isNaN(parsed) ? null : parsed;
+}
+
+function integerValue(formData: FormData, key: string) {
+  const value = numberValue(formData, key);
+  return value === null ? null : Math.trunc(value);
+}
+
+function quickAddTypeToEventType(type: QuickAddType): HealthEventType {
+  return type.toLowerCase() as HealthEventType;
+}
+
+function eventTitle(type: QuickAddType, formData: FormData) {
+  if (type === "Food" || type === "Fluid") {
+    return formValue(formData, "description") ?? type;
+  }
+
+  if (type === "Supplement") {
+    return formValue(formData, "supplement_name") ?? type;
+  }
+
+  if (type === "Exercise") {
+    return formValue(formData, "exercise_type") ?? type;
+  }
+
+  if (type === "Symptom") {
+    return formValue(formData, "symptom") ?? type;
+  }
+
+  if (type === "Medication") {
+    return formValue(formData, "name") ?? type;
+  }
+
+  return formValue(formData, "note_text") ?? type;
+}
+
+function buildEventDetails(type: QuickAddType, formData: FormData) {
+  const details: Record<string, string | number | null> = {};
+
+  if (type === "Food") {
+    details.calories = integerValue(formData, "calories");
+    details.protein_g = integerValue(formData, "protein_g");
+    details.carbs_g = integerValue(formData, "carbs_g");
+    details.fat_g = integerValue(formData, "fat_g");
+  }
+
+  if (type === "Fluid") {
+    details.amount = formValue(formData, "amount");
+  }
+
+  if (type === "Supplement" || type === "Medication") {
+    details.dose_amount = numberValue(formData, "dose_amount");
+    details.dose_unit = formValue(formData, "dose_unit");
+  }
+
+  if (type === "Supplement") {
+    details.supplement_name = formValue(formData, "supplement_name");
+  }
+
+  if (type === "Exercise") {
+    details.exercise_type = formValue(formData, "exercise_type");
+    details.duration_minutes = integerValue(formData, "duration_minutes");
+    details.intensity = formValue(formData, "intensity");
+    details.distance = numberValue(formData, "distance");
+    details.distance_unit = formValue(formData, "distance_unit");
+  }
+
+  if (type === "Symptom") {
+    details.severity = integerValue(formData, "severity");
+  }
+
+  return details;
+}
 
 export default function CheckInPage() {
   const [answers, setAnswers] = useState<AnswerMap>({
@@ -138,7 +431,10 @@ export default function CheckInPage() {
   const [activeQuickAdd, setActiveQuickAdd] = useState<QuickAddType | null>(
     null,
   );
-  const [eventSaved, setEventSaved] = useState(false);
+  const [eventMessage, setEventMessage] = useState("");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [healthEvents, setHealthEvents] =
+    useState<LocalHealthEvent[]>(initialTimeline);
 
   const progress = useMemo(() => {
     const complete = questions.filter((question) => answers[question.id]).length;
@@ -148,6 +444,48 @@ export default function CheckInPage() {
   function choose(questionId: string, option: string) {
     setSaved(false);
     setAnswers((current) => ({ ...current, [questionId]: option }));
+  }
+
+  function openQuickAdd(type: QuickAddType) {
+    setEventMessage("");
+    setSelectedTags([]);
+    setActiveQuickAdd(type);
+  }
+
+  function toggleTag(tag: string) {
+    setSelectedTags((current) =>
+      current.includes(tag)
+        ? current.filter((currentTag) => currentTag !== tag)
+        : [...current, tag],
+    );
+  }
+
+  function saveHealthEvent(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!activeQuickAdd) {
+      return;
+    }
+
+    const formData = new FormData(event.currentTarget);
+    const newEvent: LocalHealthEvent = {
+      id: crypto.randomUUID(),
+      type: quickAddTypeToEventType(activeQuickAdd),
+      occurredAt: formValue(formData, "time") ?? currentTimeValue(),
+      title: eventTitle(activeQuickAdd, formData),
+      notes: formValue(formData, "notes") ?? formValue(formData, "note_text"),
+      tags: selectedTags,
+      details: buildEventDetails(activeQuickAdd, formData),
+    };
+
+    setHealthEvents((current) =>
+      [...current, newEvent].sort((a, b) =>
+        a.occurredAt.localeCompare(b.occurredAt),
+      ),
+    );
+    setEventMessage("Event added to today's timeline.");
+    event.currentTarget.reset();
+    setSelectedTags([]);
   }
 
   return (
@@ -252,6 +590,11 @@ export default function CheckInPage() {
           </form>
 
           <div className="safe-bottom sticky bottom-[4.75rem] z-30 -mx-5 mt-5 border-t border-slate-200 bg-white/95 px-5 pt-3 backdrop-blur-xl md:bottom-4 md:mx-0 md:rounded-3xl md:border md:shadow-xl md:shadow-slate-200 lg:static lg:border-0 lg:bg-transparent lg:px-0 lg:pb-0 lg:shadow-none">
+            {saved ? (
+              <p className="mb-3 rounded-2xl bg-emerald-50 p-4 text-sm font-black text-emerald-700">
+                Daily check-in saved locally for this session.
+              </p>
+            ) : null}
             <button
               type="button"
               onClick={() => setSaved(true)}
@@ -285,10 +628,7 @@ export default function CheckInPage() {
                 <button
                   key={type}
                   type="button"
-                  onClick={() => {
-                    setEventSaved(false);
-                    setActiveQuickAdd(type);
-                  }}
+                  onClick={() => openQuickAdd(type)}
                   className="min-h-16 rounded-2xl border border-slate-200 bg-slate-50 px-4 text-left text-base font-black text-slate-900 transition active:scale-[0.98]"
                 >
                   {type}
@@ -302,20 +642,38 @@ export default function CheckInPage() {
               Today&apos;s Timeline
             </h2>
             <div className="mt-5 space-y-3">
-              {timeline.map((item) => (
+              {healthEvents.map((item) => (
                 <article
-                  key={`${item.time}-${item.event}`}
-                  className="flex gap-3 rounded-2xl border border-slate-100 bg-slate-50 p-4"
+                  key={item.id}
+                  className="rounded-2xl border border-slate-100 bg-slate-50 p-4"
                 >
-                  <div className="mt-1 h-3 w-3 shrink-0 rounded-full bg-emerald-500" />
-                  <div>
-                    <p className="text-sm font-black text-slate-500">
-                      {item.time} — {item.type}
-                    </p>
-                    <p className="mt-1 text-base font-black text-slate-950">
-                      {item.event}
-                    </p>
+                  <div className="flex gap-3">
+                    <div className="mt-1 h-3 w-3 shrink-0 rounded-full bg-emerald-500" />
+                    <div>
+                      <p className="text-sm font-black text-slate-500">
+                        {formatEventTime(item.occurredAt)} -{" "}
+                        {titleCase(item.type)}
+                      </p>
+                      <p className="mt-1 text-base font-black text-slate-950">
+                        {item.title}
+                      </p>
+                    </div>
                   </div>
+                  {item.tags.length ? (
+                    <div className="mt-3 flex flex-wrap gap-2 pl-6">
+                      <span className="text-xs font-black uppercase tracking-[0.12em] text-slate-400">
+                        Tags:
+                      </span>
+                      {item.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="rounded-full bg-white px-3 py-1 text-xs font-black text-slate-600"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  ) : null}
                 </article>
               ))}
             </div>
@@ -340,7 +698,10 @@ export default function CheckInPage() {
           aria-modal="true"
           aria-labelledby="quick-add-title"
         >
-          <div className="safe-bottom fixed inset-x-0 bottom-0 max-h-[82dvh] overflow-y-auto rounded-t-[2rem] bg-white p-5 shadow-2xl md:static md:w-full md:max-w-lg md:rounded-3xl md:p-6">
+          <form
+            onSubmit={saveHealthEvent}
+            className="safe-bottom fixed inset-x-0 bottom-0 max-h-[82dvh] overflow-y-auto rounded-t-[2rem] bg-white p-5 shadow-2xl md:static md:w-full md:max-w-lg md:rounded-3xl md:p-6"
+          >
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-600">
@@ -359,27 +720,52 @@ export default function CheckInPage() {
                 className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-slate-100 text-2xl font-black text-slate-700"
                 aria-label="Close quick add"
               >
-                ×
+                x
               </button>
             </div>
 
             <div className="mt-5 space-y-4">
               {quickAddFields[activeQuickAdd].map((field) => (
-                <label key={field.label} className="block">
+                <label key={field.name} className="block">
                   <span className="text-sm font-black text-slate-700">
                     {field.label}
                   </span>
-                  {activeQuickAdd === "Note" &&
-                  field.label === "Note text" ? (
+                  {field.kind === "select" ? (
+                    <select
+                      name={field.name}
+                      defaultValue=""
+                      className="mt-2 min-h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+                    >
+                      <option value="" disabled>
+                        {field.placeholder}
+                      </option>
+                      {field.options?.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                  ) : field.kind === "textarea" ? (
                     <textarea
+                      name={field.name}
                       placeholder={field.placeholder}
                       rows={4}
                       className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
                     />
                   ) : (
                     <input
-                      type={field.kind ?? "text"}
-                      inputMode={field.kind === "number" ? "numeric" : undefined}
+                      name={field.name}
+                      type={
+                        field.kind === "number" || field.kind === "integer"
+                          ? "number"
+                          : field.kind ?? "text"
+                      }
+                      inputMode={
+                        field.kind === "number" || field.kind === "integer"
+                          ? "decimal"
+                          : undefined
+                      }
+                      step={field.kind === "integer" ? "1" : undefined}
                       placeholder={field.placeholder}
                       className="mt-2 min-h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
                     />
@@ -388,9 +774,45 @@ export default function CheckInPage() {
               ))}
             </div>
 
-            {eventSaved ? (
+            <section className="mt-5 rounded-3xl border border-slate-100 bg-slate-50 p-4">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <h3 className="text-sm font-black text-slate-700">
+                    Tags
+                  </h3>
+                  <p className="mt-1 text-xs font-bold leading-5 text-slate-500">
+                    Optional context for future pattern discovery.
+                  </p>
+                </div>
+                <span className="rounded-full bg-white px-3 py-1 text-xs font-black text-slate-400">
+                  Optional
+                </span>
+              </div>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {tagOptions.map((tag) => {
+                  const selected = selectedTags.includes(tag);
+                  return (
+                    <button
+                      key={tag}
+                      type="button"
+                      onClick={() => toggleTag(tag)}
+                      className={`min-h-11 rounded-full border px-3 text-sm font-black transition active:scale-[0.98] ${
+                        selected
+                          ? "border-emerald-500 bg-emerald-500 text-white"
+                          : "border-slate-200 bg-white text-slate-600"
+                      }`}
+                      aria-pressed={selected}
+                    >
+                      {tag}
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+
+            {eventMessage ? (
               <p className="mt-4 rounded-2xl bg-emerald-50 p-4 text-sm font-black text-emerald-700">
-                Placeholder event saved locally for this session.
+                {eventMessage}
               </p>
             ) : null}
 
@@ -403,14 +825,13 @@ export default function CheckInPage() {
                 Skip
               </button>
               <button
-                type="button"
-                onClick={() => setEventSaved(true)}
+                type="submit"
                 className="min-h-14 rounded-2xl bg-emerald-500 px-4 text-base font-black text-white"
               >
                 Save Event
               </button>
             </div>
-          </div>
+          </form>
         </div>
       ) : null}
     </div>

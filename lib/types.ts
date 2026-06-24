@@ -35,6 +35,18 @@ export type HealthEvent = {
   intensity?: "light" | "moderate" | "intense" | string | null;
   severity?: number | null;
   notes?: string | null;
+  calories?: number | null;
+  proteinG?: number | null;
+  carbsG?: number | null;
+  fatG?: number | null;
+  supplementName?: string | null;
+  doseAmount?: number | null;
+  doseUnit?: string | null;
+  exerciseType?: string | null;
+  durationMinutes?: number | null;
+  distance?: number | null;
+  distanceUnit?: string | null;
+  tags?: string[];
   createdAt: string;
   updatedAt?: string | null;
 };
