@@ -1,6 +1,8 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
+import type { User } from "@supabase/supabase-js";
+import { supabase } from "@/lib/supabase/client";
 import type { HealthEventType } from "@/lib/types";
 
 type AnswerMap = Record<string, string>;
@@ -28,6 +30,31 @@ type LocalHealthEvent = {
   notes?: string | null;
   tags: string[];
   details: Record<string, string | number | null>;
+};
+type HealthEventRow = {
+  id: string;
+  user_id: string;
+  type: HealthEventType;
+  occurred_at: string;
+  description: string | null;
+  amount: string | null;
+  dose: string | null;
+  duration: string | null;
+  intensity: string | null;
+  severity: number | null;
+  notes: string | null;
+  tags: string[] | null;
+  calories: number | null;
+  protein_g: number | null;
+  carbs_g: number | null;
+  fat_g: number | null;
+  supplement_name: string | null;
+  dose_amount: number | null;
+  dose_unit: string | null;
+  exercise_type: string | null;
+  duration_minutes: number | null;
+  distance: number | null;
+  distance_unit: string | null;
 };
 
 const questions = [
@@ -330,6 +357,29 @@ function currentTimeValue() {
   ).padStart(2, "0")}`;
 }
 
+function todayDateString() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function getTodayRange() {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const end = new Date(start);
+  end.setDate(start.getDate() + 1);
+  return { start: start.toISOString(), end: end.toISOString() };
+}
+
+function occurredAtFromTime(time: string | null) {
+  return new Date(`${todayDateString()}T${time || currentTimeValue()}:00`).toISOString();
+}
+
+function timeValueFromIso(value: string) {
+  const date = new Date(value);
+  return `${String(date.getHours()).padStart(2, "0")}:${String(
+    date.getMinutes(),
+  ).padStart(2, "0")}`;
+}
+
 function formValue(formData: FormData, key: string) {
   const value = formData.get(key);
   return typeof value === "string" && value.trim() ? value.trim() : null;
@@ -416,6 +466,100 @@ function buildEventDetails(type: QuickAddType, formData: FormData) {
   return details;
 }
 
+function titleFromRow(event: HealthEventRow) {
+  if (event.type === "supplement" && event.supplement_name) {
+    return event.supplement_name;
+  }
+
+  if (event.type === "exercise" && event.exercise_type) {
+    return event.exercise_type;
+  }
+
+  return event.description || event.notes || titleCase(event.type);
+}
+
+function detailsFromRow(event: HealthEventRow) {
+  return {
+    amount: event.amount,
+    dose: event.dose,
+    duration: event.duration,
+    intensity: event.intensity,
+    severity: event.severity,
+    calories: event.calories,
+    protein_g: event.protein_g,
+    carbs_g: event.carbs_g,
+    fat_g: event.fat_g,
+    supplement_name: event.supplement_name,
+    dose_amount: event.dose_amount,
+    dose_unit: event.dose_unit,
+    exercise_type: event.exercise_type,
+    duration_minutes: event.duration_minutes,
+    distance: event.distance,
+    distance_unit: event.distance_unit,
+  };
+}
+
+function mapHealthEventRow(event: HealthEventRow): LocalHealthEvent {
+  return {
+    id: event.id,
+    type: event.type,
+    occurredAt: timeValueFromIso(event.occurred_at),
+    title: titleFromRow(event),
+    notes: event.notes,
+    tags: event.tags ?? [],
+    details: detailsFromRow(event),
+  };
+}
+
+function buildHealthEventPayload(
+  type: QuickAddType,
+  formData: FormData,
+  userId: string,
+  tags: string[],
+) {
+  const eventType = quickAddTypeToEventType(type);
+  const description = eventTitle(type, formData);
+  const doseAmount = numberValue(formData, "dose_amount");
+  const doseUnit = formValue(formData, "dose_unit");
+  const durationMinutes = integerValue(formData, "duration_minutes");
+
+  return {
+    user_id: userId,
+    type: eventType,
+    occurred_at: occurredAtFromTime(formValue(formData, "time")),
+    description,
+    amount: type === "Fluid" ? formValue(formData, "amount") : null,
+    dose:
+      (type === "Supplement" || type === "Medication") && doseAmount && doseUnit
+        ? `${doseAmount} ${doseUnit}`
+        : null,
+    duration:
+      type === "Exercise" && durationMinutes ? `${durationMinutes} min` : null,
+    intensity:
+      type === "Exercise"
+        ? formValue(formData, "intensity")?.toLowerCase() ?? null
+        : null,
+    severity: type === "Symptom" ? integerValue(formData, "severity") : null,
+    notes: formValue(formData, "notes") ?? formValue(formData, "note_text"),
+    tags,
+    calories: type === "Food" ? integerValue(formData, "calories") : null,
+    protein_g: type === "Food" ? integerValue(formData, "protein_g") : null,
+    carbs_g: type === "Food" ? integerValue(formData, "carbs_g") : null,
+    fat_g: type === "Food" ? integerValue(formData, "fat_g") : null,
+    supplement_name:
+      type === "Supplement" ? formValue(formData, "supplement_name") : null,
+    dose_amount:
+      type === "Supplement" || type === "Medication" ? doseAmount : null,
+    dose_unit: type === "Supplement" || type === "Medication" ? doseUnit : null,
+    exercise_type:
+      type === "Exercise" ? formValue(formData, "exercise_type") : null,
+    duration_minutes: type === "Exercise" ? durationMinutes : null,
+    distance: type === "Exercise" ? numberValue(formData, "distance") : null,
+    distance_unit:
+      type === "Exercise" ? formValue(formData, "distance_unit") : null,
+  };
+}
+
 export default function CheckInPage() {
   const [answers, setAnswers] = useState<AnswerMap>({
     energy: "8",
@@ -441,9 +585,53 @@ export default function CheckInPage() {
     return Math.round((complete / questions.length) * 100);
   }, [answers]);
 
+  useEffect(() => {
+    let ignore = false;
+
+    async function initializeEvents() {
+      const user = await getAuthenticatedUser();
+
+      if (!user || ignore) {
+        return;
+      }
+
+      await loadTodayEvents(user.id);
+    }
+
+    initializeEvents();
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
   function choose(questionId: string, option: string) {
     setSaved(false);
     setAnswers((current) => ({ ...current, [questionId]: option }));
+  }
+
+  async function getAuthenticatedUser(): Promise<User | null> {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    return user;
+  }
+
+  async function loadTodayEvents(userId: string) {
+    const { start, end } = getTodayRange();
+    const { data, error } = await supabase
+      .from("health_events")
+      .select(
+        "id,user_id,type,occurred_at,description,amount,dose,duration,intensity,severity,notes,tags,calories,protein_g,carbs_g,fat_g,supplement_name,dose_amount,dose_unit,exercise_type,duration_minutes,distance,distance_unit",
+      )
+      .eq("user_id", userId)
+      .gte("occurred_at", start)
+      .lt("occurred_at", end)
+      .order("occurred_at", { ascending: true });
+
+    if (!error) {
+      setHealthEvents(((data ?? []) as HealthEventRow[]).map(mapHealthEventRow));
+    }
   }
 
   function openQuickAdd(type: QuickAddType) {
@@ -460,7 +648,7 @@ export default function CheckInPage() {
     );
   }
 
-  function saveHealthEvent(event: FormEvent<HTMLFormElement>) {
+  async function saveHealthEvent(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (!activeQuickAdd) {
@@ -468,6 +656,7 @@ export default function CheckInPage() {
     }
 
     const formData = new FormData(event.currentTarget);
+    const user = await getAuthenticatedUser();
     const newEvent: LocalHealthEvent = {
       id: crypto.randomUUID(),
       type: quickAddTypeToEventType(activeQuickAdd),
@@ -477,6 +666,27 @@ export default function CheckInPage() {
       tags: selectedTags,
       details: buildEventDetails(activeQuickAdd, formData),
     };
+
+    if (user) {
+      const payload = buildHealthEventPayload(
+        activeQuickAdd,
+        formData,
+        user.id,
+        selectedTags,
+      );
+      const { error } = await supabase.from("health_events").insert(payload);
+
+      if (error) {
+        setEventMessage(error.message);
+        return;
+      }
+
+      await loadTodayEvents(user.id);
+      setEventMessage("Event saved. Timeline refreshed.");
+      event.currentTarget.reset();
+      setSelectedTags([]);
+      return;
+    }
 
     setHealthEvents((current) =>
       [...current, newEvent].sort((a, b) =>
