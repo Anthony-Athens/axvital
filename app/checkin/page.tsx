@@ -764,7 +764,8 @@ export default function CheckInPage() {
       return;
     }
 
-    const formData = new FormData(event.currentTarget);
+    const form = event.currentTarget;
+    const formData = new FormData(form);
     const user = await getAuthenticatedUser();
     const newEvent: LocalHealthEvent = {
       id: crypto.randomUUID(),
@@ -793,7 +794,7 @@ export default function CheckInPage() {
 
       await loadTodayEvents(user.id);
       setEventMessage("Event saved. Timeline refreshed.");
-      event.currentTarget.reset();
+      form.reset();
       setSelectedTags([]);
       return;
     }
@@ -804,7 +805,7 @@ export default function CheckInPage() {
       ),
     );
     setEventMessage("Event added to today's timeline.");
-    event.currentTarget.reset();
+    form.reset();
     setSelectedTags([]);
   }
 
