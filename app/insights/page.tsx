@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { friendlyErrorMessage, logDevError } from "@/lib/app-errors";
 import {
   logSupabaseError,
   refreshUserInsights,
@@ -189,9 +190,9 @@ export default function InsightsPage() {
       } = await supabase.auth.getUser();
 
       if (userError) {
-        console.error("Failed to load insights user", userError);
+        logDevError("Failed to load insights user", userError);
         if (!ignore) {
-          setMessage(userError.message);
+          setMessage(friendlyErrorMessage("load your insights"));
           setLoading(false);
         }
         return;
@@ -213,9 +214,9 @@ export default function InsightsPage() {
           loadPersistedInsights(user.id),
           loadProfileFocus(user.id),
         ]);
-      } catch (error) {
+      } catch {
         if (!ignore) {
-          setMessage(error instanceof Error ? error.message : "Unable to load insights.");
+          setMessage(friendlyErrorMessage("load your insights"));
         }
       } finally {
         if (!ignore) {
@@ -248,9 +249,9 @@ export default function InsightsPage() {
       if (error && typeof error === "object") {
         logSupabaseError("Failed to refresh insights", error);
       } else {
-        console.error("Failed to refresh insights", error);
+        logDevError("Failed to refresh insights", error);
       }
-      setMessage(error instanceof Error ? error.message : "Unable to refresh insights.");
+      setMessage(friendlyErrorMessage("refresh your insights"));
     } finally {
       setRefreshing(false);
     }

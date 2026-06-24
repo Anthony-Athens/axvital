@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { friendlyErrorMessage, logDevError } from "@/lib/app-errors";
 import { createClient } from "@/lib/supabase/browser";
 
 export default function LoginPage() {
@@ -24,9 +25,9 @@ export default function LoginPage() {
     });
 
     if (error) {
-      console.error("Failed to sign in", error);
+      logDevError("Failed to sign in", error);
       setLoading(false);
-      setMessage(error.message);
+      setMessage("We couldn't sign you in. Check your email and password, then try again.");
       return;
     }
 
@@ -36,14 +37,14 @@ export default function LoginPage() {
     } = await supabase.auth.getSession();
 
     if (sessionError) {
-      console.error("Failed to refresh login session", sessionError);
+      logDevError("Failed to refresh login session", sessionError);
       setLoading(false);
-      setMessage(sessionError.message);
+      setMessage(friendlyErrorMessage("finish signing you in"));
       return;
     }
 
     if (!session) {
-      console.error("Login succeeded but no Supabase session was returned.");
+      logDevError("Login succeeded but no Supabase session was returned.", null);
       setLoading(false);
       setMessage("Login succeeded, but your session did not persist. Please try again.");
       return;
@@ -56,9 +57,9 @@ export default function LoginPage() {
       .maybeSingle();
 
     if (profileError) {
-      console.error("Failed to load login profile", profileError);
+      logDevError("Failed to load login profile", profileError);
       setLoading(false);
-      setMessage(profileError.message);
+      setMessage(friendlyErrorMessage("load your profile"));
       return;
     }
 

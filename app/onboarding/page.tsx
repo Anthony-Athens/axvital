@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { friendlyErrorMessage, logDevError } from "@/lib/app-errors";
 import { createClient } from "@/lib/supabase/browser";
 import type { Profile } from "@/lib/types";
 
@@ -69,8 +70,8 @@ export default function OnboardingPage() {
       } = await supabase.auth.getUser();
 
       if (userError) {
-        console.error("Failed to load onboarding user", userError);
-        setMessage(userError.message);
+        logDevError("Failed to load onboarding user", userError);
+        setMessage(friendlyErrorMessage("start onboarding"));
         setLoading(false);
         return;
       }
@@ -93,8 +94,8 @@ export default function OnboardingPage() {
       }
 
       if (error) {
-        console.error("Failed to load onboarding profile", error);
-        setMessage(error.message);
+        logDevError("Failed to load onboarding profile", error);
+        setMessage(friendlyErrorMessage("load your onboarding profile"));
         setLoading(false);
         return;
       }
@@ -175,8 +176,8 @@ export default function OnboardingPage() {
     setSaving(false);
 
     if (error) {
-      console.error("Failed to save onboarding", error);
-      setMessage(error.message);
+      logDevError("Failed to save onboarding", error);
+      setMessage(friendlyErrorMessage("save your onboarding"));
       return;
     }
 

@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { logDevError, logDevInfo } from "@/lib/app-errors";
 import type { WeeklyRecap } from "@/lib/types";
 
 type SupabaseErrorDetails = {
@@ -22,7 +23,7 @@ type HealthEventRow = {
 };
 
 export function logWeeklyRecapError(label: string, error: SupabaseErrorDetails) {
-  console.error(label, {
+  logDevError(label, {
     message: error.message,
     details: error.details,
     hint: error.hint,
@@ -322,7 +323,7 @@ export async function generateWeeklyRecap(
     return null;
   }
 
-  console.log("Saving weekly recap payload", recap);
+  logDevInfo("Saving weekly recap payload", recap);
 
   const { data, error } = await supabase
     .from("weekly_recaps")

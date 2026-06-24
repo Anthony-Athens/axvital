@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { logDevError } from "@/lib/app-errors";
 import { createClient } from "@/lib/supabase/browser";
 
 export default function SignupPage() {
@@ -34,9 +35,9 @@ export default function SignupPage() {
     });
 
     if (error) {
-      console.error("Failed to sign up", error);
+      logDevError("Failed to sign up", error);
       setLoading(false);
-      setMessage(error.message);
+      setMessage("We couldn't create your account right now. Please try again.");
       return;
     }
 

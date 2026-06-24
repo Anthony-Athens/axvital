@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import type { User } from "@supabase/supabase-js";
+import { friendlyErrorMessage, logDevError, logDevInfo } from "@/lib/app-errors";
 import { supabase } from "@/lib/supabase/client";
 import type { HealthEventType } from "@/lib/types";
 
@@ -684,8 +685,8 @@ export default function CheckInPage() {
       .order("event_time", { ascending: true });
 
     if (error) {
-      console.error("Failed to load health events", error);
-      setEventMessage(error.message);
+      logDevError("Failed to load health events", error);
+      setEventMessage(friendlyErrorMessage("load your timeline"));
       return;
     }
 
@@ -720,8 +721,8 @@ export default function CheckInPage() {
       tags: [],
     };
 
-    console.log("Saving daily check-in payload", payload);
-    console.log("Daily check-in normalized values", {
+    logDevInfo("Saving daily check-in payload", payload);
+    logDevInfo("Daily check-in normalized values", {
       nutrition_quality: payload.nutrition_quality,
       exercise_level: payload.exercise_level,
       sleep_quality: payload.sleep_quality,
@@ -735,8 +736,8 @@ export default function CheckInPage() {
     setSavingCheckin(false);
 
     if (error) {
-      console.error("Failed to save daily check-in", error);
-      setCheckinMessage(error.message);
+      logDevError("Failed to save daily check-in", error);
+      setCheckinMessage(friendlyErrorMessage("save your daily check-in"));
       return;
     }
 
@@ -788,8 +789,8 @@ export default function CheckInPage() {
       const { error } = await supabase.from("health_events").insert(payload);
 
       if (error) {
-        console.error("Failed to save health event", error);
-        setEventMessage(error.message);
+        logDevError("Failed to save health event", error);
+        setEventMessage(friendlyErrorMessage("save this event"));
         return;
       }
 

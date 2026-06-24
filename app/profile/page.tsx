@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
+import { friendlyErrorMessage, logDevError } from "@/lib/app-errors";
 import { createClient } from "@/lib/supabase/browser";
 import type { Profile } from "@/lib/types";
 
@@ -251,7 +252,8 @@ export default function ProfilePage() {
       }
 
       if (error) {
-        setMessage(error.message);
+        logDevError("Failed to load profile", error);
+        setMessage(friendlyErrorMessage("load your profile"));
         setLoading(false);
         return;
       }
@@ -313,7 +315,8 @@ export default function ProfilePage() {
     setSaving(false);
 
     if (error) {
-      setMessage(error.message);
+      logDevError("Failed to save profile", error);
+      setMessage(friendlyErrorMessage("save your profile"));
       return;
     }
 
@@ -327,8 +330,8 @@ export default function ProfilePage() {
     } = await supabase.auth.getUser();
 
     if (error) {
-      console.error("Failed to load user for demo data", error);
-      throw new Error(error.message);
+      logDevError("Failed to load user for demo data", error);
+      throw new Error(friendlyErrorMessage("load your demo data tools"));
     }
 
     if (!user) {
@@ -346,8 +349,8 @@ export default function ProfilePage() {
       .contains("tags", ["demo"]);
 
     if (eventError) {
-      console.error("Failed to delete demo health events", eventError);
-      throw new Error(eventError.message);
+      logDevError("Failed to delete demo health events", eventError);
+      throw new Error(friendlyErrorMessage("delete demo events"));
     }
 
     const { error: checkinError } = await supabase
@@ -357,8 +360,8 @@ export default function ProfilePage() {
       .contains("tags", ["demo"]);
 
     if (checkinError) {
-      console.error("Failed to delete demo daily check-ins", checkinError);
-      throw new Error(checkinError.message);
+      logDevError("Failed to delete demo daily check-ins", checkinError);
+      throw new Error(friendlyErrorMessage("delete demo check-ins"));
     }
   }
 
@@ -378,8 +381,8 @@ export default function ProfilePage() {
         .upsert(checkins, { onConflict: "user_id,checkin_date" });
 
       if (checkinError) {
-        console.error("Failed to generate demo daily check-ins", checkinError);
-        throw new Error(checkinError.message);
+        logDevError("Failed to generate demo daily check-ins", checkinError);
+        throw new Error(friendlyErrorMessage("generate demo check-ins"));
       }
 
       const { error: eventError } = await supabase
@@ -387,8 +390,8 @@ export default function ProfilePage() {
         .insert(events);
 
       if (eventError) {
-        console.error("Failed to generate demo health events", eventError);
-        throw new Error(eventError.message);
+        logDevError("Failed to generate demo health events", eventError);
+        throw new Error(friendlyErrorMessage("generate demo events"));
       }
 
       setDemoMessage("Demo data generated for the last 30 days.");

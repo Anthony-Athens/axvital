@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { friendlyErrorMessage, logDevError } from "@/lib/app-errors";
 import {
   generateWeeklyRecap,
   loadLatestWeeklyRecap,
@@ -103,9 +104,9 @@ export default function WeeklyRecapPage() {
       } = await supabase.auth.getUser();
 
       if (userError) {
-        console.error("Failed to load weekly recap user", userError);
+        logDevError("Failed to load weekly recap user", userError);
         if (active) {
-          setMessage(userError.message);
+          setMessage(friendlyErrorMessage("load your weekly recap"));
           setLoading(false);
         }
         return;
@@ -132,7 +133,7 @@ export default function WeeklyRecapPage() {
         }
 
         if (active) {
-          setMessage(error instanceof Error ? error.message : "Unable to load weekly recap.");
+          setMessage(friendlyErrorMessage("load your weekly recap"));
         }
       } finally {
         if (active) {
@@ -155,8 +156,8 @@ export default function WeeklyRecapPage() {
     } = await supabase.auth.getUser();
 
     if (userError) {
-      console.error("Failed to load user before weekly recap generation", userError);
-      setMessage(userError.message);
+      logDevError("Failed to load user before weekly recap generation", userError);
+      setMessage(friendlyErrorMessage("generate your weekly recap"));
       return;
     }
 
@@ -183,7 +184,7 @@ export default function WeeklyRecapPage() {
       if (error && typeof error === "object") {
         logWeeklyRecapError("Failed to generate weekly recap", error);
       }
-      setMessage(error instanceof Error ? error.message : "Unable to generate weekly recap.");
+      setMessage(friendlyErrorMessage("generate your weekly recap"));
     } finally {
       setGenerating(false);
     }

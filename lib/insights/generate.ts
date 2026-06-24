@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { logDevError } from "@/lib/app-errors";
 import type {
   InsightConfidenceLevel,
   InsightType,
@@ -32,7 +33,7 @@ type HealthEventRow = {
 type InsightDraft = Omit<UserInsight, "user_id">;
 
 export function logSupabaseError(label: string, error: SupabaseErrorDetails) {
-  console.error(label, {
+  logDevError(label, {
     message: error.message,
     details: error.details,
     hint: error.hint,

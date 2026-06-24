@@ -80,16 +80,7 @@ export async function updateSession(request: NextRequest) {
 
   if (user && isRoute(pathname, authRoutes)) {
     const url = request.nextUrl.clone();
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("primary_goal,onboarding_completed")
-      .eq("id", user.id)
-      .maybeSingle();
-
-    url.pathname =
-      profile?.onboarding_completed && profile.primary_goal?.trim()
-        ? "/today"
-        : "/onboarding";
+    url.pathname = "/today";
     return NextResponse.redirect(url);
   }
 

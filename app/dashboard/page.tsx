@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { friendlyErrorMessage, logDevError } from "@/lib/app-errors";
 import {
   loadLatestWeeklyRecap,
 } from "@/lib/recaps/weekly";
@@ -272,9 +273,9 @@ export default function DashboardPage() {
       } = await supabase.auth.getUser();
 
       if (userError) {
-        console.error("Failed to load dashboard user", userError);
+        logDevError("Failed to load dashboard user", userError);
         if (!ignore) {
-          setError(userError.message);
+          setError(friendlyErrorMessage("load your dashboard"));
           setLoading(false);
         }
         return;
@@ -314,15 +315,15 @@ export default function DashboardPage() {
       }
 
       if (checkinResult.error) {
-        console.error("Failed to load dashboard check-ins", checkinResult.error);
-        setError(checkinResult.error.message);
+        logDevError("Failed to load dashboard check-ins", checkinResult.error);
+        setError(friendlyErrorMessage("load your check-ins"));
       } else {
         setCheckins((checkinResult.data ?? []) as DailyCheckinRow[]);
       }
 
       if (eventResult.error) {
-        console.error("Failed to load dashboard health events", eventResult.error);
-        setError(eventResult.error.message);
+        logDevError("Failed to load dashboard health events", eventResult.error);
+        setError(friendlyErrorMessage("load your health events"));
       } else {
         setEvents((eventResult.data ?? []) as HealthEventRow[]);
       }
