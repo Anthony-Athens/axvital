@@ -12,8 +12,169 @@ type Profile = {
   primary_goal: string | null;
   tracking_mode: TrackingMode | null;
 };
+type DemoHealthEvent = {
+  user_id: string;
+  event_date: string;
+  event_time: string;
+  event_type: "food" | "supplement" | "exercise" | "symptom" | "note";
+  title: string;
+  description: string | null;
+  notes: string;
+  tags: string[];
+  supplement_name?: string;
+  dose_amount?: number;
+  dose_unit?: string;
+  calories?: number;
+  protein_g?: number;
+  carbs_g?: number;
+  fat_g?: number;
+  exercise_type?: string;
+  duration_minutes?: number;
+  intensity?: string;
+  severity?: number;
+};
 
 const integrations = ["Garmin", "WHOOP", "Strava", "Apple Health"];
+const isDevelopment = process.env.NODE_ENV === "development";
+
+const sleepOptions = ["Poor", "Average", "Good", "Great"];
+const exerciseOptions = ["None", "Light", "Moderate", "Intense"];
+const nutritionOptions = ["Poor", "Average", "Good", "Excellent"];
+const stressOptions = ["Low", "Medium", "High"];
+
+function localDateString(date: Date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+    2,
+    "0",
+  )}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
+function daysAgo(days: number) {
+  const date = new Date();
+  date.setDate(date.getDate() - days);
+  return localDateString(date);
+}
+
+function boundedScore(value: number) {
+  return Math.max(1, Math.min(10, Math.round(value)));
+}
+
+function pick<T>(items: T[]) {
+  return items[Math.floor(Math.random() * items.length)];
+}
+
+function demoDailyCheckins(userId: string) {
+  const startingWeight = 184 + Math.random() * 6;
+
+  return Array.from({ length: 30 }, (_, index) => {
+    const date = daysAgo(29 - index);
+    const sleep_quality = pick(sleepOptions);
+    const exercise_level = index % 4 === 0 ? "None" : pick(exerciseOptions.slice(1));
+    const stress_level = index % 7 === 1 ? "High" : pick(stressOptions);
+    const nutrition_quality =
+      index % 6 === 0 ? "Excellent" : pick(nutritionOptions.slice(1));
+    const alcohol = index % 8 === 5;
+    const goodSleepBoost = sleep_quality === "Good" || sleep_quality === "Great" ? 1 : -1;
+    const exerciseBoost = exercise_level === "None" ? -0.5 : 0.8;
+    const stressDrag = stress_level === "High" ? -1.3 : stress_level === "Medium" ? -0.5 : 0.4;
+    const alcoholDrag = alcohol ? -1 : 0;
+
+    return {
+      user_id: userId,
+      checkin_date: date,
+      energy_score: boundedScore(6 + goodSleepBoost + exerciseBoost + stressDrag + alcoholDrag + Math.random() * 1.5),
+      mood_score: boundedScore(6 + stressDrag + goodSleepBoost + Math.random() * 1.8),
+      sleep_quality,
+      exercise_level,
+      nutrition_quality,
+      stress_level,
+      alcohol,
+      weight: Number((startingWeight - index * 0.08 + Math.random() * 0.8).toFixed(1)),
+      notes: "Demo daily check-in for development testing.",
+      tags: ["demo"],
+    };
+  });
+}
+
+function demoHealthEvents(userId: string) {
+  return Array.from({ length: 30 }).flatMap((_, index) => {
+    const date = daysAgo(29 - index);
+    const events: DemoHealthEvent[] = [
+      {
+        user_id: userId,
+        event_date: date,
+        event_time: "08:00",
+        event_type: "supplement",
+        title: "Creatine",
+        description: null,
+        supplement_name: "Creatine",
+        dose_amount: 5,
+        dose_unit: "g",
+        notes: "Demo supplement event.",
+        tags: ["demo", "supplement"],
+      },
+      {
+        user_id: userId,
+        event_date: date,
+        event_time: "12:30",
+        event_type: "food",
+        title: index % 3 === 0 ? "Chicken bowl" : "Eggs and avocado",
+        description: index % 3 === 0 ? "Chicken bowl" : "Eggs and avocado",
+        calories: index % 3 === 0 ? 720 : 540,
+        protein_g: index % 3 === 0 ? 48 : 30,
+        carbs_g: index % 3 === 0 ? 68 : 18,
+        fat_g: index % 3 === 0 ? 24 : 36,
+        notes: "Demo food event.",
+        tags: ["demo", "food"],
+      },
+    ];
+
+    if (index % 2 === 0) {
+      events.push({
+        user_id: userId,
+        event_date: date,
+        event_time: "17:30",
+        event_type: "exercise",
+        title: pick(["Run", "Strength Training", "Walk"]),
+        description: null,
+        exercise_type: pick(["Run", "Strength Training", "Walk"]),
+        duration_minutes: pick([25, 35, 45]),
+        intensity: pick(["Light", "Moderate", "Intense"]),
+        notes: "Demo exercise event.",
+        tags: ["demo", "exercise"],
+      });
+    }
+
+    if (index % 9 === 4) {
+      events.push({
+        user_id: userId,
+        event_date: date,
+        event_time: "21:15",
+        event_type: "symptom",
+        title: "Mild headache",
+        description: "Mild headache",
+        severity: 3,
+        notes: "Demo symptom event.",
+        tags: ["demo", "symptom"],
+      });
+    }
+
+    if (index % 5 === 2) {
+      events.push({
+        user_id: userId,
+        event_date: date,
+        event_time: "20:45",
+        event_type: "note",
+        title: "Long workday",
+        description: null,
+        notes: "Demo note event.",
+        tags: ["demo", "note"],
+      });
+    }
+
+    return events;
+  });
+}
 
 export default function ProfilePage() {
   const supabase = createClient();
@@ -25,6 +186,8 @@ export default function ProfilePage() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [demoWorking, setDemoWorking] = useState(false);
+  const [demoMessage, setDemoMessage] = useState("");
 
   useEffect(() => {
     let active = true;
@@ -99,6 +262,100 @@ export default function ProfilePage() {
     }
 
     setMessage("Profile saved.");
+  }
+
+  async function getCurrentUserId() {
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser();
+
+    if (error) {
+      console.error("Failed to load user for demo data", error);
+      throw new Error(error.message);
+    }
+
+    if (!user) {
+      throw new Error("Please log in before managing demo data.");
+    }
+
+    return user.id;
+  }
+
+  async function deleteDemoDataForUser(userId: string) {
+    const { error: eventError } = await supabase
+      .from("health_events")
+      .delete()
+      .eq("user_id", userId)
+      .contains("tags", ["demo"]);
+
+    if (eventError) {
+      console.error("Failed to delete demo health events", eventError);
+      throw new Error(eventError.message);
+    }
+
+    const { error: checkinError } = await supabase
+      .from("daily_checkins")
+      .delete()
+      .eq("user_id", userId)
+      .contains("tags", ["demo"]);
+
+    if (checkinError) {
+      console.error("Failed to delete demo daily check-ins", checkinError);
+      throw new Error(checkinError.message);
+    }
+  }
+
+  async function generateDemoData() {
+    setDemoWorking(true);
+    setDemoMessage("");
+
+    try {
+      const userId = await getCurrentUserId();
+      await deleteDemoDataForUser(userId);
+
+      const checkins = demoDailyCheckins(userId);
+      const events = demoHealthEvents(userId);
+
+      const { error: checkinError } = await supabase
+        .from("daily_checkins")
+        .upsert(checkins, { onConflict: "user_id,checkin_date" });
+
+      if (checkinError) {
+        console.error("Failed to generate demo daily check-ins", checkinError);
+        throw new Error(checkinError.message);
+      }
+
+      const { error: eventError } = await supabase
+        .from("health_events")
+        .insert(events);
+
+      if (eventError) {
+        console.error("Failed to generate demo health events", eventError);
+        throw new Error(eventError.message);
+      }
+
+      setDemoMessage("Demo data generated for the last 30 days.");
+    } catch (error) {
+      setDemoMessage(error instanceof Error ? error.message : "Demo data failed.");
+    } finally {
+      setDemoWorking(false);
+    }
+  }
+
+  async function deleteDemoData() {
+    setDemoWorking(true);
+    setDemoMessage("");
+
+    try {
+      const userId = await getCurrentUserId();
+      await deleteDemoDataForUser(userId);
+      setDemoMessage("Demo data deleted.");
+    } catch (error) {
+      setDemoMessage(error instanceof Error ? error.message : "Demo delete failed.");
+    } finally {
+      setDemoWorking(false);
+    }
   }
 
   const displayName = preferredName || fullName || "AXVital member";
@@ -189,6 +446,46 @@ export default function ProfilePage() {
           </button>
         </form>
       </section>
+
+      {isDevelopment ? (
+        <section className="mt-5 rounded-3xl border border-amber-200 bg-amber-50 p-5 shadow-sm md:p-8">
+          <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-700">
+            Development Only
+          </p>
+          <h2 className="mt-2 text-2xl font-black tracking-tight">
+            Demo data tools
+          </h2>
+          <p className="mt-2 leading-7 text-amber-900">
+            Generate or remove tagged development/test data for Dashboard and
+            Insights testing. This section is hidden in production.
+          </p>
+
+          {demoMessage ? (
+            <p className="mt-4 rounded-2xl bg-white p-4 text-sm font-black text-amber-900">
+              {demoMessage}
+            </p>
+          ) : null}
+
+          <div className="mt-5 grid gap-3 sm:grid-cols-2">
+            <button
+              type="button"
+              onClick={generateDemoData}
+              disabled={demoWorking}
+              className="flex min-h-14 items-center justify-center rounded-2xl bg-slate-950 px-6 text-base font-black text-white disabled:cursor-not-allowed disabled:bg-slate-400"
+            >
+              {demoWorking ? "Working..." : "Generate Demo Data"}
+            </button>
+            <button
+              type="button"
+              onClick={deleteDemoData}
+              disabled={demoWorking}
+              className="flex min-h-14 items-center justify-center rounded-2xl border border-amber-300 bg-white px-6 text-base font-black text-amber-900 disabled:cursor-not-allowed disabled:text-slate-400"
+            >
+              Delete Demo Data
+            </button>
+          </div>
+        </section>
+      ) : null}
 
       <section className="mt-5 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm md:p-8">
         <h2 className="text-2xl font-black">Future integrations</h2>

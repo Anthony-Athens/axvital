@@ -344,12 +344,13 @@ function titleCase(value: string) {
 
 function formatEventTime(value: string) {
   const [hours = "0", minutes = "00"] = value.split(":");
-  const date = new Date();
-  date.setHours(Number(hours), Number(minutes), 0, 0);
-  return new Intl.DateTimeFormat("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-  }).format(date);
+  const hourNumber = Number(hours);
+  const displayHour = hourNumber % 12 || 12;
+  const period = hourNumber >= 12 ? "PM" : "AM";
+
+  // Hydration fix: avoid Date/Intl formatting during render so the server HTML
+  // and the first client render produce identical timeline text.
+  return `${displayHour}:${minutes.padStart(2, "0")} ${period}`;
 }
 
 function currentTimeValue() {

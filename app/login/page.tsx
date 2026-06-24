@@ -23,13 +23,33 @@ export default function LoginPage() {
       password,
     });
 
-    setLoading(false);
-
     if (error) {
+      console.error("Failed to sign in", error);
+      setLoading(false);
       setMessage(error.message);
       return;
     }
 
+    const {
+      data: { session },
+      error: sessionError,
+    } = await supabase.auth.getSession();
+
+    if (sessionError) {
+      console.error("Failed to refresh login session", sessionError);
+      setLoading(false);
+      setMessage(sessionError.message);
+      return;
+    }
+
+    if (!session) {
+      console.error("Login succeeded but no Supabase session was returned.");
+      setLoading(false);
+      setMessage("Login succeeded, but your session did not persist. Please try again.");
+      return;
+    }
+
+    setLoading(false);
     router.push("/today");
     router.refresh();
   }

@@ -45,8 +45,8 @@ function localDateString(date: Date) {
   )}-${String(date.getDate()).padStart(2, "0")}`;
 }
 
-function daysAgo(days: number) {
-  const date = new Date();
+function daysAgoFrom(anchorDate: string, days: number) {
+  const date = new Date(`${anchorDate}T12:00:00`);
   date.setDate(date.getDate() - days);
   return localDateString(date);
 }
@@ -106,13 +106,13 @@ function formatEventTime(value: string | null) {
   }
 
   const [hours = "0", minutes = "00"] = value.split(":");
-  const date = new Date();
-  date.setHours(Number(hours), Number(minutes), 0, 0);
+  const hourNumber = Number(hours);
+  const displayHour = hourNumber % 12 || 12;
+  const period = hourNumber >= 12 ? "PM" : "AM";
 
-  return new Intl.DateTimeFormat("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-  }).format(date);
+  // Hydration fix: keep event-time text deterministic instead of relying on
+  // Date/Intl output that can differ between server and mobile browsers.
+  return `${displayHour}:${minutes.padStart(2, "0")} ${period}`;
 }
 
 function titleCase(value: string) {
@@ -125,11 +125,12 @@ function titleCase(value: string) {
 function buildLast30Trend(
   checkins: DailyCheckinRow[],
   field: "energy_score" | "mood_score" | "weight",
+  anchorDate: string,
 ) {
   const byDate = new Map(checkins.map((checkin) => [checkin.checkin_date, checkin]));
 
   return Array.from({ length: 30 }, (_, index) => {
-    const date = daysAgo(29 - index);
+    const date = daysAgoFrom(anchorDate, 29 - index);
     const checkin = byDate.get(date);
 
     return {
@@ -249,6 +250,9 @@ export default function DashboardPage() {
   const [events, setEvents] = useState<HealthEventRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  // Hydration fix: resolve the moving "today" value after mount so server HTML
+  // and the first client render both start from the same non-date-dependent UI.
+  const [today, setToday] = useState<string | null>(null);
 
   useEffect(() => {
     let ignore = false;
@@ -279,7 +283,9 @@ export default function DashboardPage() {
         return;
       }
 
-      const startDate = daysAgo(29);
+      const currentDate = localDateString(new Date());
+      setToday(currentDate);
+      const startDate = daysAgoFrom(currentDate, 29);
 
       const [checkinResult, eventResult] = await Promise.all([
         supabase
@@ -326,7 +332,20 @@ export default function DashboardPage() {
   }, []);
 
   const metrics = useMemo(() => {
-    const last7Start = daysAgo(6);
+    if (!today) {
+      return {
+        streak: 0,
+        averageEnergy: null,
+        averageMood: null,
+        averageSleep: null,
+        latestWeight: null,
+        energyTrend: [],
+        moodTrend: [],
+        weightTrend: [],
+      };
+    }
+
+    const last7Start = daysAgoFrom(today, 6);
     const last7Checkins = checkins.filter(
       (checkin) => checkin.checkin_date >= last7Start,
     );
@@ -344,11 +363,11 @@ export default function DashboardPage() {
       averageMood,
       averageSleep,
       latestWeight,
-      energyTrend: buildLast30Trend(checkins, "energy_score"),
-      moodTrend: buildLast30Trend(checkins, "mood_score"),
-      weightTrend: buildLast30Trend(checkins, "weight"),
+      energyTrend: buildLast30Trend(checkins, "energy_score", today),
+      moodTrend: buildLast30Trend(checkins, "mood_score", today),
+      weightTrend: buildLast30Trend(checkins, "weight", today),
     };
-  }, [checkins]);
+  }, [checkins, today]);
 
   const hasEnoughData = checkins.length >= 3;
 
