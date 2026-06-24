@@ -6,7 +6,36 @@ import {
   refreshUserInsights,
 } from "@/lib/insights/generate";
 import { supabase } from "@/lib/supabase/client";
-import type { UserInsight } from "@/lib/types";
+import type { InsightType, UserInsight } from "@/lib/types";
+
+type RankedInsight = UserInsight & {
+  relevanceLabel: "Most relevant to your goal" | "Supporting pattern" | "Early signal";
+  relevanceScore: number;
+};
+
+const goalPriorities: Record<string, InsightType[]> = {
+  energy: ["sleep_energy", "exercise_energy", "alcohol_sleep"],
+  "weight loss": ["exercise_energy", "alcohol_sleep", "sleep_energy"],
+  "muscle gain": ["exercise_energy", "sleep_energy"],
+  sleep: ["alcohol_sleep", "sleep_energy", "stress_mood", "exercise_energy"],
+  mood: ["stress_mood", "sleep_energy", "exercise_energy"],
+  stress: ["stress_mood", "sleep_energy", "exercise_energy"],
+  symptoms: ["stress_mood", "sleep_energy", "alcohol_sleep"],
+  "athletic performance": ["exercise_energy", "sleep_energy", "alcohol_sleep"],
+  "general wellness": ["sleep_energy", "stress_mood", "exercise_energy", "alcohol_sleep"],
+};
+
+const focusDescriptions: Record<string, string> = {
+  energy: "Prioritizing sleep, exercise, and alcohol-related patterns that may be related to your energy.",
+  "weight loss": "Prioritizing exercise, alcohol, and recovery patterns while future nutrition and weight-trend insights mature.",
+  "muscle gain": "Prioritizing exercise and recovery patterns while future protein and weight-trend insights mature.",
+  sleep: "Prioritizing alcohol, sleep quality, stress, and exercise patterns that may be related to sleep.",
+  mood: "Prioritizing stress, sleep, and exercise patterns that may be related to mood.",
+  stress: "Prioritizing stress, sleep, and exercise patterns while future tag-based stress signals mature.",
+  symptoms: "Prioritizing stress and sleep patterns while future symptom and tag-based insights mature.",
+  "athletic performance": "Prioritizing exercise and sleep patterns while future recovery-tag insights mature.",
+  "general wellness": "Prioritizing the strongest overall patterns across your recent logs.",
+};
 
 function confidenceColor(value: string) {
   if (value === "Strong Signal") {
@@ -27,13 +56,59 @@ function titleCase(value: string) {
     .join(" ");
 }
 
-function InsightCard({ insight }: { insight: UserInsight }) {
+function normalizedGoal(value: string) {
+  return value.trim().toLowerCase();
+}
+
+function confidenceRank(value: string) {
+  if (value === "Strong Signal") {
+    return 3;
+  }
+
+  if (value === "Moderate Confidence") {
+    return 2;
+  }
+
+  return 1;
+}
+
+function rankInsightsByGoal(insights: UserInsight[], primaryGoal: string) {
+  const normalized = normalizedGoal(primaryGoal);
+  const priorities = goalPriorities[normalized] ?? goalPriorities["general wellness"];
+
+  return insights
+    .map((insight): RankedInsight => {
+      const priorityIndex = priorities.indexOf(insight.insight_type);
+      const goalScore = priorityIndex === -1 ? 0 : priorities.length - priorityIndex;
+      const relevanceScore =
+        goalScore * 100 + confidenceRank(insight.confidence_level) * 10 + insight.sample_size;
+
+      return {
+        ...insight,
+        relevanceScore,
+        relevanceLabel:
+          insight.confidence_level === "Early Signal"
+            ? "Early signal"
+            : priorityIndex === 0
+              ? "Most relevant to your goal"
+              : "Supporting pattern",
+      };
+    })
+    .sort((a, b) => b.relevanceScore - a.relevanceScore);
+}
+
+function InsightCard({ insight }: { insight: RankedInsight }) {
   return (
     <article className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
       <div className="flex items-start justify-between gap-4">
-        <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-600">
-          {titleCase(insight.insight_type)}
-        </span>
+        <div className="flex flex-wrap gap-2">
+          <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-600">
+            {titleCase(insight.insight_type)}
+          </span>
+          <span className="rounded-full bg-white px-3 py-1 text-xs font-black text-slate-600 ring-1 ring-slate-200">
+            {insight.relevanceLabel}
+          </span>
+        </div>
         <span
           className={`rounded-full px-3 py-1 text-xs font-black ${confidenceColor(
             insight.confidence_level,
@@ -62,6 +137,7 @@ function InsightCard({ insight }: { insight: UserInsight }) {
 
 export default function InsightsPage() {
   const [userId, setUserId] = useState("");
+  const [primaryGoal, setPrimaryGoal] = useState("");
   const [insights, setInsights] = useState<UserInsight[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -83,6 +159,21 @@ export default function InsightsPage() {
     }
 
     setInsights((data ?? []) as UserInsight[]);
+  }
+
+  async function loadProfileFocus(currentUserId: string) {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("primary_goal")
+      .eq("id", currentUserId)
+      .maybeSingle();
+
+    if (error) {
+      logSupabaseError("Failed to load insight profile focus", error);
+      throw error;
+    }
+
+    setPrimaryGoal(data?.primary_goal ?? "");
   }
 
   useEffect(() => {
@@ -118,7 +209,10 @@ export default function InsightsPage() {
         if (!ignore) {
           setUserId(user.id);
         }
-        await loadPersistedInsights(user.id);
+        await Promise.all([
+          loadPersistedInsights(user.id),
+          loadProfileFocus(user.id),
+        ]);
       } catch (error) {
         if (!ignore) {
           setMessage(error instanceof Error ? error.message : "Unable to load insights.");
@@ -162,24 +256,14 @@ export default function InsightsPage() {
     }
   }
 
-  const strongestInsight = useMemo(() => {
-    const rankedConfidence = {
-      "Strong Signal": 3,
-      "Moderate Confidence": 2,
-      "Early Signal": 1,
-    };
-
-    return [...insights].sort((a, b) => {
-      const confidenceDelta =
-        rankedConfidence[b.confidence_level] - rankedConfidence[a.confidence_level];
-
-      if (confidenceDelta !== 0) {
-        return confidenceDelta;
-      }
-
-      return b.sample_size - a.sample_size;
-    })[0];
-  }, [insights]);
+  const rankedInsights = useMemo(
+    () => rankInsightsByGoal(insights, primaryGoal || "General wellness"),
+    [insights, primaryGoal],
+  );
+  const strongestInsight = rankedInsights[0];
+  const focusKey = normalizedGoal(primaryGoal || "General wellness");
+  const focusDescription =
+    focusDescriptions[focusKey] ?? focusDescriptions["general wellness"];
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-6 md:px-6 md:py-10">
@@ -211,6 +295,20 @@ export default function InsightsPage() {
       {message ? (
         <section className="mt-6 rounded-3xl border border-amber-200 bg-amber-50 p-5 text-sm font-black text-amber-900">
           {message}
+        </section>
+      ) : null}
+
+      {!loading ? (
+        <section className="mt-6 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm md:p-6">
+          <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-600">
+            Your Focus
+          </p>
+          <h2 className="mt-3 text-2xl font-black tracking-tight">
+            {primaryGoal || "General wellness"}
+          </h2>
+          <p className="mt-2 leading-7 text-slate-600">
+            {focusDescription}
+          </p>
         </section>
       ) : null}
 
@@ -258,7 +356,7 @@ export default function InsightsPage() {
           </section>
 
           <section className="mt-6 grid gap-4 md:grid-cols-2">
-            {insights.map((insight) => (
+            {rankedInsights.map((insight) => (
               <InsightCard
                 key={`${insight.insight_type}-${insight.generated_at ?? insight.title}`}
                 insight={insight}
