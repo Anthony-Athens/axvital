@@ -1,8 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import {
+  loadLatestWeeklyRecap,
+} from "@/lib/recaps/weekly";
 import { supabase } from "@/lib/supabase/client";
-import type { HealthEventType } from "@/lib/types";
+import type { HealthEventType, WeeklyRecap } from "@/lib/types";
 
 type DailyCheckinRow = {
   id: string;
@@ -248,6 +252,7 @@ function MetricCard({
 export default function DashboardPage() {
   const [checkins, setCheckins] = useState<DailyCheckinRow[]>([]);
   const [events, setEvents] = useState<HealthEventRow[]>([]);
+  const [weeklyRecap, setWeeklyRecap] = useState<WeeklyRecap | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   // Hydration fix: resolve the moving "today" value after mount so server HTML
@@ -287,7 +292,7 @@ export default function DashboardPage() {
       setToday(currentDate);
       const startDate = daysAgoFrom(currentDate, 29);
 
-      const [checkinResult, eventResult] = await Promise.all([
+      const [checkinResult, eventResult, recapResult] = await Promise.all([
         supabase
           .from("daily_checkins")
           .select("id,user_id,checkin_date,energy_score,mood_score,sleep_quality,weight")
@@ -301,6 +306,7 @@ export default function DashboardPage() {
           .order("event_date", { ascending: false })
           .order("event_time", { ascending: false })
           .limit(10),
+        loadLatestWeeklyRecap(supabase, user.id).catch(() => null),
       ]);
 
       if (ignore) {
@@ -320,6 +326,8 @@ export default function DashboardPage() {
       } else {
         setEvents((eventResult.data ?? []) as HealthEventRow[]);
       }
+
+      setWeeklyRecap(recapResult);
 
       setLoading(false);
     }
@@ -472,6 +480,57 @@ export default function DashboardPage() {
               </p>
             </section>
           ) : null}
+
+          <section className="mt-5 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm md:p-6">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-600">
+                  Weekly Recap
+                </p>
+                <h2 className="mt-2 text-2xl font-black tracking-tight">
+                  {weeklyRecap?.title ?? "Your week in signals"}
+                </h2>
+              </div>
+              <Link
+                href="/weekly-recap"
+                className="rounded-full bg-slate-950 px-4 py-2 text-xs font-black text-white"
+              >
+                Open
+              </Link>
+            </div>
+            <p className="mt-3 leading-7 text-slate-600">
+              {weeklyRecap?.summary ??
+                "Generate your first weekly recap after 7 days of check-ins."}
+            </p>
+            {weeklyRecap ? (
+              <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                <div className="rounded-2xl bg-slate-50 p-4">
+                  <p className="text-xs font-black uppercase tracking-[0.14em] text-slate-400">
+                    Exercise
+                  </p>
+                  <p className="mt-2 text-2xl font-black">
+                    {weeklyRecap.exercise_event_count}
+                  </p>
+                </div>
+                <div className="rounded-2xl bg-slate-50 p-4">
+                  <p className="text-xs font-black uppercase tracking-[0.14em] text-slate-400">
+                    Supplements
+                  </p>
+                  <p className="mt-2 text-2xl font-black">
+                    {weeklyRecap.supplement_event_count}
+                  </p>
+                </div>
+                <div className="rounded-2xl bg-slate-50 p-4">
+                  <p className="text-xs font-black uppercase tracking-[0.14em] text-slate-400">
+                    Symptoms
+                  </p>
+                  <p className="mt-2 text-2xl font-black">
+                    {weeklyRecap.symptom_event_count}
+                  </p>
+                </div>
+              </div>
+            ) : null}
+          </section>
 
           <section className="mt-5 grid gap-5 lg:grid-cols-3">
             <TrendBars

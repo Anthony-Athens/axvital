@@ -73,6 +73,26 @@ export type UserInsight = {
   is_active?: boolean | null;
 };
 
+export type WeeklyRecap = {
+  id?: string;
+  user_id: string;
+  week_start: string;
+  week_end: string;
+  title: string;
+  summary: string;
+  avg_energy: number | null;
+  avg_mood: number | null;
+  avg_sleep: number | null;
+  checkin_streak: number;
+  exercise_event_count: number;
+  supplement_event_count: number;
+  symptom_event_count: number;
+  weight_change: number | null;
+  what_went_well: string[];
+  watch_for: string[];
+  generated_at?: string | null;
+};
+
 export type HealthEvent = {
   id: string;
   user_id: string;
