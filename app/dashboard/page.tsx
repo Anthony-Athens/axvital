@@ -8,6 +8,7 @@ import {
 } from "@/lib/recaps/weekly";
 import { supabase } from "@/lib/supabase/client";
 import type { HealthEventType, WeeklyRecap } from "@/lib/types";
+import { HabitSummary } from "@/components/habits/HabitSummary";
 
 type DailyCheckinRow = {
   id: string;
@@ -404,6 +405,8 @@ export default function DashboardPage() {
           </div>
         </div>
       </section>
+
+      <HabitSummary />
 
       {error ? (
         <section className="mt-5 rounded-3xl border border-amber-200 bg-amber-50 p-5 text-sm font-black text-amber-900">

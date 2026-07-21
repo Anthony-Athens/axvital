@@ -69,7 +69,9 @@ export async function deletePlannedActivity(client: SupabaseClient, id: string) 
 export async function updateOccurrenceStatus(client: SupabaseClient, id: string, status: OccurrenceStatus) {
   const user = await requireUser(client);
   const now = new Date().toISOString();
-  const timestamps = status === "completed" ? { completed_at: now, skipped_at: null } : status === "skipped" ? { completed_at: null, skipped_at: now } : { completed_at: null, skipped_at: null };
+  const { data: existing, error: readError } = await client.from("planned_activity_occurrences").select("first_completed_at").eq("id", id).eq("user_id", user.id).single();
+  if (readError) throw readError;
+  const timestamps = status === "completed" ? { completed_at: now, first_completed_at: existing.first_completed_at ?? now, skipped_at: null, completion_percentage: 100, last_updated_at: now } : status === "skipped" ? { completed_at: null, skipped_at: now, last_updated_at: now } : { completed_at: null, skipped_at: null, completion_percentage: null, last_updated_at: now };
   const { data, error } = await client.from("planned_activity_occurrences").update({ status, ...timestamps })
     .eq("id", id).eq("user_id", user.id).select("*,planned_activity:planned_activities(*)").single();
   if (error) throw error;

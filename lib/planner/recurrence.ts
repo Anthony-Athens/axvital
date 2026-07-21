@@ -3,7 +3,7 @@ import type { PlannedActivity, PlannedActivityOccurrence, RecurrenceType } from 
 export type RecurrenceRule = Pick<
   PlannedActivity,
   "start_date" | "end_date" | "recurrence_type" | "days_of_week" | "interval_days"
->;
+> & { recurrence_active_from?: string | null };
 
 // All date-only calculations use YYYY-MM-DD components in UTC. Weekdays follow
 // JavaScript's convention: 0=Sunday through 6=Saturday.
@@ -33,7 +33,7 @@ export function datesInRange(start: string, end: string) {
 }
 
 export function occursOnDate(rule: RecurrenceRule, date: string): boolean {
-  if (date < rule.start_date || (rule.end_date && date > rule.end_date)) return false;
+  if (date < rule.start_date || (rule.recurrence_active_from && date < rule.recurrence_active_from) || (rule.end_date && date > rule.end_date)) return false;
   const elapsed = daysBetween(rule.start_date, date);
   const day = weekday(date);
   const recurrence: Record<RecurrenceType, () => boolean> = {

@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "test": "node --experimental-strip-types --test lib/planner/*.test.ts"
+    "test": "node --experimental-strip-types --test lib/**/*.test.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",
