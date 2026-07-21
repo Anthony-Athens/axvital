@@ -9,6 +9,7 @@ import {
 import { supabase } from "@/lib/supabase/client";
 import type { HealthEventType, WeeklyRecap } from "@/lib/types";
 import { HabitSummary } from "@/components/habits/HabitSummary";
+import { ProtocolSummary } from "@/components/protocols/ProtocolSummary";
 
 type DailyCheckinRow = {
   id: string;
@@ -407,6 +408,7 @@ export default function DashboardPage() {
       </section>
 
       <HabitSummary />
+      <ProtocolSummary />
 
       {error ? (
         <section className="mt-5 rounded-3xl border border-amber-200 bg-amber-50 p-5 text-sm font-black text-amber-900">

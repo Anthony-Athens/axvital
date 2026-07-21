@@ -4,7 +4,7 @@ import { buildOccurrenceRows, occursOnDate, shouldDeleteOccurrenceForRecurrenceE
 import type { PlannedActivity, RecurrenceType } from "./types";
 
 function rule(recurrence_type: RecurrenceType, extra: Partial<PlannedActivity> = {}): PlannedActivity {
-  return { id: "activity", user_id: "user", title: "Test", description: null, activity_type: "habit", recurrence_type, start_date: "2026-07-20", end_date: null, scheduled_time: null, days_of_week: null, interval_days: null, is_active: true, tracking_type: "binary", target_value: null, target_unit: null, minimum_value: null, allow_partial_completion: false, habit_color: null, habit_icon: null, sort_order: null, paused_at: null, reactivated_at: null, recurrence_active_from: null, created_at: "", updated_at: "", ...extra };
+  return { id: "activity", user_id: "user", title: "Test", description: null, activity_type: "habit", recurrence_type, start_date: "2026-07-20", end_date: null, scheduled_time: null, days_of_week: null, interval_days: null, is_active: true, tracking_type: "binary", target_value: null, target_unit: null, minimum_value: null, allow_partial_completion: false, habit_color: null, habit_icon: null, sort_order: null, paused_at: null, reactivated_at: null, recurrence_active_from: null, user_protocol_id: null, created_at: "", updated_at: "", ...extra };
 }
 
 test("one-time activity occurs only on start date", () => { assert.equal(occursOnDate(rule("none"), "2026-07-20"), true); assert.equal(occursOnDate(rule("none"), "2026-07-21"), false); });

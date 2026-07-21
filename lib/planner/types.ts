@@ -36,6 +36,9 @@ export type PlannedActivity = {
   paused_at: string | null;
   reactivated_at: string | null;
   recurrence_active_from: string | null;
+  user_protocol_id: string | null;
+  user_protocol?: { id: string; name: string; start_date: string } | null;
+  protocol_links?: { is_required: boolean }[];
   created_at: string;
   updated_at: string;
 };
