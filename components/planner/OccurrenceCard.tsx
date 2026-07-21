@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import type { OccurrenceStatus, PlannedActivityOccurrence } from "@/lib/planner/types";
 
 function formatTime(value: string | null) { if (!value) return "Anytime"; const [h, m] = value.split(":"); const hour = Number(h); return `${hour % 12 || 12}:${m} ${hour >= 12 ? "PM" : "AM"}`; }
@@ -11,6 +12,7 @@ export function OccurrenceCard({ occurrence, busy, showManagement = false, onSta
     {activity?.tracking_type !== "binary" && activity?.target_value ? <div className="mt-3"><div className="flex justify-between text-sm font-bold text-slate-600"><span>{occurrence.actual_value ?? 0} / {activity.target_value} {activity.target_unit}</span><span>{Math.round(occurrence.completion_percentage ?? 0)}%</span></div><div className="mt-2 h-2 overflow-hidden rounded-full bg-slate-200" role="progressbar" aria-valuenow={Math.min(100, occurrence.completion_percentage ?? 0)} aria-valuemin={0} aria-valuemax={100}><div className="h-full rounded-full bg-emerald-500" style={{ width: `${Math.min(100, occurrence.completion_percentage ?? 0)}%` }} /></div>{activity.minimum_value && occurrence.actual_value && occurrence.actual_value >= activity.minimum_value && occurrence.actual_value < activity.target_value ? <p className="mt-1 text-xs font-black text-emerald-700">Minimum reached</p> : null}</div> : null}
     {occurrence.completion_note ? <p className="mt-3 text-sm font-semibold italic text-slate-600">{occurrence.completion_note}</p> : null}
     <div className="mt-4 flex flex-wrap gap-2" aria-label={`Actions for ${activity?.title ?? "activity"}`}>
+      {activity?.activity_type === "workout" ? <Link href="/workouts" className="min-h-11 rounded-full bg-violet-600 px-4 py-3 text-sm font-black text-white">Open Workout</Link> : null}
       {onProgress && (activity?.activity_type === "habit" || activity?.user_protocol_id) ? <button disabled={busy} onClick={onProgress} className="min-h-11 rounded-full bg-sky-100 px-4 text-sm font-black text-sky-900 disabled:opacity-50">{activity.tracking_type === "duration" ? "Add Minutes" : activity.tracking_type === "quantity" ? "Update Progress" : "Add Note"}</button> : null}
       {occurrence.status !== "completed" ? <button disabled={busy} onClick={() => onStatus("completed")} className="min-h-11 rounded-full bg-emerald-600 px-4 text-sm font-black text-white disabled:opacity-50">Complete</button> : null}
       {occurrence.status !== "skipped" ? <button disabled={busy} onClick={() => onStatus("skipped")} className="min-h-11 rounded-full bg-amber-100 px-4 text-sm font-black text-amber-900 disabled:opacity-50">Skip</button> : null}

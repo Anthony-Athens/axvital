@@ -6,6 +6,7 @@ const protectedRoutes = [
   "/weekly-overview",
   "/habits",
   "/protocols",
+  "/workouts",
   "/dashboard",
   "/insights",
   "/weekly-recap",

@@ -1,0 +1,18 @@
+drop policy if exists exercises_delete on public.exercises;
+drop policy if exists exercises_update on public.exercises;
+drop policy if exists exercises_insert on public.exercises;
+drop policy if exists exercises_select on public.exercises;
+create policy exercises_select on public.exercises for select to authenticated using (auth.uid() = user_id or user_id is null);
+create policy exercises_insert on public.exercises for insert to authenticated with check (auth.uid() = user_id);
+create policy exercises_update on public.exercises for update to authenticated using (auth.uid() = user_id) with check (auth.uid() = user_id);
+create policy exercises_delete on public.exercises for delete to authenticated using (auth.uid() = user_id);
+drop index if exists public.exercises_aliases_gin_idx;
+drop index if exists public.exercises_user_normalized_name_key;
+drop index if exists public.exercises_shared_normalized_name_key;
+drop trigger if exists exercises_set_normalized_name on public.exercises;
+drop function if exists public.set_exercise_normalized_name();
+alter table public.exercises drop constraint if exists exercises_equipment_check;
+alter table public.exercises drop constraint if exists exercises_movement_pattern_check;
+alter table public.exercises drop constraint if exists exercises_normalized_name_not_blank;
+alter table public.exercises drop column if exists aliases;
+alter table public.exercises drop column if exists normalized_name;

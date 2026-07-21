@@ -10,6 +10,7 @@ const navItems = [
   { href: "/weekly-overview", label: "Weekly Overview", short: "Planner" },
   { href: "/habits", label: "Habits", short: "Habits" },
   { href: "/protocols", label: "Protocols", short: "Protocols" },
+  { href: "/workouts", label: "Workouts", short: "Workouts" },
   { href: "/dashboard", label: "Dashboard", short: "Home" },
   { href: "/insights", label: "Insights", short: "Insights" },
   { href: "/weekly-recap", label: "Weekly Recap", short: "Recap" },
@@ -124,7 +125,7 @@ export function Navbar() {
       >
         <div
           className={`mx-auto grid max-w-md gap-1 ${
-            authenticated ? "grid-cols-9" : "grid-cols-2"
+            authenticated ? "grid-cols-10" : "grid-cols-2"
           }`}
         >
           {authenticated ? (
