@@ -1,0 +1,38 @@
+"use client";
+
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { ActivityForm } from "./ActivityForm";
+import { OccurrenceCard } from "./OccurrenceCard";
+import { addCalendarDays } from "@/lib/planner/recurrence";
+import { createPlannedActivity, deletePlannedActivity, ensureOccurrencesForRange, getOccurrencesForRange, updateOccurrenceStatus, updatePlannedActivity } from "@/lib/planner/planner";
+import type { CreatePlannedActivityInput, OccurrenceStatus, PlannedActivity, PlannedActivityOccurrence } from "@/lib/planner/types";
+import { supabase } from "@/lib/supabase/client";
+import { logDevError } from "@/lib/app-errors";
+
+function localDate() { const now = new Date(); return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`; }
+function mondayFor(date: string) { const [y, m, d] = date.split("-").map(Number); const value = new Date(y, m - 1, d, 12); const offset = (value.getDay() + 6) % 7; value.setDate(value.getDate() - offset); return `${value.getFullYear()}-${String(value.getMonth() + 1).padStart(2, "0")}-${String(value.getDate()).padStart(2, "0")}`; }
+function dateLabel(date: string, options: Intl.DateTimeFormatOptions) { return new Intl.DateTimeFormat("en-US", { ...options, timeZone: "UTC" }).format(new Date(`${date}T12:00:00Z`)); }
+
+export function WeeklyPlanner() {
+  const router = useRouter(); const searchParams = useSearchParams();
+  const requested = searchParams.get("week");
+  const weekStart = useMemo(() => mondayFor(/^\d{4}-\d{2}-\d{2}$/.test(requested ?? "") ? requested! : localDate()), [requested]);
+  const weekEnd = addCalendarDays(weekStart, 6); const days = useMemo(() => Array.from({ length: 7 }, (_, i) => addCalendarDays(weekStart, i)), [weekStart]);
+  const [occurrences, setOccurrences] = useState<PlannedActivityOccurrence[]>([]); const [loading, setLoading] = useState(true); const [error, setError] = useState(""); const [success, setSuccess] = useState(""); const [busyId, setBusyId] = useState<string | null>(null); const [formOpen, setFormOpen] = useState(false); const [editing, setEditing] = useState<PlannedActivity | null>(null);
+  const load = useCallback(async () => { setLoading(true); setError(""); try { setOccurrences(await getOccurrencesForRange(supabase, weekStart, weekEnd)); } catch (value) { logDevError("Failed to load weekly plan", value); setError("We couldn’t load your weekly plan."); } finally { setLoading(false); } }, [weekEnd, weekStart]);
+  useEffect(() => { const timer = window.setTimeout(() => void load(), 0); return () => window.clearTimeout(timer); }, [load]);
+  async function save(input: CreatePlannedActivityInput) { if (busyId) return; setBusyId("save"); setError(""); try { if (editing) { await updatePlannedActivity(supabase, editing.id, input, localDate()); setSuccess("Activity updated."); } else { await createPlannedActivity(supabase, input); setSuccess("Activity added to your plan."); } await ensureOccurrencesForRange(supabase, weekStart, weekEnd); setFormOpen(false); setEditing(null); await load(); } catch (value) { logDevError(editing ? "Failed to update activity" : "Failed to save activity", value); setError(editing ? "We couldn’t update this activity." : "We couldn’t save this activity."); } finally { setBusyId(null); } }
+  async function changeStatus(item: PlannedActivityOccurrence, status: OccurrenceStatus) { setBusyId(item.id); try { const updated = await updateOccurrenceStatus(supabase, item.id, status); setOccurrences((values) => values.map((value) => value.id === item.id ? updated : value)); setSuccess(`Activity marked ${status}.`); } catch (value) { logDevError("Failed to change status", value); setError("We couldn’t change the activity status."); } finally { setBusyId(null); } }
+  async function remove(activity: PlannedActivity) { if (!window.confirm("Delete this activity and its history? This cannot be undone.")) return; setBusyId(activity.id); try { await deletePlannedActivity(supabase, activity.id); setOccurrences((items) => items.filter((item) => item.planned_activity_id !== activity.id)); setSuccess("Activity deleted."); } catch (value) { logDevError("Failed to delete activity", value); setError("We couldn’t delete this activity."); } finally { setBusyId(null); } }
+  function navigate(start: string) { router.push(`/weekly-overview?week=${start}`); }
+  return <div className="mx-auto max-w-6xl px-4 py-6 md:px-6 md:py-10">
+    <section className="rounded-3xl bg-slate-950 p-6 text-white shadow-xl md:p-8"><p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-300">Planner</p><div className="mt-3 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between"><div><h1 className="text-4xl font-black tracking-tight">Weekly Overview</h1><p className="mt-2 font-semibold text-slate-300">{dateLabel(weekStart, { month: "long", day: "numeric" })} – {dateLabel(weekEnd, { month: "long", day: "numeric", year: "numeric" })}</p></div><button onClick={() => { setEditing(null); setFormOpen(true); }} className="min-h-12 rounded-full bg-emerald-500 px-6 font-black text-white">Add Activity</button></div></section>
+    <div className="mt-5 grid grid-cols-3 gap-2"><button aria-label="Previous week" onClick={() => navigate(addCalendarDays(weekStart, -7))} className="min-h-12 rounded-full border border-slate-200 bg-white font-black">← Previous</button><button onClick={() => navigate(mondayFor(localDate()))} className="min-h-12 rounded-full bg-slate-200 font-black">Current week</button><button aria-label="Next week" onClick={() => navigate(addCalendarDays(weekStart, 7))} className="min-h-12 rounded-full border border-slate-200 bg-white font-black">Next →</button></div>
+    {error ? <p role="alert" className="mt-5 rounded-2xl bg-rose-50 p-4 font-bold text-rose-700">{error}</p> : null}{success ? <p role="status" className="mt-5 rounded-2xl bg-emerald-50 p-4 font-bold text-emerald-800">{success}</p> : null}
+    {loading ? <div className="mt-5 rounded-3xl bg-white p-6 font-black shadow-sm">Loading your weekly plan…</div> : null}
+    {!loading && !occurrences.length ? <div className="mt-5 rounded-3xl border border-dashed border-slate-300 bg-white p-8 text-center"><h2 className="text-xl font-black">Nothing planned this week.</h2><p className="mt-2 font-semibold text-slate-500">Add an activity to begin building your routine.</p></div> : null}
+    {!loading ? <div className="mt-5 grid gap-4 lg:grid-cols-2">{days.map((day) => { const items = occurrences.filter((item) => item.scheduled_date === day); return <section key={day} className="rounded-3xl border border-slate-200 bg-slate-100/70 p-4"><div className="mb-3 flex items-baseline justify-between"><h2 className="text-xl font-black">{dateLabel(day, { weekday: "long" })}</h2><span className="text-sm font-black text-slate-500">{dateLabel(day, { month: "short", day: "numeric" })}</span></div><div className="space-y-3">{items.map((item) => <OccurrenceCard key={item.id} occurrence={item} busy={busyId === item.id || busyId === item.planned_activity_id} showManagement onStatus={(status) => void changeStatus(item, status)} onEdit={() => { setEditing(item.planned_activity ?? null); setFormOpen(true); }} onDelete={() => item.planned_activity && void remove(item.planned_activity)} />)}{!items.length ? <p className="rounded-2xl bg-white/70 p-4 text-sm font-semibold text-slate-400">Nothing scheduled.</p> : null}</div></section>; })}</div> : null}
+    {formOpen ? <ActivityForm activity={editing} initialDate={weekStart} saving={busyId === "save"} onCancel={() => { if (!busyId) { setFormOpen(false); setEditing(null); } }} onSubmit={save} /> : null}
+  </div>;
+}

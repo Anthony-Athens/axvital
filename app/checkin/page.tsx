@@ -5,6 +5,7 @@ import type { User } from "@supabase/supabase-js";
 import { friendlyErrorMessage, logDevError, logDevInfo } from "@/lib/app-errors";
 import { supabase } from "@/lib/supabase/client";
 import type { HealthEventType } from "@/lib/types";
+import { TodayPlan } from "@/components/planner/TodayPlan";
 
 type AnswerMap = Record<string, string>;
 type QuickAddType =
@@ -838,6 +839,8 @@ export default function CheckInPage() {
           />
         </div>
       </header>
+
+      <TodayPlan />
 
       <div className="mt-5 grid gap-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(360px,0.9fr)] lg:items-start">
         <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm md:p-6">
