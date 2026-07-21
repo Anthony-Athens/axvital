@@ -1,0 +1,3 @@
+import Link from "next/link";
+import { desktopNavigationItems, matchesRoute } from "@/lib/navigation/routes";
+export function DesktopNavigation({ pathname }: { pathname: string }) { return <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Primary">{desktopNavigationItems.map((item) => { const active = matchesRoute(pathname, item.matchPrefixes); return <Link key={item.id} href={item.href} aria-current={active ? "page" : undefined} className={`rounded-full px-2.5 py-2 text-xs font-semibold transition xl:px-3 xl:text-sm ${active ? "bg-slate-950 text-white" : "text-slate-600 hover:bg-slate-100 hover:text-slate-950"}`}>{item.label}</Link>; })}</nav>; }

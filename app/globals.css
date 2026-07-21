@@ -33,3 +33,11 @@ html {
 .safe-bottom {
   padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
 }
+
+@media (max-width: 767px) {
+  input,
+  select,
+  textarea {
+    scroll-margin-bottom: calc(6rem + env(safe-area-inset-bottom));
+  }
+}

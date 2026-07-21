@@ -17,7 +17,7 @@ export default function RootLayout({
     <html lang="en" className="h-full antialiased">
       <body className="min-h-full bg-slate-50 text-slate-950">
         <Navbar />
-        <main className="min-h-dvh pb-24 pt-16 md:pb-0 md:pt-20">
+        <main className="min-h-dvh pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-16 lg:pb-0 lg:pt-20">
           {children}
         </main>
       </body>
