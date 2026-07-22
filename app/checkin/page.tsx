@@ -6,6 +6,7 @@ import { friendlyErrorMessage, logDevError, logDevInfo } from "@/lib/app-errors"
 import { supabase } from "@/lib/supabase/client";
 import type { HealthEventType } from "@/lib/types";
 import { TodayPlan } from "@/components/planner/TodayPlan";
+import { CollapsibleSection, usePersistentDisclosure } from "@/components/ui/CollapsibleSection";
 
 type AnswerMap = Record<string, string>;
 type QuickAddType =
@@ -636,6 +637,8 @@ export default function CheckInPage() {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [healthEvents, setHealthEvents] =
     useState<LocalHealthEvent[]>(initialTimeline);
+  const [checkinExpanded, setCheckinExpanded] = usePersistentDisclosure("axvital.today.dailyCheckIn.expanded", false);
+  const [eventsExpanded, setEventsExpanded] = usePersistentDisclosure("axvital.today.optionalEvents.expanded", false);
 
   const progress = useMemo(() => {
     const complete = questions.filter((question) => answers[question.id]).length;
@@ -703,6 +706,7 @@ export default function CheckInPage() {
     if (!user) {
       setSavingCheckin(false);
       setCheckinMessage("Please log in before saving your daily check-in.");
+      setCheckinExpanded(true);
       return;
     }
 
@@ -739,6 +743,7 @@ export default function CheckInPage() {
     if (error) {
       logDevError("Failed to save daily check-in", error);
       setCheckinMessage(friendlyErrorMessage("save your daily check-in"));
+      setCheckinExpanded(true);
       return;
     }
 
@@ -814,58 +819,26 @@ export default function CheckInPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-5 md:px-6 md:py-10">
-      <header className="sticky top-16 z-20 -mx-4 border-b border-slate-200 bg-slate-50/95 px-4 py-4 backdrop-blur-xl md:static md:mx-0 md:border-0 md:bg-transparent md:px-0 md:py-0">
-        <div className="flex items-end justify-between gap-4">
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-600">
-              AXVital
-            </p>
-            <h1 className="mt-2 text-4xl font-black tracking-tight md:text-5xl">
-              Today
-            </h1>
-            <p className="mt-2 max-w-xl text-sm font-semibold leading-6 text-slate-500">
-              Complete the essentials, then add extra context only when it
-              matters.
-            </p>
-          </div>
-          <div className="grid h-16 w-16 shrink-0 place-items-center rounded-3xl bg-white text-lg font-black text-emerald-700 shadow-sm">
-            {progress}%
-          </div>
-        </div>
-        <div className="mt-4 h-2 overflow-hidden rounded-full bg-slate-200">
-          <div
-            className="h-full rounded-full bg-emerald-500 transition-all"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
+      <header className="border-b border-slate-200 pb-5">
+        <p className="text-sm font-medium text-slate-500">{new Intl.DateTimeFormat(undefined, { weekday: "long", month: "long", day: "numeric" }).format(new Date())}</p>
+        <h1 className="mt-1 text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl">Today</h1>
+        <p className="mt-1 text-sm text-slate-600">Here’s what’s on your plan today.</p>
+        <div className="mt-4 flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3"><div className="min-w-0 flex-1"><div className="flex justify-between text-sm"><span className="font-medium text-slate-700">Daily essentials</span><span className="tabular-nums text-slate-500">{progress}%</span></div><div className="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-100" role="progressbar" aria-label="Daily check-in progress" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100}><div className="h-full rounded-full bg-blue-600 transition-all motion-reduce:transition-none" style={{ width: `${progress}%` }}/></div></div></div>
       </header>
 
       <TodayPlan />
 
       <div className="mt-5 grid gap-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(360px,0.9fr)] lg:items-start">
-        <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm md:p-6">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-600">
-                Daily Check-In
-              </p>
-              <h2 className="mt-2 text-2xl font-black tracking-tight">
-                Fast essentials
-              </h2>
-            </div>
-            <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-700">
-              Under 30 sec
-            </span>
-          </div>
+        <CollapsibleSection id="daily-checkin" title="Daily Check-In" description={saved ? "Your essentials are saved for today." : "Complete your daily essentials in under 30 seconds."} status={<span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${saved ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"}`}>{saved ? "Completed" : "Not completed"}</span>} expanded={checkinExpanded} onToggle={() => setCheckinExpanded((value) => !value)}>
 
-          <form className="mt-5 space-y-4">
+          <form className="space-y-4">
             {questions.map((question) => (
               <fieldset
                 key={question.id}
-                className="rounded-3xl border border-slate-100 bg-slate-50 p-4"
+                className="rounded-xl border border-slate-200 bg-slate-50 p-4"
               >
                 <legend className="w-full">
-                  <span className="block text-lg font-black text-slate-950">
+                  <span className="block text-base font-semibold text-slate-900">
                     {question.label}
                   </span>
                   <span className="mt-1 block text-sm font-medium leading-6 text-slate-500">
@@ -880,9 +853,9 @@ export default function CheckInPage() {
                         key={option}
                         type="button"
                         onClick={() => choose(question.id, option)}
-                        className={`min-h-14 rounded-2xl border px-2 text-base font-black transition active:scale-[0.98] ${
+                        className={`min-h-12 rounded-lg border px-2 text-sm font-semibold transition outline-none focus-visible:ring-2 focus-visible:ring-blue-600 ${
                           selected
-                            ? "border-emerald-500 bg-emerald-500 text-white shadow-md shadow-emerald-100"
+                            ? "border-blue-600 bg-blue-600 text-white"
                             : "border-slate-200 bg-white text-slate-700"
                         }`}
                         aria-pressed={selected}
@@ -895,7 +868,7 @@ export default function CheckInPage() {
               </fieldset>
             ))}
 
-            <label className="block rounded-3xl border border-slate-100 bg-slate-50 p-4">
+            <label className="block rounded-xl border border-slate-200 bg-slate-50 p-4">
               <span className="block text-lg font-black text-slate-950">
                 Weight
               </span>
@@ -911,12 +884,12 @@ export default function CheckInPage() {
                 }}
                 inputMode="decimal"
                 placeholder="Optional weight"
-                className="mt-4 min-h-14 w-full rounded-2xl border border-slate-200 bg-white px-4 text-lg font-bold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+                className="mt-4 min-h-12 w-full rounded-lg border border-slate-300 bg-white px-4 text-base font-medium outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
               />
             </label>
           </form>
 
-          <div className="safe-bottom sticky bottom-[4.75rem] z-30 -mx-5 mt-5 border-t border-slate-200 bg-white/95 px-5 pt-3 backdrop-blur-xl md:bottom-4 md:mx-0 md:rounded-3xl md:border md:shadow-xl md:shadow-slate-200 lg:static lg:border-0 lg:bg-transparent lg:px-0 lg:pb-0 lg:shadow-none">
+          <div className="mt-5 border-t border-slate-200 pt-4">
             {saved ? (
               <p className="mb-3 rounded-2xl bg-emerald-50 p-4 text-sm font-black text-emerald-700">
                 {checkinMessage}
@@ -930,7 +903,7 @@ export default function CheckInPage() {
               type="button"
               onClick={saveDailyCheckin}
               disabled={savingCheckin}
-              className="flex min-h-16 w-full items-center justify-center rounded-2xl bg-slate-950 px-6 text-lg font-black text-white transition active:scale-[0.99] disabled:cursor-not-allowed disabled:bg-slate-400"
+              className="flex min-h-12 w-full items-center justify-center rounded-lg bg-blue-600 px-6 text-base font-semibold text-white transition hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-400"
             >
               {savingCheckin
                 ? "Saving..."
@@ -939,64 +912,48 @@ export default function CheckInPage() {
                   : "Save Daily Check-In"}
             </button>
           </div>
-        </section>
+        </CollapsibleSection>
 
         <div className="space-y-5">
-          <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm md:p-6">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-600">
-                  Quick Add
-                </p>
-                <h2 className="mt-2 text-2xl font-black tracking-tight">
-                  Optional events
-                </h2>
-              </div>
-              <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-600">
-                Anytime
-              </span>
-            </div>
-            <p className="mt-2 text-sm font-semibold leading-6 text-slate-500">
-              Add context when it is useful. Skip it when it is not.
-            </p>
-            <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-2">
+          <CollapsibleSection id="optional-events" title="Optional Health Events" description="Log food, fluid, supplements, symptoms, medication, exercise, or notes." expanded={eventsExpanded} onToggle={() => setEventsExpanded((value) => !value)}>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-2">
               {quickAddTypes.map((type) => (
                 <button
                   key={type}
                   type="button"
                   onClick={() => openQuickAdd(type)}
-                  className="min-h-16 rounded-2xl border border-slate-200 bg-slate-50 px-4 text-left text-base font-black text-slate-900 transition active:scale-[0.98]"
+                  className="min-h-12 rounded-lg border border-slate-200 bg-slate-50 px-4 text-left text-sm font-semibold text-slate-900 transition hover:border-blue-300 hover:bg-blue-50 focus-visible:ring-2 focus-visible:ring-blue-600"
                 >
                   {type}
                 </button>
               ))}
             </div>
-          </section>
+          </CollapsibleSection>
 
-          <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm md:p-6">
-            <h2 className="text-2xl font-black tracking-tight">
+          <section className="rounded-xl border border-slate-200 bg-white p-4 sm:p-5">
+            <h2 className="text-lg font-semibold tracking-tight text-slate-900">
               Today&apos;s Timeline
             </h2>
-            <div className="mt-5 space-y-3">
+            <div className="mt-4 divide-y divide-slate-200">
               {healthEvents.map((item) => (
                 <article
                   key={item.id}
-                  className="rounded-2xl border border-slate-100 bg-slate-50 p-4"
+                  className="relative py-3 pl-5"
                 >
                   <div className="flex gap-3">
-                    <div className="mt-1 h-3 w-3 shrink-0 rounded-full bg-emerald-500" />
+                    <div className="absolute left-0 top-5 h-2 w-2 rounded-full bg-blue-500" />
                     <div>
-                      <p className="text-sm font-black text-slate-500">
+                      <p className="text-xs font-medium tabular-nums text-slate-500">
                         {formatEventTime(item.eventTime)} -{" "}
                         {titleCase(item.type)}
                       </p>
-                      <p className="mt-1 text-base font-black text-slate-950">
+                      <p className="mt-1 text-sm font-medium text-slate-900">
                         {item.title}
                       </p>
                     </div>
                   </div>
                   {item.tags.length ? (
-                    <div className="mt-3 flex flex-wrap gap-2 pl-6">
+                    <div className="mt-2 flex flex-wrap gap-2">
                       <span className="text-xs font-black uppercase tracking-[0.12em] text-slate-400">
                         Tags:
                       </span>
@@ -1011,18 +968,8 @@ export default function CheckInPage() {
                     </div>
                   ) : null}
                 </article>
-              ))}
+              ))}{!healthEvents.length ? <p className="py-4 text-sm text-slate-500">Your logged events will appear here.</p> : null}
             </div>
-          </section>
-
-          <section className="rounded-3xl bg-slate-950 p-5 text-white shadow-xl shadow-slate-200 md:p-6">
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-300">
-              Insight Preview
-            </p>
-            <p className="mt-3 text-xl font-black leading-8">
-              Log consistently for 14 days to unlock your first personal
-              patterns.
-            </p>
           </section>
         </div>
       </div>
@@ -1040,7 +987,7 @@ export default function CheckInPage() {
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-600">
+                <p className="text-sm font-semibold text-blue-700">
                   Quick Add
                 </p>
                 <h2
@@ -1070,7 +1017,7 @@ export default function CheckInPage() {
                     <select
                       name={field.name}
                       defaultValue=""
-                      className="mt-2 min-h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+                      className="mt-2 min-h-12 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 text-base font-medium outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
                     >
                       <option value="" disabled>
                         {field.placeholder}
@@ -1086,7 +1033,7 @@ export default function CheckInPage() {
                       name={field.name}
                       placeholder={field.placeholder}
                       rows={4}
-                      className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+                      className="mt-2 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-3 text-base font-medium outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
                     />
                   ) : (
                     <input
@@ -1103,7 +1050,7 @@ export default function CheckInPage() {
                       }
                       step={field.kind === "integer" ? "1" : undefined}
                       placeholder={field.placeholder}
-                      className="mt-2 min-h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+                      className="mt-2 min-h-12 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 text-base font-medium outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
                     />
                   )}
                 </label>
@@ -1134,7 +1081,7 @@ export default function CheckInPage() {
                       onClick={() => toggleTag(tag)}
                       className={`min-h-11 rounded-full border px-3 text-sm font-black transition active:scale-[0.98] ${
                         selected
-                          ? "border-emerald-500 bg-emerald-500 text-white"
+                          ? "border-blue-600 bg-blue-600 text-white"
                           : "border-slate-200 bg-white text-slate-600"
                       }`}
                       aria-pressed={selected}
@@ -1162,7 +1109,7 @@ export default function CheckInPage() {
               </button>
               <button
                 type="submit"
-                className="min-h-14 rounded-2xl bg-emerald-500 px-4 text-base font-black text-white"
+                className="min-h-14 rounded-xl bg-blue-600 px-4 text-base font-semibold text-white hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
               >
                 Save Event
               </button>

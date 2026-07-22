@@ -3,11 +3,25 @@
 :root {
   --background: #f8fafc;
   --foreground: #0f172a;
+  --background-app: #f8fafc;
+  --background-surface: #ffffff;
+  --background-subtle: #f1f5f9;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --border-default: #e2e8f0;
+  --action-primary: #2563eb;
+  --action-primary-hover: #1d4ed8;
+  --status-success: #059669;
+  --status-warning: #d97706;
+  --status-error: #dc2626;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-action-primary: var(--action-primary);
+  --color-action-primary-hover: var(--action-primary-hover);
   --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
   --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
@@ -40,4 +54,79 @@ html {
   textarea {
     scroll-margin-bottom: calc(6rem + env(safe-area-inset-bottom));
   }
+}
+
+/* Authenticated design-system compatibility layer. Legacy feature components
+   inherit the same slate-and-blue hierarchy while they migrate to primitives. */
+main :where(h1) {
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+main :where(.rounded-3xl) {
+  border-radius: 0.75rem;
+}
+
+main :where(.shadow-xl, .shadow-2xl) {
+  box-shadow: 0 1px 2px rgb(15 23 42 / 0.08);
+}
+
+main :where(.font-black) {
+  font-weight: 600;
+}
+
+main :where(button.rounded-full, button.rounded-2xl, a.rounded-full) {
+  border-radius: 0.5rem;
+}
+
+main :where(input.rounded-2xl, select.rounded-2xl, textarea.rounded-2xl) {
+  border-radius: 0.5rem;
+}
+
+main :where(button.bg-emerald-500, button.bg-emerald-600, a.bg-emerald-500, a.bg-emerald-600, button.bg-slate-950, a.bg-slate-950) {
+  background-color: #2563eb !important;
+  color: white !important;
+}
+
+main :where(button.bg-emerald-500, button.bg-emerald-600, a.bg-emerald-500, a.bg-emerald-600, button.bg-slate-950, a.bg-slate-950):hover {
+  background-color: #1d4ed8 !important;
+}
+
+main :where(.text-emerald-300, .text-emerald-600) {
+  color: #3b82f6 !important;
+}
+
+main :where(a.text-emerald-700, a.text-emerald-800, button.text-emerald-700, button.text-emerald-800) {
+  color: #1d4ed8 !important;
+}
+
+main :where(button.bg-emerald-100, a.bg-emerald-100) {
+  background-color: #dbeafe !important;
+  color: #1d4ed8 !important;
+}
+
+main :where(input, select, textarea):focus {
+  border-color: #2563eb !important;
+  box-shadow: 0 0 0 3px #dbeafe !important;
+  outline: none;
+}
+
+main :where(input.accent-emerald-500) {
+  accent-color: #2563eb !important;
+}
+
+main :where(button[aria-pressed="true"].bg-emerald-500) {
+  border-color: #2563eb !important;
+  background-color: #2563eb !important;
+}
+
+main :where(table) {
+  border-color: #e2e8f0;
+}
+
+main :where(th) {
+  color: #64748b;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
 }
