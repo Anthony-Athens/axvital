@@ -1,12 +1,13 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { friendlyErrorMessage, logDevError, logDevInfo } from "@/lib/app-errors";
 import { supabase } from "@/lib/supabase/client";
 import type { HealthEventType } from "@/lib/types";
 import { TodayPlan } from "@/components/planner/TodayPlan";
 import { CollapsibleSection, usePersistentDisclosure } from "@/components/ui/CollapsibleSection";
+import { CheckInFieldGroup } from "@/components/checkin/CheckInFieldGroup";
 
 type AnswerMap = Record<string, string>;
 type QuickAddType =
@@ -634,6 +635,8 @@ export default function CheckInPage() {
     null,
   );
   const [eventMessage, setEventMessage] = useState("");
+  const [savingEvent, setSavingEvent] = useState(false);
+  const quickAddTriggerRef = useRef<HTMLButtonElement | null>(null);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [healthEvents, setHealthEvents] =
     useState<LocalHealthEvent[]>(initialTimeline);
@@ -751,10 +754,16 @@ export default function CheckInPage() {
     setCheckinMessage("Daily check-in saved.");
   }
 
-  function openQuickAdd(type: QuickAddType) {
+  function openQuickAdd(type: QuickAddType, trigger: HTMLButtonElement) {
+    quickAddTriggerRef.current = trigger;
     setEventMessage("");
     setSelectedTags([]);
     setActiveQuickAdd(type);
+  }
+
+  function closeQuickAdd() {
+    setActiveQuickAdd(null);
+    requestAnimationFrame(() => quickAddTriggerRef.current?.focus());
   }
 
   function toggleTag(tag: string) {
@@ -768,53 +777,61 @@ export default function CheckInPage() {
   async function saveHealthEvent(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (!activeQuickAdd) {
+    if (!activeQuickAdd || savingEvent) {
       return;
     }
 
+    setSavingEvent(true);
+    setEventMessage("");
     const form = event.currentTarget;
     const formData = new FormData(form);
-    const user = await getAuthenticatedUser();
-    const newEvent: LocalHealthEvent = {
-      id: crypto.randomUUID(),
-      type: quickAddTypeToEventType(activeQuickAdd),
-      eventTime: formValue(formData, "time") ?? currentTimeValue(),
-      title: eventTitle(activeQuickAdd, formData),
-      notes: formValue(formData, "notes") ?? formValue(formData, "note_text"),
-      tags: selectedTags,
-      details: buildEventDetails(activeQuickAdd, formData),
-    };
+    try {
+      const user = await getAuthenticatedUser();
+      const newEvent: LocalHealthEvent = {
+        id: crypto.randomUUID(),
+        type: quickAddTypeToEventType(activeQuickAdd),
+        eventTime: formValue(formData, "time") ?? currentTimeValue(),
+        title: eventTitle(activeQuickAdd, formData),
+        notes: formValue(formData, "notes") ?? formValue(formData, "note_text"),
+        tags: selectedTags,
+        details: buildEventDetails(activeQuickAdd, formData),
+      };
 
-    if (user) {
-      const payload = buildHealthEventPayload(
-        activeQuickAdd,
-        formData,
-        user.id,
-        selectedTags,
-      );
-      const { error } = await supabase.from("health_events").insert(payload);
+      if (user) {
+        const payload = buildHealthEventPayload(
+          activeQuickAdd,
+          formData,
+          user.id,
+          selectedTags,
+        );
+        const { error } = await supabase.from("health_events").insert(payload);
 
-      if (error) {
-        logDevError("Failed to save health event", error);
-        setEventMessage(friendlyErrorMessage("save this event"));
-        return;
+        if (error) {
+          logDevError("Failed to save health event", error);
+          setEventMessage(friendlyErrorMessage("save this event"));
+          return;
+        }
+
+        await loadTodayEvents(user.id);
+        setEventMessage("Event saved. Timeline refreshed.");
+      } else {
+        setHealthEvents((current) =>
+          [...current, newEvent].sort((a, b) =>
+            a.eventTime.localeCompare(b.eventTime),
+          ),
+        );
+        setEventMessage("Event added to today's timeline.");
       }
 
-      await loadTodayEvents(user.id);
-      setEventMessage("Event saved. Timeline refreshed.");
       form.reset();
       setSelectedTags([]);
-      return;
+      closeQuickAdd();
+    } catch (error) {
+      logDevError("Failed to save health event", error);
+      setEventMessage(friendlyErrorMessage("save this event"));
+    } finally {
+      setSavingEvent(false);
     }
-
-    setHealthEvents((current) =>
-      [...current, newEvent].sort((a, b) =>
-        a.eventTime.localeCompare(b.eventTime),
-      ),
-    );
-    setEventMessage("Event added to today's timeline.");
-    form.reset();
-    setSelectedTags([]);
   }
 
   return (
@@ -833,18 +850,12 @@ export default function CheckInPage() {
 
           <form className="space-y-4">
             {questions.map((question) => (
-              <fieldset
+              <CheckInFieldGroup
                 key={question.id}
-                className="rounded-xl border border-slate-200 bg-slate-50 p-4"
+                id={question.id}
+                label={question.label}
+                helper={question.helper}
               >
-                <legend className="w-full">
-                  <span className="block text-base font-semibold text-slate-900">
-                    {question.label}
-                  </span>
-                  <span className="mt-1 block text-sm font-medium leading-6 text-slate-500">
-                    {question.helper}
-                  </span>
-                </legend>
                 <div className={`mt-4 grid ${question.columns} gap-2`}>
                   {question.options.map((option) => {
                     const selected = answers[question.id] === option;
@@ -865,7 +876,7 @@ export default function CheckInPage() {
                     );
                   })}
                 </div>
-              </fieldset>
+              </CheckInFieldGroup>
             ))}
 
             <label className="block rounded-xl border border-slate-200 bg-slate-50 p-4">
@@ -916,12 +927,17 @@ export default function CheckInPage() {
 
         <div className="space-y-5">
           <CollapsibleSection id="optional-events" title="Optional Health Events" description="Log food, fluid, supplements, symptoms, medication, exercise, or notes." expanded={eventsExpanded} onToggle={() => setEventsExpanded((value) => !value)}>
+            {eventMessage && !activeQuickAdd ? (
+              <p role="status" className="mb-4 rounded-xl bg-emerald-50 p-3 text-sm font-semibold text-emerald-700">
+                {eventMessage}
+              </p>
+            ) : null}
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-2">
               {quickAddTypes.map((type) => (
                 <button
                   key={type}
                   type="button"
-                  onClick={() => openQuickAdd(type)}
+                  onClick={(event) => openQuickAdd(type, event.currentTarget)}
                   className="min-h-12 rounded-lg border border-slate-200 bg-slate-50 px-4 text-left text-sm font-semibold text-slate-900 transition hover:border-blue-300 hover:bg-blue-50 focus-visible:ring-2 focus-visible:ring-blue-600"
                 >
                   {type}
@@ -999,7 +1015,7 @@ export default function CheckInPage() {
               </div>
               <button
                 type="button"
-                onClick={() => setActiveQuickAdd(null)}
+                onClick={closeQuickAdd}
                 className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-slate-100 text-2xl font-black text-slate-700"
                 aria-label="Close quick add"
               >
@@ -1102,16 +1118,18 @@ export default function CheckInPage() {
             <div className="mt-5 grid grid-cols-[0.8fr_1.2fr] gap-3">
               <button
                 type="button"
-                onClick={() => setActiveQuickAdd(null)}
+                onClick={closeQuickAdd}
+                disabled={savingEvent}
                 className="min-h-14 rounded-2xl border border-slate-200 bg-white px-4 text-base font-black text-slate-700"
               >
                 Skip
               </button>
               <button
                 type="submit"
+                disabled={savingEvent}
                 className="min-h-14 rounded-xl bg-blue-600 px-4 text-base font-semibold text-white hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
               >
-                Save Event
+                {savingEvent ? "Saving…" : "Save Event"}
               </button>
             </div>
           </form>
