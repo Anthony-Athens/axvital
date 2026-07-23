@@ -17,11 +17,14 @@ import {
   WORKOUT_FINAL_ACTIONS_CLASS,
   WORKOUT_STATUS_HEADER_CLASS,
   actualSetSummary,
+  actualInputValue,
   getAddressedSessionSets,
   getCurrentSessionSet,
   getWorkoutReadiness,
   orderedSessionSets,
+  validateActualSetInput,
 } from "@/lib/workouts/execution";
+import type { ExerciseTrackingType } from "@/lib/workouts/exercise-metadata";
 import type {
   SessionExercise,
   SessionSet,
@@ -36,14 +39,12 @@ type SetValues = {
   actual_distance: number | null;
 };
 
-function numericValue(value: string) {
-  if (!value.trim()) return null;
-  const parsed = Number(value);
-  return Number.isFinite(parsed) ? parsed : null;
-}
-
-function plannedSetSummary(set: SessionSet) {
+function plannedSetSummary(
+  set: SessionSet,
+  trackingType: ExerciseTrackingType,
+) {
   const parts: string[] = [];
+  if (trackingType === "bodyweight_reps") parts.push("Bodyweight");
   if (set.planned_weight !== null) parts.push(`${set.planned_weight} lb`);
   if (set.planned_reps !== null) parts.push(`${set.planned_reps} reps`);
   else if (set.planned_reps_min !== null) {
@@ -65,6 +66,7 @@ function plannedSetSummary(set: SessionSet) {
 function SetEditor({
   set,
   exerciseName,
+  trackingType,
   totalSets,
   busy,
   editing,
@@ -75,6 +77,7 @@ function SetEditor({
 }: {
   set: SessionSet;
   exerciseName: string;
+  trackingType: ExerciseTrackingType;
   totalSets: number;
   busy: boolean;
   editing?: boolean;
@@ -83,30 +86,30 @@ function SetEditor({
   onCancelEdit?: () => void;
   onRemove?: () => void;
 }) {
-  const [reps, setReps] = useState(
-    String(set.actual_reps ?? set.planned_reps ?? set.planned_reps_min ?? ""),
-  );
-  const [weight, setWeight] = useState(
-    String(set.actual_weight ?? set.planned_weight ?? ""),
-  );
+  const [reps, setReps] = useState(actualInputValue(set.actual_reps));
+  const [weight, setWeight] = useState(actualInputValue(set.actual_weight));
   const [duration, setDuration] = useState(
-    String(set.actual_duration_seconds ?? set.planned_duration_seconds ?? ""),
+    actualInputValue(set.actual_duration_seconds),
   );
-  const [distance, setDistance] = useState(
-    String(set.actual_distance ?? set.planned_distance ?? ""),
-  );
+  const [distance, setDistance] = useState(actualInputValue(set.actual_distance));
+  const [fieldErrors, setFieldErrors] = useState<
+    Partial<Record<"weight" | "reps" | "duration" | "distance", string>>
+  >({});
   const [submitting, setSubmitting] = useState(false);
 
   async function complete() {
     if (submitting || busy) return;
+    const result = validateActualSetInput(trackingType, {
+      weight,
+      reps,
+      duration,
+      distance,
+    });
+    setFieldErrors(result.errors);
+    if (Object.keys(result.errors).length) return;
     setSubmitting(true);
     try {
-      await onComplete({
-        actual_reps: numericValue(reps),
-        actual_weight: numericValue(weight),
-        actual_duration_seconds: numericValue(duration),
-        actual_distance: numericValue(distance),
-      });
+      await onComplete(result.values);
     } finally {
       setSubmitting(false);
     }
@@ -131,7 +134,7 @@ function SetEditor({
             {totalSets}
           </h3>
           <p className="mt-1 text-sm text-slate-600">
-            Plan: {plannedSetSummary(set)}
+            Plan: {plannedSetSummary(set, trackingType)}
           </p>
         </div>
         <span className="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700">
@@ -141,41 +144,85 @@ function SetEditor({
 
       <div className="mt-4 grid grid-cols-1 gap-3 min-[360px]:grid-cols-2 sm:grid-cols-4">
         <label className="text-sm font-medium text-slate-700">
-          Weight
+          Actual Weight
           <input
             autoFocus={!editing}
             inputMode="decimal"
             value={weight}
-            onChange={(event) => setWeight(event.target.value)}
+            onChange={(event) => {
+              setWeight(event.target.value);
+              setFieldErrors((current) => ({ ...current, weight: undefined }));
+            }}
+            placeholder="Enter weight"
+            aria-invalid={Boolean(fieldErrors.weight)}
+            aria-describedby={fieldErrors.weight ? `${set.id}-weight-error` : undefined}
             className="mt-1.5 min-h-12 w-full rounded-lg border border-slate-300 bg-white px-3 text-base font-semibold outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
           />
+          {fieldErrors.weight ? (
+            <span id={`${set.id}-weight-error`} className="mt-1 block text-xs font-medium text-rose-700">
+              {fieldErrors.weight}
+            </span>
+          ) : null}
         </label>
         <label className="text-sm font-medium text-slate-700">
-          Reps
+          Actual Reps
           <input
             inputMode="numeric"
             value={reps}
-            onChange={(event) => setReps(event.target.value)}
+            onChange={(event) => {
+              setReps(event.target.value);
+              setFieldErrors((current) => ({ ...current, reps: undefined }));
+            }}
+            placeholder="Enter reps"
+            aria-invalid={Boolean(fieldErrors.reps)}
+            aria-describedby={fieldErrors.reps ? `${set.id}-reps-error` : undefined}
             className="mt-1.5 min-h-12 w-full rounded-lg border border-slate-300 bg-white px-3 text-base font-semibold outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
           />
+          {fieldErrors.reps ? (
+            <span id={`${set.id}-reps-error`} className="mt-1 block text-xs font-medium text-rose-700">
+              {fieldErrors.reps}
+            </span>
+          ) : null}
         </label>
         <label className="text-sm font-medium text-slate-700">
-          Seconds
+          Actual Duration
           <input
             inputMode="numeric"
             value={duration}
-            onChange={(event) => setDuration(event.target.value)}
+            onChange={(event) => {
+              setDuration(event.target.value);
+              setFieldErrors((current) => ({ ...current, duration: undefined }));
+            }}
+            placeholder="Enter seconds"
+            aria-invalid={Boolean(fieldErrors.duration)}
+            aria-describedby={fieldErrors.duration ? `${set.id}-duration-error` : undefined}
             className="mt-1.5 min-h-12 w-full rounded-lg border border-slate-300 bg-white px-3 text-base font-semibold outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
           />
+          {fieldErrors.duration ? (
+            <span id={`${set.id}-duration-error`} className="mt-1 block text-xs font-medium text-rose-700">
+              {fieldErrors.duration}
+            </span>
+          ) : null}
         </label>
         <label className="text-sm font-medium text-slate-700">
-          Distance
+          Actual Distance
           <input
             inputMode="decimal"
             value={distance}
-            onChange={(event) => setDistance(event.target.value)}
+            onChange={(event) => {
+              setDistance(event.target.value);
+              setFieldErrors((current) => ({ ...current, distance: undefined }));
+            }}
+            placeholder="Enter distance"
+            aria-invalid={Boolean(fieldErrors.distance)}
+            aria-describedby={fieldErrors.distance ? `${set.id}-distance-error` : undefined}
             className="mt-1.5 min-h-12 w-full rounded-lg border border-slate-300 bg-white px-3 text-base font-semibold outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
           />
+          {fieldErrors.distance ? (
+            <span id={`${set.id}-distance-error`} className="mt-1 block text-xs font-medium text-rose-700">
+              {fieldErrors.distance}
+            </span>
+          ) : null}
         </label>
       </div>
 
@@ -378,6 +425,7 @@ function ExercisePanel({
                     key={set.id}
                     set={set}
                     exerciseName={exercise.exercise_name}
+                    trackingType={exercise.tracking_type}
                     totalSets={sets.length}
                     busy={busy}
                     editing
@@ -404,6 +452,7 @@ function ExercisePanel({
                 key={current.id}
                 set={current}
                 exerciseName={exercise.exercise_name}
+                trackingType={exercise.tracking_type}
                 totalSets={sets.length}
                 busy={busy}
                 onComplete={(values) =>

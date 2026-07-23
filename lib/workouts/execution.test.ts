@@ -8,6 +8,8 @@ import {
   getHiddenFutureSessionSets,
   getWorkoutReadiness,
   orderedSessionSets,
+  actualInputValue,
+  validateActualSetInput,
 } from "./execution.ts";
 import type { SessionSet } from "./types.ts";
 
@@ -83,4 +85,54 @@ test("added sets retain persisted ordering", () => {
 test("workout status and completion actions remain in normal flow", () => {
   assert.doesNotMatch(WORKOUT_STATUS_HEADER_CLASS, /\b(?:fixed|sticky)\b/);
   assert.doesNotMatch(WORKOUT_FINAL_ACTIONS_CLASS, /\b(?:fixed|sticky)\b/);
+});
+
+test("untouched pending actual values initialize blank without planned fallback", () => {
+  const pending = set("pending", 1, "pending");
+  assert.equal(actualInputValue(pending.actual_weight), "");
+  assert.equal(actualInputValue(pending.actual_reps), "");
+  assert.equal(actualInputValue(pending.actual_duration_seconds), "");
+  assert.equal(actualInputValue(pending.actual_distance), "");
+  assert.equal(pending.planned_weight, 100);
+  assert.equal(pending.planned_reps, 5);
+});
+
+test("persisted actual values, including zero, are preserved", () => {
+  assert.equal(actualInputValue(125), "125");
+  assert.equal(actualInputValue(0), "0");
+  assert.equal(actualInputValue(null), "");
+});
+
+test("subsequent and added pending sets also initialize blank", () => {
+  const subsequent = set("second", 2, "pending");
+  const added = { ...set("added", 3, "pending"), planned_workout_set_id: null };
+  for (const pending of [subsequent, added]) {
+    assert.deepEqual(
+      [
+        actualInputValue(pending.actual_weight),
+        actualInputValue(pending.actual_reps),
+      ],
+      ["", ""],
+    );
+  }
+});
+
+test("blank optional values persist as null and required fields are contextual", () => {
+  const optional = validateActualSetInput("completion", {
+    weight: "",
+    reps: "",
+    duration: "",
+    distance: "",
+  });
+  assert.deepEqual(optional.errors, {});
+  assert.deepEqual(Object.values(optional.values), [null, null, null, null]);
+
+  const required = validateActualSetInput("weight_reps", {
+    weight: "",
+    reps: "",
+    duration: "",
+    distance: "",
+  });
+  assert.equal(required.errors.weight, "Enter the weight completed.");
+  assert.equal(required.errors.reps, "Enter the repetitions completed.");
 });
