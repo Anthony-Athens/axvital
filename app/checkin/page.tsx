@@ -711,7 +711,19 @@ export default function CheckInPage() {
       tags: [...row.condition_links.map((link) => link.user_condition?.condition?.name ?? link.user_condition?.custom_condition_name).filter((name): name is string => Boolean(name)), row.resolved ? "Resolved" : "Ongoing"],
       details: { severity: row.severity },
     }));
-    setHealthEvents([...((data ?? []) as HealthEventRow[]).map(mapHealthEventRow), ...structured].sort((a, b) => a.eventTime.localeCompare(b.eventTime)));
+    const { data: nutritionRows, error: nutritionError } = await supabase
+      .from("nutrition_entries")
+      .select("id,title,consumed_at,meal_type,notes,items:nutrition_entry_items(calories,protein_grams)")
+      .eq("user_id", userId).is("deleted_at", null)
+      .gte("consumed_at", dayStart.toISOString()).lt("consumed_at", dayEnd.toISOString());
+    if (nutritionError) { logDevError("Failed to load nutrition entries", nutritionError); setEventMessage(friendlyErrorMessage("load your timeline")); return; }
+    const nutrition = ((nutritionRows ?? []) as unknown as Array<{ id:string; title:string|null; consumed_at:string; meal_type:string|null; notes:string|null; items:Array<{calories:number|null;protein_grams:number|null}> }>).map((row): LocalHealthEvent => ({
+      id: row.id, type: "food",
+      eventTime: new Date(row.consumed_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false }),
+      title: row.title ?? "Food", notes: row.notes, tags: row.meal_type ? [row.meal_type] : [],
+      details: { calories: row.items[0]?.calories ?? null, protein_g: row.items[0]?.protein_grams ?? null },
+    }));
+    setHealthEvents([...((data ?? []) as HealthEventRow[]).map(mapHealthEventRow), ...structured, ...nutrition].sort((a, b) => a.eventTime.localeCompare(b.eventTime)));
   }
 
   async function saveDailyCheckin() {
@@ -769,6 +781,7 @@ export default function CheckInPage() {
   }
 
   function openQuickAdd(type: QuickAddType, trigger: HTMLButtonElement) {
+    if (type === "Food") { window.location.assign("/health/nutrition"); return; }
     if (type === "Symptom") { window.location.assign("/health/symptoms"); return; }
     quickAddTriggerRef.current = trigger;
     setEventMessage("");
