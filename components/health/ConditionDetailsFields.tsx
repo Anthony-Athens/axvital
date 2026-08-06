@@ -1,0 +1,12 @@
+import { controlClass, textareaClass } from "@/components/ui/design-system";
+import type { ConditionStatus } from "@/lib/conditions/types";
+
+export type ConditionFormValues = { status: Exclude<ConditionStatus, "archived">; diagnosedOn: string; diagnosedYear: string; isPrimary: boolean; notes: string };
+export function ConditionDetailsFields({ values, onChange }: { values: ConditionFormValues; onChange: (values: ConditionFormValues) => void }) {
+  return <div className="grid gap-4">
+    <label className="grid gap-1.5 text-sm font-semibold text-slate-700">Status<select className={controlClass} value={values.status} onChange={(event) => onChange({ ...values, status: event.target.value as ConditionFormValues["status"] })}><option value="active">Active</option><option value="monitoring">Monitoring</option><option value="remission">In remission</option><option value="resolved">Resolved</option></select></label>
+    <div className="grid gap-4 sm:grid-cols-2"><label className="grid gap-1.5 text-sm font-semibold text-slate-700">Diagnosis date <span className="font-normal text-slate-500">Optional</span><input type="date" max={new Date().toISOString().slice(0, 10)} className={controlClass} value={values.diagnosedOn} onChange={(event) => onChange({ ...values, diagnosedOn: event.target.value, diagnosedYear: event.target.value ? "" : values.diagnosedYear })}/></label><label className="grid gap-1.5 text-sm font-semibold text-slate-700">Diagnosis year <span className="font-normal text-slate-500">Optional alternative</span><input type="number" min="1900" max={new Date().getFullYear()} inputMode="numeric" disabled={Boolean(values.diagnosedOn)} className={controlClass} value={values.diagnosedYear} onChange={(event) => onChange({ ...values, diagnosedYear: event.target.value })}/></label></div>
+    <label className="flex min-h-11 items-center gap-3 text-sm font-medium text-slate-700"><input type="checkbox" className="h-5 w-5 accent-blue-600" checked={values.isPrimary} onChange={(event) => onChange({ ...values, isPrimary: event.target.checked })}/>Make this my primary condition</label>
+    <label className="grid gap-1.5 text-sm font-semibold text-slate-700">Notes <span className="font-normal text-slate-500">Optional, up to 2,000 characters</span><textarea rows={4} maxLength={2000} className={textareaClass} value={values.notes} onChange={(event) => onChange({ ...values, notes: event.target.value })}/><span className="text-right text-xs font-normal text-slate-500">{values.notes.length}/2,000</span></label>
+  </div>;
+}
