@@ -697,7 +697,21 @@ export default function CheckInPage() {
       return;
     }
 
-    setHealthEvents(((data ?? []) as HealthEventRow[]).map(mapHealthEventRow));
+    const dayStart = new Date(); dayStart.setHours(0, 0, 0, 0);
+    const dayEnd = new Date(dayStart); dayEnd.setDate(dayEnd.getDate() + 1);
+    const { data: symptomRows, error: symptomError } = await supabase
+      .from("user_symptom_events")
+      .select("id,started_at,severity,notes,resolved,custom_symptom_name,symptom:symptoms(name),condition_links:symptom_event_conditions(user_condition:user_conditions(custom_condition_name,condition:conditions(name)))")
+      .eq("user_id", userId).is("deleted_at", null)
+      .gte("started_at", dayStart.toISOString()).lt("started_at", dayEnd.toISOString());
+    if (symptomError) { logDevError("Failed to load structured symptom events", symptomError); setEventMessage(friendlyErrorMessage("load your timeline")); return; }
+    const structured = ((symptomRows ?? []) as unknown as Array<{ id:string; started_at:string; severity:number|null; notes:string|null; resolved:boolean|null; custom_symptom_name:string|null; symptom:{name:string}|null; condition_links:Array<{user_condition:{custom_condition_name:string|null;condition:{name:string}|null}|null}> }>).map((row): LocalHealthEvent => ({
+      id: row.id, type: "symptom", eventTime: new Date(row.started_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false }),
+      title: row.symptom?.name ?? row.custom_symptom_name ?? "Symptom", notes: row.notes,
+      tags: [...row.condition_links.map((link) => link.user_condition?.condition?.name ?? link.user_condition?.custom_condition_name).filter((name): name is string => Boolean(name)), row.resolved ? "Resolved" : "Ongoing"],
+      details: { severity: row.severity },
+    }));
+    setHealthEvents([...((data ?? []) as HealthEventRow[]).map(mapHealthEventRow), ...structured].sort((a, b) => a.eventTime.localeCompare(b.eventTime)));
   }
 
   async function saveDailyCheckin() {
@@ -755,6 +769,7 @@ export default function CheckInPage() {
   }
 
   function openQuickAdd(type: QuickAddType, trigger: HTMLButtonElement) {
+    if (type === "Symptom") { window.location.assign("/health/symptoms"); return; }
     quickAddTriggerRef.current = trigger;
     setEventMessage("");
     setSelectedTags([]);

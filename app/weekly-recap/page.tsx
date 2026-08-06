@@ -9,6 +9,7 @@ import {
 } from "@/lib/recaps/weekly";
 import { supabase } from "@/lib/supabase/client";
 import type { WeeklyRecap } from "@/lib/types";
+import { WeeklySymptomSummary } from "@/components/symptoms/WeeklySymptomSummary";
 
 function formatMetric(value: number | null, suffix = "") {
   return value === null ? "--" : `${value.toFixed(1)}${suffix}`;
@@ -249,6 +250,7 @@ export default function WeeklyRecapPage() {
       ) : null}
 
       {recap ? <RecapCard recap={recap} /> : null}
+      <WeeklySymptomSummary />
     </div>
   );
 }
