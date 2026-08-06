@@ -9,6 +9,7 @@ const paths: Record<IconName, React.ReactNode> = {
   habits: <path d="M12 21C6 18 4 14 4 10a4 4 0 0 1 7-2.6A4 4 0 0 1 20 10c0 4-2 8-8 11Z"/>,
   protocols: <><path d="M8 3h8v4H8zM6 5H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1M8 12h8m-8 4h5"/></>,
   health: <><path d="M12 21C6 17.5 3.5 14 3.5 9.8A4.8 4.8 0 0 1 12 6.7a4.8 4.8 0 0 1 8.5 3.1C20.5 14 18 17.5 12 21Z"/><path d="M8 12h2l1-2 2 4 1-2h2"/></>,
+  experiments: <><path d="M9 3h6M10 3v5l-5 9a3 3 0 0 0 2.6 4h8.8a3 3 0 0 0 2.6-4l-5-9V3"/><path d="M8 15h8"/></>,
   exercises: <><path d="M6 8v8m12-8v8M3 10v4m18-4v4M6 12h12"/></>,
   insights: <><path d="M9 18h6m-5 3h4"/><path d="M8 14a7 7 0 1 1 8 0c-1 .8-1 2-1 2H9s0-1.2-1-2Z"/></>,
   recap: <><path d="M4 4v6h6M5 9a8 8 0 1 1 1 8"/><path d="M12 8v5l3 2"/></>,

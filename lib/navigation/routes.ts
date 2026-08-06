@@ -1,4 +1,4 @@
-export type NavigationIcon = "today" | "planner" | "workouts" | "progress" | "more" | "habits" | "protocols" | "health" | "exercises" | "insights" | "recap" | "profile";
+export type NavigationIcon = "today" | "planner" | "workouts" | "progress" | "more" | "habits" | "protocols" | "health" | "experiments" | "exercises" | "insights" | "recap" | "profile";
 export type NavigationGroup = "planning" | "workouts" | "account" | "insights";
 export type NavigationItem = { id: string; label: string; mobileLabel?: string; href: string; icon: NavigationIcon; matchPrefixes: readonly string[]; mobilePlacement: "primary" | "more"; group?: NavigationGroup; desktop: boolean };
 
@@ -10,6 +10,7 @@ export const navigationItems: readonly NavigationItem[] = [
   { id: "habits", label: "Habits", href: "/habits", icon: "habits", matchPrefixes: ["/habits"], mobilePlacement: "more", group: "planning", desktop: true },
   { id: "protocols", label: "Protocols", href: "/protocols", icon: "protocols", matchPrefixes: ["/protocols"], mobilePlacement: "more", group: "planning", desktop: true },
   { id: "health", label: "My Health", href: "/health", icon: "health", matchPrefixes: ["/health"], mobilePlacement: "more", group: "account", desktop: true },
+  { id: "experiments", label: "Experiments", href: "/experiments", icon: "experiments", matchPrefixes: ["/experiments"], mobilePlacement: "more", group: "insights", desktop: true },
   { id: "exercise-library", label: "Exercise Library", href: "/workouts#exercise-library", icon: "exercises", matchPrefixes: [], mobilePlacement: "more", group: "workouts", desktop: false },
   { id: "workout-progress", label: "Workout Progress", href: "/workouts/progress", icon: "progress", matchPrefixes: ["/workouts/progress"], mobilePlacement: "more", group: "workouts", desktop: false },
   { id: "insights", label: "Insights", href: "/insights", icon: "insights", matchPrefixes: ["/insights"], mobilePlacement: "more", group: "insights", desktop: true },
