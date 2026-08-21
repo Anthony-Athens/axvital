@@ -6,6 +6,7 @@ import { friendlyErrorMessage, logDevError, logDevInfo } from "@/lib/app-errors"
 import { supabase } from "@/lib/supabase/client";
 import type { HealthEventType } from "@/lib/types";
 import { TodayPlan } from "@/components/planner/TodayPlan";
+import { ActiveEpisodes } from "@/components/episodes/ActiveEpisodes";
 import { CollapsibleSection, usePersistentDisclosure } from "@/components/ui/CollapsibleSection";
 import { CheckInFieldGroup } from "@/components/checkin/CheckInFieldGroup";
 import { Timeline } from "@/components/timeline/Timeline";
@@ -621,6 +622,7 @@ export default function CheckInPage() {
       </header>
 
       <TodayPlan />
+      <ActiveEpisodes />
 
       <div className="mt-5 grid gap-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(360px,0.9fr)] lg:items-start">
         <CollapsibleSection id="daily-checkin" title="Daily Check-In" description={saved ? "Your essentials are saved for today." : "Complete your daily essentials in under 30 seconds."} status={<span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${saved ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"}`}>{saved ? "Completed" : "Not completed"}</span>} expanded={checkinExpanded} onToggle={() => setCheckinExpanded((value) => !value)}>

@@ -1,0 +1,13 @@
+export const episodeTypes = ["flare", "outbreak", "attack", "episode", "exacerbation", "relapse", "custom"] as const;
+export const episodeImpacts = ["none", "mild", "moderate", "significant", "severe"] as const;
+export const episodeUpdateStatuses = ["ongoing", "improving", "stable", "worsening", "resolved"] as const;
+export type EpisodeType = typeof episodeTypes[number];
+export type EpisodeImpact = typeof episodeImpacts[number];
+export type EpisodeUpdateStatus = typeof episodeUpdateStatuses[number];
+export type EpisodeSymptom = { id:string; started_at:string; severity:number|null; ended_at:string|null; custom_symptom_name:string|null; symptom?:{name:string}|null };
+export type EpisodeUpdate = { id:string; recorded_at:string; overall_severity:number|null; functional_impact:EpisodeImpact|null; status:EpisodeUpdateStatus|null; notes:string|null };
+export type ConditionEpisode = { id:string; user_id:string; user_condition_id:string; episode_type:EpisodeType; title:string|null; started_at:string; ended_at:string|null; status:"ongoing"|"resolved"|"archived"; overall_severity:number|null; functional_impact:EpisodeImpact|null; notes:string|null; archived_at:string|null; user_condition?:{id:string;custom_condition_name:string|null;condition?:{name:string;preferred_episode_label:string|null}|null}|null; symptom_links?:Array<{user_symptom_event_id:string;symptom_event?:EpisodeSymptom|null}>; updates?:EpisodeUpdate[] };
+export type NewEpisodeSymptom = { symptomId?:string|null; customName?:string|null; startedAt?:string; severity?:number|null; notes?:string|null };
+export type CreateEpisodeInput = { userConditionId:string; episodeType:EpisodeType; title?:string; startedAt:string; overallSeverity?:number|null; functionalImpact?:EpisodeImpact|null; notes?:string; existingSymptomEventIds?:string[]; newSymptoms?:NewEpisodeSymptom[] };
+export type EpisodeUpdateInput = { recordedAt?:string; overallSeverity?:number|null; functionalImpact?:EpisodeImpact|null; status:EpisodeUpdateStatus; notes?:string; symptomEventIds?:string[] };
+export type EpisodeSummary = { count30:number; count90:number; averageResolvedDurationHours:number|null; averageStartingSeverity:number|null; averagePeakSeverity:number|null; daysSinceLastResolved:number|null; commonSymptoms:Array<{name:string;count:number}> };

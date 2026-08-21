@@ -18,6 +18,7 @@ export type CatalogCondition = {
   common_aliases: string[];
   is_featured: boolean;
   display_order: number;
+  preferred_episode_label?: string | null;
   category?: Pick<ConditionCategory, "slug" | "name"> | null;
 };
 
