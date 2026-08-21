@@ -1,0 +1,2 @@
+import{ConditionPatterns}from"@/components/episodes/ConditionPatterns";import{ButtonLink,PageContainer}from"@/components/ui/design-system";
+export default async function Page({params}:{params:Promise<{id:string}>}){const{id}=await params;return <PageContainer><ButtonLink href={`/health/conditions/${id}`} variant="tertiary" className="mb-4 -ml-4">← Condition overview</ButtonLink><ConditionPatterns conditionId={id}/></PageContainer>}

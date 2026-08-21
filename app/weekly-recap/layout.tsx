@@ -1,0 +1,1 @@
+import type{ReactNode}from"react";import{ConditionPatternHighlights}from"@/components/episodes/ConditionPatternHighlights";export default function Layout({children}:{children:ReactNode}){return <>{children}<div className="mx-auto max-w-4xl px-4 pb-8 sm:px-6"><ConditionPatternHighlights recap/></div></>}
