@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { FormEvent, useMemo, useRef, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { friendlyErrorMessage, logDevError, logDevInfo } from "@/lib/app-errors";
 import { supabase } from "@/lib/supabase/client";
@@ -8,6 +8,8 @@ import type { HealthEventType } from "@/lib/types";
 import { TodayPlan } from "@/components/planner/TodayPlan";
 import { CollapsibleSection, usePersistentDisclosure } from "@/components/ui/CollapsibleSection";
 import { CheckInFieldGroup } from "@/components/checkin/CheckInFieldGroup";
+import { Timeline } from "@/components/timeline/Timeline";
+import { localDateString } from "@/lib/timeline/dates";
 
 type AnswerMap = Record<string, string>;
 type QuickAddType =
@@ -25,42 +27,6 @@ type QuickAddField = {
   placeholder: string;
   kind?: FieldKind;
   options?: string[];
-};
-type LocalHealthEvent = {
-  id: string;
-  type: HealthEventType;
-  eventTime: string;
-  title: string;
-  notes?: string | null;
-  tags: string[];
-  details: Record<string, string | number | null>;
-};
-type HealthEventRow = {
-  id: string;
-  user_id: string;
-  event_date: string;
-  event_time: string;
-  event_type: HealthEventType;
-  title: string | null;
-  description: string | null;
-  amount: string | null;
-  dose: string | null;
-  duration: string | null;
-  intensity: string | null;
-  severity: number | null;
-  notes: string | null;
-  tags: string[] | null;
-  calories: number | null;
-  protein_g: number | null;
-  carbs_g: number | null;
-  fat_g: number | null;
-  supplement_name: string | null;
-  dose_amount: number | null;
-  dose_unit: string | null;
-  exercise_type: string | null;
-  duration_minutes: number | null;
-  distance: number | null;
-  distance_unit: string | null;
 };
 
 const questions = [
@@ -307,56 +273,6 @@ const quickAddFields: Record<QuickAddType, QuickAddField[]> = {
   ],
 };
 
-const initialTimeline: LocalHealthEvent[] = [
-  {
-    id: "sample-1",
-    type: "supplement",
-    eventTime: "08:00",
-    title: "Coffee + creatine",
-    tags: ["caffeine", "supplement"],
-    details: {},
-  },
-  {
-    id: "sample-2",
-    type: "food",
-    eventTime: "12:00",
-    title: "4 eggs + multivitamin",
-    tags: ["high protein"],
-    details: { protein_g: 28 },
-  },
-  {
-    id: "sample-3",
-    type: "exercise",
-    eventTime: "17:00",
-    title: "4-mile run",
-    tags: [],
-    details: { duration_minutes: 38, distance: 4, distance_unit: "miles" },
-  },
-  {
-    id: "sample-4",
-    type: "symptom",
-    eventTime: "21:30",
-    title: "Mild headache",
-    tags: ["screen time", "late night"],
-    details: { severity: 3 },
-  },
-];
-
-function titleCase(value: string) {
-  return value.slice(0, 1).toUpperCase() + value.slice(1);
-}
-
-function formatEventTime(value: string) {
-  const [hours = "0", minutes = "00"] = value.split(":");
-  const hourNumber = Number(hours);
-  const displayHour = hourNumber % 12 || 12;
-  const period = hourNumber >= 12 ? "PM" : "AM";
-
-  // Hydration fix: avoid Date/Intl formatting during render so the server HTML
-  // and the first client render produce identical timeline text.
-  return `${displayHour}:${minutes.padStart(2, "0")} ${period}`;
-}
-
 function currentTimeValue() {
   const now = new Date();
   return `${String(now.getHours()).padStart(2, "0")}:${String(
@@ -478,93 +394,6 @@ function eventTitle(type: QuickAddType, formData: FormData) {
   return formValue(formData, "note_text") ?? type;
 }
 
-function buildEventDetails(type: QuickAddType, formData: FormData) {
-  const details: Record<string, string | number | null> = {};
-
-  if (type === "Food") {
-    details.calories = integerValue(formData, "calories");
-    details.protein_g = integerValue(formData, "protein_g");
-    details.carbs_g = integerValue(formData, "carbs_g");
-    details.fat_g = integerValue(formData, "fat_g");
-  }
-
-  if (type === "Fluid") {
-    details.amount = formValue(formData, "amount");
-  }
-
-  if (type === "Supplement" || type === "Medication") {
-    details.dose_amount = numberValue(formData, "dose_amount");
-    details.dose_unit = formValue(formData, "dose_unit");
-  }
-
-  if (type === "Supplement") {
-    details.supplement_name = formValue(formData, "supplement_name");
-  }
-
-  if (type === "Exercise") {
-    details.exercise_type = formValue(formData, "exercise_type");
-    details.duration_minutes = integerValue(formData, "duration_minutes");
-    details.intensity = formValue(formData, "intensity");
-    details.distance = numberValue(formData, "distance");
-    details.distance_unit = formValue(formData, "distance_unit");
-  }
-
-  if (type === "Symptom") {
-    details.severity = integerValue(formData, "severity");
-  }
-
-  return details;
-}
-
-function titleFromRow(event: HealthEventRow) {
-  if (event.title) {
-    return event.title;
-  }
-
-  if (event.event_type === "supplement" && event.supplement_name) {
-    return event.supplement_name;
-  }
-
-  if (event.event_type === "exercise" && event.exercise_type) {
-    return event.exercise_type;
-  }
-
-  return event.description || event.notes || titleCase(event.event_type);
-}
-
-function detailsFromRow(event: HealthEventRow) {
-  return {
-    amount: event.amount,
-    dose: event.dose,
-    duration: event.duration,
-    intensity: event.intensity,
-    severity: event.severity,
-    calories: event.calories,
-    protein_g: event.protein_g,
-    carbs_g: event.carbs_g,
-    fat_g: event.fat_g,
-    supplement_name: event.supplement_name,
-    dose_amount: event.dose_amount,
-    dose_unit: event.dose_unit,
-    exercise_type: event.exercise_type,
-    duration_minutes: event.duration_minutes,
-    distance: event.distance,
-    distance_unit: event.distance_unit,
-  };
-}
-
-function mapHealthEventRow(event: HealthEventRow): LocalHealthEvent {
-  return {
-    id: event.id,
-    type: event.event_type,
-    eventTime: event.event_time,
-    title: titleFromRow(event),
-    notes: event.notes,
-    tags: event.tags ?? [],
-    details: detailsFromRow(event),
-  };
-}
-
 function buildHealthEventPayload(
   type: QuickAddType,
   formData: FormData,
@@ -638,8 +467,6 @@ export default function CheckInPage() {
   const [savingEvent, setSavingEvent] = useState(false);
   const quickAddTriggerRef = useRef<HTMLButtonElement | null>(null);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [healthEvents, setHealthEvents] =
-    useState<LocalHealthEvent[]>(initialTimeline);
   const [checkinExpanded, setCheckinExpanded] = usePersistentDisclosure("axvital.today.dailyCheckIn.expanded", false);
   const [eventsExpanded, setEventsExpanded] = usePersistentDisclosure("axvital.today.optionalEvents.expanded", false);
 
@@ -647,26 +474,6 @@ export default function CheckInPage() {
     const complete = questions.filter((question) => answers[question.id]).length;
     return Math.round((complete / questions.length) * 100);
   }, [answers]);
-
-  useEffect(() => {
-    let ignore = false;
-
-    async function initializeEvents() {
-      const user = await getAuthenticatedUser();
-
-      if (!user || ignore) {
-        return;
-      }
-
-      await loadTodayEvents(user.id);
-    }
-
-    initializeEvents();
-
-    return () => {
-      ignore = true;
-    };
-  }, []);
 
   function choose(questionId: string, option: string) {
     setSaved(false);
@@ -681,50 +488,7 @@ export default function CheckInPage() {
     return user;
   }
 
-  async function loadTodayEvents(userId: string) {
-    const { data, error } = await supabase
-      .from("health_events")
-      .select(
-        "id,user_id,event_date,event_time,event_type,title,description,amount,dose,duration,intensity,severity,notes,tags,calories,protein_g,carbs_g,fat_g,supplement_name,dose_amount,dose_unit,exercise_type,duration_minutes,distance,distance_unit",
-      )
-      .eq("user_id", userId)
-      .eq("event_date", todayDateString())
-      .order("event_time", { ascending: true });
-
-    if (error) {
-      logDevError("Failed to load health events", error);
-      setEventMessage(friendlyErrorMessage("load your timeline"));
-      return;
-    }
-
-    const dayStart = new Date(); dayStart.setHours(0, 0, 0, 0);
-    const dayEnd = new Date(dayStart); dayEnd.setDate(dayEnd.getDate() + 1);
-    const { data: symptomRows, error: symptomError } = await supabase
-      .from("user_symptom_events")
-      .select("id,started_at,severity,notes,resolved,custom_symptom_name,symptom:symptoms(name),condition_links:symptom_event_conditions(user_condition:user_conditions(custom_condition_name,condition:conditions(name)))")
-      .eq("user_id", userId).is("deleted_at", null)
-      .gte("started_at", dayStart.toISOString()).lt("started_at", dayEnd.toISOString());
-    if (symptomError) { logDevError("Failed to load structured symptom events", symptomError); setEventMessage(friendlyErrorMessage("load your timeline")); return; }
-    const structured = ((symptomRows ?? []) as unknown as Array<{ id:string; started_at:string; severity:number|null; notes:string|null; resolved:boolean|null; custom_symptom_name:string|null; symptom:{name:string}|null; condition_links:Array<{user_condition:{custom_condition_name:string|null;condition:{name:string}|null}|null}> }>).map((row): LocalHealthEvent => ({
-      id: row.id, type: "symptom", eventTime: new Date(row.started_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false }),
-      title: row.symptom?.name ?? row.custom_symptom_name ?? "Symptom", notes: row.notes,
-      tags: [...row.condition_links.map((link) => link.user_condition?.condition?.name ?? link.user_condition?.custom_condition_name).filter((name): name is string => Boolean(name)), row.resolved ? "Resolved" : "Ongoing"],
-      details: { severity: row.severity },
-    }));
-    const { data: nutritionRows, error: nutritionError } = await supabase
-      .from("nutrition_entries")
-      .select("id,title,consumed_at,meal_type,notes,items:nutrition_entry_items(calories,protein_grams)")
-      .eq("user_id", userId).is("deleted_at", null)
-      .gte("consumed_at", dayStart.toISOString()).lt("consumed_at", dayEnd.toISOString());
-    if (nutritionError) { logDevError("Failed to load nutrition entries", nutritionError); setEventMessage(friendlyErrorMessage("load your timeline")); return; }
-    const nutrition = ((nutritionRows ?? []) as unknown as Array<{ id:string; title:string|null; consumed_at:string; meal_type:string|null; notes:string|null; items:Array<{calories:number|null;protein_grams:number|null}> }>).map((row): LocalHealthEvent => ({
-      id: row.id, type: "food",
-      eventTime: new Date(row.consumed_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false }),
-      title: row.title ?? "Food", notes: row.notes, tags: row.meal_type ? [row.meal_type] : [],
-      details: { calories: row.items[0]?.calories ?? null, protein_g: row.items[0]?.protein_grams ?? null },
-    }));
-    setHealthEvents([...((data ?? []) as HealthEventRow[]).map(mapHealthEventRow), ...structured, ...nutrition].sort((a, b) => a.eventTime.localeCompare(b.eventTime)));
-  }
+  function refreshTimeline() { window.dispatchEvent(new Event("axvital:timeline-refresh")); }
 
   async function saveDailyCheckin() {
     setSavingCheckin(true);
@@ -815,16 +579,6 @@ export default function CheckInPage() {
     const formData = new FormData(form);
     try {
       const user = await getAuthenticatedUser();
-      const newEvent: LocalHealthEvent = {
-        id: crypto.randomUUID(),
-        type: quickAddTypeToEventType(activeQuickAdd),
-        eventTime: formValue(formData, "time") ?? currentTimeValue(),
-        title: eventTitle(activeQuickAdd, formData),
-        notes: formValue(formData, "notes") ?? formValue(formData, "note_text"),
-        tags: selectedTags,
-        details: buildEventDetails(activeQuickAdd, formData),
-      };
-
       if (user) {
         const payload = buildHealthEventPayload(
           activeQuickAdd,
@@ -840,14 +594,9 @@ export default function CheckInPage() {
           return;
         }
 
-        await loadTodayEvents(user.id);
+        refreshTimeline();
         setEventMessage("Event saved. Timeline refreshed.");
       } else {
-        setHealthEvents((current) =>
-          [...current, newEvent].sort((a, b) =>
-            a.eventTime.localeCompare(b.eventTime),
-          ),
-        );
         setEventMessage("Event added to today's timeline.");
       }
 
@@ -974,47 +723,7 @@ export default function CheckInPage() {
             </div>
           </CollapsibleSection>
 
-          <section className="rounded-xl border border-slate-200 bg-white p-4 sm:p-5">
-            <h2 className="text-lg font-semibold tracking-tight text-slate-900">
-              Today&apos;s Timeline
-            </h2>
-            <div className="mt-4 divide-y divide-slate-200">
-              {healthEvents.map((item) => (
-                <article
-                  key={item.id}
-                  className="relative py-3 pl-5"
-                >
-                  <div className="flex gap-3">
-                    <div className="absolute left-0 top-5 h-2 w-2 rounded-full bg-blue-500" />
-                    <div>
-                      <p className="text-xs font-medium tabular-nums text-slate-500">
-                        {formatEventTime(item.eventTime)} -{" "}
-                        {titleCase(item.type)}
-                      </p>
-                      <p className="mt-1 text-sm font-medium text-slate-900">
-                        {item.title}
-                      </p>
-                    </div>
-                  </div>
-                  {item.tags.length ? (
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      <span className="text-xs font-black uppercase tracking-[0.12em] text-slate-400">
-                        Tags:
-                      </span>
-                      {item.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="rounded-full bg-white px-3 py-1 text-xs font-black text-slate-600"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  ) : null}
-                </article>
-              ))}{!healthEvents.length ? <p className="py-4 text-sm text-slate-500">Your logged events will appear here.</p> : null}
-            </div>
-          </section>
+          <Timeline startDate={localDateString()} />
         </div>
       </div>
 
