@@ -1,0 +1,4 @@
+import type { NextRequest } from "next/server";
+import { createClient } from "@/lib/supabase/server";
+import { buildConditionOutlook } from "@/lib/episode-outlook/service";
+export async function GET(request:NextRequest){const q=request.nextUrl.searchParams,id=q.get("condition")??"",timeZone=q.get("timeZone")??"UTC";if(!/^[0-9a-f-]{36}$/i.test(id))return Response.json({error:"INVALID_REQUEST"},{status:400});try{Intl.DateTimeFormat(undefined,{timeZone});return Response.json(await buildConditionOutlook(await createClient(),{userConditionId:id,timeZone}),{headers:{"Cache-Control":"private, no-store"}})}catch(error){const code=error instanceof Error?error.message:"";return Response.json({error:code==="AUTH_REQUIRED"?"AUTH_REQUIRED":code==="CONDITION_NOT_FOUND"?"NOT_FOUND":"ANALYSIS_FAILED"},{status:code==="AUTH_REQUIRED"?401:code==="CONDITION_NOT_FOUND"?404:500})}}
