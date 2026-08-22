@@ -32,7 +32,7 @@ export default function Home() {
               Health intelligence, built around your day
             </div>
             <h1 className="text-5xl font-black leading-[0.98] tracking-tight text-slate-950 sm:text-6xl md:text-7xl">
-              Discover Your Health Operating System
+              Understand what affects how you feel.
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
               Track what matters. Discover what works. Improve your health with
@@ -43,13 +43,13 @@ export default function Home() {
                 href="/today"
                 className="flex min-h-14 items-center justify-center rounded-2xl bg-emerald-500 px-6 text-base font-black text-white shadow-lg shadow-emerald-200 transition hover:bg-emerald-600"
               >
-                Start Daily Check-In
+                Create Free Account
               </Link>
               <Link
-                href="/dashboard"
+                href="/pricing"
                 className="flex min-h-14 items-center justify-center rounded-2xl border border-slate-200 bg-white px-6 text-base font-black text-slate-900 transition hover:bg-slate-50"
               >
-                View Dashboard
+                View Pricing
               </Link>
             </div>
           </div>
@@ -141,7 +141,7 @@ export default function Home() {
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-600">
               Pricing
             </p>
-            <h2 className="mt-3 text-3xl font-black">Free MVP access</h2>
+            <h2 className="mt-3 text-3xl font-black">Free health tracking</h2>
             <p className="mt-3 leading-7 text-slate-600">
               Track daily health inputs and view sample intelligence while the
               platform grows into connected wearable and lab integrations.

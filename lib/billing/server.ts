@@ -1,0 +1,4 @@
+import "server-only";import type{SupabaseClient}from"@supabase/supabase-js";import{hasEntitlement,subscriptionFromRow,type Entitlement}from"./entitlements";
+export async function requireUser(client:SupabaseClient){const{data,error}=await client.auth.getUser();if(error||!data.user)throw new Error("AUTH_REQUIRED");return data.user}
+export async function getSubscription(client:SupabaseClient,userId:string){const{data,error}=await client.from("subscriptions").select("plan,status,current_period_end,cancel_at_period_end,stripe_customer_id,stripe_price_id,current_period_start").eq("user_id",userId).maybeSingle();if(error)throw new Error("SUBSCRIPTION_FAILED");return data}
+export async function entitlementFor(client:SupabaseClient,entitlement:Entitlement){const user=await requireUser(client),row=await getSubscription(client,user.id);return{user,row,allowed:hasEntitlement(subscriptionFromRow(row),entitlement)}}

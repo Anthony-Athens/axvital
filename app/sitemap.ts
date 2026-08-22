@@ -1,0 +1,1 @@
+import type{MetadataRoute}from"next";export default function sitemap():MetadataRoute.Sitemap{const base=(process.env.NEXT_PUBLIC_APP_URL??"http://localhost:3000").replace(/\/$/,"");return["","/pricing","/privacy","/terms","/contact"].map(path=>({url:base+path,lastModified:new Date(),changeFrequency:path?"monthly"as const:"weekly"as const,priority:path?.6:1}))}

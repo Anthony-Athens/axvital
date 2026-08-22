@@ -16,6 +16,7 @@ export const navigationItems: readonly NavigationItem[] = [
   { id: "insights", label: "Insights", href: "/insights", icon: "insights", matchPrefixes: ["/insights"], mobilePlacement: "more", group: "insights", desktop: true },
   { id: "weekly-recap", label: "Weekly Recap", href: "/weekly-recap", icon: "recap", matchPrefixes: ["/weekly-recap"], mobilePlacement: "more", group: "insights", desktop: true },
   { id: "profile", label: "Profile", href: "/profile", icon: "profile", matchPrefixes: ["/profile"], mobilePlacement: "more", group: "account", desktop: true },
+  { id: "billing", label: "Billing", href: "/settings/billing", icon: "profile", matchPrefixes: ["/settings/billing"], mobilePlacement: "more", group: "account", desktop: false },
 ] as const;
 
 export const primaryMobileItems = navigationItems.filter((item) => item.mobilePlacement === "primary");

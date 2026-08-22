@@ -1,0 +1,1 @@
+import{Footer}from"@/components/Footer";export default function Page(){return <><article className="mx-auto max-w-3xl px-4 py-10"><h1 className="text-3xl font-semibold">Contact</h1><p className="mt-4 leading-7 text-slate-700">A monitored support and privacy contact address must be published here before external launch.</p></article><Footer/></>}

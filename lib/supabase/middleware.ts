@@ -12,6 +12,7 @@ const protectedRoutes = [
   "/weekly-recap",
   "/profile",
   "/onboarding",
+  "/settings",
 ];
 const authRoutes = ["/login", "/signup"];
 
