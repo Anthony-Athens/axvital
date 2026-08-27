@@ -1,5 +1,31 @@
-import { withApiGuard } from "@/lib/api/guard";
-import{createClient}from"@/lib/supabase/server";import{createAdminClient}from"@/lib/supabase/admin";import{appUrl,priceFor}from"@/lib/billing/config";import{getSubscription,requireUser}from"@/lib/billing/server";import{stripe}from"@/lib/billing/stripe";
-async function handlePOST(request:Request){try{const client=await createClient(),user=await requireUser(client),body=await request.json().catch(()=>({})),price=priceFor(body.interval),existing=await getSubscription(client,user.id);let customer=existing?.stripe_customer_id??null;if(!customer){const created=await stripe().customers.create({email:user.email,metadata:{axvital_user_id:user.id}});customer=created.id;const{error}=await createAdminClient().from("subscriptions").upsert({user_id:user.id,stripe_customer_id:customer,plan:"free",status:"inactive"},{onConflict:"user_id"});if(error)throw error}const session=await stripe().checkout.sessions.create({mode:"subscription",customer,line_items:[{price:price.priceId,quantity:1}],success_url:`${appUrl()}/settings/billing?checkout=success`,cancel_url:`${appUrl()}/pricing?checkout=cancelled`,allow_promotion_codes:true,client_reference_id:user.id,metadata:{axvital_user_id:user.id,plan:"premium"},subscription_data:{metadata:{axvital_user_id:user.id,plan:"premium"}}});return Response.json({url:session.url},{headers:{"Cache-Control":"private, no-store"}})}catch(error){const code=error instanceof Error?error.message:"";return Response.json({error:code==="AUTH_REQUIRED"?"AUTH_REQUIRED":code==="INVALID_INTERVAL"?"INVALID_INTERVAL":"CHECKOUT_FAILED"},{status:code==="AUTH_REQUIRED"?401:code==="INVALID_INTERVAL"?400:500})}}
-
-export const POST = withApiGuard("billing/checkout", handlePOST);
+import {ApiError} from "@/lib/api/validation";
+import {withApiGuard} from "@/lib/api/guard";
+import {createClient} from "@/lib/supabase/server";
+import {createAdminClient} from "@/lib/supabase/admin";
+import {appUrl,priceFor} from "@/lib/billing/config";
+import {requireUser} from "@/lib/billing/server";
+import {stripe} from "@/lib/billing/stripe";
+import {authoritativeCustomer} from "@/lib/billing/customer-coordination";
+import {customerDependencies} from "@/lib/billing/customer-server";
+export const maxDuration=60;
+export const POST=withApiGuard("billing/checkout",async request=>{
+  const user=await requireUser(await createClient());
+  const body=await request.json().catch(()=>({}));
+  if(body.interval!=="monthly"&&body.interval!=="annual")throw new ApiError(400,"INVALID_INTERVAL");
+  const price=priceFor(body.interval);
+  const origin=appUrl();
+  const provider=stripe();
+  const dependencies=customerDependencies(createAdminClient(),provider);
+  const customer=await authoritativeCustomer(user.id,dependencies);
+  const session=await provider.checkout.sessions.create({
+    mode:"subscription",customer,line_items:[{price:price.priceId,quantity:1}],
+    success_url:`${origin}/settings/billing?checkout=success`,
+    cancel_url:`${origin}/pricing?checkout=cancelled`,allow_promotion_codes:true,
+    client_reference_id:user.id,metadata:{axvital_user_id:user.id,plan:"premium"},
+    subscription_data:{metadata:{axvital_user_id:user.id,plan:"premium"}},
+  },{timeout:10000,maxNetworkRetries:0});
+  // If closing started during the provider call, do not hand out this URL.
+  // Stripe customer closure handles an already-open session for that customer.
+  await dependencies.assertMapping(user.id,customer);
+  return Response.json({url:session.url});
+});

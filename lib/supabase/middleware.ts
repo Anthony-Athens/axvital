@@ -53,7 +53,7 @@ export async function updateSession(request: NextRequest) {
     const onboardingComplete =
       Boolean(profile?.onboarding_completed) && Boolean(profile?.primary_goal?.trim());
 
-    if (!onboardingComplete && pathname !== "/onboarding") {
+    if (!onboardingComplete && pathname !== "/onboarding" && !isRoute(pathname, ["/settings", "/profile"])) {
       const url = request.nextUrl.clone();
       url.pathname = "/onboarding";
       return NextResponse.redirect(url);

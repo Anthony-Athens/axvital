@@ -639,7 +639,11 @@ export default function ProfilePage() {
 
       <HealthProfileSummary />
       <section className="rounded-2xl border border-slate-200 bg-white p-5">
-        <h2 className="text-lg font-semibold">Account security</h2>
+        <h2 className="text-lg font-semibold">Account controls</h2>
+        <p className="mt-2 text-sm text-slate-600">Manage billing, security, data export, account deletion, and support.</p>
+        <ButtonLink href="/settings" variant="secondary" className="mt-3 mr-3">Manage account</ButtonLink>
+        <ButtonLink href="/settings/data" variant="secondary" className="mt-3 mr-3">Export my data</ButtonLink>
+        <ButtonLink href="/settings/delete" variant="secondary" className="mt-3 mr-3">Delete account</ButtonLink>
         <ButtonLink href="/settings/security" variant="secondary" className="mt-3">Change password</ButtonLink>
       </section>
 

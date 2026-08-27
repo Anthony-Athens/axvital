@@ -26,3 +26,16 @@ test("invalid JSON, unexpected fields and cross-origin mutations are rejected",a
 test("health ranges reject impossible, reversed, oversized and disjoint logical dates",()=>{assert.doesNotThrow(()=>validateDateRange("2026-08-20T04:00:00Z","2026-08-22T04:00:00Z","2026-08-20","2026-08-21",32));for(const args of[["2026-02-30T00:00:00Z","2026-03-01T00:00:00Z","2026-02-30","2026-03-01"],["2026-08-22T00:00:00Z","2026-08-20T00:00:00Z","2026-08-20","2026-08-21"],["2026-01-01T00:00:00Z","2026-08-22T00:00:00Z","2026-01-01","2026-08-21"],["2026-08-20T00:00:00Z","2026-08-22T00:00:00Z","2026-08-01","2026-08-02"]])assert.throws(()=>validateDateRange(...args as [string,string,string,string],32))});
 test("analytics requests bound the existing 97-day source window",async()=>{const query=new URLSearchParams({start:"2026-05-17T04:00:00Z",end:"2026-08-22T04:00:00Z",endDate:"2026-08-21",window:"30",timeZone:"America/New_York"});await validateApiRequest(new Request(`https://example.com/api/analytics?${query}`),"analytics");query.set("timeZone","invalid");await assert.rejects(validateApiRequest(new Request(`https://example.com/api/analytics?${query}`),"analytics"))});
 test("duplicate query parameters and malformed UUIDs fail safely",async()=>{await assert.rejects(validateApiRequest(new Request("https://example.com/api/condition-outlook?condition=------------------------------------"),"condition-outlook"));await assert.rejects(validateApiRequest(new Request("https://example.com/api/timeline?start=a&start=b"),"timeline"))});
+
+test("account boundaries deny anonymous and budgeted calls and keep JSON private",async()=>{
+ for(const route of ["account/export","account/delete"]){
+  let called=0;
+  for(const [user,allowed,status] of [[null,true,401],[{id:"A"},false,429],[{id:"A"},true,200]] as const){
+   const client={auth:{getUser:async()=>({data:{user},error:null})},rpc:async()=>({data:allowed,error:null})} as unknown as SupabaseClient;
+   const response=await guardWithClient(route,async()=>{called++;return Response.json({export_version:"axvital.account.v1",data:{}})},async()=>client)(new Request(`https://example.com/api/${route}`,{method:"POST",headers:{Origin:"https://example.com","Content-Type":"application/json"},body:"{}"}));
+   assert.equal(response.status,status);assert.equal(response.headers.get("Cache-Control"),"private, no-store");
+   assert.ok(await response.json());
+  }
+  assert.equal(called,1);
+ }
+});

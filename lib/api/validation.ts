@@ -39,7 +39,7 @@ export async function validateApiRequest(request: Request, route: string) {
   const url = new URL(request.url), query = url.searchParams;
   if (request.method === "POST") {
     const origin = request.headers.get("origin");
-    if (origin && origin !== url.origin) throw new ApiError(403, "INVALID_ORIGIN");
+    if ((route.startsWith("account/") && origin !== url.origin) || (origin && origin !== url.origin)) throw new ApiError(403, "INVALID_ORIGIN");
   }
   const allowed: Record<string, string[]> = {
     analytics: ["start","end","endDate","window","timeZone"], timeline: ["start","end","startDate","endDate"],
@@ -54,7 +54,7 @@ export async function validateApiRequest(request: Request, route: string) {
       try { body = JSON.parse(raw); } catch { invalid(); }
       if (!body || typeof body !== "object" || Array.isArray(body)) invalid();
     }
-    const keys = route === "weekly-recap" ? ["start","end","endDate","timeZone"] : route === "billing/checkout" ? ["interval"] : route === "product-events" ? ["event"] : [];
+    const keys = route === "account/delete" ? ["confirmation","password","acceptConsequences"] : route === "weekly-recap" ? ["start","end","endDate","timeZone"] : route === "billing/checkout" ? ["interval"] : route === "product-events" ? ["event"] : [];
     if (Object.keys(body).some(key => !keys.includes(key))) invalid();
   }
   const values = route === "weekly-recap" ? body : Object.fromEntries(query);
