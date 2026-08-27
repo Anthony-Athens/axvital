@@ -109,6 +109,8 @@ export default function LoginPage() {
             />
           </label>
 
+          <Link href="/forgot-password" className="inline-flex min-h-11 items-center rounded-lg text-sm font-semibold text-blue-700 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-600">Forgot password?</Link>
+
           {message ? (
             <p className="rounded-2xl bg-amber-50 p-4 text-sm font-black text-amber-900">
               {message}

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { logDevError } from "@/lib/app-errors";
 import { createClient } from "@/lib/supabase/browser";
+import { PASSWORD_MIN, PASSWORD_MAX, PASSWORD_HELP, passwordError } from "@/lib/auth/passwords";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -19,6 +20,8 @@ export default function SignupPage() {
 
   async function handleSignup(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const validation = passwordError(password);
+    if (validation) { setMessage(validation); return; }
     setLoading(true);
     setMessage("");
 
@@ -86,8 +89,12 @@ export default function SignupPage() {
                 type={type as string}
                 autoComplete={autocomplete as string}
                 required={required as boolean}
+                minLength={type === "password" ? PASSWORD_MIN : undefined}
+                maxLength={type === "password" ? PASSWORD_MAX : undefined}
+                aria-describedby={type === "password" ? "signup-password-help" : undefined}
                 className="mt-2 min-h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
               />
+              {type === "password" ? <span id="signup-password-help" className="mt-2 block text-sm text-slate-600">{PASSWORD_HELP}</span> : null}
             </label>
           ))}
 

@@ -5,6 +5,7 @@ import { friendlyErrorMessage, logDevError } from "@/lib/app-errors";
 import { createClient } from "@/lib/supabase/browser";
 import type { Profile } from "@/lib/types";
 import { HealthProfileSummary } from "@/components/health/HealthProfileSummary";
+import { ButtonLink } from "@/components/ui/design-system";
 
 type TrackingMode = "simple" | "advanced";
 type DemoHealthEvent = {
@@ -643,6 +644,10 @@ export default function ProfilePage() {
       ) : null}
 
       <HealthProfileSummary />
+      <section className="rounded-2xl border border-slate-200 bg-white p-5">
+        <h2 className="text-lg font-semibold">Account security</h2>
+        <ButtonLink href="/settings/security" variant="secondary" className="mt-3">Change password</ButtonLink>
+      </section>
 
       <section className="mt-5 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm md:p-8">
         <h2 className="text-2xl font-black">Future integrations</h2>
