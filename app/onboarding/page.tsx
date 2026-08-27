@@ -215,6 +215,7 @@ export default function OnboardingPage() {
                 <button
                   key={goal}
                   type="button"
+                  aria-pressed={selected}
                   onClick={() => setPrimaryGoal(goal)}
                   className={`min-h-14 rounded-2xl border px-4 text-left text-base font-black transition active:scale-[0.98] ${
                     selected

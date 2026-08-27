@@ -28,7 +28,6 @@ export async function loadFoodServings(client:SupabaseClient, foodId:string):Pro
   if (!foodId) return [];
   const { data, error } = await client.from("food_servings").select("*").eq("food_id",foodId).order("is_default",{ascending:false}).order("display_order",{ascending:true});
   if (error) {
-    console.error("nutrition.servings.load_failed",{foodId,code:error.code,constraint:error.details});
     throw new Error("Serving options could not be loaded. Try selecting the food again.");
   }
   return (data??[]) as Serving[];
@@ -48,7 +47,7 @@ export async function logFood(client:SupabaseClient,args:{foodId?:string;serving
   if (args.foodId && !args.servingId) throw new Error("Select a serving before logging this food.");
   if ((args.foodId?1:0)+(args.userFoodId?1:0)!==1) throw new Error("Select one food to log.");
   const { data,error }=await client.rpc("log_food_atomic",{selected_food_id:args.foodId??null,selected_serving_id:args.servingId??null,selected_user_food_id:args.userFoodId??null,quantity:args.quantity,consumed:args.consumedAt,meal:args.mealType||null,note:args.notes||null,entry_source:"manual"});
-  if(error){console.error("nutrition.food.log_failed",{sourceType:args.foodId?"global":"user",foodId:args.foodId,userFoodId:args.userFoodId,servingId:args.servingId,code:error.code,constraint:error.details});if(error.message.includes("Food not found"))throw new Error("That food or serving is no longer available. Select it again.");throw new Error("We couldn’t save this food. Check the serving and try again.");} return data as string;
+  if(error){if(error.message.includes("Food not found"))throw new Error("That food or serving is no longer available. Select it again.");throw new Error("We couldn’t save this food. Check the serving and try again.");} return data as string;
 }
 export async function createUserFood(client:SupabaseClient,input:Omit<UserFood,"id"|"last_logged_at">){const user=await userId(client);if(input.name.trim().length<2||input.serving_quantity<=0||Object.values(input).filter((value)=>typeof value==="number").some((value)=>value<0))throw new Error("Enter a valid food, serving, and nutrition value.");const{data,error}=await client.from("user_foods").insert({...input,user_id:user}).select().single();if(error)throw new Error("We couldn’t create this custom food.");return data as UserFood;}
 export async function updateEntry(client:SupabaseClient,id:string,changes:{consumed_at?:string;meal_type?:string|null;notes?:string|null}){const user=await userId(client);const{error}=await client.from("nutrition_entries").update(changes).eq("id",id).eq("user_id",user);if(error)throw new Error("We couldn’t update this food log.");}

@@ -1,5 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { logDevError, logDevInfo } from "@/lib/app-errors";
+import { logDevError } from "@/lib/app-errors";
 import type { WeeklyRecap } from "@/lib/types";
 
 type SupabaseErrorDetails = {
@@ -323,7 +323,6 @@ export async function generateWeeklyRecap(
     return null;
   }
 
-  logDevInfo("Saving weekly recap payload", recap);
 
   const { data, error } = await supabase
     .from("weekly_recaps")

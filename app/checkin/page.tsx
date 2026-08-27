@@ -2,7 +2,7 @@
 
 import { FormEvent, useMemo, useRef, useState } from "react";
 import type { User } from "@supabase/supabase-js";
-import { friendlyErrorMessage, logDevError, logDevInfo } from "@/lib/app-errors";
+import { friendlyErrorMessage, logDevError } from "@/lib/app-errors";
 import { supabase } from "@/lib/supabase/client";
 import type { HealthEventType } from "@/lib/types";
 import { TodayPlan } from "@/components/planner/TodayPlan";
@@ -520,14 +520,6 @@ export default function CheckInPage() {
       tags: [],
     };
 
-    logDevInfo("Saving daily check-in payload", payload);
-    logDevInfo("Daily check-in normalized values", {
-      nutrition_quality: payload.nutrition_quality,
-      exercise_level: payload.exercise_level,
-      sleep_quality: payload.sleep_quality,
-      stress_level: payload.stress_level,
-    });
-
     const { error } = await supabase
       .from("daily_checkins")
       .upsert(payload, { onConflict: "user_id,checkin_date" });
@@ -598,7 +590,8 @@ export default function CheckInPage() {
         refreshTimeline();
         setEventMessage("Event saved. Timeline refreshed.");
       } else {
-        setEventMessage("Event added to today's timeline.");
+        setEventMessage("Your event wasn’t saved. Please sign in before trying again.");
+        return;
       }
 
       form.reset();
@@ -681,11 +674,11 @@ export default function CheckInPage() {
 
           <div className="mt-5 border-t border-slate-200 pt-4">
             {saved ? (
-              <p className="mb-3 rounded-2xl bg-emerald-50 p-4 text-sm font-black text-emerald-700">
+              <p role="status" className="mb-3 rounded-2xl bg-emerald-50 p-4 text-sm font-black text-emerald-700">
                 {checkinMessage}
               </p>
             ) : checkinMessage ? (
-              <p className="mb-3 rounded-2xl bg-amber-50 p-4 text-sm font-black text-amber-900">
+              <p role="alert" className="mb-3 rounded-2xl bg-amber-50 p-4 text-sm font-black text-amber-900">
                 {checkinMessage}
               </p>
             ) : null}
@@ -849,7 +842,7 @@ export default function CheckInPage() {
             </section>
 
             {eventMessage ? (
-              <p className="mt-4 rounded-2xl bg-emerald-50 p-4 text-sm font-black text-emerald-700">
+              <p role="alert" className="mt-4 rounded-2xl bg-amber-50 p-4 text-sm font-black text-amber-900">
                 {eventMessage}
               </p>
             ) : null}
@@ -861,7 +854,7 @@ export default function CheckInPage() {
                 disabled={savingEvent}
                 className="min-h-14 rounded-2xl border border-slate-200 bg-white px-4 text-base font-black text-slate-700"
               >
-                Skip
+                Cancel
               </button>
               <button
                 type="submit"

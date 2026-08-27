@@ -65,9 +65,6 @@ export function NutritionHome() {
       setFoods((current) => current.map((item) => item.id === food.id ? selectedFood : item));
       setSelected({ food: selectedFood });
       setServing(selectInitialServing(options));
-      if (!options.length && process.env.NODE_ENV === "development") {
-        console.error("nutrition.servings.missing", { foodId: food.id, foodName: food.name, sourceType: "global", queryReturnedCount: options.length });
-      }
     } catch (cause) {
       if (requestId !== servingRequest.current) return;
       setError(cause instanceof Error ? cause.message : "Serving options could not be loaded.");
@@ -97,7 +94,7 @@ export function NutritionHome() {
   return (
     <PageContainer>
       <ButtonLink href="/today" variant="tertiary" className="mb-3 -ml-4">← Today</ButtonLink>
-      <PageHeader eyebrow="My Health" title="Nutrition" description="Log foods with structured servings and preserved nutrition snapshots." />
+      <PageHeader eyebrow="My Health" title="Nutrition" description="Choose a food and serving size to record what you ate." />
       <p className="mt-3 text-sm text-slate-600">Your nutrition data is private to your AXVital account.</p>
       {error ? <div className="mt-4"><InlineNotice>{error}</InlineNotice></div> : null}
       <section className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4" aria-label="Today nutrition totals">
@@ -112,7 +109,8 @@ export function NutritionHome() {
         <h2 className="text-xl font-semibold">Log Food</h2>
         {!selected && !custom ? (
           <>
-            <input type="search" className={`${controlClass} mt-3`} placeholder="Search foods" value={search} onChange={(event) => setSearch(event.target.value)} />
+            <label htmlFor="nutrition-search" className="mt-3 block text-sm font-semibold">Search foods</label>
+            <input id="nutrition-search" type="search" className={`${controlClass} mt-1`} placeholder="Search foods" value={search} onChange={(event) => setSearch(event.target.value)} />
             <div className="mt-3 max-h-80 divide-y overflow-y-auto rounded-xl border bg-white">
               {results.user.map((food) => <button type="button" key={food.id} onClick={() => chooseUser(food)} className="min-h-14 w-full px-4 text-left"><span className="font-semibold">{food.name}</span><span className="block text-xs text-slate-500">Custom food</span></button>)}
               {results.global.map((food) => <button type="button" key={food.id} onClick={() => chooseFood(food)} className="min-h-14 w-full px-4 text-left"><span className="font-semibold">{food.name}</span>{food.brand_name ? <span className="block text-xs text-slate-500">{food.brand_name}</span> : null}</button>)}
@@ -139,7 +137,7 @@ export function NutritionHome() {
       <section className="mt-8">
         <h2 className="text-xl font-semibold">Today’s food</h2>
         <div className="mt-3 grid gap-3">
-          {entries.map((entry) => <Surface compact key={entry.id}><div className="flex justify-between gap-3"><div><p className="font-semibold">{entry.title}</p><p className="text-sm text-slate-500">{new Date(entry.consumed_at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}{entry.meal_type ? ` · ${entry.meal_type}` : ""}</p><p className="mt-1 text-sm">{format(entry.items[0]?.calories)} calories · {format(entry.items[0]?.protein_grams)} g protein</p></div><Button variant="tertiary" aria-label={`Delete ${entry.title} food log`} onClick={() => { if (confirm(`Delete ${entry.title}?`)) void deleteEntry(createClient(), entry.id).then(load); }}>Delete</Button></div></Surface>)}
+          {entries.map((entry) => <Surface compact key={entry.id}><div className="flex justify-between gap-3"><div><p className="font-semibold">{entry.title}</p><p className="text-sm text-slate-500">{new Date(entry.consumed_at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}{entry.meal_type ? ` · ${entry.meal_type}` : ""}</p><p className="mt-1 text-sm">{format(entry.items[0]?.calories)} calories · {format(entry.items[0]?.protein_grams)} g protein</p></div><Button variant="tertiary" aria-label={`Delete ${entry.title} food log`} onClick={() => { if (confirm(`Delete ${entry.title}?`)) void deleteEntry(createClient(), entry.id).then(load).catch(() => setError("We couldn’t delete this food log. Please try again.")); }}>Delete</Button></div></Surface>)}
           {!entries.length ? <EmptyState title="No foods logged yet" description="Log a food to begin building your nutrition history." /> : null}
         </div>
       </section>
@@ -162,5 +160,5 @@ function CustomFood({ onCancel, onCreated }: { onCancel: () => void; onCreated: 
     } catch (cause) { setError(cause instanceof Error ? cause.message : "Unable to create food."); }
   }
   const fields = [["Calories", calories, setCalories], ["Protein (g)", protein, setProtein], ["Carbohydrates (g)", carbs, setCarbs], ["Fat (g)", fat, setFat]] as const;
-  return <form onSubmit={save} className="mt-4 grid gap-3 rounded-xl border bg-white p-4"><h3 className="font-semibold">Create custom food</h3><label className="grid gap-1 text-sm font-semibold">Name<input required className={controlClass} value={name} onChange={(event) => setName(event.target.value)} /></label><label className="grid gap-1 text-sm font-semibold">Serving name<input required className={controlClass} value={serving} onChange={(event) => setServing(event.target.value)} /></label><div className="grid grid-cols-2 gap-3">{fields.map(([label, value, setter]) => <label key={label} className="grid gap-1 text-sm font-semibold">{label}<input type="number" min="0" step="0.1" className={controlClass} value={value} onChange={(event) => setter(event.target.value)} /></label>)}</div>{error ? <InlineNotice>{error}</InlineNotice> : null}<div className="flex gap-2"><Button>Create and log</Button><Button type="button" variant="secondary" onClick={onCancel}>Cancel</Button></div></form>;
+  return <form onSubmit={save} className="mt-4 grid gap-3 rounded-xl border bg-white p-4"><h3 className="font-semibold">Create custom food</h3><label className="grid gap-1 text-sm font-semibold">Name<input required className={controlClass} value={name} onChange={(event) => setName(event.target.value)} /></label><label className="grid gap-1 text-sm font-semibold">Serving name<input required className={controlClass} value={serving} onChange={(event) => setServing(event.target.value)} /></label><div className="grid grid-cols-2 gap-3">{fields.map(([label, value, setter]) => <label key={label} className="grid gap-1 text-sm font-semibold">{label}<input type="number" min="0" step="0.1" className={controlClass} value={value} onChange={(event) => setter(event.target.value)} /></label>)}</div>{error ? <InlineNotice>{error}</InlineNotice> : null}<div className="flex gap-2"><Button>Create food</Button><Button type="button" variant="secondary" onClick={onCancel}>Cancel</Button></div></form>;
 }
