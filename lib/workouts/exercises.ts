@@ -17,7 +17,8 @@ async function requireUserId(client: SupabaseClient) {
 }
 
 function logDatabaseError(context: string, error: PostgrestError) {
-  if (process.env.NODE_ENV === "development") console.error(`[exercises] ${context}`, { message: error.message, details: error.details, hint: error.hint, code: error.code });
+  void error;
+  if (process.env.NODE_ENV === "development") console.error("exercises.operation_failed", { operation: context, category: "database_error" });
 }
 
 const optionalText = (value?: string | null) => value?.trim() || null;

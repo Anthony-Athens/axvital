@@ -11,10 +11,10 @@ export type DailyCheckin = {
   id: string;
   user_id: string;
   checkin_date: string;
-  energy_score: number;
-  mood_score: number;
-  sleep_quality: "Poor" | "Average" | "Good" | "Great";
-  exercise_level: "None" | "No Workout" | "Light" | "Moderate" | "Intense";
+  energy_score: number | null;
+  mood_score: number | null;
+  sleep_quality: "Poor" | "Average" | "Good" | "Great" | null;
+  exercise_level: "None" | "No Workout" | "Light" | "Moderate" | "Intense" | null;
   nutrition_quality:
     | "Poor"
     | "Average"
@@ -22,9 +22,9 @@ export type DailyCheckin = {
     | "Excellent"
     | "Clean"
     | "Balanced"
-    | "Great";
-  stress_level: "Low" | "Medium" | "High";
-  alcohol: boolean;
+    | "Great" | null;
+  stress_level: "Low" | "Medium" | "High" | null;
+  alcohol: boolean | null;
   notes?: string | null;
   tags?: string[] | null;
   weight?: number | null;

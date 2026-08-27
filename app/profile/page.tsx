@@ -1,4 +1,5 @@
 "use client";
+import { assertDevelopment, insertDemoCheckins } from "@/lib/checkins/demo";
 
 import { FormEvent, useEffect, useState } from "react";
 import { friendlyErrorMessage, logDevError } from "@/lib/app-errors";
@@ -124,7 +125,7 @@ function demoDailyCheckins(userId: string) {
       alcohol,
       weight: Number((startingWeight - index * 0.08 + Math.random() * 0.8).toFixed(1)),
       notes: "Demo daily check-in for development testing.",
-      tags: ["demo"],
+      tags: ["axvital-demo-v12"],
     };
   });
 }
@@ -144,7 +145,7 @@ function demoHealthEvents(userId: string) {
         dose_amount: 5,
         dose_unit: "g",
         notes: "Demo supplement event.",
-        tags: ["demo", "supplement"],
+        tags: ["axvital-demo-v12", "supplement"],
       },
       {
         user_id: userId,
@@ -158,7 +159,7 @@ function demoHealthEvents(userId: string) {
         carbs_g: index % 3 === 0 ? 68 : 18,
         fat_g: index % 3 === 0 ? 24 : 36,
         notes: "Demo food event.",
-        tags: ["demo", "food"],
+        tags: ["axvital-demo-v12", "food"],
       },
     ];
 
@@ -174,7 +175,7 @@ function demoHealthEvents(userId: string) {
         duration_minutes: pick([25, 35, 45]),
         intensity: pick(["Light", "Moderate", "Intense"]),
         notes: "Demo exercise event.",
-        tags: ["demo", "exercise"],
+        tags: ["axvital-demo-v12", "exercise"],
       });
     }
 
@@ -188,7 +189,7 @@ function demoHealthEvents(userId: string) {
         description: "Mild headache",
         severity: 3,
         notes: "Demo symptom event.",
-        tags: ["demo", "symptom"],
+        tags: ["axvital-demo-v12", "symptom"],
       });
     }
 
@@ -201,7 +202,7 @@ function demoHealthEvents(userId: string) {
         title: "Long workday",
         description: null,
         notes: "Demo note event.",
-        tags: ["demo", "note"],
+        tags: ["axvital-demo-v12", "note"],
       });
     }
 
@@ -326,6 +327,7 @@ export default function ProfilePage() {
   }
 
   async function getCurrentUserId() {
+    assertDevelopment();
     const {
       data: { user },
       error,
@@ -344,11 +346,12 @@ export default function ProfilePage() {
   }
 
   async function deleteDemoDataForUser(userId: string) {
+    assertDevelopment();
     const { error: eventError } = await supabase
       .from("health_events")
       .delete()
       .eq("user_id", userId)
-      .contains("tags", ["demo"]);
+      .contains("tags", ["axvital-demo-v12"]);
 
     if (eventError) {
       logDevError("Failed to delete demo health events", eventError);
@@ -359,7 +362,7 @@ export default function ProfilePage() {
       .from("daily_checkins")
       .delete()
       .eq("user_id", userId)
-      .contains("tags", ["demo"]);
+      .contains("tags", ["axvital-demo-v12"]);
 
     if (checkinError) {
       logDevError("Failed to delete demo daily check-ins", checkinError);
@@ -373,19 +376,10 @@ export default function ProfilePage() {
 
     try {
       const userId = await getCurrentUserId();
-      await deleteDemoDataForUser(userId);
-
       const checkins = demoDailyCheckins(userId);
       const events = demoHealthEvents(userId);
 
-      const { error: checkinError } = await supabase
-        .from("daily_checkins")
-        .upsert(checkins, { onConflict: "user_id,checkin_date" });
-
-      if (checkinError) {
-        logDevError("Failed to generate demo daily check-ins", checkinError);
-        throw new Error(friendlyErrorMessage("generate demo check-ins"));
-      }
+      await insertDemoCheckins(supabase, checkins);
 
       const { error: eventError } = await supabase
         .from("health_events")

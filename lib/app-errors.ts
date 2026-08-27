@@ -4,12 +4,14 @@ export function friendlyErrorMessage(action: string) {
 
 export function logDevError(label: string, error: unknown) {
   if (process.env.NODE_ENV === "development") {
-    console.error(label, error);
+    void error;
+    console.error("app.operation_failed", { operation: label, category: "operation_failed" });
   }
 }
 
 export function logDevInfo(label: string, payload: unknown) {
   if (process.env.NODE_ENV === "development") {
-    console.log(label, payload);
+    void payload;
+    console.info("app.operation", { operation: label });
   }
 }

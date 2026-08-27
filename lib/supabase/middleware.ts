@@ -1,24 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
-const protectedRoutes = [
-  "/today",
-  "/weekly-overview",
-  "/habits",
-  "/protocols",
-  "/workouts",
-  "/dashboard",
-  "/insights",
-  "/weekly-recap",
-  "/profile",
-  "/onboarding",
-  "/settings",
-];
-const authRoutes = ["/login", "/signup"];
-
-function isRoute(pathname: string, routes: string[]) {
-  return routes.some((route) => pathname === route || pathname.startsWith(`${route}/`));
-}
+import { protectedRoutes, authRoutes, isRoute } from "./routes";
 
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });

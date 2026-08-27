@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useMemo, useRef, useState } from "react";
+import { FormEvent, Suspense, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import type { User } from "@supabase/supabase-js";
 import { friendlyErrorMessage, logDevError } from "@/lib/app-errors";
 import { supabase } from "@/lib/supabase/client";
@@ -10,7 +10,9 @@ import { ActiveEpisodes } from "@/components/episodes/ActiveEpisodes";
 import { CollapsibleSection, usePersistentDisclosure } from "@/components/ui/CollapsibleSection";
 import { CheckInFieldGroup } from "@/components/checkin/CheckInFieldGroup";
 import { Timeline } from "@/components/timeline/Timeline";
-import { localDateString } from "@/lib/timeline/dates";
+import { useSearchParams, useRouter } from "next/navigation";
+import { draftFromRecord, loadCheckin, saveCheckin, type CheckinRecord } from "@/lib/checkins/persistence";
+import { localDateString, selectedCalendarDate } from "@/lib/timeline/dates";
 
 type AnswerMap = Record<string, string>;
 type QuickAddType =
@@ -282,69 +284,11 @@ function currentTimeValue() {
 }
 
 function todayDateString() {
-  return new Date().toISOString().slice(0, 10);
+  return localDateString();
 }
 
 function eventTimeValue(time: string | null) {
   return time || currentTimeValue();
-}
-
-function trimmedValue(value: string | null | undefined) {
-  const trimmed = value?.trim();
-  return trimmed ? trimmed : null;
-}
-
-function labelValue(value: string | null | undefined) {
-  const trimmed = trimmedValue(value);
-
-  if (!trimmed) {
-    return null;
-  }
-
-  return trimmed
-    .split(/\s+/)
-    .map((word) => word.slice(0, 1).toUpperCase() + word.slice(1).toLowerCase())
-    .join(" ");
-}
-
-function exerciseLevelValue(value: string) {
-  const allowedExerciseLevels: Record<string, string> = {
-    None: "None",
-    "No Workout": "No Workout",
-    Light: "Light",
-    Moderate: "Moderate",
-    Intense: "Intense",
-  };
-
-  return allowedExerciseLevels[value] ?? "None";
-}
-
-function nutritionQualityValue(value: string | null | undefined) {
-  const normalized = trimmedValue(value)?.toLowerCase();
-
-  if (!normalized) {
-    return null;
-  }
-
-  const nutritionMap: Record<string, "Poor" | "Average" | "Good" | "Excellent"> = {
-    poor: "Poor",
-    bad: "Poor",
-    low: "Poor",
-    average: "Average",
-    okay: "Average",
-    ok: "Average",
-    fair: "Average",
-    balanced: "Good",
-    "balanced meal": "Good",
-    clean: "Good",
-    good: "Good",
-    great: "Excellent",
-    healthy: "Excellent",
-    excellent: "Excellent",
-    "very good": "Excellent",
-  };
-
-  return nutritionMap[normalized] ?? "Good";
 }
 
 function formValue(formData: FormData, key: string) {
@@ -447,16 +391,25 @@ function buildHealthEventPayload(
   };
 }
 
+const subscribeDate = () => () => {};
+function DateRoute() {
+  const params = useSearchParams();
+  const today = useSyncExternalStore(subscribeDate, localDateString, () => "");
+  if (!today) return <p role="status" className="p-6">Loading check-in…</p>;
+  const date = params.getAll("date").length > 1 ? null : selectedCalendarDate(params.get("date"), today);
+  if (!date) return <div role="alert" className="p-6">Choose a valid date that is not in the future. <a href="/today" className="underline">Return to Today</a></div>;
+  return <CheckInForm key={date} date={date} historical={date !== today} />;
+}
 export default function CheckInPage() {
-  const [answers, setAnswers] = useState<AnswerMap>({
-    energy: "8",
-    mood: "7",
-    sleep: "Good",
-    exercise: "Moderate",
-    nutrition: "Good",
-    stress: "Low",
-    alcohol: "No",
-  });
+  return <Suspense fallback={<p role="status" className="p-6">Loading check-in…</p>}><DateRoute /></Suspense>;
+}
+function CheckInForm({ date, historical }: { date: string; historical: boolean }) {
+  const router = useRouter();
+  const [answers, setAnswers] = useState<AnswerMap>({});
+  const [baseline, setBaseline] = useState<CheckinRecord | null>(null);
+  const [ownerId, setOwnerId] = useState("");
+  const [loadingCheckin, setLoadingCheckin] = useState(true);
+  const [loadFailed, setLoadFailed] = useState(false);
   const [weight, setWeight] = useState("");
   const [saved, setSaved] = useState(false);
   const [checkinMessage, setCheckinMessage] = useState("");
@@ -471,6 +424,29 @@ export default function CheckInPage() {
   const [checkinExpanded, setCheckinExpanded] = usePersistentDisclosure("axvital.today.dailyCheckIn.expanded", false);
   const [eventsExpanded, setEventsExpanded] = usePersistentDisclosure("axvital.today.optionalEvents.expanded", false);
 
+  useEffect(() => {
+    let active = true;
+    loadCheckin(supabase, date).then(({ row, userId }) => {
+      if (!active) return;
+      const draft = draftFromRecord(row);
+      setBaseline(row); setOwnerId(userId); setAnswers(draft.answers); setWeight(draft.weight);
+      setSaved(Boolean(row)); setCheckinMessage(row ? `Check-in saved for ${date}.` : "");
+    }).catch(() => {
+      if (!active) return;
+      setLoadFailed(true); setCheckinMessage("Your check-in could not be loaded. Reload before editing."); setCheckinExpanded(true);
+    }).finally(() => { if (active) setLoadingCheckin(false); });
+    return () => { active = false; };
+  }, [date, setCheckinExpanded]);
+
+  useEffect(() => {
+    if (!ownerId) return;
+    const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user.id === ownerId) return;
+      setAnswers({}); setWeight(""); setBaseline(null); setSaved(false); setLoadFailed(true);
+      setCheckinMessage("Your sign-in changed. Reload before editing."); setCheckinExpanded(true);
+    });
+    return () => data.subscription.unsubscribe();
+  }, [ownerId, setCheckinExpanded]);
   const progress = useMemo(() => {
     const complete = questions.filter((question) => answers[question.id]).length;
     return Math.round((complete / questions.length) * 100);
@@ -492,54 +468,25 @@ export default function CheckInPage() {
   function refreshTimeline() { window.dispatchEvent(new Event("axvital:timeline-refresh")); }
 
   async function saveDailyCheckin() {
-    setSavingCheckin(true);
-    setCheckinMessage("");
-
-    const user = await getAuthenticatedUser();
-
-    if (!user) {
-      setSavingCheckin(false);
-      setCheckinMessage("Please log in before saving your daily check-in.");
+    if (loadingCheckin || loadFailed || savingCheckin) return;
+    setSavingCheckin(true); setCheckinMessage("");
+    try {
+      const row = await saveCheckin(supabase, date, ownerId, baseline, { answers, weight });
+      const draft = draftFromRecord(row);
+      setBaseline(row); setAnswers(draft.answers); setWeight(draft.weight); setSaved(true);
+      setCheckinMessage(`Check-in saved for ${date}.`); refreshTimeline();
+    } catch (error) {
+      setSaved(false);
+      setCheckinMessage(error instanceof Error && error.message === "INVALID_WEIGHT"
+        ? "Enter a valid weight greater than zero and no more than 2000."
+        : "Check-in was not saved. Your answers are still here. Check your connection and sign-in; if this record changed elsewhere, reload before retrying.");
       setCheckinExpanded(true);
-      return;
-    }
-
-    const parsedWeight = weight.trim() ? Number(weight) : null;
-    const payload = {
-      user_id: user.id,
-      checkin_date: todayDateString(),
-      energy_score: Number(answers.energy),
-      mood_score: Number(answers.mood),
-      sleep_quality: labelValue(answers.sleep),
-      exercise_level: exerciseLevelValue(answers.exercise.trim()),
-      nutrition_quality: nutritionQualityValue(answers.nutrition),
-      stress_level: labelValue(answers.stress),
-      alcohol: answers.alcohol === "Yes",
-      weight: parsedWeight !== null && !Number.isNaN(parsedWeight) ? parsedWeight : null,
-      notes: null,
-      tags: [],
-    };
-
-    const { error } = await supabase
-      .from("daily_checkins")
-      .upsert(payload, { onConflict: "user_id,checkin_date" });
-
-    setSavingCheckin(false);
-
-    if (error) {
-      logDevError("Failed to save daily check-in", error);
-      setCheckinMessage(friendlyErrorMessage("save your daily check-in"));
-      setCheckinExpanded(true);
-      return;
-    }
-
-    setSaved(true);
-    setCheckinMessage("Daily check-in saved.");
+    } finally { setSavingCheckin(false); }
   }
 
   function openQuickAdd(type: QuickAddType, trigger: HTMLButtonElement) {
-    if (type === "Food") { window.location.assign("/health/nutrition"); return; }
-    if (type === "Symptom") { window.location.assign("/health/symptoms"); return; }
+    if (type === "Food") { router.push("/health/nutrition"); return; }
+    if (type === "Symptom") { router.push("/health/symptoms"); return; }
     quickAddTriggerRef.current = trigger;
     setEventMessage("");
     setSelectedTags([]);
@@ -608,19 +555,19 @@ export default function CheckInPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-5 md:px-6 md:py-10">
       <header className="border-b border-slate-200 pb-5">
-        <p className="text-sm font-medium text-slate-500">{new Intl.DateTimeFormat(undefined, { weekday: "long", month: "long", day: "numeric" }).format(new Date())}</p>
-        <h1 className="mt-1 text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl">Today</h1>
+        <p className="text-sm font-medium text-slate-500">{new Intl.DateTimeFormat(undefined, { weekday: "long", month: "long", day: "numeric" }).format(new Date(`${date}T12:00:00`))}</p>
+        <h1 className="mt-1 text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl">{historical ? "Historical Check-In" : "Today"}</h1>
         <p className="mt-1 text-sm text-slate-600">Here’s what’s on your plan today.</p>
         <div className="mt-4 flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3"><div className="min-w-0 flex-1"><div className="flex justify-between text-sm"><span className="font-medium text-slate-700">Daily essentials</span><span className="tabular-nums text-slate-500">{progress}%</span></div><div className="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-100" role="progressbar" aria-label="Daily check-in progress" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100}><div className="h-full rounded-full bg-blue-600 transition-all motion-reduce:transition-none" style={{ width: `${progress}%` }}/></div></div></div>
       </header>
 
-      <TodayPlan />
-      <ActiveEpisodes />
+      {!historical && <><TodayPlan /><ActiveEpisodes /></>}
+      {historical && <a href="/today" className="inline-block py-3 text-blue-700 underline">Return to Today</a>}
 
       <div className="mt-5 grid gap-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(360px,0.9fr)] lg:items-start">
-        <CollapsibleSection id="daily-checkin" title="Daily Check-In" description={saved ? "Your essentials are saved for today." : "Complete your daily essentials in under 30 seconds."} status={<span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${saved ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"}`}>{saved ? "Completed" : "Not completed"}</span>} expanded={checkinExpanded} onToggle={() => setCheckinExpanded((value) => !value)}>
+        <CollapsibleSection id="daily-checkin" title="Daily Check-In" description={saved ? `Your answers are saved for ${date}.` : "Complete your daily essentials in under 30 seconds."} status={<span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${saved ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"}`}>{loadingCheckin ? "Loading…" : saved ? progress === 100 ? "Completed" : "Saved · partial" : "Not saved"}</span>} expanded={historical || checkinExpanded} onToggle={() => setCheckinExpanded((value) => !value)}>
 
-          <form className="space-y-4">
+          <form onSubmit={event => { event.preventDefault(); void saveDailyCheckin(); }}><fieldset disabled={loadingCheckin || loadFailed || savingCheckin} className="space-y-4">
             {questions.map((question) => (
               <CheckInFieldGroup
                 key={question.id}
@@ -629,7 +576,7 @@ export default function CheckInPage() {
                 helper={question.helper}
               >
                 <div className={`mt-4 grid ${question.columns} gap-2`}>
-                  {question.options.map((option) => {
+                  {(answers[question.id] && !question.options.includes(answers[question.id]) ? [...question.options, answers[question.id]] : question.options).map((option) => {
                     const selected = answers[question.id] === option;
                     return (
                       <button
@@ -670,7 +617,7 @@ export default function CheckInPage() {
                 className="mt-4 min-h-12 w-full rounded-lg border border-slate-300 bg-white px-4 text-base font-medium outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
               />
             </label>
-          </form>
+          </fieldset></form>
 
           <div className="mt-5 border-t border-slate-200 pt-4">
             {saved ? (
@@ -685,7 +632,7 @@ export default function CheckInPage() {
             <button
               type="button"
               onClick={saveDailyCheckin}
-              disabled={savingCheckin}
+              disabled={savingCheckin || loadingCheckin || loadFailed || (!baseline && !progress && !weight.trim())}
               className="flex min-h-12 w-full items-center justify-center rounded-lg bg-blue-600 px-6 text-base font-semibold text-white transition hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-400"
             >
               {savingCheckin
@@ -698,7 +645,7 @@ export default function CheckInPage() {
         </CollapsibleSection>
 
         <div className="space-y-5">
-          <CollapsibleSection id="optional-events" title="Optional Health Events" description="Log food, fluid, supplements, symptoms, medication, exercise, or notes." expanded={eventsExpanded} onToggle={() => setEventsExpanded((value) => !value)}>
+          {!historical && <CollapsibleSection id="optional-events" title="Optional Health Events" description="Log food, fluid, supplements, symptoms, medication, exercise, or notes." expanded={eventsExpanded} onToggle={() => setEventsExpanded((value) => !value)}>
             {eventMessage && !activeQuickAdd ? (
               <p role="status" className="mb-4 rounded-xl bg-emerald-50 p-3 text-sm font-semibold text-emerald-700">
                 {eventMessage}
@@ -716,9 +663,9 @@ export default function CheckInPage() {
                 </button>
               ))}
             </div>
-          </CollapsibleSection>
+          </CollapsibleSection>}
 
-          <Timeline startDate={localDateString()} />
+          <Timeline key={date} startDate={date} history={historical} />
         </div>
       </div>
 

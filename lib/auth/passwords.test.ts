@@ -88,7 +88,7 @@ test("auth integration uses existing clients, password policy, and protected set
   assert.match(source("components/auth/PasswordForm.tsx"), /updatePassword\(supabase.auth/);
   assert.match(source("components/auth/PasswordForm.tsx"), /if \(recoveryMode\) await finishRecovery\(\)/);
   assert.match(source("app/settings/security/page.tsx"), /if \(error \|\| !data.user\) redirect\("\/login"\)/);
-  assert.match(source("lib/supabase/middleware.ts"), /"\/settings"/);
+  assert.match(source("lib/supabase/routes.ts"), /"\/settings"/);
   assert.match(source("app/profile/page.tsx"), /href="\/settings\/security"/);
 });
 
