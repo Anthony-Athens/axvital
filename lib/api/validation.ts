@@ -42,6 +42,8 @@ export async function validateApiRequest(request: Request, route: string) {
     if (((route.startsWith("account/") || route.startsWith("http/experiments/")) && origin !== url.origin) || (origin && origin !== url.origin)) throw new ApiError(403, "INVALID_ORIGIN");
   }
   const allowed: Record<string, string[]> = {
+    "http/experiments/results": request.method === "GET" || request.method === "HEAD" ? ["id","revision"] : [],
+    "http/experiments/result-revisions": ["id","before"],
     "http/experiments/status": ["id"],
     "http/experiments/targets": ["kind", "search", "cursor", "limit"],
     "http/experiments/draft": request.method === "GET" || request.method === "HEAD" ? ["id"] : [],
@@ -58,7 +60,7 @@ export async function validateApiRequest(request: Request, route: string) {
       try { body = JSON.parse(raw); } catch { invalid(); }
       if (!body || typeof body !== "object" || Array.isArray(body)) invalid();
     }
-    const experimentKeys: Record<string, string[]> = { "http/experiments/draft": ["id", "revision", "input"], "http/experiments/start": ["id", "revision"], "http/experiments/readiness": ["outcome", "timeZone", "startDate", "endDateExclusive"] };
+    const experimentKeys: Record<string, string[]> = { "http/experiments/results": ["id","expectedAnalysisRevision","expectedLifecycleRevision"], "http/experiments/draft": ["id", "revision", "input"], "http/experiments/start": ["id", "revision"], "http/experiments/readiness": ["outcome", "timeZone", "startDate", "endDateExclusive"] };
     const keys = experimentKeys[route] ?? (route === "account/delete" ? ["confirmation","password","acceptConsequences"] : route === "weekly-recap" ? ["start","end","endDate","timeZone"] : route === "billing/checkout" ? ["interval"] : route === "product-events" ? ["event"] : []);
     if (Object.keys(body).some(key => !keys.includes(key))) invalid();
   }

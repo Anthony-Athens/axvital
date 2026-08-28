@@ -8,6 +8,7 @@ import {supportedFrozenTarget,evaluateFrozenNutritionDay} from "../nutrition/fro
 import {isObject,isUuid} from "../rules/validation.ts";
 import type {SourceResult} from "../measurements/observations.ts";
 import type {AnalysisInput,AnalysisBundle,AnalysisResult,AnalysisReason,AnalysisFamily,PeriodSummary,PeriodQuality,EligibilityState,Direction} from "./analysis-contract.ts";
+import {reconcileLifecycle} from "./lifecycle.ts";
 
 // A small descriptive-method floor, not a power calculation or evidence-strength score.
 export const ANALYSIS_POLICY_V1={minimumObservationsPerPeriod:5,exposureUnknownAllowed:0,primaryPopulation:"all_observed_intervention_days"} as const;
@@ -29,7 +30,13 @@ export function analysisFamily(definition:MeasurementDefinition|undefined):Analy
 export function inspectAnalysisPlan(input:AnalysisInput) {
   const issues:AnalysisReason[]=[];let outcome:OutcomeInput|null=null,definition:MeasurementDefinition|undefined;
   const frozen=object(input.startSnapshot?.configuration),source=object(object(frozen.intervention).configuration);
-  if(input.analysisContractVersion!==1||input.analysisPolicyVersion!==1||input.readinessPolicyVersion!==1)issues.push(reason("UNSUPPORTED_CONTRACT_VERSION","input","blocked_by_integrity"));
+  if(![1,2].includes(input.analysisContractVersion)||input.analysisPolicyVersion!==input.analysisContractVersion||input.readinessPolicyVersion!==1)issues.push(reason("UNSUPPORTED_CONTRACT_VERSION","input","blocked_by_integrity"));
+  const lifecycle=input.analysisPolicyVersion===2&&input.lifecycle?reconcileLifecycle(frozen,input.experiment.status,input.experiment.phase,input.lifecycle,input.cutoff):null;
+  if(input.analysisPolicyVersion===2){
+    if(!lifecycle||!input.durableCapture)issues.push(reason("DURABLE_LIFECYCLE_CAPTURE_REQUIRED","input","blocked_by_integrity"));
+    for(const code of lifecycle?.issues??[])issues.push(reason(code,"design",code==="UNSUPPORTED_TERMINAL_STATE"?"unsupported_design":["AUTHORITATIVE_END_REQUIRED","NO_COMPLETE_ACTIVE_DAYS"].includes(code)?"insufficient_data":"blocked_by_integrity"));
+    if(input.lifecycle?.events.some(e=>e.event_type==="intervention_started"&&e.metadata?.config_revision!==input.experiment.revision))issues.push(reason("LIFECYCLE_CONFIG_REVISION_MISMATCH","input","blocked_by_integrity"));
+  }
   if(!isUuid(input.experiment.id)||!Number.isSafeInteger(input.experiment.revision)||input.experiment.revision<1||input.experiment.modelVersion!==2)issues.push(reason("INVALID_EXPERIMENT_IDENTITY","input","blocked_by_integrity"));
   if(!input.startSnapshot||input.startSnapshot.snapshot_version!==1||input.startSnapshot.config_revision!==input.experiment.revision||frozen.model_version!==2||!isUuid(source.id))issues.push(reason("START_SNAPSHOT_OR_REVISION_MISMATCH","input","blocked_by_integrity"));
   if(object(frozen.intervention).type==="nutrition_target"&&(!supportedFrozenTarget(source.definition)||!Number.isSafeInteger(source.revision)||Number(source.revision)<1))issues.push(reason("UNSUPPORTED_FROZEN_NUTRITION_TARGET","design","unsupported_design"));
@@ -52,21 +59,21 @@ export function inspectAnalysisPlan(input:AnalysisInput) {
   else issues.push(reason("UNSUPPORTED_OUTCOME_CADENCE_OR_AGGREGATION","design","unsupported_design"));
   if(frozen.baseline_mode!=="historical")issues.push(reason("HISTORICAL_BASELINE_REQUIRED","design","unsupported_design"));
   // Existing exposure reconciliation does not yet define terminal/early-end phase windows.
-  if(input.experiment.status!=="active"||input.experiment.phase!=="intervention")issues.push(reason("UNSUPPORTED_LIFECYCLE_PHASE","design","unsupported_design"));
+  if(input.analysisPolicyVersion===1&&(input.experiment.status!=="active"||input.experiment.phase!=="intervention"))issues.push(reason("UNSUPPORTED_LIFECYCLE_PHASE","design","unsupported_design"));
   let baselineWindow:ReturnType<typeof historicalWindow>|null=null,interventionWindow:ReturnType<typeof historicalWindow>|null=null;
   try {
     const zone=String(frozen.analysis_timezone),cutoff=new Date(input.cutoff);
     if(![frozen.baseline_start_date,frozen.baseline_end_date,frozen.intervention_start_date,frozen.intervention_end_date].every(isLogicalDate)||String(frozen.baseline_start_date)>String(frozen.baseline_end_date)||String(frozen.baseline_end_date)>=String(frozen.intervention_start_date)||String(frozen.intervention_start_date)>String(frozen.intervention_end_date))throw new Error("INVALID_BOUNDS");
-    if(String(frozen.intervention_end_date)>=dateInZone(cutoff,zone)) {
+    if(!lifecycle&&String(frozen.intervention_end_date)>=dateInZone(cutoff,zone)) {
       issues.push(reason("INTERVENTION_PERIOD_NOT_FINISHED","intervention","insufficient_data"));
-      return {issues,family,method,outcome,definition,baselineWindow,interventionWindow,frozen,source};
+      return {issues,family,method,outcome,definition,baselineWindow,interventionWindow,frozen,source,lifecycle};
     }
     baselineWindow=historicalWindow(zone,cutoff,String(frozen.baseline_start_date),shiftDate(String(frozen.baseline_end_date),1));
-    interventionWindow=historicalWindow(zone,cutoff,String(frozen.intervention_start_date),shiftDate(String(frozen.intervention_end_date),1));
+    interventionWindow=historicalWindow(zone,cutoff,String(frozen.intervention_start_date),lifecycle?.endDateExclusive??shiftDate(String(frozen.intervention_end_date),1));
     if(baselineWindow.endDateExclusive>interventionWindow.startDate)throw new Error("OVERLAP");
     if(interventionWindow.effectiveEndAtExclusive!==interventionWindow.endAtExclusive)issues.push(reason("INTERVENTION_PERIOD_NOT_FINISHED","intervention","insufficient_data"));
   }catch{issues.push(reason("INVALID_PHASE_BOUNDS_OR_TIMEZONE","design","blocked_by_integrity"));}
-  return {issues,family,method,outcome,definition,baselineWindow,interventionWindow,frozen,source};
+  return {issues,family,method,outcome,definition,baselineWindow,interventionWindow,frozen,source,lifecycle};
 }
 const unavailableQuality=():PeriodQuality=>({readCompleteness:"unavailable",expectedObservations:null,capturedObservations:null,eligibleObservations:null,missingObservations:null,cadence:"unsupported",observedDates:[],sourceMissingness:null,adapterVersion:null});
 function periodData(source:SourceResult|null,scope:"baseline"|"intervention",plan:ReturnType<typeof inspectAnalysisPlan>,issues:AnalysisReason[]) {
@@ -88,12 +95,13 @@ function periodData(source:SourceResult|null,scope:"baseline"|"intervention",pla
   const invalidNutritionDays=new Set(days.map(d=>d.logicalDate)).size!==days.length||days.some(d=>d.logicalDate<window.startDate||d.logicalDate>=window.endDateExclusive)||source.observations.some(o=>!days.some(d=>d.logicalDate===o.logicalDate&&d.subtotal===o.value.value));
   if(source.sourceDomain==="nutrition"&&invalidNutritionDays){issues.push(reason("NUTRITION_DAY_EVIDENCE_MISMATCH",scope,"blocked_by_integrity"));return empty;}
   const completeDays=new Set(days.filter(d=>d.fieldComplete&&d.coverageStatus==="complete").map(d=>d.logicalDate));
-  const eligible=source.sourceDomain==="nutrition"?source.observations.filter(o=>completeDays.has(o.logicalDate)):source.observations;
+  const population=scope==="intervention"&&plan.lifecycle?source.observations.filter(o=>plan.lifecycle!.activeDates.includes(o.logicalDate)):source.observations;
+  const eligible=source.sourceDomain==="nutrition"?population.filter(o=>completeDays.has(o.logicalDate)):population;
   const values=eligible.map(o=>o.value.value),dates=eligible.map(o=>o.logicalDate).sort();
   const ordinalMaximum=plan.definition.unit==="ordinal_4"?4:10;
   if(plan.family==="repeated_ordinal"&&values.some(v=>!Number.isInteger(v)||v<1||v>ordinalMaximum)){issues.push(reason("INVALID_ORDINAL_VALUE",scope,"blocked_by_integrity"));return empty;}
   if(values.some(v=>v<0)){issues.push(reason("INVALID_RATIO_VALUE",scope,"blocked_by_integrity"));return empty;}
-  const expected=readiness.coverage.expectedDays;
+  const expected=scope==="intervention"&&plan.lifecycle?plan.lifecycle.activeDates.length:readiness.coverage.expectedDays;
   const quality:PeriodQuality={readCompleteness:"complete",expectedObservations:expected,capturedObservations:source.observations.length,eligibleObservations:values.length,missingObservations:expected===null?null:Math.max(0,expected-dates.length),cadence:expected===null?"unsupported":"daily",observedDates:dates,sourceMissingness:source.counts,adapterVersion:source.adapterVersion};
   if(expected===null)issues.push(reason("UNKNOWN_OUTCOME_DENOMINATOR",scope,"unsupported_design"));
   if(values.length<ANALYSIS_POLICY_V1.minimumObservationsPerPeriod)issues.push(reason(scope==="baseline"?"INSUFFICIENT_BASELINE_OBSERVATIONS":"INSUFFICIENT_INTERVENTION_OBSERVATIONS",scope,"insufficient_data"));
@@ -120,6 +128,7 @@ function stateOf(issues:AnalysisReason[]):EligibilityState {
 export function analyzeCapturedInput(input:AnalysisInput,expectedDigest?:string):AnalysisResult {
   const digest=analysisDigest(input),plan=inspectAnalysisPlan(input),issues=[...input.acquisitionIssues,...plan.issues];
   const limitations=["DESCRIPTIVE_NONRANDOMIZED_COMPARISON","NO_CAUSAL_IDENTIFICATION","NO_SIGNIFICANCE_OR_UNCERTAINTY_INTERVALS","ALL_OBSERVED_INTERVENTION_DAYS_RETAINED","MINIMUM_SAMPLE_FLOOR_IS_NOT_POWER_OR_PRECISION",...input.integrityLimitations];
+  if(plan.lifecycle){limitations.splice(limitations.indexOf("ALL_OBSERVED_INTERVENTION_DAYS_RETAINED"),1,"ALL_OBSERVED_ACTIVE_INTERVENTION_DAYS_RETAINED");limitations.push(...plan.lifecycle.limitations);}
   if(expectedDigest&&expectedDigest!==digest)issues.push(reason("CAPTURED_INPUT_DIGEST_MISMATCH","input","blocked_by_integrity"));
   let baseline={quality:unavailableQuality(),values:[] as number[]},intervention={quality:unavailableQuality(),values:[] as number[]};
   try {baseline=periodData(input.baseline,"baseline",plan,issues);intervention=periodData(input.intervention,"intervention",plan,issues);}catch{issues.push(reason("INVALID_CAPTURED_OBSERVATIONS","input","blocked_by_integrity"));}
@@ -134,9 +143,10 @@ export function analyzeCapturedInput(input:AnalysisInput,expectedDigest?:string)
       const days=input.intervention.nutritionDays??[];
       if(exposure.opportunities.some(o=>evaluateFrozenNutritionDay(plan.source.definition,days.find(d=>d.logicalDate===o.date),true).state!==o.state))issues.push(reason("EXPOSURE_OUTCOME_CAPTURE_CONFLICT","input","blocked_by_integrity"));
     }
-    if(exposure.interventionType==="nutrition_target"&&exposure.denominator==="frozen_schedule"&&window&&exposure.eligibleOpportunityCount!==window.expectedDays)issues.push(reason("EXPOSURE_DAILY_DENOMINATOR_MISMATCH","exposure","blocked_by_integrity"));
+    if(exposure.interventionType==="nutrition_target"&&exposure.denominator==="frozen_schedule"&&window&&exposure.eligibleOpportunityCount!==(plan.lifecycle?.activeDates.length??window.expectedDays))issues.push(reason("EXPOSURE_DAILY_DENOMINATOR_MISMATCH","exposure","blocked_by_integrity"));
+    if(plan.lifecycle&&JSON.stringify(exposure.opportunities.map(o=>o.date).sort())!==JSON.stringify(plan.lifecycle.activeDates))issues.push(reason("EXPOSURE_ACTIVE_DATES_MISMATCH","exposure","blocked_by_integrity"));
     if(exposure.frozenRevision!==(Number.isSafeInteger(plan.source.revision)?Number(plan.source.revision):null)||new Set(exposure.opportunities.map(o=>o.date)).size!==exposure.opportunities.length||exposure.opportunities.some(o=>!window||o.date<window.startDate||o.date>=window.endDateExclusive||!["adherent","non-adherent","unknown"].includes(o.state)))issues.push(reason("EXPOSURE_OPPORTUNITY_OR_REVISION_MISMATCH","exposure","blocked_by_integrity"));
-    if(exposure.contractVersion!==1||exposure.experimentRevision!==input.experiment.revision||exposure.frozenSourceId!==plan.source.id||exposure.interventionType!==object(plan.frozen.intervention).type||exposure.phase!=="intervention"||exposure.evaluatedAt!==input.cutoff||exposure.window?.startDate!==window?.startDate||exposure.window?.endDateExclusive!==window?.endDateExclusive)issues.push(reason("EXPOSURE_IDENTITY_OR_CUTOFF_MISMATCH","exposure","blocked_by_integrity"));
+    if(exposure.contractVersion!==1||exposure.experimentRevision!==input.experiment.revision||exposure.frozenSourceId!==plan.source.id||exposure.interventionType!==object(plan.frozen.intervention).type||exposure.phase!==(plan.lifecycle?input.experiment.phase:"intervention")||exposure.evaluatedAt!==input.cutoff||exposure.window?.startDate!==window?.startDate||exposure.window?.endDateExclusive!==window?.endDateExclusive)issues.push(reason("EXPOSURE_IDENTITY_OR_CUTOFF_MISMATCH","exposure","blocked_by_integrity"));
     if(exposure.pauseState!=="clear")issues.push(reason("UNRESOLVED_PAUSE_HISTORY","exposure","blocked_by_integrity"));
     if(exposure.sourceIntegrity!=="frozen_definition_verified")issues.push(reason("EXPOSURE_HISTORICAL_INTEGRITY_UNVERIFIED","exposure","blocked_by_integrity"));
     if(exposure.denominator!=="frozen_schedule"||exposure.eligibleOpportunityCount===null)issues.push(reason("UNKNOWN_EXPOSURE_DENOMINATOR","exposure","unable_to_determine"));
@@ -157,7 +167,7 @@ export function analyzeCapturedInput(input:AnalysisInput,expectedDigest?:string)
     else facts={baseline:b,intervention:i,absoluteChange:absolute,relativeChangePercent:relative,neutralMovement:movement,direction:classifyDirection(movement,desirability),directionSource:desirability==="unknown"?"unknown":"frozen_change_success_criterion",rateDifference:null,rateRatio:null,trend:null};
   }
   if((baseline.quality.missingObservations??0)>0||(intervention.quality.missingObservations??0)>0)limitations.push("MISSING_OBSERVATIONS_NOT_IMPUTED","COMPLETE_CASE_SUMMARIES_MAY_BE_SELECTIVELY_OBSERVED");
-  return {analysisContractVersion:1,analysisPolicyVersion:1,inputDigest:digest,eligibility:{state:stateOf(issues),reasons:issues},family:plan.family,method:plan.method,exposureQuality:exposure,outcomeQuality:{baseline:baseline.quality,intervention:intervention.quality},facts,interpretationTier:facts?"descriptive":"indeterminate",limitations:[...new Set(limitations)]};
+  return {analysisContractVersion:input.analysisContractVersion,analysisPolicyVersion:input.analysisPolicyVersion,inputDigest:digest,eligibility:{state:stateOf(issues),reasons:issues},family:plan.family,method:plan.method,exposureQuality:exposure,outcomeQuality:{baseline:baseline.quality,intervention:intervention.quality},facts,interpretationTier:facts?"descriptive":"indeterminate",limitations:[...new Set(limitations)]};
 }
 export function captureAnalysisBundle(input:AnalysisInput):AnalysisBundle {
   const captured=structuredClone(input),inputDigest=analysisDigest(captured);

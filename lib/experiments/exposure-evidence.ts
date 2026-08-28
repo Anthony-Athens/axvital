@@ -1,10 +1,18 @@
 import { calendarDays, isLogicalDate, shiftDate } from "../measurements/time-window.ts";
 import { occursOnDate, type RecurrenceRule } from "../planner/recurrence.ts";
 import type { Exposure } from "./study-health.ts";
+import type {SourceResult} from "../measurements/observations.ts";
+import {evaluateFrozenNutritionDay} from "../nutrition/frozen-target.ts";
 
 export type ExposureState="adherent"|"non-adherent"|"unknown";
 export type SourceIntegrity="frozen_definition_verified"|"current_criteria_match"|"mismatch"|"unavailable"|"unverifiable";
 export type ExposureOpportunity={date:string;state:ExposureState;reason:string};
+/** Terminal evidence uses the reconciled active-day population, never status
+ * spoofing or a guessed pause duration. SourceResult may come from retained data.
+ */
+export function reconciledNutritionOpportunities(activeDates:string[],definition:unknown,source:SourceResult):ExposureOpportunity[] {
+  return activeDates.map(date=>({date,...evaluateFrozenNutritionDay(definition,source.nutritionDays?.find(d=>d.logicalDate===date),source.queryCompleteness==="complete")}));
+}
 export type ExposureEvidence={
   contractVersion:1;interventionType:string;frozenSourceId:string|null;frozenRevision:number|null;experimentRevision:number;
   phase:string;evaluatedAt:string;window:{startDate:string;endDateExclusive:string}|null;
