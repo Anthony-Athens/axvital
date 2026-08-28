@@ -1,5 +1,11 @@
 # Account data controls — complete Sprint 12B
 
+## Additive Sprint 13A.2 contract (not applied to Supabase)
+
+The [Experiments 2.0 foundations report](C:/Users/apath/axvital/docs/sprint-13a2-experiments-foundations.md) documents forward migrations `202608280001` and `202608280002`. The first adds six private tables to the fixed account schema/export/deletion contract atomically: `target_rules`, `nutrition_patterns`, `nutrition_pattern_rules`, `user_food_classification_assertions`, `nutrition_log_days`, and `experiment_start_snapshots`. Shared `food_classification_assertions` is retained/excluded. Export is version `axvital.account.v2`; existing limits/redactions remain.
+
+Cleanup removes experiments/snapshots and pattern memberships before referenced rules, Nutrition targets before rules, and private evidence/coverage before remaining domain cleanup. New relationship FK/delete-action/composite-owner assertions supplement the ownership inventory. The corruption scan still runs before deletion. Migration 005 billing/deletion coordination and all enablement flags remain unchanged. Read-only `supabase/tests/sprint13a2_preflight.sql`, staging real-role/concurrency testing and separate production approval are required; these changes do not supersede the existing provider/Storage/deletion enablement gates below.
+
 Updated 2026-08-27. This continues, rather than replaces, [the initial implementation report](sprint-12b-account-control.md). No duplicate routes or migrations were introduced. **Not approved for production deletion or public launch.**
 
 ## Existing 12B.1–12B.5 implementation preserved
