@@ -121,7 +121,7 @@ test("failed and truncated reads suppress normal readiness and aggregates", asyn
 
 test("closed dispatch rejects unsupported metrics, forged owner/cutoff and foreign targets", async () => {
   const { client, calls } = clientFor();
-  for (const key of ["body_weight", "steps", "nutrition_calories", "exercise_repetitions"])
+  for (const key of ["body_weight", "steps", "exercise_session_frequency", "exercise_repetitions"])
     await assert.rejects(readObservations(client, request(key), clock));
   await assert.rejects(readObservations(client, { ...request(), userId: B } as SourceRequest, clock), /INVALID_REQUEST/);
   await assert.rejects(readObservations(client, { ...request(), evaluatedAt: "2000-01-01" } as SourceRequest, clock), /INVALID_REQUEST/);

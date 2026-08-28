@@ -4,11 +4,18 @@ import { exactKeys, isObject } from "../../rules/validation.ts";
 import { validateOutcome, type OutcomeInput } from "../validation.ts";
 import { measurement } from "../registry.ts";
 import { estimated1rmEpleyV1, type EpleySet, type EpleyExercise } from "../estimated-1rm.ts";
-import { historicalWindow, isLogicalDate } from "../time-window.ts";
+import { historicalWindow, isLogicalDate, dateInZone, shiftDate } from "../time-window.ts";
 import type { SourceResult, SupportedKey, Observation } from "../observations.ts";
+import { nutritionFields, readNutrition, readEpisodes, readSymptoms } from "./domain-readers.ts";
+import { readinessPolicies } from "../readiness-policies.ts";
 
 export const SOURCE_ROW_LIMIT = 1000;
-const adapters = { energy_score: "checkins", mood_score: "checkins", sleep_quality_score: "checkins", exercise_estimated_1rm: "workouts" } as const;
+const adapters: Record<SupportedKey, SourceResult["sourceDomain"]> = {
+  energy_score: "checkins", mood_score: "checkins", sleep_quality_score: "checkins", exercise_estimated_1rm: "workouts",
+  nutrition_calories: "nutrition", nutrition_protein_grams: "nutrition", nutrition_carbohydrate_grams: "nutrition", nutrition_fat_grams: "nutrition", nutrition_fiber_grams: "nutrition", nutrition_caffeine_mg: "nutrition", nutrition_alcohol_grams: "nutrition",
+  condition_episode_frequency: "episodes", condition_episode_duration_hours: "episodes", condition_episode_peak_severity: "episodes", condition_episode_impact: "episodes",
+  symptom_event_frequency: "symptoms", symptom_occurrence_count: "symptoms", symptom_severity: "symptoms", symptom_duration_minutes: "symptoms",
+};
 export type SourceRequest = { outcome: OutcomeInput; timeZone: string; startDate?: string; endDateExclusive?: string };
 type Checkin = { id: string; user_id: string; checkin_date: string; energy_score: number | null; mood_score: number | null; sleep_quality: string | null };
 type WorkoutRow = EpleySet & { id: string; set_number: number; completed_at: string | null;
@@ -33,16 +40,24 @@ export async function readObservations(client: SupabaseClient, request: SourceRe
   const outcome = request.outcome;
   if (outcome.registry_version !== 1 || !Object.hasOwn(adapters, outcome.registry_key)) throw new Error("UNSUPPORTED_SOURCE");
   const key = outcome.registry_key as SupportedKey, definition = measurement(key, 1)!;
-  const window = historicalWindow(request.timeZone, clock(), request.startDate, request.endDateExclusive);
+  const evaluatedAt = clock();
+  const defaults = request.startDate === undefined && request.endDateExclusive === undefined;
+  const end = defaults ? dateInZone(evaluatedAt, request.timeZone) : request.endDateExclusive;
+  const window = historicalWindow(request.timeZone, evaluatedAt, defaults ? shiftDate(end!, -readinessPolicies[key].defaultWindowDays) : request.startDate, end);
   const result: SourceResult = { contractVersion: 1, registryKey: key, registryVersion: 1, adapterVersion: 1,
-    sourceDomain: adapters[key], target: outcome.exercise_id ? { kind: "exercise", exerciseId: outcome.exercise_id } : { kind: "none" },
+    sourceDomain: adapters[key], target: outcome.exercise_id ? { kind: "exercise", exerciseId: outcome.exercise_id }
+      : adapters[key] === "symptoms" ? { kind: "symptom", ...(outcome.symptom_id ? { symptomId: outcome.symptom_id } : { userSymptomId: outcome.user_symptom_id }), ...(outcome.user_condition_id ? { conditionId: outcome.user_condition_id } : {}) }
+      : outcome.user_condition_id ? { kind: "condition", conditionId: outcome.user_condition_id } : { kind: "none" },
     grain: definition.grain, unit: definition.unit, aggregation: outcome.aggregation_method, window, observations: [], observationCount: 0,
     queryCompleteness: "complete", counts: { sourceRows: 0, nullValues: 0, excluded: 0, censored: 0, absentDays: null }, exclusions: {},
     warnings: [], temporalLimitations: ["CURRENT_RECORD_RETROSPECTIVE", "MUTABLE_HISTORY_NOT_RECONSTRUCTED"] };
   if (window.effectiveEndAtExclusive !== window.endAtExclusive) result.warnings.push("PARTIAL_CURRENT_DAY");
   const signal = AbortSignal.timeout(10000);
   try {
-    if (adapters[key] === "checkins") {
+    if (Object.hasOwn(nutritionFields, key)) await readNutrition(client, userId, result, signal);
+    else if (adapters[key] === "episodes") await readEpisodes(client, userId, outcome, result, signal);
+    else if (adapters[key] === "symptoms") await readSymptoms(client, userId, outcome, result, signal);
+    else if (adapters[key] === "checkins") {
       const response = await client.from("daily_checkins").select("id,user_id,checkin_date,energy_score,mood_score,sleep_quality", { count: "exact" })
         .eq("user_id", userId).gte("checkin_date", window.startDate).lt("checkin_date", window.endDateExclusive)
         .order("checkin_date").order("id").limit(SOURCE_ROW_LIMIT).abortSignal(signal);
@@ -112,7 +127,7 @@ function checkCompleteness(result: SourceResult, count: number | null, length: n
  * Tie breaks are deterministic ordering, not fabricated observation times.
  */
 export function compareObservations(a: Observation, b: Observation) {
-  return a.logicalDate.localeCompare(b.logicalDate) || (a.workout && b.workout ? Date.parse(a.workout.sessionStartedAt) - Date.parse(b.workout.sessionStartedAt) : 0)
+  return a.logicalDate.localeCompare(b.logicalDate) || (a.occurredAt && b.occurredAt ? Date.parse(a.occurredAt) - Date.parse(b.occurredAt) : 0) || (a.workout && b.workout ? Date.parse(a.workout.sessionStartedAt) - Date.parse(b.workout.sessionStartedAt) : 0)
     || (a.workout?.sessionId ?? "").localeCompare(b.workout?.sessionId ?? "") || (a.workout?.groupOrder ?? 0) - (b.workout?.groupOrder ?? 0) || (a.workout?.exerciseOrder ?? 0) - (b.workout?.exerciseOrder ?? 0)
     || (a.workout?.setNumber ?? 0) - (b.workout?.setNumber ?? 0) || a.sourceId.localeCompare(b.sourceId);
 }
