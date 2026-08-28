@@ -11,7 +11,8 @@ import { loadDraft, ownedExperiment, publicExperiment } from "./draft-read.ts";
 import { getBaselineReadiness } from "./readiness.ts";
 import type { SourceRequest } from "../measurements/sources/index.ts";
 import { experimentError } from "./api-errors.ts";
-type Action = "outcomes" | "targets" | "draft" | "readiness" | "start";
+import { loadStudyStatus } from "./study-status.ts";
+type Action = "outcomes" | "targets" | "draft" | "readiness" | "start" | "status";
 async function requirePremium(client: SupabaseClient, owner: string) {
   const { data, error } = await client.from("subscriptions").select("plan,status,current_period_end,cancel_at_period_end").eq("user_id", owner).limit(1).abortSignal(AbortSignal.timeout(10000)).maybeSingle();
   if (error) throw new ApiError(503, "TEMPORARILY_UNAVAILABLE");
@@ -24,6 +25,11 @@ export function experimentApi(action: Action, createClient: () => Promise<Supaba
       const params = new URL(request.url).searchParams;
       if (action === "outcomes") return Response.json(discoverOutcomes());
       if (action === "targets") return Response.json(await discoverTargets(client, params));
+      if (action === "status") {
+        if(request.method!=="GET"&&request.method!=="HEAD")throw new ApiError(405,"INVALID_REQUEST");
+        const id=params.get("id");if(!isUuid(id))throw new ApiError(400,"INVALID_REQUEST");
+        return Response.json(await loadStudyStatus(client,userId,id));
+      }
       if (action === "draft" && (request.method === "GET" || request.method === "HEAD")) {
         const id = params.get("id");if (!isUuid(id)) throw new ApiError(400, "INVALID_REQUEST");
         return Response.json(await loadDraft(client, userId, id));
@@ -51,5 +57,5 @@ export function experimentApi(action: Action, createClient: () => Promise<Supaba
       if (!data) throw new ApiError(503, "TEMPORARILY_UNAVAILABLE");
       return Response.json({ experiment: publicExperiment(data), startSnapshotIsAuthoritative: true, readinessIsPreview: true });
     } catch (error) { throw experimentError(error); }
-  }, createClient);
+  }, createClient, action === "status" ? { budgetRoute: "http/experiments/draft" } : {});
 }

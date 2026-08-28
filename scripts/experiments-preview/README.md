@@ -7,3 +7,5 @@ This isolated development harness renders the actual Experiments components usin
 All fetch requests are replaced by in-memory fixtures; unrecognized requests throw. Supabase reads are replaced by synthetic rows and mutation RPCs throw. No credentials or real user data are loaded. Reloading the page resets the fixtures. The top controls select Free/Premium and readiness states; counters expose synthetic create/save/start calls.
 
 This is component-level browser QA, not proof of authenticated Next/Supabase integration. It does not reproduce the full application shell, pagination datasets, checkout, real source data or all server validation. Do not use it to assess server authorization. Existing API tests cover those contracts separately.
+
+For Sprint 13A.5, open `/study-preview` on the same local server for the active study component. Selecting the failed readiness fixture and refreshing status simulates a status-read failure. Other fixtures provide synthetic day-one unknown evidence; they are not assertions about production data.

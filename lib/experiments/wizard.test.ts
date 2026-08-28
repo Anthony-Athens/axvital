@@ -96,7 +96,7 @@ test("target selector searches and paginates through the API, with keyboard labe
   const code=read("../../components/experiments/TargetPicker.tsx");assert.match(code,/search:term/);assert.match(code,/cursor:page.nextCursor/);assert.match(code,/generation.current === current/);assert.match(code,/type="radio"/);assert.match(code,/Search \{label\}/);
 });
 test("legacy detail remains available while V2 skips all legacy mutation controls",()=>{
-  const detail=read("../../components/experiments/ExperimentDetail.tsx");assert.ok(detail.indexOf("model_version===2")<detail.indexOf("const actions="));assert.match(detail,/transitionExperiment/);
+  const detail=read("../../components/experiments/ExperimentDetail.tsx").replace(/\s+/g,"");assert.ok(detail.indexOf("model_version===2")>=0&&detail.indexOf("model_version===2")<detail.indexOf("constactions="));assert.match(detail,/transitionExperiment/);
   assert.doesNotMatch(read("../../components/experiments/ExperimentV2Status.tsx"),/transitionExperiment|\.rpc\(/);
   const home=read("../../components/experiments/ExperimentsHome.tsx");assert.match(home,/Legacy experiment/);assert.match(home,/\/edit/);assert.doesNotMatch(home,/createDraft/);
 });
@@ -113,8 +113,13 @@ const hooks=(nodeModule as unknown as Hooks).registerHooks({
     if(candidate){for(const suffix of ["",".ts",".tsx"]){if(existsSync(candidate+suffix)&&/\.tsx?$/.test(candidate+suffix))return{url:pathToFileURL(candidate+suffix).href,shortCircuit:true};}}return next(s,c);},
   load(url,c,next){if(url.endsWith(".tsx"))return{format:"module",source:ts.transpileModule(readFileSync(new URL(url),"utf8"),{compilerOptions:{jsx:ts.JsxEmit.ReactJSX,module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText,shortCircuit:true};return next(url,c);}
 });
-const {ReadinessCard}=await import("../../components/experiments/ReadinessCard.tsx");hooks.deregister();
+const {ReadinessCard}=await import("../../components/experiments/ReadinessCard.tsx");
+const {StudyStatusView}=await import("../../components/experiments/ActiveStudyStatus.tsx");hooks.deregister();
 test("actual readiness component renders textual status, retry and stale preview explanation",()=>{
   const html=renderToStaticMarkup(createElement(ReadinessCard,{result:readiness({classification:"limited"}),busy:false,onRetry(){}}));assert.match(html,/Limited baseline data/);assert.match(html,/Refresh baseline/);assert.match(html,/aria-live="polite"/);
   const stale=renderToStaticMarkup(createElement(ReadinessCard,{result:null,stale:true,busy:false,onRetry(){}}));assert.match(stale,/previous preview no longer applies/);
+});
+
+test("actual active study component renders exposure/completeness states without efficacy or legacy controls",()=>{
+  for(const state of ["adherent","non-adherent","unknown"] as const){const html=renderToStaticMarkup(createElement(StudyStatusView,{data:{id,revision:2,status:"active",phase:"intervention",question:"Does walking appear associated with energy?",timezone:"UTC",checkedAt:"2026-08-28T12:00:00Z",period:{start:"2026-08-24",end:"2026-09-06",today:"2026-08-28",total:14,day:5,elapsed:4,percent:29,ended:false,closedEnd:"2026-08-28"},intervention:{name:"Walking",type:"habit",href:"/habits",criteria:["Schedule: M/W/F"]},outcome:{name:"Energy",href:"/checkin"},exposure:{state,eligible:2,completed:state==="adherent"?2:0,skipped:state==="non-adherent"?2:0,unknown:state==="unknown"?2:0,today:"No opportunity today",reason:"Frozen schedule"},completeness:{state:state==="adherent"?"complete":state==="non-adherent"?"missing":"unknown",captured:1,expected:2,missing:1,unit:"days",reason:"Current data"},health:"Unable to determine",snapshotMessage:"Frozen criteria"}}));assert.match(html,/Study day 5 of 14/);assert.match(html,/does not indicate whether the intervention is working/);assert.match(html,/Open outcome tracker/);assert.doesNotMatch(html,/Lifecycle actions<|<form|<input|View results/);assert.match(html,state==="adherent"?/Adherent/:state==="non-adherent"?/Non-adherent/:/Unknown \/ insufficient evidence/);}
 });

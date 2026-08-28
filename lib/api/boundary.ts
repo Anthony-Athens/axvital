@@ -2,7 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { ApiError, validateApiRequest } from "./validation.ts";
 
 /** Authenticated, shared database budget. Never falls back to process-local state. */
-export function guardWithClient<T extends Request>(route: string, handler: (request: T, context: { client: SupabaseClient; userId: string }) => Promise<Response>, createClient: () => Promise<SupabaseClient>) {
+export function guardWithClient<T extends Request>(route: string, handler: (request: T, context: { client: SupabaseClient; userId: string }) => Promise<Response>, createClient: () => Promise<SupabaseClient>, options: { budgetRoute?: string } = {}) {
   return async (request: T) => {
     let response: Response;
     try {
@@ -10,7 +10,8 @@ export function guardWithClient<T extends Request>(route: string, handler: (requ
       if (error || !data.user) throw new ApiError(401,"AUTH_REQUIRED");
       const experimentAttempt = route.startsWith("http/experiments/");
       if (!experimentAttempt) await validateApiRequest(request, route);
-      const budget = await client.rpc("axvital_consume_api_budget", { route_key: `${route}:${request.method === "HEAD" ? "GET" : request.method}` });
+      // Server-selected aliases share an existing budget; never sourced from a request.
+      const budget = await client.rpc("axvital_consume_api_budget", { route_key: `${options.budgetRoute ?? route}:${request.method === "HEAD" ? "GET" : request.method}` });
       if (budget.error) throw new ApiError(503,"TEMPORARILY_UNAVAILABLE");
       if (budget.data !== true) throw new ApiError(429,"RATE_LIMITED");
       if (experimentAttempt) await validateApiRequest(request, route);

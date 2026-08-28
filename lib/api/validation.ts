@@ -42,6 +42,7 @@ export async function validateApiRequest(request: Request, route: string) {
     if (((route.startsWith("account/") || route.startsWith("http/experiments/")) && origin !== url.origin) || (origin && origin !== url.origin)) throw new ApiError(403, "INVALID_ORIGIN");
   }
   const allowed: Record<string, string[]> = {
+    "http/experiments/status": ["id"],
     "http/experiments/targets": ["kind", "search", "cursor", "limit"],
     "http/experiments/draft": request.method === "GET" || request.method === "HEAD" ? ["id"] : [],
     analytics: ["start","end","endDate","window","timeZone"], timeline: ["start","end","startDate","endDate"],

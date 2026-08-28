@@ -46,7 +46,7 @@ test("outcome discovery is registry-derived, safe, grouped and honest about disa
   assert.doesNotMatch(JSON.stringify(result), /sourceAdapter|source_config|formula|actual_weight|daily_checkins/);
 });
 test("all API operations deny anonymous users and preserve private errors", async () => {
-  for (const action of ["outcomes", "targets", "draft", "readiness", "start"] as const) {
+  for (const action of ["outcomes", "targets", "draft", "readiness", "start", "status"] as const) {
     const f = fake({ anonymous: true });const response = await f.api(action)(request(action));
     assert.equal(response.status, 401);assert.equal(response.headers.get("Cache-Control"), "private, no-store");assert.equal(f.calls.length, 0);
   }
@@ -61,6 +61,15 @@ test("Free discovery and owned draft review remain available after downgrade; au
 test("foreign and nonexistent drafts have identical absent responses", async () => {
   const f = fake({ tables: { experiments: [{ id: B, user_id: B, model_version: 2, status: "draft" }] } });
   for (const id of [A, B]) { const r = await f.api("draft")(request("draft", undefined, `?id=${id}`));assert.equal(r.status, 404);assert.deepEqual(await r.json(), { error: "EXPERIMENT_NOT_FOUND" }); }
+});
+
+test("status reads share the existing read budget, reject foreign/query overrides and permit Free read-only review",async()=>{
+  const f=fake({premium:false,tables:{experiments:[{id:A,user_id:A,model_version:2,status:"active",config_revision:1,current_phase:"intervention"}]}});
+  const response=await f.api("status")(request("status",undefined,`?id=${A}`));assert.equal(response.status,200);const body=await response.json();assert.equal(body.exposure.state,"unknown");assert.equal(body.health,"Unable to determine");assert.equal(response.headers.get("Cache-Control"),"private, no-store");
+  assert.ok(f.calls.some(c=>c.name==="axvital_consume_api_budget"&&c.args?.route_key==="http/experiments/draft:GET"));
+  assert.equal((await f.api("status")(request("status",undefined,`?id=${B}`))).status,404);
+  assert.equal((await f.api("status")(request("status",undefined,`?id=${A}&user_id=${B}`))).status,400);
+  assert.equal(f.calls.some(c=>["save_experiment_v2","start_experiment_v2"].includes(c.name)),false);
 });
 test("experiment attempts use strict origin, bounded streams, exact keys and distinct budgets", async () => {
   const body = { id: null, revision: 0, input: { name: "Draft" } };
