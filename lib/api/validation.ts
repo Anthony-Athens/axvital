@@ -39,9 +39,10 @@ export async function validateApiRequest(request: Request, route: string) {
   const url = new URL(request.url), query = url.searchParams;
   if (request.method === "POST") {
     const origin = request.headers.get("origin");
-    if (((route.startsWith("account/") || route.startsWith("http/experiments/")) && origin !== url.origin) || (origin && origin !== url.origin)) throw new ApiError(403, "INVALID_ORIGIN");
+    if (((route.startsWith("http/nutrition/") || route.startsWith("account/") || route.startsWith("http/experiments/")) && origin !== url.origin) || (origin && origin !== url.origin)) throw new ApiError(403, "INVALID_ORIGIN");
   }
   const allowed: Record<string, string[]> = {
+    "http/nutrition/goals": request.method === "GET" || request.method === "HEAD" ? ["kind","status","after"] : [],
     "http/experiments/results": request.method === "GET" || request.method === "HEAD" ? ["id","revision"] : [],
     "http/experiments/result-revisions": ["id","before"],
     "http/experiments/status": ["id"],
@@ -60,7 +61,7 @@ export async function validateApiRequest(request: Request, route: string) {
       try { body = JSON.parse(raw); } catch { invalid(); }
       if (!body || typeof body !== "object" || Array.isArray(body)) invalid();
     }
-    const experimentKeys: Record<string, string[]> = { "http/experiments/results": ["id","expectedAnalysisRevision","expectedLifecycleRevision"], "http/experiments/draft": ["id", "revision", "input"], "http/experiments/start": ["id", "revision"], "http/experiments/readiness": ["outcome", "timeZone", "startDate", "endDateExclusive"] };
+    const experimentKeys: Record<string, string[]> = { "http/nutrition/goals": ["action","input","id","revision"], "http/experiments/results": ["id","expectedAnalysisRevision","expectedLifecycleRevision"], "http/experiments/draft": ["id", "revision", "input"], "http/experiments/start": ["id", "revision"], "http/experiments/readiness": ["outcome", "timeZone", "startDate", "endDateExclusive"] };
     const keys = experimentKeys[route] ?? (route === "account/delete" ? ["confirmation","password","acceptConsequences"] : route === "weekly-recap" ? ["start","end","endDate","timeZone"] : route === "billing/checkout" ? ["interval"] : route === "product-events" ? ["event"] : []);
     if (Object.keys(body).some(key => !keys.includes(key))) invalid();
   }

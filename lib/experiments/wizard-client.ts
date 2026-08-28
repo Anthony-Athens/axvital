@@ -14,8 +14,8 @@ export const steps = ["Goal", "Outcome", "Change", "Design", "Review"];
 export const interventionChoices = [
   { type: "habit", label: "Habit", kind: "habits", field: "linked_planned_activity_id", href: "/habits" },
   { type: "protocol", label: "Protocol", kind: "protocols", field: "linked_user_protocol_id", href: "/protocols" },
-  { type: "nutrition_target", label: "Nutrition target", kind: "target_rules", field: "rule_id", href: "/health/nutrition" },
-  { type: "nutrition_pattern", label: "Nutrition pattern", kind: "nutrition_patterns", field: "nutrition_pattern_id", href: "/health/nutrition" },
+  { type: "nutrition_target", label: "Nutrition target", kind: "target_rules", field: "rule_id", href: "/health/nutrition/goals" },
+  { type: "nutrition_pattern", label: "Nutrition pattern", kind: "nutrition_patterns", field: "nutrition_pattern_id", href: "/health/nutrition/goals" },
   { type: "workout", label: "Workout / training", kind: "workout_templates", field: "linked_workout_template_id", href: "/workouts" },
 ] as const;
 export function outcomeChoices(discovery: Discovery, goal: string) { return discovery.outcomes.filter(o => o.group === goal).sort((a,b) => Number(b.primaryPerformancePreference)-Number(a.primaryPerformancePreference)); }

@@ -95,6 +95,7 @@ export function NutritionHome() {
     <PageContainer>
       <ButtonLink href="/today" variant="tertiary" className="mb-3 -ml-4">← Today</ButtonLink>
       <PageHeader eyebrow="My Health" title="Nutrition" description="Choose a food and serving size to record what you ate." />
+      <ButtonLink href="/health/nutrition/goals" variant="secondary">Nutrition Goals</ButtonLink>
       <p className="mt-3 text-sm text-slate-600">Your nutrition data is private to your AXVital account.</p>
       {error ? <div className="mt-4"><InlineNotice>{error}</InlineNotice></div> : null}
       <section className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4" aria-label="Today nutrition totals">
