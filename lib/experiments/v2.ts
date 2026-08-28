@@ -3,6 +3,7 @@ import { isCalendarDate } from "../timeline/dates.ts";
 import { exactKeys, isObject, isTimeZone, isUuid } from "../rules/validation.ts";
 import { validateOutcome, type OutcomeInput } from "../measurements/validation.ts";
 import type { Experiment } from "./experiments.ts";
+import { experimentError } from "./api-errors.ts";
 
 export type InterventionInput =
   | { intervention_type: "habit"; linked_planned_activity_id: string }
@@ -45,12 +46,12 @@ export async function saveV2Draft(client: SupabaseClient, input: DraftV2Input, i
   validateV2Draft(input); await owner(client);
   if (id !== null && !isUuid(id) || !Number.isInteger(revision) || revision < 0) throw new Error("INVALID_REVISION");
   const { data, error } = await client.rpc("save_experiment_v2", { target_id: id, expected_revision: revision, input });
-  if (error) throw new Error(error.message === "REVISION_CONFLICT" ? "REVISION_CONFLICT" : "DRAFT_SAVE_FAILED");
+  if (error) throw experimentError(error, true);
   return data as ExperimentV2;
 }
 export async function startV2Experiment(client: SupabaseClient, id: string, revision: number): Promise<ExperimentV2> {
   await owner(client); if (!isUuid(id) || !Number.isInteger(revision) || revision < 1) throw new Error("INVALID_REVISION");
   const { data, error } = await client.rpc("start_experiment_v2", { target_id: id, expected_revision: revision });
-  if (error) throw new Error(["REVISION_CONFLICT", "EXPERIMENT_CONFIGURATION_INCOMPLETE", "START_DATE_MUST_BE_TODAY"].includes(error.message) ? error.message : "START_FAILED");
+  if (error) throw experimentError(error, true);
   return data as ExperimentV2;
 }

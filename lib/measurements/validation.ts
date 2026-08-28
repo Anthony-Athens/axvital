@@ -7,6 +7,7 @@ export type OutcomeInput = { registry_key: string; registry_version: 1; outcome_
 export function validateOutcome(value: unknown): asserts value is OutcomeInput {
   if (!isObject(value) || !exactKeys(value, ["registry_key", "registry_version", "outcome_role", "aggregation_method", "expected_direction", "source_config"], ["user_condition_id", "symptom_id", "user_symptom_id", "exercise_id", "success_criterion"])) throw new Error("INVALID_OUTCOME");
   const def = measurement(String(value.registry_key), Number(value.registry_version));
+  if (value.registry_version !== 1 || typeof value.registry_key !== "string") throw new Error("INVALID_OUTCOME");
   if (!def?.enabled || !["primary", "secondary"].includes(String(value.outcome_role)) || !def.aggregations.includes(String(value.aggregation_method)) || !def.direction.includes(value.expected_direction as typeof def.direction[number]) || !isObject(value.source_config) || Object.keys(value.source_config).length) throw new Error("INVALID_OUTCOME");
   for (const key of ["user_condition_id", "symptom_id", "user_symptom_id", "exercise_id"]) if (key in value && !isUuid(value[key])) throw new Error("INVALID_TARGET");
   const symptomCount = Number("symptom_id" in value) + Number("user_symptom_id" in value);

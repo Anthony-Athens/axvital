@@ -39,22 +39,26 @@ export async function validateApiRequest(request: Request, route: string) {
   const url = new URL(request.url), query = url.searchParams;
   if (request.method === "POST") {
     const origin = request.headers.get("origin");
-    if ((route.startsWith("account/") && origin !== url.origin) || (origin && origin !== url.origin)) throw new ApiError(403, "INVALID_ORIGIN");
+    if (((route.startsWith("account/") || route.startsWith("http/experiments/")) && origin !== url.origin) || (origin && origin !== url.origin)) throw new ApiError(403, "INVALID_ORIGIN");
   }
   const allowed: Record<string, string[]> = {
+    "http/experiments/targets": ["kind", "search", "cursor", "limit"],
+    "http/experiments/draft": request.method === "GET" || request.method === "HEAD" ? ["id"] : [],
     analytics: ["start","end","endDate","window","timeZone"], timeline: ["start","end","startDate","endDate"],
     "trigger-patterns": ["condition","window","timeZone"], "condition-outlook": ["condition","timeZone"],
   };
   for (const key of query.keys()) if (!allowed[route]?.includes(key) || query.getAll(key).length !== 1) invalid();
   let body: Record<string, unknown> = {};
   if (request.method === "POST") {
-    const raw = await boundedText(request.clone());
+    const raw = await boundedText(request.clone(), route === "http/experiments/draft" ? 24576 : 8192);
+    if (route.startsWith("http/experiments/") && !raw) invalid();
     if (raw) {
       if (!request.headers.get("content-type")?.toLowerCase().startsWith("application/json")) throw new ApiError(415,"JSON_REQUIRED");
       try { body = JSON.parse(raw); } catch { invalid(); }
       if (!body || typeof body !== "object" || Array.isArray(body)) invalid();
     }
-    const keys = route === "account/delete" ? ["confirmation","password","acceptConsequences"] : route === "weekly-recap" ? ["start","end","endDate","timeZone"] : route === "billing/checkout" ? ["interval"] : route === "product-events" ? ["event"] : [];
+    const experimentKeys: Record<string, string[]> = { "http/experiments/draft": ["id", "revision", "input"], "http/experiments/start": ["id", "revision"], "http/experiments/readiness": ["outcome", "timeZone", "startDate", "endDateExclusive"] };
+    const keys = experimentKeys[route] ?? (route === "account/delete" ? ["confirmation","password","acceptConsequences"] : route === "weekly-recap" ? ["start","end","endDate","timeZone"] : route === "billing/checkout" ? ["interval"] : route === "product-events" ? ["event"] : []);
     if (Object.keys(body).some(key => !keys.includes(key))) invalid();
   }
   const values = route === "weekly-recap" ? body : Object.fromEntries(query);

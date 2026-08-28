@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { database } from "../security/test-database.ts";
+import { database as baseDatabase } from "../security/test-database.ts";
 import { outcomeRegistry } from "../measurements/registry.ts";
 import { validateOutcome } from "../measurements/validation.ts";
 import { validateRule } from "../rules/validation.ts";
@@ -12,6 +12,12 @@ import { nutritionTargetProjection } from "../nutrition/target-rule-adapter.ts";
 import type { PGlite } from "@electric-sql/pglite";
 
 const A = "aaaaaaaa-aaaa-4aaa-aaaa-aaaaaaaaaaaa", B = "bbbbbbbb-bbbb-4bbb-bbbb-bbbbbbbbbbbb";
+// Authoring regressions now run with real Premium projection rows, not an RPC bypass.
+async function database(...args: Parameters<typeof baseDatabase>) {
+  const db = await baseDatabase(...args);
+  await db.exec(`insert into public.subscriptions(user_id,plan,status) values('${A}','premium','active'),('${B}','premium','active') on conflict(user_id) do update set plan='premium',status='active';`);
+  return db;
+}
 const energy = { registry_key: "energy_score", registry_version: 1, outcome_role: "primary", aggregation_method: "average", expected_direction: "increase", source_config: {} };
 const protein = { version: 1, domain: "nutrition", kind: "numeric", metric: "protein_grams", operator: "gte", value: 180, unit: "g", period: "day" };
 async function as(db: PGlite, user = A, role = "authenticated") { await db.exec(`reset role;select set_config('request.jwt.claim.sub','${user}',false);set role ${role};`); }
