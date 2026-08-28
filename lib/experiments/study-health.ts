@@ -1,6 +1,7 @@
 import { calendarDays, dateInZone, isLogicalDate, shiftDate } from "../measurements/time-window.ts";
 import { occursOnDate, type RecurrenceRule } from "../planner/recurrence.ts";
 import type { ReadinessResult } from "../measurements/readiness-policies.ts";
+import type { ExposureEvidence } from "./exposure-evidence.ts";
 
 export const studyHealthExplanation = "Study health reflects whether AXVital is collecting enough exposure and outcome data to evaluate this experiment later. It does not indicate whether the intervention is working.";
 export type Exposure = { state: "adherent" | "non-adherent" | "unknown"; eligible: number | null; completed: number | null; skipped: number | null; unknown: number | null; today: string; reason: string };
@@ -36,6 +37,7 @@ export function collectionHealth(exposure:Exposure,outcome:Completeness) {
   return exposure.state==="unknown"||outcome.state==="unknown"?"Unable to determine":exposure.state==="non-adherent"||outcome.state==="missing"?"Needs attention":"Good";
 }
 export type StudyStatus = {
+  exposureEvidence?:ExposureEvidence;
   name?:string;
   id:string;revision:number;status:string;phase:string;question:string;timezone:string|null;checkedAt:string;
   period:ReturnType<typeof studyPeriod>;intervention:{name:string;type:string;href:string;criteria:string[]};outcome:{name:string;href:string};
