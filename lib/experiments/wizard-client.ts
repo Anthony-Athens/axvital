@@ -105,11 +105,13 @@ export function readinessKey(input: DraftV2Input) { return JSON.stringify({outco
 export function startDestination(result: SavedExperiment) { return `/experiments/${result.id}?started=1`; }
 export function readinessPresentation(r: ReadinessResult) {
   if (r.queryCompleteness !== "complete") return { title: "Baseline check unavailable", facts: ["The data could not be fully read. This is a technical issue, not a lack of history."], warnings: [] };
-  const title = r.classification === "good" ? "Good baseline data" : r.classification === "limited" ? "Limited baseline data" : "Not enough baseline data yet";
+  const title = r.registryKey === "body_weight" && r.classification === null ? "Historical weight data unavailable" : r.classification === "good" ? "Good baseline data" : r.classification === "limited" ? "Limited baseline data" : "Not enough baseline data yet";
   const facts = r.workout ? [`${r.workout.eligibleSetCount} eligible sets · ${r.workout.distinctSessionCount} sessions · ${r.workout.distinctDateCount} dates`, `Latest Estimated 1RM: ${r.workout.latestValue ?? "Not available"} ${r.unit}`, `Best Estimated 1RM: ${r.workout.bestValue ?? "Not available"} ${r.unit}`]
     : r.nutrition ? [`${r.nutrition.qualifyingCompleteDays} complete logging and nutrient days of ${r.nutrition.requestedDays}`, `${r.nutrition.fieldIncompleteDays} nutrient-incomplete days · ${r.nutrition.partialDays} partial logging days · ${r.nutrition.unknownCoverageDays} unknown logging days`, `Qualifying logging coverage: ${r.coverage.percentage ?? "Unknown"}%`]
     : r.recordedTotal != null ? [`${r.recordedTotal} recorded ${r.target.kind === "condition" ? "episodes" : "events or occurrences"}`] : [`${r.observationCount} observations across ${r.distinctDays} tracked days`];
   const warnings: string[] = [];
+  if (r.warnings.includes("WEIGHT_UNVERIFIED_RECORDS_EXCLUDED")) warnings.push("Some weight records have unverified units or invalid values, so they cannot safely be used for an experiment.");
+  if (r.registryKey === "body_weight" && r.classification !== "good") warnings.push("Keep tracking your weight with explicit units for a few more days to establish a baseline.");
   if (r.warnings.some(w => w.includes("SURVEILLANCE_DENOMINATOR"))) warnings.push("Recorded counts do not prove that no episodes or symptoms occurred during untracked periods.");
   if (r.nutrition) warnings.push("Missing entries and unknown nutrients are not zero intake. Logged totals and logging coverage are not dietary compliance.");
   if (r.workout) warnings.push("Estimated 1RM is an estimate from eligible logged sets, not a measured true 1RM.");

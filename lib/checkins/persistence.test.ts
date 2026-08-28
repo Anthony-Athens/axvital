@@ -27,6 +27,11 @@ function fixture(initial: CheckinRecord[] = [], user: string | null = "A") {
   return {client:client as SupabaseClient,rows,fail:()=>{fail=true;},writes:()=>writes};
 }
 const original:CheckinRecord={id:"old",user_id:"A",checkin_date:"2026-08-20",energy_score:6,mood_score:null,alcohol:false,weight:180,notes:"Keep",tags:"unchanged"};
+test("weight edits explicitly attest pounds; unrelated edits never attest legacy units",()=>{
+ assert.deepEqual(checkinPatch({...draftFromRecord(original),weight:"181"},original),{weight:181,weight_source_value:181,weight_source_unit:"lb",weight_provenance_version:1});
+ assert.deepEqual(checkinPatch(draftFromRecord(original),original),{});
+ assert.deepEqual(checkinPatch({...draftFromRecord(original),weight:""},original),{weight:null,weight_source_value:null,weight_source_unit:null,weight_provenance_version:null});
+});
 test("empty day has no invented answers and viewing never writes",async()=>{const f=fixture();const result=await loadCheckin(f.client,"2026-08-20");assert.equal(result.row,null);assert.deepEqual(draftFromRecord(result.row),{answers:{},weight:""});assert.equal(f.writes(),0)});
 test("reload and a fresh load reproduce authoritative partial values including false alcohol",async()=>{const f=fixture([original]);for(let i=0;i<2;i++){const result=await loadCheckin(f.client,"2026-08-20");assert.ok(result.row);assert.deepEqual(draftFromRecord(result.row),{answers:{energy:"6",alcohol:"No"},weight:"180"})}});
 test("saving historical A patches one answer and leaves date B, notes and tags unchanged",async()=>{const today={...original,id:"today",checkin_date:"2026-08-21"},f=fixture([original,today]);const draft=draftFromRecord(original);draft.answers.energy="9";assert.deepEqual(checkinPatch(draft,original),{energy_score:9});const row=await saveCheckin(f.client,"2026-08-20","A",original,draft);assert.equal(row.energy_score,9);assert.equal(row.notes,"Keep");assert.equal(row.tags,"unchanged");assert.deepEqual(f.rows[1],today);assert.equal((await loadCheckin(f.client,"2026-08-20")).row?.energy_score,9)});

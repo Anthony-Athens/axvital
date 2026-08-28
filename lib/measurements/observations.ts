@@ -1,6 +1,6 @@
 import type { HistoricalWindow } from "./time-window.ts";
 export type NutritionKey = "nutrition_calories" | "nutrition_protein_grams" | "nutrition_carbohydrate_grams" | "nutrition_fat_grams" | "nutrition_fiber_grams" | "nutrition_caffeine_mg" | "nutrition_alcohol_grams";
-export type SupportedKey = "energy_score" | "mood_score" | "sleep_quality_score" | "exercise_estimated_1rm" | NutritionKey
+export type SupportedKey = "body_weight" | "energy_score" | "mood_score" | "sleep_quality_score" | "exercise_estimated_1rm" | NutritionKey
   | "condition_episode_frequency" | "condition_episode_duration_hours" | "condition_episode_peak_severity" | "condition_episode_impact"
   | "symptom_event_frequency" | "symptom_occurrence_count" | "symptom_severity" | "symptom_duration_minutes";
 export type TargetIdentity = { kind: "none" } | { kind: "exercise"; exerciseId: string } | { kind: "condition"; conditionId: string }
@@ -16,7 +16,7 @@ export type Observation = {
   workout?: { sessionId: string; sessionStartedAt: string; groupOrder: number; exerciseOrder: number; setNumber: number; completedAt: string | null; actualWeight: number; actualReps: number };
 };
 export type SourceResult = {
-  contractVersion: 1; registryKey: SupportedKey; registryVersion: 1; adapterVersion: 1;
+  contractVersion: 1; registryKey: SupportedKey; registryVersion: 1|2; adapterVersion: 1;
   sourceDomain: "checkins" | "workouts" | "nutrition" | "episodes" | "symptoms"; target: TargetIdentity; grain: string; unit: string; aggregation: string;
   window: HistoricalWindow; observations: Observation[]; observationCount: number;
   queryCompleteness: "complete" | "truncated" | "failed";

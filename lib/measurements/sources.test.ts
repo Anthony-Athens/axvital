@@ -59,6 +59,21 @@ function clientFor(tables: Record<string, Row[]> = {}, options: { user?: string 
   return { client, calls };
 }
 function checkin(day = "2026-08-14", energy: number | null = 7): Row { return { id: day, user_id: A, checkin_date: day, energy_score: energy, mood_score: 5, sleep_quality: "Good" }; }
+test("weight v2 source normalizes mixed units, excludes ambiguous rows, and enforces owned bounded reads",async()=>{
+ const req=request("body_weight");req.outcome.registry_version=2;
+ const rows=Array.from({length:7},(_,i)=>({...checkin(shiftDate("2026-08-14",i)),weight:180,weight_source_value:i%2?180*0.45359237:180,weight_source_unit:i%2?"kg":"lb",weight_provenance_version:1,weight_kg:180*0.45359237}));
+ const {client,calls}=clientFor({daily_checkins:[...rows,{...checkin("2026-08-22"),weight:180},{...rows[0],user_id:B}, {...rows[0],checkin_date:"2026-07-01"}]});
+ const source=await readObservations(client,req,clock);
+ assert.equal(source.unit,"kg");assert.equal(source.observationCount,7);assert.equal(source.exclusions.legacy_unit_ambiguous,1);assert.equal(source.queryCompleteness,"complete");
+ assert.ok(source.observations.every(o=>o.value.kind==="numeric"&&o.value.value===180*0.45359237));
+ assert.equal(evaluateReadiness(source).classification,"good");assert.equal(calls[0].limit,1000);assert.ok(calls[0].signal);assert.ok(calls[0].filters.some(f=>f[1]==="user_id"&&f[2]===A));
+ const ambiguous=await readObservations(clientFor({daily_checkins:[{...checkin(),weight:80}]}).client,req,clock);
+ assert.equal(evaluateReadiness(ambiguous).classification,null);
+ for(const bad of [clientFor({daily_checkins:[rows[0],rows[0]]}).client,clientFor({}, {failed:"daily_checkins"}).client]){
+  const r=await readObservations(bad,req,clock);assert.notEqual(r.queryCompleteness,"complete");assert.equal(r.observationCount,0);
+ }
+ await assert.rejects(()=>readObservations(clientFor({}, {user:null}).client,req,clock),/AUTH_REQUIRED/);
+});
 function workout(id = "set1", sessionId = "session1", date = "2026-08-14", weight = 150): Row {
   return { id, user_id: A, workout_session_id: sessionId, workout_session_exercise_id: `exercise-${sessionId}`, set_number: Number(id.replace(/\D/g, "")) || 1,
     status: "completed", set_type: "working", actual_weight: weight, actual_reps: 6, completed_at: null,

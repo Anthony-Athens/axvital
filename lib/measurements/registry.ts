@@ -1,6 +1,6 @@
 export type TargetKind = "none" | "condition" | "symptom" | "exercise";
 export type MeasurementDefinition = {
-  key: string; version: 1; label: string; target: TargetKind; sourceAdapter: "checkins" | "nutrition" | "episodes" | "symptoms" | "workouts";
+  key: string; version: 1|2; label: string; target: TargetKind; sourceAdapter: "checkins" | "nutrition" | "episodes" | "symptoms" | "workouts";
   unit: string; grain: string; aggregations: readonly string[]; direction: readonly ["increase", "decrease", "maintain", "unknown"];
   scale: "ratio" | "rating" | "ordinal"; eligibility: string; limitations: string; baselineRecommendation: { windowDays: number; observations: number };
   enabled: boolean; disabledReason?: string; legacyType: string;
@@ -18,6 +18,7 @@ export const outcomeRegistry: readonly MeasurementDefinition[] = [
   define("energy_score", "Energy", "none", "checkins", "score_10", "day", ["average", "median"], "rating", "Non-null 1–10 answer", "Self-report; missing days are unknown", "energy"),
   define("mood_score", "Mood", "none", "checkins", "score_10", "day", ["average", "median"], "rating", "Non-null 1–10 answer", "Self-report; missing days are unknown", "mood"),
   define("sleep_quality_score", "Sleep quality", "none", "checkins", "ordinal_4", "day", ["median"], "ordinal", "Poor/Average/Good/Great mapped 1/2/3/4; unknown aliases excluded", "Ordinal quality, not hours", "sleep_quality"),
+  { ...define("body_weight", "Body Weight", "none", "checkins", "kg", "day", ["average", "median"], "ratio", "Positive explicitly unit-verified daily check-in weight", "Unverified historical units are excluded; self-reported weight is not measurement accuracy", "weight"), version: 2 },
   define("body_weight", "Body weight", "none", "checkins", "lb", "day", ["average", "median"], "ratio", "Positive weight with verified units", "No per-row unit provenance", "weight", false),
   ...([ ["calories", "Calories", "kcal"], ["protein_grams", "Protein", "g"], ["carbohydrate_grams", "Carbohydrate", "g"], ["fat_grams", "Fat", "g"], ["fiber_grams", "Fiber", "g"], ["caffeine_mg", "Caffeine", "mg"], ["alcohol_grams", "Alcohol", "g"] ] as const).map(([metric, label, unit]) => define(`nutrition_${metric}`, `Logged ${label.toLowerCase()}`, "none", "nutrition", unit, "day", ["average", "sum"], "ratio", "Nondeleted entry snapshots; known amounts only, retain incomplete-field and intake-coverage flags", "Logged subtotal is not total intake; no record/null nutrient is unknown", "nutrition")),
   define("condition_episode_frequency", "Recorded episode frequency", "condition", "episodes", "count", "window", ["count"], "ratio", "Nonarchived onsets in half-open window", "No onset logs do not establish symptom-free surveillance", "episode_frequency"),

@@ -600,10 +600,10 @@ function CheckInForm({ date, historical }: { date: string; historical: boolean }
 
             <label className="block rounded-xl border border-slate-200 bg-slate-50 p-4">
               <span className="block text-lg font-black text-slate-950">
-                Weight
+                Weight (lb for new entries)
               </span>
               <span className="mt-1 block text-sm font-medium leading-6 text-slate-500">
-                Optional, only when you want to track it.
+                {baseline?.weight!=null&&baseline.weight_provenance_version!==1 ? "This historical value has unknown units and has not been converted. Leave it unchanged, or replace it with a newly measured value in pounds." : "Optional. Enter pounds; new entries retain verified units for experiments."}
               </span>
               <input
                 value={weight}

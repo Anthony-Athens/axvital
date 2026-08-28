@@ -19,14 +19,17 @@
     "stripe": "^22.5.0"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "0.5.8",
     "@tailwindcss/postcss": "^4.3.3",
+    "@types/jsdom": "^30.0.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "esbuild": "^0.28.2",
     "eslint": "^9",
     "eslint-config-next": "16.3.3",
+    "jsdom": "^30.0.1",
     "tailwindcss": "^4.3.3",
-    "typescript": "^5",
-    "@electric-sql/pglite": "0.5.8"
+    "typescript": "^5"
   }
 }

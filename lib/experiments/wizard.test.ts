@@ -24,7 +24,7 @@ test("wizard progression uses discovery groups and target-required versus target
   assert.equal(outcomeChoices(discovery,"Workout Performance")[0].registryKey,exercise.registryKey);
   assert.equal(targetSelected(exercise,chooseOutcome(exercise)),false);
   assert.equal(targetSelected(exercise,{...chooseOutcome(exercise),exercise_id:id}),true);
-  assert.equal(discovery.outcomes.find(o=>o.registryKey==="body_weight")?.enabled,false);
+  assert.equal(discovery.outcomes.find(o=>o.registryKey==="body_weight")?.enabled,true);
 });
 test("symptom identities stay distinct and intervention selection maps only supported references",()=>{
   const symptom=discovery.outcomes.find(o=>o.targetSelector==="symptom")!;

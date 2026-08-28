@@ -63,6 +63,17 @@ test("drafts do not fabricate outcomes, and templates/evidence preserve unknown 
   assert.throws(() => patternRules("carnivore", {}));
   assert.equal(patternRules("dairy_free", { exclusions: ["dairy"] }).length, 1);
 });
+test("weight v2 authoring freezes canonical definition and preserves nutrition target",async()=>{
+ const db=await database();try{
+  await as(db);const ruleId=await rule(db),input=await plan(db,ruleId);
+  const saved=await draft(db,{...input,outcomes:[{...energy,registry_key:"body_weight",registry_version:2,expected_direction:"unknown"}]});
+  await db.query("select * from public.start_experiment_v2($1,$2)",[saved.id,saved.config_revision]);
+  const snapshot=await row<{configuration:{outcomes:{definition:{unit:string;version:number}}[];intervention:{type:string}}}>(db,"select configuration from public.experiment_start_snapshots where experiment_id=$1",[saved.id]);
+  assert.equal(snapshot.configuration.outcomes[0].definition.unit,"kg");
+  assert.equal(snapshot.configuration.outcomes[0].definition.version,2);
+  assert.equal(snapshot.configuration.intervention.type,"nutrition_target");
+ }finally{await db.close();}
+});
 
 test("v2 SQL whitelist matches registry; preflight emits metadata/counts; v1 remains intact", async t => {
   const db = await database(); t.after(() => db.close());
@@ -70,7 +81,7 @@ test("v2 SQL whitelist matches registry; preflight emits metadata/counts; v1 rem
   assert.equal(inventory.some(r => r.status?.startsWith("MISSING")), false);
   for (const name of ["experiments", "user_symptoms", "nutrition_patterns", "target_rules"])
     assert.ok(inventory.some(r => r.table_name === name && r.status === "PRESENT" && r.supporting_index));
-  for (const definition of outcomeRegistry) assert.deepEqual((await row<{ d: unknown }>(db, "select public.axvital_outcome_definition($1,1) d", [definition.key])).d, definition);
+  for (const definition of outcomeRegistry) assert.deepEqual((await row<{ d: unknown }>(db, "select public.axvital_outcome_definition($1,$2) d", [definition.key,definition.version])).d, definition);
   await as(db);
   const old = await row<{ id: string; model_version: number }>(db, "insert into public.experiments(user_id,name,hypothesis) values($1,'Legacy','Original hypothesis preserved') returning *", [A]);
   assert.equal(old.model_version, 1);

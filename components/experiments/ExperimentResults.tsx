@@ -3,26 +3,29 @@ import {useCallback,useEffect,useRef,useState} from "react";
 import {ResultsView,type RevisionData,type ResultsDTO} from "./ResultsView";
 import {ResultsRequestState,reconcileCapture} from "../../lib/experiments/results-client";
 import {ButtonLink,PageContainer} from "../ui/design-system";
+import {parseResultsResponse,parseRevisionResponse} from "../../lib/experiments/results-response";
 type Failure=Error&{status?:number};
-async function json<T>(url:string,init:RequestInit):Promise<T>{const response=await fetch(url,{...init,cache:"no-store"});if(!response.ok){const error=new Error(response.status===401?"Please sign in to read your results.":response.status===404?"This experiment or analysis revision was not found.":response.status===429?"Too many requests. Wait a minute before refreshing.":response.status===409?"The study or analysis revision changed, or capture is unavailable. Refresh authoritative state before continuing.":"Results are temporarily unavailable. The required durable-evidence infrastructure may be unavailable.") as Failure;error.status=response.status;throw error;}return response.json();}
+async function json<T>(url:string,init:RequestInit):Promise<T>{const response=await fetch(url,{...init,cache:"no-store"});if(!response.ok){const error=new Error(response.status===401?"Please sign in to read your results.":response.status===404?"This experiment or analysis revision was not found.":response.status===429?"Too many requests. Wait a minute before refreshing.":response.status===409?"The study or analysis revision changed, or capture is unavailable. Refresh authoritative state before continuing.":"Results are temporarily unavailable. The required durable-evidence infrastructure may be unavailable.") as Failure;error.status=response.status;throw error;}const value:unknown=await response.json();return (url.includes("/revisions?")?parseRevisionResponse(value):parseResultsResponse(value)) as T;}
 export function ExperimentResults({id}:{id:string}) {
  const gate=useRef(new ResultsRequestState()),mounted=useRef(false),abort=useRef<AbortController|null>(null),attempt=useRef<{before:number;uncertain:boolean}|null>(null);
  const [data,setData]=useState<RevisionData|null>(null),[result,setResult]=useState<ResultsDTO|null>(null),[selected,setSelected]=useState<number|null>(null),[loading,setLoading]=useState(true),[busy,setBusy]=useState(false),[locked,setLocked]=useState(false),[error,setError]=useState(""),[notice,setNotice]=useState("");
  const read=useCallback(async(revision?:number)=>{
    const token=gate.current.beginRead();abort.current?.abort();const control=new AbortController();abort.current=control;setLoading(true);setResult(null);setError("");
    try {
-     const meta=await json<RevisionData>(`/api/experiments/v2/results/revisions?id=${id}`,{signal:control.signal});if(!gate.current.current(token))return;
-     if(attempt.current){const outcome=reconcileCapture(attempt.current,meta.latestRevision);if(outcome==="retained"){setNotice(`Revision ${meta.latestRevision} is now retained. Select it to inspect the authoritative result.`);attempt.current=null;gate.current.releaseMutation();setLocked(false);}else if(outcome==="not_created"){attempt.current=null;gate.current.releaseMutation();setLocked(false);}else{setNotice("No new revision has been confirmed yet. Do not repeat the capture while its outcome is uncertain; refresh capture status.");}}
-     const chosen=revision??meta.latestRevision;setSelected(chosen||null);
+     const meta=await json<RevisionData>(`/api/experiments/v2/results/revisions?id=${id}`,{signal:control.signal});if(!gate.current.current(token))return;if(meta.experiment.id!==id)throw new Error("The returned experiment did not match the request.");
+     let reconciledRevision:number|undefined;
+     if(attempt.current){const outcome=reconcileCapture(attempt.current,meta.latestRevision);if(outcome==="retained"){reconciledRevision=meta.latestRevision;setNotice(previous=>`${previous?`${previous} `:""}Revision ${meta.latestRevision} is now retained. Showing the authoritative result.`);attempt.current=null;gate.current.releaseMutation();setLocked(false);}else if(outcome==="not_created"){attempt.current=null;gate.current.releaseMutation();setLocked(false);}else{setNotice("No new revision has been confirmed yet. Do not repeat the capture while its outcome is uncertain; refresh capture status.");}}
+     const chosen=reconciledRevision??revision??meta.latestRevision;setSelected(chosen||null);
      // Fetch older metadata pages only on explicit selection or a deep link.
      let merged=meta;
      while(chosen&&!merged.revisions.some(r=>r.revision===chosen)&&merged.nextBefore!==null){const page=await json<RevisionData>(`/api/experiments/v2/results/revisions?id=${id}&before=${merged.nextBefore}`,{signal:control.signal});merged={...merged,revisions:[...merged.revisions,...page.revisions],nextBefore:page.nextBefore};}
      if(!gate.current.current(token))return;setData(merged);
-     if(chosen){const value=await json<ResultsDTO>(`/api/experiments/v2/results?id=${id}&revision=${chosen}`,{signal:control.signal});if(!gate.current.current(token))return;if(value.analysisRevision!==chosen)throw new Error("The returned revision did not match the requested revision.");setResult(value);window.history.replaceState(null,"",`${window.location.pathname}?revision=${chosen}`);setTimeout(()=>document.getElementById("analysis-heading")?.focus(),0);}
+     if(chosen){const value=await json<ResultsDTO>(`/api/experiments/v2/results?id=${id}&revision=${chosen}`,{signal:control.signal});if(!gate.current.current(token))return;if(value.analysisRevision!==chosen)throw new Error("The returned revision did not match the requested revision.");setResult(value);window.history.replaceState(null,"",`${window.location.pathname}?revision=${chosen}`);}
    }catch(e){if(gate.current.current(token)&&!control.signal.aborted)setError(e instanceof Error?e.message:"Unable to read results.");}
    finally{if(gate.current.current(token))setLoading(false);}
  },[id]);
  useEffect(()=>{mounted.current=true;const query=new URLSearchParams(window.location.search).get("revision"),revision=query&&/^[1-9]\d?$/.test(query)&&Number(query)<=32?Number(query):undefined;const timer=setTimeout(()=>void read(revision),0);const state=gate.current;return()=>{mounted.current=false;clearTimeout(timer);state.invalidate();abort.current?.abort();};},[read]);
+ useEffect(()=>{if(!loading&&result?.analysisRevision===selected)document.getElementById("analysis-heading")?.focus();},[loading,result,selected]);
  async function generate(){
    if(!data?.canCapture||!gate.current.beginMutation())return;
    setBusy(true);setLocked(true);setError("");setNotice("");attempt.current={before:data.latestRevision,uncertain:true};

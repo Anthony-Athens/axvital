@@ -37,9 +37,9 @@ function fake(options: { anonymous?: boolean; premium?: boolean; budget?: boolea
 }
 
 test("outcome discovery is registry-derived, safe, grouped and honest about disabled/readiness modes", () => {
-  const result = discoverOutcomes();assert.equal(result.outcomes.length, outcomeRegistry.length);
-  assert.equal(new Set(result.outcomes.map(o => o.registryKey)).size, outcomeRegistry.length);
-  assert.equal(result.outcomes.find(o => o.registryKey === "body_weight")?.enabled, false);
+  const result = discoverOutcomes();assert.equal(result.outcomes.length, new Set(outcomeRegistry.map(o=>o.key)).size);
+  assert.equal(new Set(result.outcomes.map(o => o.registryKey)).size, result.outcomes.length);
+  assert.equal(result.outcomes.find(o => o.registryKey === "body_weight")?.enabled, true);
   assert.equal(result.outcomes.find(o => o.registryKey === "exercise_estimated_1rm")?.primaryPerformancePreference, true);
   assert.equal(result.outcomes.find(o => o.registryKey === "exercise_session_frequency")?.readinessAvailable, false);
   assert.equal(result.goalGroups.length, 8);assert.deepEqual(result.baselineModes, ["historical", "none"]);

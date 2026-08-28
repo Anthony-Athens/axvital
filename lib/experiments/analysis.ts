@@ -55,6 +55,7 @@ export function inspectAnalysisPlan(input:AnalysisInput) {
   if(family==="pre_post_performance")issues.push(reason("PRE_POST_ASSESSMENT_PROTOCOL_UNAVAILABLE","design","unsupported_design"));
   else if(family==="count_frequency")issues.push(reason("EVENT_SURVEILLANCE_DENOMINATOR_UNAVAILABLE","design","unsupported_design"));
   else if(definition?.sourceAdapter==="checkins"&&family==="repeated_ordinal")method="ordinal_median_interval_distribution_v1";
+  else if(definition?.key==="body_weight"&&definition.version===2&&["average","median"].includes(outcome?.aggregation_method??""))method="verified_daily_weight_mean_median_v1";
   else if(definition?.sourceAdapter==="nutrition"&&family==="repeated_continuous"&&outcome?.aggregation_method==="average")method="complete_day_mean_median_v1";
   else issues.push(reason("UNSUPPORTED_OUTCOME_CADENCE_OR_AGGREGATION","design","unsupported_design"));
   if(frozen.baseline_mode!=="historical")issues.push(reason("HISTORICAL_BASELINE_REQUIRED","design","unsupported_design"));
@@ -91,6 +92,7 @@ function periodData(source:SourceResult|null,scope:"baseline"|"intervention",pla
   }
   if(plan.definition.grain==="day"&&new Set(source.observations.map(o=>o.logicalDate)).size!==source.observations.length){issues.push(reason("DUPLICATE_OBSERVATION_DAY",scope,"blocked_by_integrity"));return empty;}
   const readiness=evaluateReadiness(source);
+  if(source.registryKey==="body_weight"&&source.counts.excluded>0)issues.push(reason("WEIGHT_PROVENANCE_EXCLUSIONS",scope,"unable_to_determine"));
   const days=source.nutritionDays??[];
   const invalidNutritionDays=new Set(days.map(d=>d.logicalDate)).size!==days.length||days.some(d=>d.logicalDate<window.startDate||d.logicalDate>=window.endDateExclusive)||source.observations.some(o=>!days.some(d=>d.logicalDate===o.logicalDate&&d.subtotal===o.value.value));
   if(source.sourceDomain==="nutrition"&&invalidNutritionDays){issues.push(reason("NUTRITION_DAY_EVIDENCE_MISMATCH",scope,"blocked_by_integrity"));return empty;}

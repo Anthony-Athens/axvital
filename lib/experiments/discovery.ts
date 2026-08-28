@@ -11,7 +11,7 @@ function group(d: MeasurementDefinition) {
   return d.sourceAdapter === "nutrition" ? goalGroups[6] : goalGroups[7];
 }
 export function discoverOutcomes() {
-  return { registryVersion: 1, goalGroups, baselineModes: ["historical", "none"], prospective: { storageSupported: true, runtimeAvailable: false }, outcomes: outcomeRegistry.map(d => {
+  return { registryVersion: 1, goalGroups, baselineModes: ["historical", "none"], prospective: { storageSupported: true, runtimeAvailable: false }, outcomes: outcomeRegistry.filter(d=>!outcomeRegistry.some(newer=>newer.key===d.key&&newer.version>d.version)).map(d => {
     const policy = readinessPolicies[d.key as keyof typeof readinessPolicies];
     return { registryKey: d.key, registryVersion: d.version, label: d.label, group: group(d), description: d.limitations,
       unit: d.unit, grain: d.grain, scale: d.scale, aggregations: d.aggregations, recommendedAggregation: d.aggregations[0],

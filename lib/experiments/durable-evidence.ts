@@ -9,6 +9,7 @@ import {summarizeEvidence,reconciledNutritionOpportunities,type ExposureEvidence
 import {captureAnalysisBundle,inspectAnalysisPlan} from "./analysis.ts";
 import type {AnalysisInput,AnalysisResult} from "./analysis-contract.ts";
 import type {LifecycleEvent} from "./lifecycle.ts";
+import {retainedResultsDisplay} from "./results-display.ts";
 
 type Frame={start:string;end:string;nutrition:unknown;checkins:Record<string,unknown>[]};
 type Evidence={captureVersion:1;analysisPolicyVersion:2;versions:Record<string,number>;cutoff:string;experiment:{id:string;user_id:string;config_revision:number;model_version:number;status:string;current_phase:string;actual_started_at:string|null;actual_completed_at:string|null;ended_early_at:string|null};startSnapshot:NonNullable<AnalysisInput["startSnapshot"]>;events:LifecycleEvent[];baseline:Frame;intervention:Frame};
@@ -36,7 +37,9 @@ function capturedClient(owner:string,frame:Frame):SupabaseClient {
 export async function replayDurableCapture(capture:StoredCapture) {
   if(capture.capture_version!==1||capture.analysis_policy_version!==2||Buffer.byteLength(capture.evidence_text,"utf8")>2097152||createHash("sha256").update(capture.evidence_text).digest("hex")!==capture.digest)throw new ApiError(409,"CAPTURE_INTEGRITY_MISMATCH");
   const raw=JSON.parse(capture.evidence_text) as Evidence;
-  const versions={analysisContract:2,readinessPolicy:1,sourceAdapter:1,measurementRegistry:1,exposureContract:1,lifecycleContract:1};
+  const outcomes=raw.startSnapshot?.configuration.outcomes;
+  const weight=Array.isArray(outcomes)&&outcomes.some(o=>isObject(o)&&o.outcome_role==="primary"&&o.registry_key==="body_weight"&&o.registry_version===2);
+  const versions={analysisContract:2,readinessPolicy:1,sourceAdapter:1,measurementRegistry:weight?2:1,exposureContract:1,lifecycleContract:1};
   if(Object.entries(versions).some(([k,v])=>raw.versions?.[k]!==v))throw new ApiError(409,"CAPTURE_VERSION_UNSUPPORTED");
   if(raw.captureVersion!==1||raw.analysisPolicyVersion!==2||raw.experiment.config_revision!==capture.config_revision||iso(raw.cutoff)!==iso(capture.captured_at)||!Number.isSafeInteger(capture.analysis_revision)||capture.analysis_revision<1)throw new ApiError(409,"CAPTURE_METADATA_MISMATCH");
   const e=raw.experiment,cutoff=iso(raw.cutoff)!;
@@ -84,7 +87,7 @@ export async function readDurableAnalysis(client:SupabaseClient,id:string,revisi
   if(error)throw new ApiError(503,"TEMPORARILY_UNAVAILABLE");if(!data)throw new ApiError(404,"ANALYSIS_NOT_FOUND");
   const bundle=await replayDurableCapture(data as StoredCapture);
   if(bundle.input.experiment.id!==id)throw new ApiError(409,"CAPTURE_METADATA_MISMATCH");
-  return {...publicAnalysis(bundle.result,revision),capturedAt:iso((data as StoredCapture).captured_at)};
+  return {...publicAnalysis(bundle.result,revision),capturedAt:iso((data as StoredCapture).captured_at),display:retainedResultsDisplay(bundle.input)};
 }
 /** Explicit mutation only; never called by a render/read. Optimistic revisions
  * make retries/conflicts explicit. SQL accepts identifiers, not scientific data.

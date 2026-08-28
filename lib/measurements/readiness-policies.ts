@@ -3,6 +3,7 @@ import { calendarDays, shiftDate } from "./time-window.ts";
 import { measurement } from "./registry.ts";
 
 export const readinessPolicies = {
+  body_weight: { registryVersion: 2, policyVersion: 1, defaultWindowDays: 14, observedDays: 7, spanDays: 7 },
   energy_score: { registryVersion: 1, policyVersion: 1, defaultWindowDays: 14, observedDays: 7, spanDays: 7 },
   mood_score: { registryVersion: 1, policyVersion: 1, defaultWindowDays: 14, observedDays: 7, spanDays: 7 },
   sleep_quality_score: { registryVersion: 1, policyVersion: 1, defaultWindowDays: 14, observedDays: 7, spanDays: 7 },
@@ -25,7 +26,7 @@ export const readinessPolicies = {
 } as const satisfies Record<SupportedKey, object>;
 export type BaselineAggregate = { kind: "numeric"; value: number } | { kind: "ordinal_median"; lower: ObservedValue; upper: ObservedValue };
 export type ReadinessResult = {
-  contractVersion: 1; policyVersion: 1; registryKey: SupportedKey; registryVersion: 1;
+  contractVersion: 1; policyVersion: 1; registryKey: SupportedKey; registryVersion: 1|2;
   target: SourceResult["target"]; aggregation: string; unit: string; mode: "historical";
   requestedWindow: { startDate: string; endDateExclusive: string };
   effectiveWindow: { startDate: string; endDateExclusive: string; startAt: string; endAtExclusive: string };
@@ -80,12 +81,13 @@ export function evaluateReadiness(source: SourceResult): ReadinessResult {
     classification = !points.length ? "insufficient" : good ? "good" : "limited";
     if ("recordedOnly" in policy && source.aggregation === "count") classification = "limited";
   }
+  if(source.registryKey==="body_weight"&&!points.length&&source.counts.excluded>0)classification=null;
   const warnings = [...source.warnings, "READINESS_IS_AVAILABILITY_HEURISTIC"];
   if (classification === "limited") warnings.push("SPARSE_BASELINE");
   if (classification === "insufficient") warnings.push("NO_ELIGIBLE_OBSERVATIONS");
   if (complete && events && source.aggregation === "count" && !points.length) warnings.push("ZERO_RECORDED_EVENTS_NOT_VERIFIED_ABSENCE");
   return {
-    contractVersion: 1, policyVersion: 1, registryKey: source.registryKey, registryVersion: 1,
+    contractVersion: 1, policyVersion: 1, registryKey: source.registryKey, registryVersion: source.registryVersion,
     target: source.target, aggregation: source.aggregation, unit: source.unit, mode: "historical",
     requestedWindow: { startDate: source.window.startDate, endDateExclusive: source.window.endDateExclusive },
     effectiveWindow: { startDate: source.window.startDate, endDateExclusive: source.window.endDateExclusive, startAt: source.window.startAt, endAtExclusive: source.window.effectiveEndAtExclusive },

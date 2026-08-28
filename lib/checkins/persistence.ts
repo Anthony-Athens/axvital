@@ -26,6 +26,9 @@ export function checkinPatch(draft: CheckinDraft, baseline: CheckinRecord | null
     const weight = draft.weight.trim() ? Number(draft.weight) : null;
     if (weight !== null && (!Number.isFinite(weight) || weight <= 0 || weight > 2000)) throw new Error("INVALID_WEIGHT");
     patch.weight = weight;
+    patch.weight_source_value = weight;
+    patch.weight_source_unit = weight===null?null:"lb";
+    patch.weight_provenance_version = weight===null?null:1;
   }
   return patch;
 }

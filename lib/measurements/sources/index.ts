@@ -9,15 +9,16 @@ import type { SourceResult, SupportedKey, Observation } from "../observations.ts
 import { nutritionFields, readNutrition, readEpisodes, readSymptoms } from "./domain-readers.ts";
 import { readinessPolicies } from "../readiness-policies.ts";
 
+import {normalizeBodyWeight,type WeightRecord} from "../body-weight.ts";
 export const SOURCE_ROW_LIMIT = 1000;
 const adapters: Record<SupportedKey, SourceResult["sourceDomain"]> = {
-  energy_score: "checkins", mood_score: "checkins", sleep_quality_score: "checkins", exercise_estimated_1rm: "workouts",
+  body_weight: "checkins", energy_score: "checkins", mood_score: "checkins", sleep_quality_score: "checkins", exercise_estimated_1rm: "workouts",
   nutrition_calories: "nutrition", nutrition_protein_grams: "nutrition", nutrition_carbohydrate_grams: "nutrition", nutrition_fat_grams: "nutrition", nutrition_fiber_grams: "nutrition", nutrition_caffeine_mg: "nutrition", nutrition_alcohol_grams: "nutrition",
   condition_episode_frequency: "episodes", condition_episode_duration_hours: "episodes", condition_episode_peak_severity: "episodes", condition_episode_impact: "episodes",
   symptom_event_frequency: "symptoms", symptom_occurrence_count: "symptoms", symptom_severity: "symptoms", symptom_duration_minutes: "symptoms",
 };
 export type SourceRequest = { outcome: OutcomeInput; timeZone: string; startDate?: string; endDateExclusive?: string };
-type Checkin = { id: string; user_id: string; checkin_date: string; energy_score: number | null; mood_score: number | null; sleep_quality: string | null };
+type Checkin = WeightRecord & { id: string; user_id: string; checkin_date: string; energy_score: number | null; mood_score: number | null; sleep_quality: string | null };
 type WorkoutRow = EpleySet & { id: string; set_number: number; completed_at: string | null;
   session: { id: string; user_id: string; session_date: string; started_at: string };
   exercise: EpleyExercise & { group_order: number; exercise_order: number } };
@@ -38,13 +39,13 @@ export async function readObservations(client: SupabaseClient, request: SourceRe
   if ((request.startDate !== undefined && typeof request.startDate !== "string") || (request.endDateExclusive !== undefined && typeof request.endDateExclusive !== "string")) throw new Error("INVALID_WINDOW");
   validateOutcome(request.outcome);
   const outcome = request.outcome;
-  if (outcome.registry_version !== 1 || !Object.hasOwn(adapters, outcome.registry_key)) throw new Error("UNSUPPORTED_SOURCE");
-  const key = outcome.registry_key as SupportedKey, definition = measurement(key, 1)!;
+  if (outcome.registry_version !== (outcome.registry_key==="body_weight"?2:1) || !Object.hasOwn(adapters, outcome.registry_key)) throw new Error("UNSUPPORTED_SOURCE");
+  const key = outcome.registry_key as SupportedKey, definition = measurement(key, outcome.registry_version)!;
   const evaluatedAt = clock();
   const defaults = request.startDate === undefined && request.endDateExclusive === undefined;
   const end = defaults ? dateInZone(evaluatedAt, request.timeZone) : request.endDateExclusive;
   const window = historicalWindow(request.timeZone, evaluatedAt, defaults ? shiftDate(end!, -readinessPolicies[key].defaultWindowDays) : request.startDate, end);
-  const result: SourceResult = { contractVersion: 1, registryKey: key, registryVersion: 1, adapterVersion: 1,
+  const result: SourceResult = { contractVersion: 1, registryKey: key, registryVersion: outcome.registry_version, adapterVersion: 1,
     sourceDomain: adapters[key], target: outcome.exercise_id ? { kind: "exercise", exerciseId: outcome.exercise_id }
       : adapters[key] === "symptoms" ? { kind: "symptom", ...(outcome.symptom_id ? { symptomId: outcome.symptom_id } : { userSymptomId: outcome.user_symptom_id }), ...(outcome.user_condition_id ? { conditionId: outcome.user_condition_id } : {}) }
       : outcome.user_condition_id ? { kind: "condition", conditionId: outcome.user_condition_id } : { kind: "none" },
@@ -58,16 +59,22 @@ export async function readObservations(client: SupabaseClient, request: SourceRe
     else if (adapters[key] === "episodes") await readEpisodes(client, userId, outcome, result, signal);
     else if (adapters[key] === "symptoms") await readSymptoms(client, userId, outcome, result, signal);
     else if (adapters[key] === "checkins") {
-      const response = await client.from("daily_checkins").select("id,user_id,checkin_date,energy_score,mood_score,sleep_quality", { count: "exact" })
+      const response = await client.from("daily_checkins").select(key==="body_weight"?"id,user_id,checkin_date,weight,weight_source_value,weight_source_unit,weight_provenance_version,weight_kg":"id,user_id,checkin_date,energy_score,mood_score,sleep_quality", { count: "exact" })
         .eq("user_id", userId).gte("checkin_date", window.startDate).lt("checkin_date", window.endDateExclusive)
         .order("checkin_date").order("id").limit(SOURCE_ROW_LIMIT).abortSignal(signal);
       if (response.error || response.data === null) throw new Error("SOURCE_READ_FAILED");
       checkCompleteness(result, response.count, response.data.length);
       const dates = new Set<string>();
-      for (const row of response.data as Checkin[]) {
+      for (const row of response.data as unknown as Checkin[]) {
         if (row.user_id !== userId || !inWindow(row.checkin_date, result)) { exclude(result, "INVALID_OWNER_OR_DATE");continue; }
         if (dates.has(row.checkin_date)) throw new Error("DUPLICATE_LOGICAL_DATE");
         dates.add(row.checkin_date);
+        if(key==="body_weight"){
+          if(row.weight==null&&row.weight_source_value==null){result.counts.nullValues++;continue;}
+          const normalized=normalizeBodyWeight(row);
+          if(normalized.value===null){exclude(result,normalized.provenance);if(!result.warnings.includes("WEIGHT_UNVERIFIED_RECORDS_EXCLUDED"))result.warnings.push("WEIGHT_UNVERIFIED_RECORDS_EXCLUDED");continue;}
+          result.observations.push({sourceId:row.id,logicalDate:row.checkin_date,precision:"date",eligibility:"eligible",value:{kind:"numeric",value:normalized.value}});continue;
+        }
         const value = key === "energy_score" ? row.energy_score : key === "mood_score" ? row.mood_score : row.sleep_quality;
         if (value == null) { result.counts.nullValues++;continue; }
         if (key === "sleep_quality_score") {
