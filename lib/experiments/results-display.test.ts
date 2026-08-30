@@ -24,7 +24,7 @@ test("older display-less DTO and future display version fall back without guessi
  assert.equal(parseResultsResponse({...old,display:{version:99,unit:"guessed"}}).display,null);
 });
 test("response parser rejects malformed results, private root fields, and invalid metadata",async()=>{
- const dto=await fixtureResult();for(const invalid of [{...dto,analysisRevision:0},{...dto,evidence_text:"private"},{...dto,outcomeQuality:null},{...dto,facts:{...dto.facts,absoluteChange:Infinity}},{...dto,eligibility:{state:"unknown",reasons:[]}}])assert.throws(()=>parseResultsResponse(invalid),/supported public contract/);
+ const dto=await fixtureResult();for(const invalid of [{...dto,analysisRevision:0},{...dto,evidence_text:"private"},{...dto,outcomeQuality:null},{...dto,facts:{...dto.facts,absoluteChange:Infinity}},{...dto,eligibility:{state:"unknown",reasons:[]}},{...dto,reliability:{...dto.reliability,privateObservations:[1]}},{...dto,reliability:{...dto.reliability,status:"supported",interval:{lower:2,upper:1,level:.95}}}])assert.throws(()=>parseResultsResponse(invalid),/supported public contract/);
  assert.deepEqual(parseRevisionResponse(fixtureMetadata([dto])),fixtureMetadata([dto]));assert.throws(()=>parseRevisionResponse({...fixtureMetadata([dto]),nextBefore:20}),/supported public contract/);
 });
 test("formatting preserves unknown/zero, avoids false zero precision and adds only authoritative units",()=>{
@@ -52,4 +52,12 @@ test("Body Weight and partial adherence presentation use only engine-produced pu
  const weight=await fixtureResult("body_weight");assert.equal(weight.eligibility.state,"ready");assert.equal(weight.display?.outcomeLabel,"Body Weight");assert.equal(weight.display?.unit,"kg");assert.equal(weight.facts?.neutralMovement,"lower");assert.ok((weight.facts?.absoluteChange??0)<0);
  const partial=await fixtureVariant("partial_adherence");assert.equal(partial.eligibility.state,"ready");assert.deepEqual({eligible:partial.exposureQuality?.eligible,adherent:partial.exposureQuality?.adherent,nonAdherent:partial.exposureQuality?.nonAdherent,unknown:partial.exposureQuality?.unknown},{eligible:14,adherent:12,nonAdherent:2,unknown:0});assert.equal(adherencePresentation(partial.exposureQuality).percent,86);
  const unknown=await fixtureVariant("unknown_adherence");assert.equal(unknown.eligibility.state,"insufficient_data");assert.equal(unknown.exposureQuality?.unknown,2);assert.equal(unknown.exposureQuality?.nonAdherent,0);
+});
+test("engine-produced reliability DTOs separate clearer, uncertain, insufficient, ordinal, early-end, and pause states",async()=>{
+ const clearer=await fixtureVariant("reliability_clear"),uncertain=await fixtureVariant("reliability_uncertain"),insufficient=await fixtureResult(),ordinal=await fixtureResult("energy_score",1,20,14),early=await fixtureVariant("early_pause"),paused=await fixtureVariant("pause_complete");
+ assert.equal(clearer.reliability.status,"supported");assert.equal(clearer.reliability.comparison.state,"difference_detected");
+ assert.equal(uncertain.reliability.status,"supported");assert.equal(uncertain.reliability.comparison.state,"no_clear_difference");assert.ok(uncertain.reliability.interval!.lower<=0&&uncertain.reliability.interval!.upper>=0);
+ assert.equal(insufficient.reliability.status,"insufficient_data");assert.equal(ordinal.reliability.status,"unsupported_method");assert.deepEqual(ordinal.reliability.limitations,["ORDINAL_RELIABILITY_UNSUPPORTED_V1"]);
+ assert.deepEqual(early.reliability.limitations,["EARLY_END_RELIABILITY_UNSUPPORTED_V1"]);assert.equal(paused.reliability.status,"supported");assert.equal(paused.reliability.sample.intervention,12);assert.ok(paused.limitations.includes("PAUSE_TOUCHED_DAYS_EXCLUDED"));
+ for(const dto of [clearer,uncertain,insufficient,ordinal,early,paused])assert.deepEqual(parseResultsResponse(dto),dto);
 });

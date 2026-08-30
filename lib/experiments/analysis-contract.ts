@@ -1,6 +1,7 @@
 import type { SourceResult } from "../measurements/observations.ts";
 import type { ExposureEvidence } from "./exposure-evidence.ts";
 import type {LifecycleEvidence} from "./lifecycle.ts";
+import type {ReliabilityResult} from "./reliability.ts";
 
 export type AnalysisFamily="repeated_continuous"|"repeated_ordinal"|"count_frequency"|"binary_repeated"|"pre_post_performance"|"unsupported";
 export type EligibilityState="ready"|"insufficient_data"|"unsupported_design"|"blocked_by_integrity"|"unable_to_determine";
@@ -34,5 +35,6 @@ export type AnalysisResult={
   exposureQuality:ExposureEvidence|null;outcomeQuality:{baseline:PeriodQuality;intervention:PeriodQuality};
   facts:{baseline:PeriodSummary;intervention:PeriodSummary;absoluteChange:number|null;relativeChangePercent:number|null;neutralMovement:"higher"|"lower"|"unchanged"|"indeterminate";direction:Direction;directionSource:"frozen_change_success_criterion"|"unknown";rateDifference:null;rateRatio:null;trend:null}|null;
   interpretationTier:"descriptive"|"indeterminate";limitations:string[];
+  reliability:ReliabilityResult;
 };
 export type AnalysisBundle={input:AnalysisInput;inputDigest:string;result:AnalysisResult};

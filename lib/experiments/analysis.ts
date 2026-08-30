@@ -9,6 +9,7 @@ import {isObject,isUuid} from "../rules/validation.ts";
 import type {SourceResult} from "../measurements/observations.ts";
 import type {AnalysisInput,AnalysisBundle,AnalysisResult,AnalysisReason,AnalysisFamily,PeriodSummary,PeriodQuality,EligibilityState,Direction} from "./analysis-contract.ts";
 import {reconcileLifecycle} from "./lifecycle.ts";
+import {estimateReliability} from "./reliability.ts";
 
 // A small descriptive-method floor, not a power calculation or evidence-strength score.
 export const ANALYSIS_POLICY_V1={minimumObservationsPerPeriod:5,exposureUnknownAllowed:0,primaryPopulation:"all_observed_intervention_days"} as const;
@@ -78,7 +79,7 @@ export function inspectAnalysisPlan(input:AnalysisInput) {
 }
 const unavailableQuality=():PeriodQuality=>({readCompleteness:"unavailable",expectedObservations:null,capturedObservations:null,eligibleObservations:null,missingObservations:null,cadence:"unsupported",observedDates:[],sourceMissingness:null,adapterVersion:null});
 function periodData(source:SourceResult|null,scope:"baseline"|"intervention",plan:ReturnType<typeof inspectAnalysisPlan>,issues:AnalysisReason[]) {
-  const empty={quality:unavailableQuality(),values:[] as number[]};
+  const empty={quality:unavailableQuality(),values:[] as number[],points:[] as {date:string;value:number}[]};
   if(!source){issues.push(reason("OBSERVATION_READ_UNAVAILABLE",scope,"unable_to_determine"));return empty;}
   const window=scope==="baseline"?plan.baselineWindow:plan.interventionWindow;
   if(!window||!plan.outcome||!plan.definition)return empty;
@@ -86,7 +87,7 @@ function periodData(source:SourceResult|null,scope:"baseline"|"intervention",pla
   if(source.contractVersion!==1||source.adapterVersion!==1||source.registryVersion!==plan.outcome.registry_version||source.registryKey!==plan.outcome.registry_key||source.unit!==plan.definition.unit||source.aggregation!==plan.outcome.aggregation_method||source.sourceDomain!==plan.definition.sourceAdapter||JSON.stringify(canonical(source.window))!==JSON.stringify(canonical(window))) {
     issues.push(reason("OBSERVATION_IDENTITY_VERSION_OR_CUTOFF_MISMATCH",scope,"blocked_by_integrity"));return empty;
   }
-  if(source.queryCompleteness!=="complete") {issues.push(reason("INCOMPLETE_OBSERVATION_READ",scope,"unable_to_determine"));return {quality:{...empty.quality,readCompleteness:source.queryCompleteness,adapterVersion:source.adapterVersion,sourceMissingness:source.counts},values:[]};}
+  if(source.queryCompleteness!=="complete") {issues.push(reason("INCOMPLETE_OBSERVATION_READ",scope,"unable_to_determine"));return {quality:{...empty.quality,readCompleteness:source.queryCompleteness,adapterVersion:source.adapterVersion,sourceMissingness:source.counts},values:[],points:[]};}
   if(!Array.isArray(source.observations)||source.observations.length>1000||source.observationCount!==source.observations.length||new Set(source.observations.map(o=>o.sourceId)).size!==source.observations.length||source.observations.some(o=>o.logicalDate<window.startDate||o.logicalDate>=window.endDateExclusive||!Number.isFinite(o.value.value))) {
     issues.push(reason("INVALID_OBSERVATION_EVIDENCE",scope,"blocked_by_integrity"));return empty;
   }
@@ -98,8 +99,8 @@ function periodData(source:SourceResult|null,scope:"baseline"|"intervention",pla
   if(source.sourceDomain==="nutrition"&&invalidNutritionDays){issues.push(reason("NUTRITION_DAY_EVIDENCE_MISMATCH",scope,"blocked_by_integrity"));return empty;}
   const completeDays=new Set(days.filter(d=>d.fieldComplete&&d.coverageStatus==="complete").map(d=>d.logicalDate));
   const population=scope==="intervention"&&plan.lifecycle?source.observations.filter(o=>plan.lifecycle!.activeDates.includes(o.logicalDate)):source.observations;
-  const eligible=source.sourceDomain==="nutrition"?population.filter(o=>completeDays.has(o.logicalDate)):population;
-  const values=eligible.map(o=>o.value.value),dates=eligible.map(o=>o.logicalDate).sort();
+  const eligible=(source.sourceDomain==="nutrition"?population.filter(o=>completeDays.has(o.logicalDate)):population).toSorted((a,b)=>a.logicalDate.localeCompare(b.logicalDate));
+  const points=eligible.map(o=>({date:o.logicalDate,value:o.value.value})),values=points.map(point=>point.value),dates=points.map(point=>point.date);
   const ordinalMaximum=plan.definition.unit==="ordinal_4"?4:10;
   if(plan.family==="repeated_ordinal"&&values.some(v=>!Number.isInteger(v)||v<1||v>ordinalMaximum)){issues.push(reason("INVALID_ORDINAL_VALUE",scope,"blocked_by_integrity"));return empty;}
   if(values.some(v=>v<0)){issues.push(reason("INVALID_RATIO_VALUE",scope,"blocked_by_integrity"));return empty;}
@@ -107,7 +108,7 @@ function periodData(source:SourceResult|null,scope:"baseline"|"intervention",pla
   const quality:PeriodQuality={readCompleteness:"complete",expectedObservations:expected,capturedObservations:source.observations.length,eligibleObservations:values.length,missingObservations:expected===null?null:Math.max(0,expected-dates.length),cadence:expected===null?"unsupported":"daily",observedDates:dates,sourceMissingness:source.counts,adapterVersion:source.adapterVersion};
   if(expected===null)issues.push(reason("UNKNOWN_OUTCOME_DENOMINATOR",scope,"unsupported_design"));
   if(values.length<ANALYSIS_POLICY_V1.minimumObservationsPerPeriod)issues.push(reason(scope==="baseline"?"INSUFFICIENT_BASELINE_OBSERVATIONS":"INSUFFICIENT_INTERVENTION_OBSERVATIONS",scope,"insufficient_data"));
-  return {quality,values};
+  return {quality,values,points};
 }
 export function summarizeContinuous(values:number[]):PeriodSummary {
   const sorted=[...values].sort((a,b)=>a-b),n=sorted.length;if(!n||sorted.some(v=>!Number.isFinite(v)))throw new Error("INVALID_VALUES");
@@ -132,7 +133,7 @@ export function analyzeCapturedInput(input:AnalysisInput,expectedDigest?:string)
   const limitations=["DESCRIPTIVE_NONRANDOMIZED_COMPARISON","NO_CAUSAL_IDENTIFICATION","NO_SIGNIFICANCE_OR_UNCERTAINTY_INTERVALS","ALL_OBSERVED_INTERVENTION_DAYS_RETAINED","MINIMUM_SAMPLE_FLOOR_IS_NOT_POWER_OR_PRECISION",...input.integrityLimitations];
   if(plan.lifecycle){limitations.splice(limitations.indexOf("ALL_OBSERVED_INTERVENTION_DAYS_RETAINED"),1,"ALL_OBSERVED_ACTIVE_INTERVENTION_DAYS_RETAINED");limitations.push(...plan.lifecycle.limitations);}
   if(expectedDigest&&expectedDigest!==digest)issues.push(reason("CAPTURED_INPUT_DIGEST_MISMATCH","input","blocked_by_integrity"));
-  let baseline={quality:unavailableQuality(),values:[] as number[]},intervention={quality:unavailableQuality(),values:[] as number[]};
+  let baseline={quality:unavailableQuality(),values:[] as number[],points:[] as {date:string;value:number}[]},intervention={quality:unavailableQuality(),values:[] as number[],points:[] as {date:string;value:number}[]};
   try {baseline=periodData(input.baseline,"baseline",plan,issues);intervention=periodData(input.intervention,"intervention",plan,issues);}catch{issues.push(reason("INVALID_CAPTURED_OBSERVATIONS","input","blocked_by_integrity"));}
   const exposure=input.exposure;
   if(!exposure)issues.push(reason("EXPOSURE_EVIDENCE_UNAVAILABLE","exposure","unable_to_determine"));
@@ -169,7 +170,10 @@ export function analyzeCapturedInput(input:AnalysisInput,expectedDigest?:string)
     else facts={baseline:b,intervention:i,absoluteChange:absolute,relativeChangePercent:relative,neutralMovement:movement,direction:classifyDirection(movement,desirability),directionSource:desirability==="unknown"?"unknown":"frozen_change_success_criterion",rateDifference:null,rateRatio:null,trend:null};
   }
   if((baseline.quality.missingObservations??0)>0||(intervention.quality.missingObservations??0)>0)limitations.push("MISSING_OBSERVATIONS_NOT_IMPUTED","COMPLETE_CASE_SUMMARIES_MAY_BE_SELECTIVELY_OBSERVED");
-  return {analysisContractVersion:input.analysisContractVersion,analysisPolicyVersion:input.analysisPolicyVersion,inputDigest:digest,eligibility:{state:stateOf(issues),reasons:issues},family:plan.family,method:plan.method,exposureQuality:exposure,outcomeQuality:{baseline:baseline.quality,intervention:intervention.quality},facts,interpretationTier:facts?"descriptive":"indeterminate",limitations:[...new Set(limitations)]};
+  const eligibility=stateOf(issues);
+  const reliability=estimateReliability({family:plan.family,eligibility,unit:plan.definition?.unit??null,digest,baseline:baseline.points,intervention:intervention.points,baselineQuality:baseline.quality,interventionQuality:intervention.quality,endedEarly:input.experiment.status==="ended_early"});
+  const finalLimitations=reliability.status==="supported"?limitations.filter(code=>code!=="NO_SIGNIFICANCE_OR_UNCERTAINTY_INTERVALS"):limitations;
+  return {analysisContractVersion:input.analysisContractVersion,analysisPolicyVersion:input.analysisPolicyVersion,inputDigest:digest,eligibility:{state:eligibility,reasons:issues},family:plan.family,method:plan.method,exposureQuality:exposure,outcomeQuality:{baseline:baseline.quality,intervention:intervention.quality},facts,reliability,interpretationTier:facts?"descriptive":"indeterminate",limitations:[...new Set(finalLimitations)]};
 }
 export function captureAnalysisBundle(input:AnalysisInput):AnalysisBundle {
   const captured=structuredClone(input),inputDigest=analysisDigest(captured);

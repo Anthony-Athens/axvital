@@ -72,7 +72,9 @@ export async function replayDurableCapture(capture:StoredCapture) {
 export function publicAnalysis(result:AnalysisResult,analysisRevision:number) {
   const quality=(q:AnalysisResult["outcomeQuality"]["baseline"])=>({readCompleteness:q.readCompleteness,expected:q.expectedObservations,observed:q.eligibleObservations,missing:q.missingObservations,cadence:q.cadence});
   const exposure=result.exposureQuality;
+  const reliability=result.reliability;
   return {analysisRevision,analysisPolicyVersion:result.analysisPolicyVersion,analysisContractVersion:result.analysisContractVersion,eligibility:result.eligibility,family:result.family,method:result.method,facts:result.facts,
+    reliability:{version:reliability.version,methodVersion:reliability.methodVersion,status:reliability.status,method:reliability.method,estimate:reliability.estimate?{value:reliability.estimate.value,unit:reliability.estimate.unit}:null,interval:reliability.interval?{lower:reliability.interval.lower,upper:reliability.interval.upper,level:reliability.interval.level}:null,nullReference:reliability.nullReference,comparison:{state:reliability.comparison.state},sample:{baseline:reliability.sample.baseline,intervention:reliability.sample.intervention,baselineBlockLength:reliability.sample.baselineBlockLength,interventionBlockLength:reliability.sample.interventionBlockLength,iterations:reliability.sample.iterations},assumptions:[...reliability.assumptions],limitations:[...reliability.limitations]},
     outcomeQuality:{baseline:quality(result.outcomeQuality.baseline),intervention:quality(result.outcomeQuality.intervention)},
     exposureQuality:exposure?{eligible:exposure.eligibleOpportunityCount,adherent:exposure.adherentCount,nonAdherent:exposure.nonAdherentCount,unknown:exposure.unknownCount,completeness:exposure.evidenceCompleteness,integrity:exposure.sourceIntegrity}:null,
     interpretationTier:result.interpretationTier,limitations:result.limitations};
