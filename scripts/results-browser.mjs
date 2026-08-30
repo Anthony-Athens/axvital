@@ -8,16 +8,18 @@ const {fixtureResult,fixtureMetadata,fixtureVariant}=await import('../lib/experi
 hooks.deregister();
 const first=await fixtureResult(),second=await fixtureResult('nutrition_protein_grams',2,30);
 const ordinal=await fixtureResult('sleep_quality_score');
-const code=(await build({entryPoints:['lib/experiments/testing/results-harness.tsx'],bundle:true,write:false,format:'iife',globalName:'ResultsHarness',platform:'browser',define:{'process.env.NODE_ENV':'"development"','process.env':'{}'}})).outputFiles[0].text;
+const weight=await fixtureResult('body_weight');
+const code=(await build({entryPoints:[new URL('../lib/experiments/testing/results-harness.tsx',import.meta.url).pathname.slice(1)],bundle:true,write:false,format:'iife',globalName:'ResultsHarness',platform:'browser',define:{'process.env.NODE_ENV':'"development"','process.env':'{}'}})).outputFiles[0].text;
 const css=readdirSync('.next/static',{recursive:true}).filter(p=>p.endsWith('.css')).map(p=>readFileSync('.next/static/'+p,'utf8')).join('\n');
-const scenarios=['ready','ordinal','empty','insufficient_data','unable_to_determine','unsupported_design','blocked_by_integrity','early_pause','conflict','uncertain_pending','uncertain_saved'];
-const variants=Object.fromEntries(await Promise.all(['insufficient_data','unable_to_determine','unsupported_design','blocked_by_integrity','early_pause'].map(async s=>[s,await fixtureVariant(s)])));
+const scenarios=['ready','body_weight','ordinal','partial_adherence','unknown_adherence','empty','insufficient_data','unable_to_determine','unsupported_design','blocked_by_integrity','early_pause','conflict','uncertain_pending','uncertain_saved'];
+const variants=Object.fromEntries(await Promise.all(['partial_adherence','unknown_adherence','insufficient_data','unable_to_determine','unsupported_design','blocked_by_integrity','early_pause'].map(async s=>[s,await fixtureVariant(s)])));
 createServer((req,res)=>{
  const url=new URL(req.url,'http://127.0.0.1:3110');
  if(url.pathname==='/bundle.js'){res.writeHead(200,{'content-type':'text/javascript; charset=utf-8'});res.end(code);return;}
  const requested=url.pathname.startsWith('/scenario/')?url.pathname.slice('/scenario/'.length):url.searchParams.get('scenario');
  const scenario=scenarios.includes(requested)?requested:'ready';
  let results=[structuredClone(first),structuredClone(second)];
+ if(scenario==='body_weight')results=[weight];
  if(scenario==='ordinal')results=[ordinal];
  if(scenario==='empty')results=[];
  if(variants[scenario])results=[variants[scenario]];

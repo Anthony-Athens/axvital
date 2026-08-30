@@ -12,3 +12,23 @@ export function resultCopy(code:string){return copy[code]??`${code.toLowerCase()
 export const eligibilityNext:Record<string,string>={ready:"Compare the observed periods alongside the data quality and limitations below.",insufficient_data:"Review missing observations and exposure below. A new capture can include corrected records, but cannot create missing measurements.",unable_to_determine:"Refresh to check availability. Create another capture only after the evidence issue is resolved.",unsupported_design:"You can keep this study record. Analysis requires future support for this design; this does not mean the intervention failed.",blocked_by_integrity:"Keep this revision for reference. The conflicting history must be resolved before reliable analysis; repeated captures alone will not fix it."};
 const important=["EARLY_END_MAY_BE_INFORMATIVE","NO_CAUSAL_IDENTIFICATION","DESCRIPTIVE_NONRANDOMIZED_COMPARISON","COMPLETE_CASE_SUMMARIES_MAY_BE_SELECTIVELY_OBSERVED","MISSING_OBSERVATIONS_NOT_IMPUTED","SELF_REPORTED_EVIDENCE","PAUSE_TOUCHED_DAYS_EXCLUDED"];
 export function orderedLimitations(codes:string[]){return codes.map((code,index)=>({code,index,rank:important.indexOf(code)})).sort((a,b)=>(a.rank<0?important.length:a.rank)-(b.rank<0?important.length:b.rank)||a.index-b.index).map(item=>item.code);}
+export const resultStateCopy:Record<string,{title:string;description:string}>={
+ ready:{title:"What happened?",description:"AXVital found a supported descriptive comparison."},
+ insufficient_data:{title:"Not enough usable data",description:"We don’t have enough usable data to compare your starting point with the experiment period yet."},
+ unable_to_determine:{title:"Unable to determine the result",description:"AXVital could not verify enough of the experiment data to calculate a result."},
+ unsupported_design:{title:"This result is not supported yet",description:"AXVital can track this experiment, but this type of result is not supported yet."},
+ blocked_by_integrity:{title:"Historical information could not be reconciled",description:"Some historical experiment information could not be reconciled safely."},
+};
+export function movementCopy(label:string,movement:string,direction:string){
+ const verb=movement==="higher"?"increased":movement==="lower"?"decreased":movement==="unchanged"?"was unchanged":"was indeterminate";
+ const desirability=direction==="improved"?"The server-supported desirability definition classifies this movement as improved.":direction==="worsened"?"The server-supported desirability definition classifies this movement as worsened.":null;
+ return {title:`${label} ${verb}`,interpretation:movement==="higher"?`Your measured ${label} was higher during the experiment period than during your starting-point period.`:movement==="lower"?`Your measured ${label} was lower during the experiment period than during your starting-point period.`:movement==="unchanged"?`The returned ${label} period summaries were exactly equal.`:`AXVital could not determine a direction for ${label}.`,desirability};
+}
+export function adherencePresentation(exposure:{eligible:number|null;adherent:number|null;nonAdherent:number|null;unknown:number|null}|null){
+ if(!exposure||exposure.eligible===null||exposure.adherent===null||exposure.eligible<=0)return {percent:null,summary:"A reliable eligible-opportunity denominator was not available.",detail:null};
+ const percent=Math.round(exposure.adherent/exposure.eligible*100),nonAdherent=exposure.nonAdherent??0,unknown=exposure.unknown??0;
+ return {percent,summary:`${exposure.adherent} of ${exposure.eligible} eligible opportunities followed`,detail:`${nonAdherent} not followed · ${unknown} could not be confirmed`};
+}
+const dataCodes=new Set(["WEIGHT_PROVENANCE_EXCLUSIONS","INSUFFICIENT_BASELINE_OBSERVATIONS","INSUFFICIENT_INTERVENTION_OBSERVATIONS","INCOMPLETE_OBSERVATION_READ","OBSERVATION_READ_UNAVAILABLE","MISSING_OBSERVATIONS_NOT_IMPUTED","COMPLETE_CASE_SUMMARIES_MAY_BE_SELECTIVELY_OBSERVED"]);
+const experimentCodes=new Set(["INSUFFICIENT_EXPOSURE_EVIDENCE","EXPOSURE_EVIDENCE_UNAVAILABLE","UNKNOWN_EXPOSURE_DENOMINATOR","UNRESOLVED_PAUSE_HISTORY","OPEN_PAUSE","EARLY_END_MAY_BE_INFORMATIVE","PAUSE_TOUCHED_DAYS_EXCLUDED","WHOLE_ACTIVE_LOCAL_DAYS_ONLY","PAUSES_DO_NOT_EXTEND_PLANNED_END","ACTUAL_START_END_BOUNDARY_DAYS_EXCLUDED_IF_PARTIAL","ALL_OBSERVED_ACTIVE_INTERVENTION_DAYS_RETAINED","ALL_OBSERVED_INTERVENTION_DAYS_RETAINED"]);
+export function groupedLimitations(codes:string[]){const groups={data:[] as string[],experiment:[] as string[],interpretation:[] as string[]};for(const code of orderedLimitations(codes))(dataCodes.has(code)?groups.data:experimentCodes.has(code)?groups.experiment:groups.interpretation).push(code);return groups;}

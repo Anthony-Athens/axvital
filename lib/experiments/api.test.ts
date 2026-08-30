@@ -42,7 +42,7 @@ test("outcome discovery is registry-derived, safe, grouped and honest about disa
   assert.equal(result.outcomes.find(o => o.registryKey === "body_weight")?.enabled, true);
   assert.equal(result.outcomes.find(o => o.registryKey === "exercise_estimated_1rm")?.primaryPerformancePreference, true);
   assert.equal(result.outcomes.find(o => o.registryKey === "exercise_session_frequency")?.readinessAvailable, false);
-  assert.equal(result.goalGroups.length, 8);assert.deepEqual(result.baselineModes, ["historical", "none"]);
+  assert.equal(result.goalGroups.length, 7);assert.deepEqual(result.baselineModes, ["historical", "none"]);
   assert.doesNotMatch(JSON.stringify(result), /sourceAdapter|source_config|formula|actual_weight|daily_checkins/);
 });
 test("all API operations deny anonymous users and preserve private errors", async () => {

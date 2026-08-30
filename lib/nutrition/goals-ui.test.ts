@@ -20,6 +20,7 @@ async function setup(wizard=false,holdTarget=false){
    if(holdTarget){holdTarget=false;return new Promise<Response>(resolve=>{release=()=>resolve(json({items:[{id:"bbbbbbbb-bbbb-4bbb-bbbb-bbbbbbbbbbbb",identity:"rule_id",label:"Stale old target",available:true}],nextCursor:null}));});}
    return json({items:goals.filter(g=>!g.archived).map(g=>({id:g.id,label:g.name,identity:"rule_id",available:true})),nextCursor:null});
   }
+  if(url.includes("baseline-readiness"))return json({queryCompleteness:"complete",classification:"good",observationCount:7,distinctDays:7,evaluatedAt:"2026-08-28T12:00:00Z",unit:"kg",target:{kind:"none"},workout:null,missingness:{censored:0},warnings:[],coverage:{percentage:50}});
   if(options.method==="POST"){
    posts++;if(uncertain)throw new Error("Network interrupted");
    const b=JSON.parse(String(options.body));let goal: NutritionGoal;
@@ -50,12 +51,12 @@ test("goals UI empty/create/edit/archive/restore and focus",async()=>{
 });
 test("wizard inline create preserves selections, auto-selects new target, ignores stale picker, and reaches Review",async()=>{
  const t=await setup(true,true);try{
-  await t.radio("Weight / Body Composition");await t.click("Continue");await t.radio("Body Weight");await t.click("Continue");
+  await t.radio("Lose Weight / Improve Body Composition");await t.click("Continue");await t.radio("Body Weight");await t.click("Continue");
   await t.field("Type of change","nutrition_target");await t.click("Create Nutrition Goal");await t.click("Cancel");
   await t.click("Create Nutrition Goal");await t.field("Name (optional)","Inline protein");await t.field("Daily amount","180");await t.click("Save nutrition goal");
   await t.h.act(async()=>t.release());await t.h.settle();
   assert.match(t.doc.body.textContent!,/Selected: Inline protein/);assert.doesNotMatch(t.doc.body.textContent!,/Stale old target/);
-  await t.click("Continue");assert.match(t.doc.body.textContent!,/body weight/i);await t.click("Continue");assert.match(t.doc.body.textContent!,/Review before you start/);assert.match(t.doc.body.textContent!,/Inline protein/);
+  await t.click("Continue");assert.match(t.doc.body.textContent!,/28-day experiment/);await t.click("Continue");assert.match(t.doc.body.textContent!,/Your experiment/);assert.match(t.doc.body.textContent!,/Inline protein & Body Weight/);
  }finally{await t.close();}
 });
 test("uncertain save locks automatic retries and preserves entered values",async()=>{

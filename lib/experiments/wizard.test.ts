@@ -7,7 +7,7 @@ import ts from "typescript";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { discoverOutcomes } from "./discovery.ts";
-import { DraftSession, WizardError, chooseOutcome, datePlan, designError, errorMessage, interventionChoices, outcomeChoices, readinessKey, readinessPresentation, restoreDraft, startDestination, steps, targetKind, targetSelected, wizardRequest, type LoadedDraft } from "./wizard-client.ts";
+import { DraftSession, WizardError, chooseOutcome, datePlan, designError, errorMessage, interventionChoices, outcomeChoices, readinessKey, readinessPresentation, restoreDraft, startDestination, steps, targetKind, targetSelected, wizardRequest, generatedExperimentName, recommendedDuration, designRecommendationPolicy, outcomeAvailability, durationDays, questionPreview, type LoadedDraft } from "./wizard-client.ts";
 import type { ReadinessResult } from "../measurements/readiness-policies.ts";
 import type { DraftV2Input } from "./v2.ts";
 const id="aaaaaaaa-aaaa-4aaa-aaaa-aaaaaaaaaaaa";
@@ -18,13 +18,26 @@ const read=(file:string)=>readFileSync(new URL(file,import.meta.url),"utf8");
 
 test("wizard progression uses discovery groups and target-required versus targetless choices",()=>{
   assert.deepEqual(steps,["Goal","Outcome","Change","Design","Review"]);
-  assert.ok(outcomeChoices(discovery,"Energy / Mood").some(o=>o.registryKey===energy.registryKey));
+  assert.ok(outcomeChoices(discovery,"Improve Mood / Energy").some(o=>o.registryKey===energy.registryKey));
   assert.equal(targetSelected(energy,chooseOutcome(energy)),true);assert.equal(targetKind(energy),null);
   const exercise=discovery.outcomes.find(o=>o.primaryPerformancePreference)!;
-  assert.equal(outcomeChoices(discovery,"Workout Performance")[0].registryKey,exercise.registryKey);
+  assert.equal(outcomeChoices(discovery,"Improve Fitness / Performance")[0].registryKey,exercise.registryKey);
   assert.equal(targetSelected(exercise,chooseOutcome(exercise)),false);
   assert.equal(targetSelected(exercise,{...chooseOutcome(exercise),exercise_id:id}),true);
   assert.equal(discovery.outcomes.find(o=>o.registryKey==="body_weight")?.enabled,true);
+});
+test("simplified intent groups merge condition and symptom without losing outcomes",()=>{
+  assert.equal(discovery.goalGroups.includes("Condition Management" as never),false);assert.equal(discovery.goalGroups.includes("Symptom Management" as never),false);
+  const merged=outcomeChoices(discovery,"Manage a Condition or Symptoms");
+  assert.ok(merged.some(o=>o.targetSelector==="condition"));assert.ok(merged.some(o=>o.targetSelector==="symptom"));
+  assert.equal(merged.length,discovery.outcomes.filter(o=>o.targetSelector==="condition"||o.targetSelector==="symptom").length);
+});
+test("product policy recommends daily duration and human naming/question while preserving overrides",()=>{
+  const weight=discovery.outcomes.find(o=>o.registryKey==="body_weight")!;
+  assert.deepEqual(designRecommendationPolicy,{version:1,dailyRepeatedDays:28,otherDays:14});assert.equal(recommendedDuration(weight),28);assert.equal(recommendedDuration(undefined),14);
+  assert.equal(generatedExperimentName("Higher Protein","Body Weight"),"Higher Protein & Body Weight");assert.match(questionPreview("Higher Protein","Body Weight",null),/What changes in my body weight/);
+  assert.equal(durationDays({...input,intervention_start_date:"2026-08-01",intervention_end_date:"2026-08-28"}),28);
+  assert.equal(outcomeAvailability(weight).label,"Available");assert.match(outcomeAvailability(discovery.outcomes.find(o=>!o.enabled)!).label,/Unavailable/);
 });
 test("symptom identities stay distinct and intervention selection maps only supported references",()=>{
   const symptom=discovery.outcomes.find(o=>o.targetSelector==="symptom")!;
@@ -54,8 +67,8 @@ test("readiness identity changes for outcome, target, aggregation, timezone and 
 });
 function readiness(patch:Partial<ReadinessResult>={}):ReadinessResult{return{queryCompleteness:"complete",classification:"good",observationCount:9,distinctDays:9,evaluatedAt:"2020-01-01T12:00:00Z",unit:"lb",target:{kind:"none"},workout:null,missingness:{censored:0},warnings:[],coverage:{percentage:64},...patch} as unknown as ReadinessResult;}
 test("readiness good, limited, insufficient and unavailable retain backend distinctions",()=>{
-  for(const [classification,title]of[["good","Good baseline data"],["limited","Limited baseline data"],["insufficient","Not enough baseline data yet"]]as const)assert.equal(readinessPresentation(readiness({classification})).title,title);
-  const incomplete=readinessPresentation(readiness({queryCompleteness:"truncated",classification:null}));assert.equal(incomplete.title,"Baseline check unavailable");assert.match(incomplete.facts[0],/technical issue/);
+  for(const [classification,title]of[["good","Ready"],["limited","More data recommended"],["insufficient","More data recommended"]]as const)assert.equal(readinessPresentation(readiness({classification})).title,title);
+  const incomplete=readinessPresentation(readiness({queryCompleteness:"truncated",classification:null}));assert.equal(incomplete.title,"Unable to check your existing data");assert.match(incomplete.facts[0],/technical issue/);
 });
 test("Estimated 1RM and nutrition cards preserve latest/best, unknown intake and coverage wording",()=>{
   const workout=readinessPresentation(readiness({workout:{eligibleSetCount:6,distinctSessionCount:2,distinctDateCount:2,latestValue:120,bestValue:130} as ReadinessResult["workout"]}));
@@ -116,8 +129,8 @@ const hooks=(nodeModule as unknown as Hooks).registerHooks({
 const {ReadinessCard}=await import("../../components/experiments/ReadinessCard.tsx");
 const {StudyStatusView}=await import("../../components/experiments/ActiveStudyStatus.tsx");hooks.deregister();
 test("actual readiness component renders textual status, retry and stale preview explanation",()=>{
-  const html=renderToStaticMarkup(createElement(ReadinessCard,{result:readiness({classification:"limited"}),busy:false,onRetry(){}}));assert.match(html,/Limited baseline data/);assert.match(html,/Refresh baseline/);assert.match(html,/aria-live="polite"/);
-  const stale=renderToStaticMarkup(createElement(ReadinessCard,{result:null,stale:true,busy:false,onRetry(){}}));assert.match(stale,/previous preview no longer applies/);
+  const html=renderToStaticMarkup(createElement(ReadinessCard,{result:readiness({classification:"limited"}),busy:false,onRetry(){}}));assert.match(html,/More data recommended/);assert.doesNotMatch(html,/Refresh baseline|Check baseline/);assert.match(html,/aria-live="polite"/);
+  const stale=renderToStaticMarkup(createElement(ReadinessCard,{result:null,stale:true,busy:false,onRetry(){}}));assert.match(stale,/selections changed/);
 });
 
 test("actual active study component renders exposure/completeness states without efficacy or legacy controls",()=>{

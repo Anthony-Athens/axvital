@@ -12,7 +12,7 @@ hooks.deregister();
 const db=await database(),owner="aaaaaaaa-aaaa-4aaa-aaaa-aaaaaaaaaaaa";
 await db.exec(`select set_config('request.jwt.claim.sub','${owner}',false);set role authenticated;`);
 const client=goalsDbClient(db,owner),api=nutritionGoalsApi(async()=>client);
-const code=(await build({entryPoints:["lib/nutrition/testing/goals-harness.tsx"],bundle:true,write:false,format:"iife",globalName:"GoalsHarness",platform:"browser",define:{"process.env.NODE_ENV":'"development"',"process.env":"{}"},plugins:[{name:"local-router",setup(b){b.onResolve({filter:/^next\/navigation$/},()=>({path:"router",namespace:"fixture"}));b.onLoad({filter:/.*/,namespace:"fixture"},()=>({contents:"export const useRouter=()=>({push:()=>{},refresh:()=>{}});"}));}}]})).outputFiles[0].text;
+const code=(await build({entryPoints:[new URL("../lib/nutrition/testing/goals-harness.tsx",import.meta.url).pathname.slice(1)],bundle:true,write:false,format:"iife",globalName:"GoalsHarness",platform:"browser",define:{"process.env.NODE_ENV":'"development"',"process.env":"{}"},plugins:[{name:"local-router",setup(b){b.onResolve({filter:/^next\/navigation$/},()=>({path:"router",namespace:"fixture"}));b.onLoad({filter:/.*/,namespace:"fixture"},()=>({contents:"export const useRouter=()=>({push:()=>{},refresh:()=>{}});"}));}}]})).outputFiles[0].text;
 const css=readdirSync(".next/static",{recursive:true}).filter(p=>p.endsWith(".css")).map(p=>readFileSync(".next/static/"+p,"utf8")).join("\n");
 createServer(async(req,res)=>{
  try{
@@ -20,7 +20,11 @@ createServer(async(req,res)=>{
   if(url.pathname.startsWith("/api/")){
    const chunks=[];for await(const c of req)chunks.push(c);const body=Buffer.concat(chunks);
    const request=new Request(url,{method:req.method,headers:req.headers,...(body.length?{body}: {})});
-   const action=url.pathname.endsWith("/outcomes")?"outcomes":"targets";
+   const action=url.pathname.endsWith("/outcomes")?"outcomes":url.pathname.endsWith("/baseline-readiness")?"baseline-readiness":"targets";
+   if(action==="baseline-readiness"){
+    res.writeHead(200,{"content-type":"application/json"});
+    res.end(JSON.stringify({contractVersion:1,registryKey:"body_weight",registryVersion:2,queryCompleteness:"complete",classification:"good",observationCount:12,distinctDays:12,evaluatedAt:new Date().toISOString(),unit:"kg",target:{kind:"none"},workout:null,nutrition:null,recordedTotal:null,missingness:{censored:0},warnings:[],coverage:{percentage:86}}));return;
+   }
    const response=await (url.pathname==="/api/nutrition/goals"?api:experimentApi(action,async()=>client))(request);
    res.writeHead(response.status,Object.fromEntries(response.headers));res.end(await response.text());return;
   }

@@ -14,9 +14,9 @@ export const steps = ["Goal", "Outcome", "Change", "Design", "Review"];
 export const interventionChoices = [
   { type: "habit", label: "Habit", kind: "habits", field: "linked_planned_activity_id", href: "/habits" },
   { type: "protocol", label: "Protocol", kind: "protocols", field: "linked_user_protocol_id", href: "/protocols" },
-  { type: "nutrition_target", label: "Nutrition target", kind: "target_rules", field: "rule_id", href: "/health/nutrition/goals" },
-  { type: "nutrition_pattern", label: "Nutrition pattern", kind: "nutrition_patterns", field: "nutrition_pattern_id", href: "/health/nutrition/goals" },
-  { type: "workout", label: "Workout / training", kind: "workout_templates", field: "linked_workout_template_id", href: "/workouts" },
+  { type: "nutrition_target", label: "Nutrition Goal", kind: "target_rules", field: "rule_id", href: "/health/nutrition/goals" },
+  { type: "nutrition_pattern", label: "Eating Pattern", kind: "nutrition_patterns", field: "nutrition_pattern_id", href: "/health/nutrition/goals" },
+  { type: "workout", label: "Workout Plan", kind: "workout_templates", field: "linked_workout_template_id", href: "/workouts" },
 ] as const;
 export function outcomeChoices(discovery: Discovery, goal: string) { return discovery.outcomes.filter(o => o.group === goal).sort((a,b) => Number(b.primaryPerformancePreference)-Number(a.primaryPerformancePreference)); }
 export function targetKind(outcome: Choice | undefined, catalog = false) { return outcome?.targetSelector === "condition" ? "conditions" : outcome?.targetSelector === "exercise" ? "exercises" : outcome?.targetSelector === "symptom" ? catalog ? "catalog_symptoms" : "symptoms" : null; }
@@ -26,6 +26,11 @@ export function datePlan(timeZone: string, baselineDays: number, duration: numbe
   const today = dateInZone(now, timeZone);
   return { baseline_start_date: shiftDate(today,-baselineDays), baseline_end_date: shiftDate(today,-1), intervention_start_date: today, intervention_end_date: shiftDate(today,duration-1) };
 }
+export const designRecommendationPolicy={version:1,dailyRepeatedDays:28,otherDays:14} as const;
+export function recommendedDuration(choice:Choice|undefined){return choice?.grain==="day"&&choice.readinessAvailable?designRecommendationPolicy.dailyRepeatedDays:designRecommendationPolicy.otherDays;}
+export function generatedExperimentName(intervention:string|null,outcome:string|null){return intervention&&outcome?`${intervention} & ${outcome}`.slice(0,120):outcome?`${outcome} experiment`.slice(0,120):"";}
+export function durationDays(input:DraftV2Input){return isLogicalDate(input.intervention_start_date)&&isLogicalDate(input.intervention_end_date)?calendarDays(input.intervention_start_date,shiftDate(input.intervention_end_date,1)):null;}
+export function outcomeAvailability(choice:Choice){return !choice.enabled?{label:"Unavailable",detail:choice.disabledReason??"This measurement is unavailable."}:!choice.analysisAvailable?{label:"Trackable, but experiment analysis is not supported yet",detail:"AXVital can record this measurement, but cannot reliably analyze this experiment design yet."}:{label:"Available",detail:choice.registryKey==="body_weight"?"AXVital can compare weight entries whose units are verified.":"AXVital can check your recent tracked data for this measurement."};}
 export function designError(input: DraftV2Input): string | null {
   if (!input.analysis_timezone) return "Choose an analysis timezone.";
   let today: string;try { today = dateInZone(new Date(), input.analysis_timezone); } catch { return "Enter a valid timezone, such as America/New_York."; }
@@ -41,7 +46,7 @@ export function designError(input: DraftV2Input): string | null {
   } else if (input.baseline_mode !== "none") return "Choose a baseline design.";
   return null;
 }
-export function questionPreview(intervention: string | null, outcome: string | null, target: string | null) { return intervention && outcome ? `Does ${intervention} appear associated with a change in ${outcome.toLowerCase()}${target ? ` for ${target}` : ""}?` : "Choose a measurement and a change to build your question."; }
+export function questionPreview(intervention: string | null, outcome: string | null, target: string | null) { return intervention && outcome ? `What changes in my ${outcome.toLowerCase()}${target ? ` for ${target}` : ""} when I try ${intervention}?` : "Choose what AXVital will measure and what you want to try."; }
 export function restoreDraft(data: LoadedDraft): DraftV2Input {
   const e = data.experiment;
   const clean = (value: object, keys: string[]) => Object.fromEntries(keys.filter(k => (value as Record<string, unknown>)[k] != null).map(k => [k, (value as Record<string, unknown>)[k]]));
@@ -104,19 +109,19 @@ export class DraftSession {
 export function readinessKey(input: DraftV2Input) { return JSON.stringify({outcome:input.outcomes?.find(o=>o.outcome_role==="primary"),timeZone:input.analysis_timezone,start:input.baseline_start_date,end:input.baseline_end_date,mode:input.baseline_mode}); }
 export function startDestination(result: SavedExperiment) { return `/experiments/${result.id}?started=1`; }
 export function readinessPresentation(r: ReadinessResult) {
-  if (r.queryCompleteness !== "complete") return { title: "Baseline check unavailable", facts: ["The data could not be fully read. This is a technical issue, not a lack of history."], warnings: [] };
-  const title = r.registryKey === "body_weight" && r.classification === null ? "Historical weight data unavailable" : r.classification === "good" ? "Good baseline data" : r.classification === "limited" ? "Limited baseline data" : "Not enough baseline data yet";
+  if (r.queryCompleteness !== "complete") return { title: "Unable to check your existing data", facts: ["AXVital could not fully read your data. This is a technical issue, not a lack of tracking."], warnings: [] };
+  const title = r.registryKey === "body_weight" && r.classification === null ? "Unable to verify recent weight entries" : r.classification === "good" ? "Ready" : "More data recommended";
   const facts = r.workout ? [`${r.workout.eligibleSetCount} eligible sets · ${r.workout.distinctSessionCount} sessions · ${r.workout.distinctDateCount} dates`, `Latest Estimated 1RM: ${r.workout.latestValue ?? "Not available"} ${r.unit}`, `Best Estimated 1RM: ${r.workout.bestValue ?? "Not available"} ${r.unit}`]
     : r.nutrition ? [`${r.nutrition.qualifyingCompleteDays} complete logging and nutrient days of ${r.nutrition.requestedDays}`, `${r.nutrition.fieldIncompleteDays} nutrient-incomplete days · ${r.nutrition.partialDays} partial logging days · ${r.nutrition.unknownCoverageDays} unknown logging days`, `Qualifying logging coverage: ${r.coverage.percentage ?? "Unknown"}%`]
-    : r.recordedTotal != null ? [`${r.recordedTotal} recorded ${r.target.kind === "condition" ? "episodes" : "events or occurrences"}`] : [`${r.observationCount} observations across ${r.distinctDays} tracked days`];
+    : r.recordedTotal != null ? [`${r.recordedTotal} recorded ${r.target.kind === "condition" ? "episodes" : "events or occurrences"}`] : [`${r.distinctDays} usable tracked days available`];
   const warnings: string[] = [];
   if (r.warnings.includes("WEIGHT_UNVERIFIED_RECORDS_EXCLUDED")) warnings.push("Some weight records have unverified units or invalid values, so they cannot safely be used for an experiment.");
-  if (r.registryKey === "body_weight" && r.classification !== "good") warnings.push("Keep tracking your weight with explicit units for a few more days to establish a baseline.");
+  if (r.registryKey === "body_weight" && r.classification !== "good") warnings.push(`AXVital needs ${Math.max(0,7-r.distinctDays)} more usable weight ${7-r.distinctDays===1?"day":"days"} before your recent history meets the recommendation.`);
   if (r.warnings.some(w => w.includes("SURVEILLANCE_DENOMINATOR"))) warnings.push("Recorded counts do not prove that no episodes or symptoms occurred during untracked periods.");
   if (r.nutrition) warnings.push("Missing entries and unknown nutrients are not zero intake. Logged totals and logging coverage are not dietary compliance.");
   if (r.workout) warnings.push("Estimated 1RM is an estimate from eligible logged sets, not a measured true 1RM.");
   if (r.missingness.censored) warnings.push(`${r.missingness.censored} unresolved or incomplete records could not provide a duration.`);
-  if (r.classification !== "good") warnings.push("You may continue with limited history; comparisons will need extra care.");
+  if (r.classification !== "good") warnings.push("You can continue, but comparisons will need extra care.");
   warnings.push("This is a preview of currently recorded data, not medical confidence or proof of cause and effect.");
   return { title, facts, warnings };
 }
