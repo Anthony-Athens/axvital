@@ -1,5 +1,8 @@
 export const protectedRoutes = [
   "/today",
+  "/track",
+  "/learn",
+  "/me",
   "/health",
   "/experiments",
   "/weekly-overview",
