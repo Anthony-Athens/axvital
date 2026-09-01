@@ -84,15 +84,8 @@ const questions = [
   },
 ];
 
-const quickAddTypes: QuickAddType[] = [
-  "Food",
-  "Fluid",
-  "Supplement",
-  "Exercise",
-  "Symptom",
-  "Medication",
-  "Note",
-];
+const primaryQuickLogTypes: QuickAddType[] = ["Food", "Symptom", "Supplement", "Exercise"];
+const secondaryQuickLogTypes: QuickAddType[] = ["Fluid", "Medication", "Note"];
 
 const tagOptions = [
   "travel",
@@ -555,17 +548,15 @@ function CheckInForm({ date, historical }: { date: string; historical: boolean }
   return (
     <div className="mx-auto max-w-6xl px-4 py-5 md:px-6 md:py-10">
       <header className="border-b border-slate-200 pb-5">
-        <p className="text-sm font-medium text-slate-500">{new Intl.DateTimeFormat(undefined, { weekday: "long", month: "long", day: "numeric" }).format(new Date(`${date}T12:00:00`))}</p>
-        <h1 className="mt-1 text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl">{historical ? "Historical Check-In" : "Today"}</h1>
-        <p className="mt-1 text-sm text-slate-600">Here’s what’s on your plan today.</p>
-        <div className="mt-4 flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3"><div className="min-w-0 flex-1"><div className="flex justify-between text-sm"><span className="font-medium text-slate-700">Daily essentials</span><span className="tabular-nums text-slate-500">{progress}%</span></div><div className="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-100" role="progressbar" aria-label="Daily check-in progress" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100}><div className="h-full rounded-full bg-blue-600 transition-all motion-reduce:transition-none" style={{ width: `${progress}%` }}/></div></div></div>
+        <h1 className="text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl">{historical ? "Historical Check-In" : "Today"}</h1>
+        <p className="mt-1 text-sm font-medium text-slate-500">{new Intl.DateTimeFormat(undefined, { weekday: "long", month: "long", day: "numeric" }).format(new Date(`${date}T12:00:00`))}</p>
+        <div className="mt-4 flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3"><div className="min-w-0 flex-1"><div className="flex justify-between gap-3 text-sm"><span className="font-medium text-slate-700">Daily Check-In</span><span className="tabular-nums text-slate-500">{questions.filter((question) => answers[question.id]).length} of {questions.length} complete</span></div><div className="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-100" role="progressbar" aria-label="Daily check-in progress" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100}><div className="h-full rounded-full bg-blue-600 transition-all motion-reduce:transition-none" style={{ width: `${progress}%` }}/></div></div></div>
       </header>
 
-      {!historical && <><TodayPlan /><ActiveEpisodes /></>}
       {historical && <a href="/today" className="inline-block py-3 text-blue-700 underline">Return to Today</a>}
 
-      <div className="mt-5 grid gap-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(360px,0.9fr)] lg:items-start">
-        <CollapsibleSection id="daily-checkin" title="Daily Check-In" description={saved ? `Your answers are saved for ${date}.` : "Complete your daily essentials in under 30 seconds."} status={<span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${saved ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"}`}>{loadingCheckin ? "Loading…" : saved ? progress === 100 ? "Completed" : "Saved · partial" : "Not saved"}</span>} expanded={historical || checkinExpanded} onToggle={() => setCheckinExpanded((value) => !value)}>
+      <div className="mt-5 space-y-6">
+        <section aria-labelledby="daily-status-heading"><h2 id="daily-status-heading" className="mb-3 text-lg font-semibold text-slate-900">{historical ? "Daily status for this day" : "How are you doing today?"}</h2><CollapsibleSection id="daily-checkin" title="Daily Check-In" description={saved ? `Your answers are saved for ${date}.` : historical ? "Review the check-in for this date." : "Record how you’re feeling and the daily essentials that matter."} status={<span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${saved ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"}`}>{loadingCheckin ? "Loading…" : saved ? progress === 100 ? "Complete" : `${questions.filter((question) => answers[question.id]).length} of ${questions.length}` : progress ? `${questions.filter((question) => answers[question.id]).length} of ${questions.length}` : "Not started"}</span>} expanded={historical || checkinExpanded} onToggle={() => setCheckinExpanded((value) => !value)}>
 
           <form onSubmit={event => { event.preventDefault(); void saveDailyCheckin(); }}><fieldset disabled={loadingCheckin || loadFailed || savingCheckin} className="space-y-4">
             {questions.map((question) => (
@@ -642,17 +633,19 @@ function CheckInForm({ date, historical }: { date: string; historical: boolean }
                   : "Save Daily Check-In"}
             </button>
           </div>
-        </CollapsibleSection>
+        </CollapsibleSection></section>
+
+        {!historical ? <TodayPlan /> : null}
 
         <div className="space-y-5">
-          {!historical && <CollapsibleSection id="optional-events" title="Optional Health Events" description="Log food, fluid, supplements, symptoms, medication, exercise, or notes." expanded={eventsExpanded} onToggle={() => setEventsExpanded((value) => !value)}>
+          {!historical && <CollapsibleSection id="optional-events" title="Quick Log" description="Record something that happened today." expanded={eventsExpanded} onToggle={() => setEventsExpanded((value) => !value)}>
             {eventMessage && !activeQuickAdd ? (
               <p role="status" className="mb-4 rounded-xl bg-emerald-50 p-3 text-sm font-semibold text-emerald-700">
                 {eventMessage}
               </p>
             ) : null}
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-2">
-              {quickAddTypes.map((type) => (
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+              {primaryQuickLogTypes.map((type) => (
                 <button
                   key={type}
                   type="button"
@@ -663,9 +656,16 @@ function CheckInForm({ date, historical }: { date: string; historical: boolean }
                 </button>
               ))}
             </div>
+            <details className="mt-3 rounded-lg border border-slate-200 bg-slate-50 px-3">
+              <summary className="min-h-11 cursor-pointer py-3 text-sm font-semibold text-slate-700">More logging options</summary>
+              <div className="grid grid-cols-2 gap-2 border-t border-slate-200 py-3 sm:grid-cols-3">
+                {secondaryQuickLogTypes.map((type) => <button key={type} type="button" onClick={(event) => openQuickAdd(type, event.currentTarget)} className="min-h-12 rounded-lg border border-slate-200 bg-white px-4 text-left text-sm font-semibold text-slate-900 transition hover:border-blue-300 hover:bg-blue-50 focus-visible:ring-2 focus-visible:ring-blue-600">{type}</button>)}
+              </div>
+            </details>
           </CollapsibleSection>}
 
-          <Timeline key={date} startDate={date} history={historical} />
+          {!historical ? <ActiveEpisodes /> : null}
+          <Timeline key={date} startDate={date} history={historical} title={historical ? "Activity for this day" : "Today’s Activity"} />
         </div>
       </div>
 
