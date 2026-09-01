@@ -62,8 +62,10 @@ test("account integration keeps service privileges server-only and rights unpayw
  for(const path of ["../../components/account/DeleteAccountForm.tsx","../../components/account/ExportDataButton.tsx"]){
   assert.doesNotMatch(read(path),/SERVICE_ROLE|createAdminClient|trackEvent/);
  }
- const privacy=read("../../app/privacy/page.tsx"),terms=read("../../app/terms/page.tsx");
- for(const provider of ["Supabase","Stripe","Resend","Vercel"])assert.ok(privacy.includes(provider));
- assert.match(terms,/OWNER DECISION REQUIRED/);assert.match(terms,/governing law and venue/);
+ const privacy=read("../../app/privacy/page.tsx"),terms=read("../../app/terms/page.tsx"),contact=read("../../app/contact/page.tsx");
+ for(const provider of ["Supabase","Stripe"])assert.ok(privacy.includes(provider));
+ for(const publicPage of [privacy,terms,contact,read("../../components/account/TrustPage.tsx")])assert.doesNotMatch(publicPage,/OWNER|LEGAL DECISION|Pre-launch information/);
+ const audit=read("../../docs/launch-privacy-security-audit.md");
+ assert.match(audit,/minimum age/);assert.match(audit,/governing law/);assert.match(audit,/No explicit application-level retention period/);
  assert.match(read("../../app/contact/page.tsx"),/mailto:/);
 });
