@@ -8,11 +8,11 @@ Updated 2026-09-01. This is a launch gate and operator procedure, not proof that
 | --- | --- | --- | --- | --- | --- |
 | Local | `localhost` | Project host is configured locally | Test key locally | Not evidenced | Development only; not staging evidence |
 | Preview/staging | Not identified | Not identified | Not identified | Not identified | **No dedicated staging environment is established** |
-| Production | Repository suggests `www.axvital.com`, but no linked deployment was available | Not verified | Not verified | Not verified | Deployment/provider verification unavailable |
+| Production pre-launch | `www.axvital.com` public pages verified reachable | Local project is not yet matched to deployment | Local key is Test Mode; deployed mode not verified | Contact page reports unavailable | Explicitly authorized for synthetic pre-launch testing, but provider writes remain gated |
 
 The workspace is not linked to a Vercel project, and Vercel/Supabase CLIs are unavailable. Process environment did not contain deployment credentials. `.env.local` identifies localhost, one Supabase project host, and Stripe Test Mode, but a local file does not designate that project as staging or production. Locally, the Stripe webhook secret, support/privacy contacts, operator identity, and legal-review flag were not configured; account deletion was disabled. Values were not printed.
 
-Run `npm run ops:preflight` only in the explicitly selected environment. It reports hostnames, mode, and variable presence without printing credentials. A successful result is configuration inventory, not connectivity or workflow proof.
+Run `npm run ops:preflight` only in the explicitly selected environment. It reports hostnames, mode, and variable presence without printing credentials. It accepts designated staging or production pre-launch mode with explicit synthetic-only and no-real-user-data assertions. A successful result is configuration inventory, not connectivity or workflow proof.
 
 ## Disposable account strategy
 
@@ -144,6 +144,8 @@ Do not send health contents, passwords, tokens, request bodies, exports, or prov
 Existing product events record only signed-in pricing/upgrade intent. They cannot currently answer onboarding completion, Today return, first log, Learn visit, experiment creation, or authoritative checkout success. If beta analytics are required, add only server-authoritative lifecycle events and generic route/action names—never health values, titles, notes, conditions, symptoms, or hypotheses. API failure monitoring belongs in operational telemetry, not product events.
 
 ## Incident runbook
+
+For the initial controlled beta, assign these roles in the private operator register: Application operator for deployment/Auth/database incidents; Billing owner for Checkout, webhook, cancellation, and refund escalation; Privacy owner for requests and deletion failures; Security incident owner for suspected exposure. Provider support and legal counsel are escalation paths, not substitutes for a named primary role. Verify each primary and backup contact path before invitations.
 
 | Incident | Symptom / inspect first | Immediate containment | Owner/escalation | Recovery |
 | --- | --- | --- | --- | --- |

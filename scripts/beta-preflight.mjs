@@ -1,7 +1,6 @@
 // Local, read-only configuration inventory. It reports presence and mode only.
 const required = [
   "AXVITAL_ENVIRONMENT",
-  "AXVITAL_STAGING_SUPABASE_PROJECT_REF",
   "NEXT_PUBLIC_APP_URL",
   "NEXT_PUBLIC_SUPABASE_URL",
   "NEXT_PUBLIC_SUPABASE_ANON_KEY",
@@ -28,14 +27,30 @@ const supabaseProjectRef = (() => {
     return host.endsWith(".supabase.co") ? host.slice(0, -".supabase.co".length) : null;
   } catch { return null; }
 })();
-const expectedSupabaseProjectRef = process.env.AXVITAL_STAGING_SUPABASE_PROJECT_REF?.trim() ?? "";
+const expectedSupabaseProject = (
+  process.env.AXVITAL_EXPECTED_SUPABASE_PROJECT_REF
+  ?? process.env.AXVITAL_STAGING_SUPABASE_PROJECT_REF
+  ?? ""
+).trim();
+const expectedSupabaseProjectRef = (() => {
+  if (!expectedSupabaseProject) return "";
+  try {
+    const host = new URL(expectedSupabaseProject).hostname;
+    return host.endsWith(".supabase.co") ? host.slice(0, -".supabase.co".length) : expectedSupabaseProject;
+  } catch { return expectedSupabaseProject; }
+})();
 const appHost = safeHost("NEXT_PUBLIC_APP_URL");
 const appHostname = (() => {
   try { return process.env.NEXT_PUBLIC_APP_URL ? new URL(process.env.NEXT_PUBLIC_APP_URL).hostname : null; }
   catch { return null; }
 })();
-const stagingSpecificAppHost = Boolean(appHostname && appHostname !== "localhost" && appHostname !== "127.0.0.1" && appHostname !== "::1");
+const deployedAppHost = Boolean(appHostname && appHostname !== "localhost" && appHostname !== "127.0.0.1" && appHostname !== "::1");
 const stagingDesignated = environment === "staging";
+const prelaunchTesting = process.env.AXVITAL_PRELAUNCH_TESTING === "true";
+const syntheticUsersOnly = process.env.AXVITAL_SYNTHETIC_USERS_ONLY === "true";
+const noRealUserDataConfirmed = process.env.AXVITAL_NO_REAL_USER_DATA_CONFIRMED === "true";
+const prelaunchProductionDesignated = environment === "production" && prelaunchTesting && syntheticUsersOnly && noRealUserDataConfirmed;
+const environmentAuthorized = stagingDesignated || prelaunchProductionDesignated;
 const supabaseMatchesDesignation = Boolean(supabaseProjectRef && expectedSupabaseProjectRef && supabaseProjectRef === expectedSupabaseProjectRef);
 const deletionEnabled = process.env.AXVITAL_ACCOUNT_DELETION_ENABLED === "true";
 const legalReviewed = process.env.AXVITAL_LEGAL_REVIEWED === "true";
@@ -45,8 +60,13 @@ console.log(JSON.stringify({
   readOnly: true,
   environment,
   stagingDesignated,
+  prelaunchProductionDesignated,
+  prelaunchTesting,
+  syntheticUsersOnly,
+  noRealUserDataConfirmed,
+  environmentAuthorized,
   appHost,
-  stagingSpecificAppHost,
+  deployedAppHost,
   supabaseHost: safeHost("NEXT_PUBLIC_SUPABASE_URL"),
   supabaseMatchesDesignation,
   stripeMode,
@@ -57,6 +77,6 @@ console.log(JSON.stringify({
   missing,
 }, null, 2));
 
-if (missing.length || !stagingDesignated || !stagingSpecificAppHost || !supabaseMatchesDesignation || stripeMode !== "test") {
+if (missing.length || !expectedSupabaseProjectRef || !environmentAuthorized || !deployedAppHost || !supabaseMatchesDesignation || stripeMode !== "test") {
   process.exitCode = 1;
 }
