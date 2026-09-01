@@ -8,7 +8,6 @@ import type { Profile } from "@/lib/types";
 import { HealthProfileSummary } from "@/components/health/HealthProfileSummary";
 import { ButtonLink } from "@/components/ui/design-system";
 
-type TrackingMode = "simple" | "advanced";
 type DemoHealthEvent = {
   user_id: string;
   event_date: string;
@@ -31,7 +30,6 @@ type DemoHealthEvent = {
   severity?: number;
 };
 
-const integrations = ["Garmin", "WHOOP", "Strava", "Apple Health"];
 const isDevelopment = process.env.NODE_ENV === "development";
 
 const goalOptions = [
@@ -216,7 +214,6 @@ export default function ProfilePage() {
   const [fullName, setFullName] = useState("");
   const [preferredName, setPreferredName] = useState("");
   const [primaryGoal, setPrimaryGoal] = useState("");
-  const [trackingMode, setTrackingMode] = useState<TrackingMode>("simple");
   const [birthMonth, setBirthMonth] = useState("");
   const [birthYear, setBirthYear] = useState("");
   const [currentWeight, setCurrentWeight] = useState("");
@@ -245,7 +242,7 @@ export default function ProfilePage() {
       const { data, error } = await supabase
         .from("profiles")
         .select(
-          "id,email,full_name,preferred_name,primary_goal,tracking_mode,birth_month,birth_year,current_weight,goal_weight,typical_sleep_hours,health_focus_note,onboarding_completed",
+          "id,email,full_name,preferred_name,primary_goal,birth_month,birth_year,current_weight,goal_weight,typical_sleep_hours,health_focus_note,onboarding_completed",
         )
         .eq("id", user.id)
         .single();
@@ -266,7 +263,6 @@ export default function ProfilePage() {
       setFullName(loadedProfile.full_name ?? "");
       setPreferredName(loadedProfile.preferred_name ?? "");
       setPrimaryGoal(loadedProfile.primary_goal ?? "");
-      setTrackingMode(loadedProfile.tracking_mode ?? "simple");
       setBirthMonth(loadedProfile.birth_month ? String(loadedProfile.birth_month) : "");
       setBirthYear(loadedProfile.birth_year ? String(loadedProfile.birth_year) : "");
       setCurrentWeight(
@@ -305,7 +301,6 @@ export default function ProfilePage() {
         full_name: fullName,
         preferred_name: preferredName || null,
         primary_goal: primaryGoal || null,
-        tracking_mode: trackingMode,
         birth_month: optionalNumber(birthMonth),
         birth_year: optionalNumber(birthYear),
         current_weight: optionalNumber(currentWeight),
@@ -477,22 +472,6 @@ export default function ProfilePage() {
               ))}
             </select>
           </label>
-          <label className="block">
-            <span className="text-sm font-black text-slate-700">
-              Tracking mode
-            </span>
-            <select
-              value={trackingMode}
-              onChange={(event) =>
-                setTrackingMode(event.target.value as TrackingMode)
-              }
-              className="mt-2 min-h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
-            >
-              <option value="simple">Simple</option>
-              <option value="advanced">Advanced</option>
-            </select>
-          </label>
-
           <section className="rounded-3xl border border-slate-100 bg-slate-50 p-4">
             <h2 className="text-lg font-black tracking-tight">
               Personalization context
@@ -640,32 +619,8 @@ export default function ProfilePage() {
       <HealthProfileSummary />
       <section className="rounded-2xl border border-slate-200 bg-white p-5">
         <h2 className="text-lg font-semibold">Account controls</h2>
-        <p className="mt-2 text-sm text-slate-600">Manage billing, security, data export, account deletion, and support.</p>
-        <ButtonLink href="/settings" variant="secondary" className="mt-3 mr-3">Manage account</ButtonLink>
-        <ButtonLink href="/settings/data" variant="secondary" className="mt-3 mr-3">Export my data</ButtonLink>
-        <ButtonLink href="/settings/delete" variant="secondary" className="mt-3 mr-3">Delete account</ButtonLink>
-        <ButtonLink href="/settings/security" variant="secondary" className="mt-3">Change password</ButtonLink>
-      </section>
-
-      <section className="mt-5 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm md:p-8">
-        <h2 className="text-2xl font-black">Future integrations</h2>
-        <p className="mt-2 leading-7 text-slate-600">
-          Connect wearables and health platforms when backend functionality is
-          added.
-        </p>
-        <div className="mt-5 grid gap-3 sm:grid-cols-2">
-          {integrations.map((name) => (
-            <div
-              key={name}
-              className="flex min-h-16 items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4"
-            >
-              <span className="text-lg font-black">{name}</span>
-              <span className="rounded-full bg-white px-3 py-1 text-xs font-bold text-slate-500">
-                Coming soon
-              </span>
-            </div>
-          ))}
-        </div>
+        <p className="mt-2 text-sm text-slate-600">Manage security, billing, data export, account deletion, and support in Account Settings.</p>
+        <ButtonLink href="/settings" variant="secondary" className="mt-3">Open Account Settings</ButtonLink>
       </section>
     </div>
   );

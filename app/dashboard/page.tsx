@@ -386,7 +386,7 @@ export default function DashboardPage() {
     <div className="mx-auto max-w-6xl px-4 py-6 md:px-6 md:py-10">
       <section className="rounded-3xl bg-slate-950 p-6 text-white shadow-xl shadow-slate-200 md:p-8">
         <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-300">
-          Dashboard
+          Health Overview
         </p>
         <div className="mt-4 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
@@ -419,7 +419,7 @@ export default function DashboardPage() {
       {loading ? (
         <section className="mt-5 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
           <p className="text-lg font-black text-slate-950">
-            Loading your dashboard...
+            Loading your health overview...
           </p>
           <p className="mt-2 text-sm font-semibold leading-6 text-slate-500">
             Pulling your latest check-ins and activity.
@@ -429,11 +429,8 @@ export default function DashboardPage() {
 
       {!loading && !checkins.length && !events.length ? (
         <section className="mt-5 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-600">
-            Empty State
-          </p>
-          <h2 className="mt-3 text-2xl font-black tracking-tight">
-            Your dashboard will light up as you log.
+          <h2 className="text-2xl font-black tracking-tight">
+            Your health overview will take shape as you log.
           </h2>
           <p className="mt-3 leading-7 text-slate-600">
             Complete a few Daily Check-Ins and add optional events from Today to
@@ -600,7 +597,7 @@ export default function DashboardPage() {
 
               {!events.length ? (
                 <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4 text-sm font-semibold leading-6 text-slate-600">
-                  No health events logged yet. Quick Add entries from Today will
+                  No health events logged yet. Quick Log entries from Today will
                   appear here.
                 </div>
               ) : null}

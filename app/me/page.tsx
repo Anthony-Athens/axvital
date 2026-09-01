@@ -24,7 +24,7 @@ export default function MePage() {
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h2 id="me-profile-heading" className="text-xl font-semibold text-slate-900">Goals & Profile</h2>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">Manage the personal information and goals AXVital uses to personalize your experience, including your primary goal, weight goals, sleep context, and current tracking preference.</p>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">Manage the personal information and goals AXVital uses to personalize your experience, including your primary goal, weight goals, sleep context, and health focus.</p>
           </div>
           <ButtonLink href="/profile" variant="secondary" className="shrink-0">Manage Profile & Goals</ButtonLink>
         </div>

@@ -49,6 +49,10 @@ html {
 }
 
 @media (max-width: 767px) {
+  body:has(nav[aria-label="Primary mobile navigation"]) main {
+    padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+  }
+
   input,
   select,
   textarea {

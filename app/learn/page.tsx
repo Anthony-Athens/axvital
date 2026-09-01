@@ -30,10 +30,10 @@ export default function LearnPage() {
           <ButtonLink href="/insights" variant="secondary" className="mt-4">Explore Insights</ButtonLink>
         </Surface>
         <Surface className="flex min-w-0 flex-col items-start">
-          <p className="text-sm font-semibold text-slate-500">Weekly Review</p>
+          <p className="text-sm font-semibold text-slate-500">Weekly Recap</p>
           <h3 className="mt-1 text-xl font-semibold text-slate-900">Your week in context</h3>
           <p className="mt-2 flex-1 text-sm leading-6 text-slate-600">Review the past week, what improved, and what may deserve attention next in your saved, regenerable recap.</p>
-          <ButtonLink href="/weekly-recap" variant="secondary" className="mt-4">Open Weekly Review</ButtonLink>
+          <ButtonLink href="/weekly-recap" variant="secondary" className="mt-4">Open Weekly Recap</ButtonLink>
         </Surface>
       </div>
     </section>

@@ -11,6 +11,6 @@ export default async function SecurityPage() {
   return <AuthCard title="Change password">
     <p className="mt-3 text-sm leading-6 text-slate-600">Update your account password. You’ll remain signed in.</p>
     <PasswordForm />
-    <ButtonLink href="/profile" variant="tertiary" className="mt-4 w-full">Back to Profile</ButtonLink>
+    <ButtonLink href="/settings" variant="tertiary" className="mt-4 w-full">Back to Account Settings</ButtonLink>
   </AuthCard>;
 }

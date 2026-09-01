@@ -683,7 +683,7 @@ function CheckInForm({ date, historical }: { date: string; historical: boolean }
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-sm font-semibold text-blue-700">
-                  Quick Add
+                  Quick Log
                 </p>
                 <h2
                   id="quick-add-title"
@@ -696,7 +696,7 @@ function CheckInForm({ date, historical }: { date: string; historical: boolean }
                 type="button"
                 onClick={closeQuickAdd}
                 className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-slate-100 text-2xl font-black text-slate-700"
-                aria-label="Close quick add"
+                aria-label="Close quick log"
               >
                 x
               </button>
