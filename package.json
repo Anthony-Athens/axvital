@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "test": "node --experimental-strip-types --test lib/**/*.test.ts"
+    "test": "node --experimental-strip-types --test lib/**/*.test.ts",
+    "ops:preflight": "node --env-file-if-exists=.env.local scripts/beta-preflight.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",
