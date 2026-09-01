@@ -1,15 +1,34 @@
 import { ButtonLink, PageContainer, PageHeader, Surface } from "@/components/ui/design-system";
 
-const groups = [
-  { title: "Daily & Planning", items: [["Weekly Overview", "Plan your week and keep scheduled activities moving.", "/weekly-overview"]] },
-  { title: "Nutrition", items: [["Nutrition", "Log food and review today’s nutrition.", "/health/nutrition"], ["Nutrition Goals", "Set and manage the nutrition targets that matter to you.", "/health/nutrition/goals"]] },
-  { title: "Movement & Training", items: [["Workouts", "Plan sessions, train, and review your workout history.", "/workouts"]] },
-  { title: "Habits & Routines", items: [["Habits", "Build repeatable actions and track your progress.", "/habits"], ["Protocols", "Organize habits and activities around a focused plan.", "/protocols"]] },
-  { title: "Symptoms & Health Events", items: [["Symptoms", "Log symptoms and review their history over time.", "/health/symptoms"], ["Health Timeline", "See health, activity, nutrition, symptoms, and routines together.", "/health/timeline"], ["My Health", "Manage the conditions and health areas you are tracking.", "/health"]] },
-] as const;
+type TrackAreaProps = {
+  title: string;
+  description: string;
+  primary: { label: string; href: string };
+  secondary?: { label: string; href: string }[];
+  className?: string;
+};
+
+function TrackArea({ title, description, primary, secondary = [], className = "" }: TrackAreaProps) {
+  return <Surface className={`flex min-w-0 flex-col items-start ${className}`}>
+    <h2 className="text-xl font-semibold text-slate-900">{title}</h2>
+    <p className="mt-2 flex-1 text-sm leading-6 text-slate-600">{description}</p>
+    <div className="mt-4 flex w-full flex-wrap items-center gap-2">
+      <ButtonLink href={primary.href}>{primary.label}</ButtonLink>
+      {secondary.map((action) => <ButtonLink key={action.href} href={action.href} variant="tertiary">{action.label}</ButtonLink>)}
+    </div>
+  </Surface>;
+}
 
 export default function TrackPage() {
-  return <PageContainer><PageHeader eyebrow="Track" title="What do you want to track?" description="Choose an area to log what happened, plan what’s next, or review your history."/>
-    <div className="mt-6 space-y-7">{groups.map((group) => { const id = `track-${group.title.toLowerCase().replaceAll(/[^a-z]+/g, "-")}`; return <section key={group.title} aria-labelledby={id}><h2 id={id} className="text-lg font-semibold text-slate-900">{group.title}</h2><div className="mt-3 grid gap-3 sm:grid-cols-2">{group.items.map(([title, description, href]) => <Surface key={href} className="flex flex-col items-start"><h3 className="text-lg font-semibold text-slate-900">{title}</h3><p className="mt-2 flex-1 text-sm leading-6 text-slate-600">{description}</p><ButtonLink href={href} variant="secondary" className="mt-4">Open {title}</ButtonLink></Surface>)}</div></section>; })}</div>
+  return <PageContainer>
+    <PageHeader eyebrow="Track" title="Track what matters to you" description="Keep the health data that matters to you in one place, and choose where to manage or review it."/>
+    <div className="mt-6 grid min-w-0 gap-4 md:grid-cols-2">
+      <TrackArea title="Daily Health" description="Complete your Daily Check-In on Today, then review health, activity, nutrition, symptoms, and routines together over time." primary={{ label: "Go to Today", href: "/today" }} secondary={[{ label: "Health Timeline", href: "/health/timeline" }]} className="border-blue-200 bg-blue-50/60 md:col-span-2"/>
+      <TrackArea title="Nutrition" description="Log food intake, review today’s nutrition, and manage the daily nutrition targets you care about." primary={{ label: "Open Nutrition", href: "/health/nutrition" }} secondary={[{ label: "Nutrition Goals", href: "/health/nutrition/goals" }]}/>
+      <TrackArea title="Training" description="Plan workouts, build templates, use your exercise library, and return to your workout history." primary={{ label: "Open Workouts", href: "/workouts" }}/>
+      <TrackArea title="Habits & Routines" description="Habits are individual actions you repeat consistently. Protocols organize multiple actions or scheduled activities into a structured routine." primary={{ label: "Manage Habits", href: "/habits" }} secondary={[{ label: "Manage Protocols", href: "/protocols" }]}/>
+      <TrackArea title="Symptoms & Conditions" description="Symptoms capture what you experience and when. Conditions provide health context for symptoms, episodes, and insights." primary={{ label: "Manage Symptoms", href: "/health/symptoms" }} secondary={[{ label: "My Health & Conditions", href: "/health" }]}/>
+      <TrackArea title="Weekly Planning" description="See planned workouts, habits, protocols, and other scheduled activities across your week." primary={{ label: "View Weekly Overview", href: "/weekly-overview" }} className="md:col-span-2"/>
+    </div>
   </PageContainer>;
 }
