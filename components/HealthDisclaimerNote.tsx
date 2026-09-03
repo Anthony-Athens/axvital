@@ -1,0 +1,1 @@
+export function HealthDisclaimerNote(){return <p className="mt-6 border-t border-slate-200 pt-4 text-sm leading-6 text-slate-500">AXVital insights are for informational purposes only and are <a href="/health-disclaimer" className="font-semibold text-blue-700 underline">not medical advice</a>.</p>}

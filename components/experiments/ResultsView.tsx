@@ -3,6 +3,7 @@ import type {discoverResultRevisions} from "../../lib/experiments/results-servic
 import type {PeriodSummary} from "../../lib/experiments/analysis-contract";
 import {adherencePresentation,eligibilityLabels,eligibilityNext,groupedLimitations,movementCopy,resultCopy,resultStateCopy,reliabilityStateCopy} from "../../lib/experiments/results-copy";
 import {formatResultValue,type ResultsDisplay} from "../../lib/experiments/results-display";
+import {HealthDisclaimerNote} from "../HealthDisclaimerNote";
 export type ResultsDTO=Omit<Awaited<ReturnType<typeof readDurableAnalysis>>,"display">&{display?:ResultsDisplay|null};
 export type RevisionData=Awaited<ReturnType<typeof discoverResultRevisions>>;
 const shown=formatResultValue;
@@ -38,5 +39,6 @@ export function ResultsView({data,result,selected,onSelect,onGenerate,onOlder,bu
    {limitations?<details open className="rounded-xl border p-4"><summary className="min-h-11 cursor-pointer py-2 text-lg font-semibold">View limitations</summary><div className="mt-3 space-y-4">{(["data","experiment","interpretation"] as const).map(group=>limitations[group].length?<section key={group}><h3 className="font-semibold">{group==="data"?"Data limitations":group==="experiment"?"Experiment limitations":"Interpretation limitations"}</h3><ul className="mt-2 list-disc space-y-2 pl-5">{limitations[group].map((code,index)=><li key={`${code}-${index}`}>{resultCopy(code)}</li>)}</ul></section>:null)}</div></details>:null}
   </article>:null}
   <section className="rounded-xl border p-4"><h2 className="font-semibold">{data.latestRevision?"Generate a new analysis":"Generate results"}</h2><p className="mt-2 text-sm">This explicit action saves a new reproducible analysis using evidence currently available. Earlier analyses are not overwritten.</p>{data.canCapture?<button className="mt-3 min-h-11 rounded-lg bg-slate-900 px-4 py-3 font-semibold text-white disabled:opacity-50" disabled={busy||locked||loading} onClick={onGenerate}>{busy?"Capturing evidence…":data.latestRevision?"Generate New Analysis":"Generate Results"}</button>:<p className="mt-2">{resultCopy(data.captureReason??"TERMINAL_STUDY_REQUIRED")}</p>}</section>
+  <HealthDisclaimerNote/>
  </div>;
 }

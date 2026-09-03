@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { normalizeWeeklyRecap } from "@/lib/analytics/normalizeWeeklyRecap";
 import type { WeeklyRecapV2 } from "@/lib/analytics/types";
 import { addLocalDays, localDateString, localDayRange } from "@/lib/timeline/dates";
+import { HealthDisclaimerNote } from "@/components/HealthDisclaimerNote";
 
 function Section({ title, items }: { title: string; items: Array<{ title: string; description: string }> }) {
   if (!items.length) return null;
@@ -32,5 +33,6 @@ export default function Page() {
       {nextWeekFocus ? <section className="mt-7 rounded-xl border border-blue-200 bg-blue-50 p-5"><p className="text-sm font-semibold text-blue-700">Next Week Focus</p><h2 className="mt-1 text-xl font-semibold">{nextWeekFocus.title}</h2><p className="mt-2 text-sm leading-6 text-slate-700">{nextWeekFocus.description}</p></section> : null}
     </> : null}
     <Link href="/insights" className="mt-5 inline-flex min-h-11 items-center font-semibold text-blue-700">View Insights</Link>
+    <HealthDisclaimerNote />
   </div>;
 }

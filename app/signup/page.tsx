@@ -99,10 +99,12 @@ export default function SignupPage() {
           ))}
 
           {message ? (
-            <p className="rounded-2xl bg-amber-50 p-4 text-sm font-black text-amber-900">
+            <p role="alert" className="rounded-2xl bg-amber-50 p-4 text-sm font-black text-amber-900">
               {message}
             </p>
           ) : null}
+
+          <p className="text-center text-sm leading-6 text-slate-600">By creating an account, you agree to AXVital&apos;s <Link href="/terms" target="_blank" rel="noopener noreferrer" className="font-semibold text-blue-700 underline">Terms of Service<span className="sr-only"> (opens in a new tab)</span></Link> and acknowledge the <Link href="/privacy" target="_blank" rel="noopener noreferrer" className="font-semibold text-blue-700 underline">Privacy Policy<span className="sr-only"> (opens in a new tab)</span></Link>.</p>
 
           <button
             type="submit"

@@ -67,5 +67,7 @@ test("account integration keeps service privileges server-only and rights unpayw
  for(const publicPage of [privacy,terms,contact,read("../../components/account/TrustPage.tsx")])assert.doesNotMatch(publicPage,/OWNER|LEGAL DECISION|Pre-launch information/);
  const audit=read("../../docs/launch-privacy-security-audit.md");
  assert.match(audit,/minimum age/);assert.match(audit,/governing law/);assert.match(audit,/No explicit application-level retention period/);
- assert.match(read("../../app/contact/page.tsx"),/mailto:/);
+ assert.match(read("../../app/contact/page.tsx"),/ContactForm/);
+ const contactRoute=read("../../app/api/contact/route.ts");
+ assert.match(contactRoute,/RESEND_API_KEY/);assert.match(contactRoute,/AXVITAL_CONTACT_EMAIL/);assert.doesNotMatch(read("../../components/contact/ContactForm.tsx"),/AXVITAL_CONTACT_EMAIL|RESEND_API_KEY/);
 });
