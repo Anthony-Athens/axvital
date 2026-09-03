@@ -1,5 +1,6 @@
 "use client";
 
+import { SheetDialog } from "@/components/ui/SheetDialog";
 import { FormEvent, useState } from "react";
 import { ACTIVITY_TYPES, RECURRENCE_TYPES, type CreatePlannedActivityInput, type PlannedActivity } from "@/lib/planner/types";
 
@@ -13,11 +14,9 @@ export function ActivityForm({ activity, initialDate, saving, onCancel, onSubmit
   function set<K extends keyof CreatePlannedActivityInput>(key: K, value: CreatePlannedActivityInput[K]) { setForm((current) => ({ ...current, [key]: value })); }
   async function submit(event: FormEvent) { event.preventDefault(); setError(""); if (!form.title.trim()) return setError("Enter an activity title."); if (form.end_date && form.end_date < form.start_date) return setError("End date cannot be before start date."); if (form.recurrence_type === "specific_days" && !form.days_of_week?.length) return setError("Select at least one weekday."); if (form.recurrence_type === "interval" && (!form.interval_days || form.interval_days < 1)) return setError("Repeat interval must be at least one day."); if (form.tracking_type !== "binary" && (!form.target_value || form.target_value <= 0)) return setError("Enter a target greater than zero."); if (form.minimum_value !== null && form.minimum_value !== undefined && (form.minimum_value < 0 || (form.target_value && form.minimum_value > form.target_value))) return setError("Minimum must be between zero and the target."); await onSubmit({ ...form, title: form.title.trim(), description: form.description?.trim() || null, scheduled_time: form.scheduled_time || null, end_date: form.end_date || null, days_of_week: form.recurrence_type === "specific_days" ? form.days_of_week : null, interval_days: form.recurrence_type === "interval" ? form.interval_days : null, target_value: form.tracking_type === "binary" ? null : form.target_value, target_unit: form.tracking_type === "binary" ? null : form.tracking_type === "duration" ? "minutes" : form.target_unit?.trim() || "units", minimum_value: form.tracking_type === "binary" ? null : form.minimum_value }); }
   const inputClass = "mt-2 min-h-12 w-full rounded-2xl border border-slate-200 bg-white px-4 text-base font-semibold outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100";
-  return <div className="fixed inset-0 z-50 flex items-end bg-slate-950/50 p-0 sm:items-center sm:justify-center sm:p-4" role="dialog" aria-modal="true" aria-labelledby="activity-form-title">
-    <form onSubmit={submit} className="max-h-[92dvh] w-full overflow-y-auto rounded-t-3xl bg-slate-50 p-5 shadow-2xl sm:max-w-2xl sm:rounded-3xl sm:p-7">
-      <div className="flex items-center justify-between"><div><p className="text-xs font-black uppercase tracking-widest text-emerald-600">Planning Engine</p><h2 id="activity-form-title" className="mt-1 text-2xl font-black">{activity ? "Edit activity" : "Add activity"}</h2></div><button type="button" onClick={onCancel} aria-label="Close activity form" className="min-h-11 min-w-11 rounded-full bg-slate-200 font-black">×</button></div>
+  return <SheetDialog wide title={activity ? "Edit activity" : "Add activity"} onClose={onCancel} saving={saving} onSubmit={submit} failureMessage="We couldn’t save this activity. Please try again." footer={<div className="flex gap-3"><button type="button" disabled={saving} onClick={onCancel} className="min-h-12 flex-1 rounded-full border border-slate-300 font-black">Cancel</button><button disabled={saving} className="min-h-12 flex-1 rounded-full bg-emerald-500 font-black text-white disabled:opacity-60">{saving ? "Saving…" : activity ? "Save changes" : "Add activity"}</button></div>}>
       <div className="mt-6 grid gap-5 sm:grid-cols-2">
-        <label className="font-bold sm:col-span-2">Title<input autoFocus value={form.title} onChange={(e) => set("title", e.target.value)} className={inputClass} placeholder="Take creatine" /></label>
+        <label className="font-bold sm:col-span-2">Title<input value={form.title} onChange={(e) => set("title", e.target.value)} className={inputClass} placeholder="Take creatine" /></label>
         <label className="font-bold sm:col-span-2">Description <span className="text-slate-400">(optional)</span><textarea value={form.description ?? ""} onChange={(e) => set("description", e.target.value)} className={`${inputClass} min-h-24 py-3`} /></label>
         <label className="font-bold">Activity type<select value={form.activity_type} onChange={(e) => set("activity_type", e.target.value as CreatePlannedActivityInput["activity_type"])} className={inputClass}>{ACTIVITY_TYPES.map((type) => <option key={type} value={type}>{type[0].toUpperCase() + type.slice(1)}</option>)}</select></label>
         <label className="font-bold">Recurrence<select value={form.recurrence_type} onChange={(e) => set("recurrence_type", e.target.value as CreatePlannedActivityInput["recurrence_type"])} className={inputClass}>{RECURRENCE_TYPES.map((type) => <option key={type} value={type}>{recurrenceLabels[type]}</option>)}</select></label>
@@ -34,7 +33,5 @@ export function ActivityForm({ activity, initialDate, saving, onCancel, onSubmit
         {activity ? <label className="flex min-h-12 items-center gap-3 font-bold sm:col-span-2"><input type="checkbox" checked={form.is_active} onChange={(e) => set("is_active", e.target.checked)} className="h-5 w-5 accent-emerald-500" /> Activity is active</label> : null}
       </div>
       {error ? <p role="alert" className="mt-4 rounded-2xl bg-rose-50 p-3 font-bold text-rose-700">{error}</p> : null}
-      <div className="mt-6 flex gap-3"><button type="button" disabled={saving} onClick={onCancel} className="min-h-12 flex-1 rounded-full border border-slate-300 font-black">Cancel</button><button disabled={saving} className="min-h-12 flex-1 rounded-full bg-emerald-500 font-black text-white disabled:opacity-60">{saving ? "Saving…" : activity ? "Save changes" : "Add activity"}</button></div>
-    </form>
-  </div>;
+  </SheetDialog>;
 }

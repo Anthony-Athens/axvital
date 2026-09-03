@@ -387,7 +387,8 @@ export default function ProfilePage() {
 
       setDemoMessage("Demo data generated for the last 30 days.");
     } catch (error) {
-      setDemoMessage(error instanceof Error ? error.message : "Demo data failed.");
+      logDevError("demo.generate_failed", error);
+      setDemoMessage("We couldn’t generate demo data. Please try again.");
     } finally {
       setDemoWorking(false);
     }
@@ -402,7 +403,8 @@ export default function ProfilePage() {
       await deleteDemoDataForUser(userId);
       setDemoMessage("Demo data deleted.");
     } catch (error) {
-      setDemoMessage(error instanceof Error ? error.message : "Demo delete failed.");
+      logDevError("demo.delete_failed", error);
+      setDemoMessage("We couldn’t delete demo data. Please try again.");
     } finally {
       setDemoWorking(false);
     }

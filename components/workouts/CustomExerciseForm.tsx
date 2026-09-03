@@ -1,5 +1,6 @@
 "use client";
 
+import { SheetDialog } from "@/components/ui/SheetDialog";
 import { FormEvent, useState } from "react";
 import { EQUIPMENT_OPTIONS, EXERCISE_CATEGORIES, MOVEMENT_PATTERNS, TRACKING_TYPES, metadataLabel } from "@/lib/workouts/exercise-metadata";
 import { ExerciseDuplicateError, createExercise, findSimilarExercises } from "@/lib/workouts/exercises";
@@ -31,14 +32,13 @@ export function CustomExerciseForm({ initialName = "", onCreated, onCancel }: { 
       onCreated(exercise);
     } catch (caught) {
       if (caught instanceof ExerciseDuplicateError) setSimilar([caught.existing]);
-      else setError(caught instanceof Error ? caught.message : "We couldn’t save this exercise.");
+      else setError(caught instanceof Error ? (caught.message === "AUTH_REQUIRED" ? "Your session has expired. Sign in again to save." : caught.message) : "We couldn’t save this exercise.");
     } finally { setSaving(false); }
   }
 
-  return <form onSubmit={submit} className="max-h-[90vh] overflow-y-auto p-5" aria-label="Create custom exercise">
-    <h2 className="text-2xl font-black">Create Custom Exercise</h2>
+  return <SheetDialog wide title="Create Custom Exercise" onClose={onCancel} saving={saving} onSubmit={submit} footer={<div className="flex gap-2"><button type="button" onClick={onCancel} disabled={saving} className="min-h-12 flex-1 rounded-full bg-slate-100 font-black">Cancel</button><button disabled={saving} className="min-h-12 flex-1 rounded-full bg-emerald-500 font-black text-white">{saving ? "Saving…" : "Save Exercise"}</button></div>}>
     {error ? <p role="alert" className="mt-3 rounded-xl bg-rose-50 p-3 font-bold text-rose-700">{error}</p> : null}
-    <label className="mt-4 block font-bold">Exercise name<input autoFocus required value={name} onChange={(event) => { setName(event.target.value); setConfirmed(false); setSimilar([]); }} className={input}/></label>
+    <label className="mt-4 block font-bold">Exercise name<input required value={name} onChange={(event) => { setName(event.target.value); setConfirmed(false); setSimilar([]); }} className={input}/></label>
     {similar.length ? <div className="mt-3 rounded-2xl border border-amber-300 bg-amber-50 p-4"><p className="font-black">A similar exercise already exists.</p><p className="mt-1 text-sm">Select it to avoid a duplicate, or continue if yours is meaningfully different.</p><div className="mt-3 flex flex-wrap gap-2">{similar.map((exercise) => <button type="button" key={exercise.id} onClick={() => onCreated(exercise)} className="min-h-11 rounded-full bg-white px-4 font-bold">Use {exercise.name}</button>)}<button type="button" onClick={() => { setConfirmed(true); setSimilar([]); }} className="min-h-11 rounded-full bg-amber-200 px-4 font-bold">Continue creating</button></div></div> : null}
     <label className="mt-4 block font-bold">Description (optional)<textarea name="description" className={`${input} min-h-24 py-3`}/></label>
     <div className="grid gap-4 sm:grid-cols-2">
@@ -49,8 +49,7 @@ export function CustomExerciseForm({ initialName = "", onCreated, onCancel }: { 
       <Select name="equipment" label="Equipment" values={EQUIPMENT_OPTIONS} input={input}/>
       <Select name="default_tracking_type" label="Default tracking" values={TRACKING_TYPES} required input={input}/>
     </div>
-    <div className="mt-5 flex gap-2"><button type="button" onClick={onCancel} disabled={saving} className="min-h-12 flex-1 rounded-full bg-slate-100 font-black">Cancel</button><button disabled={saving} className="min-h-12 flex-1 rounded-full bg-emerald-500 font-black text-white">{saving ? "Saving…" : "Save Exercise"}</button></div>
-  </form>;
+  </SheetDialog>;
 }
 
 function Select({ name, label, values, required, input }: { name: string; label: string; values: readonly string[]; required?: boolean; input: string }) {

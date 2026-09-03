@@ -14,7 +14,7 @@ export async function POST(request: Request) {
     const apiKey = process.env.RESEND_API_KEY?.trim();
     const to = (process.env.AXVITAL_CONTACT_EMAIL ?? process.env.AXVITAL_SUPPORT_EMAIL)?.trim();
     const from = process.env.AXVITAL_EMAIL_FROM?.trim();
-    if (!apiKey || !to || !from) return Response.json({ error: "CONTACT_UNAVAILABLE" }, { status: 503 });
+    if (!apiKey || !to || !from) { console.error("contact.delivery_failed", { category: "configuration_missing" }); return Response.json({ error: "CONTACT_UNAVAILABLE" }, { status: 503 }); }
 
     const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -28,9 +28,10 @@ export async function POST(request: Request) {
       }),
       signal: AbortSignal.timeout(10000),
     });
-    if (!response.ok) return Response.json({ error: "DELIVERY_FAILED" }, { status: 503 });
+    if (!response.ok) { console.error("contact.delivery_failed", { category: "provider_rejected", status: response.status }); return Response.json({ error: "DELIVERY_FAILED" }, { status: 503 }); }
     return new Response(null, { status: 204, headers: { "Cache-Control": "no-store" } });
   } catch {
+    console.error("contact.delivery_failed", { category: "request_failed" });
     return Response.json({ error: "DELIVERY_FAILED" }, { status: 503, headers: { "Cache-Control": "no-store" } });
   }
 }
