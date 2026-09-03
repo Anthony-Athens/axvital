@@ -1,13 +1,7 @@
 "use client";
 
-import {
-  type CSSProperties,
-  type FormEvent,
-  type ReactNode,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { type FormEvent, type ReactNode } from "react";
+import { useSheetDialog } from "@/components/ui/useSheetDialog";
 
 type QuickLogDialogProps = {
   title: string;
@@ -18,8 +12,6 @@ type QuickLogDialogProps = {
   children: ReactNode;
 };
 
-type ViewportStyle = CSSProperties & { "--quick-log-vh": string };
-
 export function QuickLogDialog({
   title,
   saving,
@@ -28,66 +20,12 @@ export function QuickLogDialog({
   onSubmit,
   children,
 }: QuickLogDialogProps) {
-  const dialogRef = useRef<HTMLDivElement>(null);
-  const closeRef = useRef<HTMLButtonElement>(null);
-  const savingRef = useRef(saving);
-  const [viewportHeight, setViewportHeight] = useState("100dvh");
-
-  useEffect(() => {
-    savingRef.current = saving;
-  }, [saving]);
-
-  useEffect(() => {
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    const updateViewportHeight = () => {
-      setViewportHeight(`${window.visualViewport?.height ?? window.innerHeight}px`);
-    };
-    updateViewportHeight();
-    window.visualViewport?.addEventListener("resize", updateViewportHeight);
-    window.addEventListener("resize", updateViewportHeight);
-
-    const frame = requestAnimationFrame(() => closeRef.current?.focus());
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape" && !savingRef.current) {
-        event.preventDefault();
-        onClose();
-        return;
-      }
-      if (event.key !== "Tab") return;
-
-      const focusable = dialogRef.current?.querySelectorAll<HTMLElement>(
-        'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
-      );
-      if (!focusable?.length) return;
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    };
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      cancelAnimationFrame(frame);
-      document.body.style.overflow = previousOverflow;
-      window.visualViewport?.removeEventListener("resize", updateViewportHeight);
-      window.removeEventListener("resize", updateViewportHeight);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [onClose]);
-
-  const style: ViewportStyle = { "--quick-log-vh": viewportHeight };
+  const { overlayRef, dialogRef, closeRef } = useSheetDialog(onClose, saving);
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-slate-950/40 md:items-center md:p-6"
-      style={style}
+      ref={overlayRef}
+      className="fixed inset-x-0 top-[var(--sheet-top,0px)] h-[var(--sheet-vh,100dvh)] z-50 flex items-end justify-center bg-slate-950/40 md:items-center md:p-6"
     >
       <button
         type="button"
@@ -98,10 +36,11 @@ export function QuickLogDialog({
       />
       <div
         ref={dialogRef}
+        tabIndex={-1}
         role="dialog"
         aria-modal="true"
         aria-labelledby="quick-log-title"
-        className="relative flex h-[calc(var(--quick-log-vh)-1rem)] w-full flex-col overflow-hidden rounded-t-2xl bg-white shadow-2xl motion-safe:animate-[quick-log-in_160ms_ease-out] md:h-auto md:max-h-[calc(100dvh-3rem)] md:max-w-lg md:rounded-xl"
+        className="relative flex h-[calc(var(--sheet-vh,100dvh)-1rem)] w-full flex-col overflow-hidden rounded-t-2xl bg-white shadow-2xl motion-safe:animate-[quick-log-in_160ms_ease-out] md:h-auto md:max-h-[calc(var(--sheet-vh,100dvh)-3rem)] md:max-w-lg md:rounded-xl"
       >
         <div className="flex shrink-0 items-center justify-between gap-4 border-b border-slate-200 px-5 py-4 md:px-6">
           <div>
@@ -123,7 +62,7 @@ export function QuickLogDialog({
         </div>
 
         <form onSubmit={onSubmit} className="flex min-h-0 flex-1 flex-col">
-          <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-5 md:px-6">
+          <div data-sheet-body className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-5 md:px-6">
             {children}
             {message ? (
               <p role="alert" className="mt-4 rounded-lg bg-amber-50 p-3 text-sm font-semibold text-amber-900">
