@@ -28,11 +28,11 @@ test("campaign conversion does not attach health context or introduce telemetry"
   assert.match(source, /does not provide medical advice, diagnosis, or treatment/);
   assert.match(source, /not medical advice or a recommended intervention/);
 });
-test("campaign routes are noindex and referrer-safe without inbound public navigation", () => {
+test("campaign routes are indexable and referrer-safe without inbound public navigation", () => {
   const route = read("../../app/conditions/[slug]/page.tsx");
-  assert.match(route, /index: false/);
+  assert.match(route, /index: true/);
   assert.match(route, /referrer: "no-referrer"/);
   assert.match(route, /dynamicParams = false/);
   assert.match(read("../../next.config.ts"), /Referrer-Policy.*no-referrer/);
-  for (const file of ["../../app/page.tsx", "../../app/sitemap.ts", "../../components/Footer.tsx"]) assert.doesNotMatch(read(file), /\/conditions\//);
+  for (const file of ["../../app/page.tsx", "../../components/Footer.tsx"]) assert.doesNotMatch(read(file), /\/conditions\//);
 });

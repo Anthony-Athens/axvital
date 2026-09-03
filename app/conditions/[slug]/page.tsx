@@ -16,7 +16,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: content.title,
     description: content.description,
     openGraph: { title: content.title, description: content.description, type: "website", siteName: "AXVital" },
-    robots: { index: false, follow: true },
+    alternates: { canonical: `https://www.axvital.com/conditions/${slug}` },
+    robots: { index: true, follow: true },
     referrer: "no-referrer",
   };
 }
