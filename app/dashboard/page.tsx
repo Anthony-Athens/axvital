@@ -7,9 +7,9 @@ import {
   loadLatestWeeklyRecap,
 } from "@/lib/recaps/weekly";
 import { supabase } from "@/lib/supabase/client";
-import type { HealthEventType, WeeklyRecap } from "@/lib/types";
-import { HabitSummary } from "@/components/habits/HabitSummary";
-import { ProtocolSummary } from "@/components/protocols/ProtocolSummary";
+import type { WeeklyRecap } from "@/lib/types";
+import { RecentActivity } from "@/components/dashboard/RecentActivity";
+import { HealthDisclaimerNote } from "@/components/HealthDisclaimerNote";
 
 type DailyCheckinRow = {
   id: string;
@@ -19,17 +19,6 @@ type DailyCheckinRow = {
   mood_score: number | null;
   sleep_quality: string | null;
   weight: number | null;
-};
-
-type HealthEventRow = {
-  id: string;
-  user_id: string;
-  event_date: string;
-  event_time: string | null;
-  event_type: HealthEventType;
-  title: string | null;
-  description: string | null;
-  notes: string | null;
 };
 
 type TrendPoint = {
@@ -107,28 +96,6 @@ function formatNumber(value: number | null, digits = 1) {
   return value === null ? "--" : value.toFixed(digits);
 }
 
-function formatEventTime(value: string | null) {
-  if (!value) {
-    return "Anytime";
-  }
-
-  const [hours = "0", minutes = "00"] = value.split(":");
-  const hourNumber = Number(hours);
-  const displayHour = hourNumber % 12 || 12;
-  const period = hourNumber >= 12 ? "PM" : "AM";
-
-  // Hydration fix: keep event-time text deterministic instead of relying on
-  // Date/Intl output that can differ between server and mobile browsers.
-  return `${displayHour}:${minutes.padStart(2, "0")} ${period}`;
-}
-
-function titleCase(value: string) {
-  return value
-    .split("_")
-    .map((word) => word.slice(0, 1).toUpperCase() + word.slice(1))
-    .join(" ");
-}
-
 function buildLast30Trend(
   checkins: DailyCheckinRow[],
   field: "energy_score" | "mood_score" | "weight",
@@ -185,10 +152,10 @@ function TrendBars({
   const computedMax = maxValue ?? Math.max(...values, 1);
 
   return (
-    <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm md:p-6">
+    <section className="rounded-xl bg-white p-5">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h2 className="text-xl font-black tracking-tight">{title}</h2>
+          <h3 className="text-lg font-semibold tracking-tight">{title}</h3>
           <p className="mt-1 text-sm font-semibold leading-6 text-slate-500">
             {subtitle}
           </p>
@@ -201,13 +168,15 @@ function TrendBars({
       <div className="mt-5 flex h-36 items-end gap-1.5">
         {points.map((point) => {
           const height =
-            point.value === null ? 8 : Math.max((point.value / computedMax) * 100, 10);
+            point.value === null ? 0 : Math.max((point.value / computedMax) * 100, 10);
 
           return (
             <div
               key={point.date}
               className="flex min-w-0 flex-1 flex-col items-center gap-2"
               title={`${point.label}: ${point.value ?? "No data"}`}
+              role="img"
+              aria-label={`${point.date}: ${point.value ?? "No data"}`}
             >
               <div className="flex h-28 w-full items-end rounded-full bg-slate-100">
                 <div
@@ -238,14 +207,14 @@ function MetricCard({
   helper: string;
 }) {
   return (
-    <article className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-      <p className="text-sm font-bold uppercase tracking-[0.16em] text-emerald-600">
+    <article className="grid grid-cols-[1fr_auto] items-center gap-x-4 rounded-xl bg-white p-4 sm:block sm:p-5">
+      <p className="text-sm font-medium text-slate-500">
         {label}
       </p>
-      <p className="mt-3 text-3xl font-black tracking-tight text-slate-950">
+      <p className="col-start-2 row-span-2 row-start-1 text-2xl font-semibold tracking-tight text-slate-950 sm:mt-2 sm:text-3xl">
         {value}
       </p>
-      <p className="mt-2 text-sm font-semibold leading-6 text-slate-500">
+      <p className="col-start-1 row-start-2 text-sm leading-6 text-slate-500 sm:mt-2">
         {helper}
       </p>
     </article>
@@ -254,7 +223,6 @@ function MetricCard({
 
 export default function DashboardPage() {
   const [checkins, setCheckins] = useState<DailyCheckinRow[]>([]);
-  const [events, setEvents] = useState<HealthEventRow[]>([]);
   const [weeklyRecap, setWeeklyRecap] = useState<WeeklyRecap | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -295,20 +263,14 @@ export default function DashboardPage() {
       setToday(currentDate);
       const startDate = daysAgoFrom(currentDate, 29);
 
-      const [checkinResult, eventResult, recapResult] = await Promise.all([
+      const [checkinResult, recapResult] = await Promise.all([
         supabase
           .from("daily_checkins")
           .select("id,user_id,checkin_date,energy_score,mood_score,sleep_quality,weight")
           .eq("user_id", user.id)
           .gte("checkin_date", startDate)
+          .lte("checkin_date", currentDate)
           .order("checkin_date", { ascending: true }),
-        supabase
-          .from("health_events")
-          .select("id,user_id,event_date,event_time,event_type,title,description,notes")
-          .eq("user_id", user.id)
-          .order("event_date", { ascending: false })
-          .order("event_time", { ascending: false })
-          .limit(10),
         loadLatestWeeklyRecap(supabase, user.id).catch(() => null),
       ]);
 
@@ -323,19 +285,17 @@ export default function DashboardPage() {
         setCheckins((checkinResult.data ?? []) as DailyCheckinRow[]);
       }
 
-      if (eventResult.error) {
-        logDevError("Failed to load dashboard health events", eventResult.error);
-        setError(friendlyErrorMessage("load your health events"));
-      } else {
-        setEvents((eventResult.data ?? []) as HealthEventRow[]);
-      }
-
       setWeeklyRecap(recapResult);
 
       setLoading(false);
     }
 
-    loadDashboard();
+    void loadDashboard().catch(() => {
+      if (!ignore) {
+        setError(friendlyErrorMessage("load your dashboard"));
+        setLoading(false);
+      }
+    });
 
     return () => {
       ignore = true;
@@ -381,236 +341,43 @@ export default function DashboardPage() {
   }, [checkins, today]);
 
   const hasEnoughData = checkins.length >= 3;
+  const snapshot = [
+    metrics.averageEnergy !== null ? { label: "Energy", value: formatNumber(metrics.averageEnergy), helper: "Average · past 7 days" } : null,
+    metrics.averageMood !== null ? { label: "Mood", value: formatNumber(metrics.averageMood), helper: "Average · past 7 days" } : null,
+    metrics.averageSleep !== null ? { label: "Sleep quality", value: sleepLabel(metrics.averageSleep), helper: "Average · past 7 days" } : null,
+  ].filter(item => item !== null);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-6 md:px-6 md:py-10">
-      <section className="rounded-3xl bg-slate-950 p-6 text-white shadow-xl shadow-slate-200 md:p-8">
-        <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-300">
-          Health Overview
-        </p>
-        <div className="mt-4 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div>
-            <h1 className="text-4xl font-black tracking-tight md:text-5xl">
-              Your health snapshot
-            </h1>
-            <p className="mt-3 max-w-2xl leading-7 text-slate-300">
-              A personal view of your recent check-ins, trends, and logged
-              activity.
-            </p>
-          </div>
-          <div className="rounded-2xl bg-white/10 p-4">
-            <p className="text-sm font-semibold text-slate-300">Check-ins</p>
-            <p className="text-4xl font-black text-emerald-300">
-              {loading ? "--" : checkins.length}
-            </p>
-          </div>
-        </div>
+    <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
+      <header className="border-b border-slate-200 pb-6">
+        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Health Overview</h1>
+        <p className="mt-2 text-slate-600">Your recent signals, personal trends, and the activity behind them.</p>
+        {today ? <p className="mt-3 text-sm text-slate-500">Overview: {shortDateLabel(daysAgoFrom(today, 29))}–{shortDateLabel(today)} · Local dates</p> : null}
+      </header>
+
+      {error ? <p role="alert" className="mt-5 rounded-xl bg-amber-50 p-4 text-sm text-amber-900">{error}</p> : null}
+      {loading ? <section aria-label="Loading health snapshot" aria-busy="true" className="mt-6 grid gap-4 sm:grid-cols-3">{[1, 2, 3].map(i => <div key={i} className="h-28 animate-pulse rounded-xl bg-slate-100"/>)}</section> : snapshot.length ? <section aria-label="Current snapshot" className="mt-6 grid gap-4 sm:grid-cols-3">{snapshot.map(item => <MetricCard key={item.label} {...item}/>)}</section> : !error ? <section className="mt-6"><h2 className="text-xl font-semibold">Your snapshot starts with a check-in.</h2><p className="mt-2 text-sm leading-6 text-slate-600">Not enough recent check-in data yet. Activity you log elsewhere still appears below.</p><Link href="/today#daily-checkin" className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-blue-700 focus-visible:outline-2 focus-visible:outline-blue-600">Complete a check-in →</Link></section> : null}
+
+      <RecentActivity />
+
+      <section aria-labelledby="trends-heading" className="mt-10">
+        <div className="flex flex-wrap items-center justify-between gap-3"><div><h2 id="trends-heading" className="text-xl font-semibold">What changed?</h2><p className="mt-1 text-sm text-slate-500">Daily observations over the past 30 days—not an interpretation of cause.</p></div><Link href="/insights" className="inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-semibold text-blue-700 focus-visible:outline-2 focus-visible:outline-blue-600">View Insights →</Link></div>
+        {!loading && !hasEnoughData ? <p className="mt-3 text-sm leading-6 text-slate-600">A few more check-ins will make trends more useful. Missing days are not zero scores.</p> : null}
+        {!loading ? <div className="mt-5 grid gap-5 lg:grid-cols-3">
+          {metrics.energyTrend.some(p => p.value !== null) ? <TrendBars title="Energy" subtitle="Daily energy score" points={metrics.energyTrend} color="bg-blue-500" maxValue={10}/> : null}
+          {metrics.moodTrend.some(p => p.value !== null) ? <TrendBars title="Mood" subtitle="Daily mood score" points={metrics.moodTrend} color="bg-blue-500" maxValue={10}/> : null}
+          {metrics.weightTrend.some(p => p.value !== null) ? <TrendBars title="Weight" subtitle="Recorded weight values" points={metrics.weightTrend} color="bg-slate-500"/> : null}
+        </div> : null}
       </section>
 
-      <HabitSummary />
-      <ProtocolSummary />
-
-      {error ? (
-        <section className="mt-5 rounded-3xl border border-amber-200 bg-amber-50 p-5 text-sm font-black text-amber-900">
-          {error}
-        </section>
-      ) : null}
-
-      {loading ? (
-        <section className="mt-5 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-          <p className="text-lg font-black text-slate-950">
-            Loading your health overview...
-          </p>
-          <p className="mt-2 text-sm font-semibold leading-6 text-slate-500">
-            Pulling your latest check-ins and activity.
-          </p>
-        </section>
-      ) : null}
-
-      {!loading && !checkins.length && !events.length ? (
-        <section className="mt-5 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-2xl font-black tracking-tight">
-            Your health overview will take shape as you log.
-          </h2>
-          <p className="mt-3 leading-7 text-slate-600">
-            Complete a few Daily Check-Ins and add optional events from Today to
-            see your personal health snapshot take shape.
-          </p>
-          <Link
-            href="/today"
-            className="mt-5 inline-flex min-h-11 items-center rounded-full bg-slate-950 px-5 font-black text-white"
-          >
-            Go to Today
-          </Link>
-        </section>
-      ) : null}
-
-      {!loading && (checkins.length > 0 || events.length > 0) ? (
-        <>
-          <section className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            <MetricCard
-              label="Streak"
-              value={`${metrics.streak} day${metrics.streak === 1 ? "" : "s"}`}
-              helper="Consecutive check-in days"
-            />
-            <MetricCard
-              label="Energy"
-              value={formatNumber(metrics.averageEnergy)}
-              helper="Average, last 7 days"
-            />
-            <MetricCard
-              label="Mood"
-              value={formatNumber(metrics.averageMood)}
-              helper="Average, last 7 days"
-            />
-            <MetricCard
-              label="Sleep"
-              value={sleepLabel(metrics.averageSleep)}
-              helper={
-                metrics.averageSleep === null
-                  ? "Average, last 7 days"
-                  : `${formatNumber(metrics.averageSleep)}/4 average`
-              }
-            />
-            <MetricCard
-              label="Weight"
-              value={metrics.latestWeight === null ? "--" : `${metrics.latestWeight}`}
-              helper="Latest logged weight"
-            />
-          </section>
-
-          {!hasEnoughData ? (
-            <section className="mt-5 rounded-3xl border border-emerald-100 bg-emerald-50 p-5">
-              <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-700">
-                More Data Needed
-              </p>
-              <p className="mt-2 text-lg font-black leading-7 text-slate-950">
-                Log a few more check-ins to make these trends more meaningful.
-              </p>
-            </section>
-          ) : null}
-
-          <section className="mt-5 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm md:p-6">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-600">
-                  Weekly Recap
-                </p>
-                <h2 className="mt-2 text-2xl font-black tracking-tight">
-                  {weeklyRecap?.title ?? "Your week in signals"}
-                </h2>
-              </div>
-              <Link
-                href="/weekly-recap"
-                className="rounded-full bg-slate-950 px-4 py-2 text-xs font-black text-white"
-              >
-                Open
-              </Link>
-            </div>
-            <p className="mt-3 leading-7 text-slate-600">
-              {weeklyRecap?.summary ??
-                "Generate your first weekly recap after 7 days of check-ins."}
-            </p>
-            {weeklyRecap ? (
-              <div className="mt-4 grid gap-3 sm:grid-cols-3">
-                <div className="rounded-2xl bg-slate-50 p-4">
-                  <p className="text-xs font-black uppercase tracking-[0.14em] text-slate-400">
-                    Exercise
-                  </p>
-                  <p className="mt-2 text-2xl font-black">
-                    {weeklyRecap.exercise_event_count}
-                  </p>
-                </div>
-                <div className="rounded-2xl bg-slate-50 p-4">
-                  <p className="text-xs font-black uppercase tracking-[0.14em] text-slate-400">
-                    Supplements
-                  </p>
-                  <p className="mt-2 text-2xl font-black">
-                    {weeklyRecap.supplement_event_count}
-                  </p>
-                </div>
-                <div className="rounded-2xl bg-slate-50 p-4">
-                  <p className="text-xs font-black uppercase tracking-[0.14em] text-slate-400">
-                    Symptoms
-                  </p>
-                  <p className="mt-2 text-2xl font-black">
-                    {weeklyRecap.symptom_event_count}
-                  </p>
-                </div>
-              </div>
-            ) : null}
-          </section>
-
-          <section className="mt-5 grid gap-5 lg:grid-cols-3">
-            <TrendBars
-              title="Energy over time"
-              subtitle="Daily energy score from recent check-ins."
-              points={metrics.energyTrend}
-              color="bg-emerald-500"
-              maxValue={10}
-            />
-            <TrendBars
-              title="Mood over time"
-              subtitle="Daily mood score from recent check-ins."
-              points={metrics.moodTrend}
-              color="bg-sky-500"
-              maxValue={10}
-            />
-            <TrendBars
-              title="Weight over time"
-              subtitle="Latest logged weight values."
-              points={metrics.weightTrend}
-              color="bg-violet-500"
-            />
-          </section>
-
-          <section className="mt-5 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm md:p-6">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-600">
-                  Recent Activity
-                </p>
-                <h2 className="mt-2 text-2xl font-black tracking-tight">
-                  Latest health events
-                </h2>
-              </div>
-              <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-600">
-                Latest 5
-              </span>
-            </div>
-
-            <div className="mt-5 space-y-3">
-              {events.slice(0, 5).map((event) => (
-                <article
-                  key={event.id}
-                  className="rounded-2xl border border-slate-100 bg-slate-50 p-4"
-                >
-                  <div className="flex items-start gap-3">
-                    <div className="mt-1 h-3 w-3 shrink-0 rounded-full bg-emerald-500" />
-                    <div className="min-w-0">
-                      <p className="text-sm font-black text-slate-500">
-                        {shortDateLabel(event.event_date)} at{" "}
-                        {formatEventTime(event.event_time)} -{" "}
-                        {titleCase(event.event_type)}
-                      </p>
-                      <p className="mt-1 text-base font-black text-slate-950">
-                        {event.title || event.description || event.notes || "Health event"}
-                      </p>
-                    </div>
-                  </div>
-                </article>
-              ))}
-
-              {!events.length ? (
-                <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4 text-sm font-semibold leading-6 text-slate-600">
-                  No health events logged yet. Quick Log entries from Today will
-                  appear here.
-                </div>
-              ) : null}
-            </div>
-          </section>
-        </>
-      ) : null}
+      <section aria-labelledby="next-heading" className="mt-10 border-t border-slate-200 pt-6">
+        <h2 id="next-heading" className="text-xl font-semibold">Look a little closer</h2>
+        <div className="mt-5 grid gap-6 md:grid-cols-2">
+          <article><p className="text-sm font-semibold text-blue-700">Weekly Recap</p><h3 className="mt-2 text-lg font-semibold">{weeklyRecap?.title ?? "Your week in context"}</h3><p className="mt-2 text-sm leading-7 text-slate-600">{weeklyRecap?.summary ?? "Review a summary of what you tracked, or generate your first recap."}</p><Link href="/weekly-recap" className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-blue-700 focus-visible:outline-2 focus-visible:outline-blue-600">Open Weekly Recap →</Link></article>
+          <article><h3 className="text-lg font-semibold">Your tracking routines</h3>{!loading && checkins.length ? <p className="mt-2 text-sm leading-7 text-slate-600">{checkins.length} check-ins in this window · Latest recorded streak: {metrics.streak} days{metrics.latestWeight !== null ? ` · Latest weight: ${metrics.latestWeight}` : ""}</p> : null}<p className="mt-2 text-sm leading-7 text-slate-600">Review scheduled actions and routine progress in their dedicated views.</p><div className="mt-2 flex flex-wrap gap-x-6"><Link href="/habits" className="inline-flex min-h-11 items-center text-sm font-semibold text-blue-700 focus-visible:outline-2 focus-visible:outline-blue-600">View Habits →</Link><Link href="/protocols" className="inline-flex min-h-11 items-center text-sm font-semibold text-blue-700 focus-visible:outline-2 focus-visible:outline-blue-600">View Protocols →</Link></div></article>
+        </div>
+      </section>
+      <div className="[&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center"><HealthDisclaimerNote /></div>
     </div>
   );
 }
