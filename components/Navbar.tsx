@@ -6,9 +6,15 @@ import { createClient } from "@/lib/supabase/browser";
 import { isFocusedWorkoutRoute } from "@/lib/navigation/routes";
 import { DesktopNavigation } from "./navigation/DesktopNavigation";
 import { MobileBottomNavigation } from "./navigation/MobileBottomNavigation";
+import { CampaignHeader } from "./campaigns/CampaignHeader";
+import { isConditionCampaignPath } from "@/lib/campaigns/conditions";
 
 function Logo() { return <Link href="/today" className="flex items-center gap-2 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2" aria-label="AXVital Today"><span className="grid h-9 w-9 place-items-center rounded-xl bg-blue-600 text-sm font-black text-white">AX</span><span className="text-lg font-semibold tracking-tight text-slate-900">AXVital</span></Link>; }
 export function Navbar() {
+  const pathname = usePathname();
+  return isConditionCampaignPath(pathname) ? <CampaignHeader/> : <ProductNavbar/>;
+}
+function ProductNavbar() {
   const pathname = usePathname(); const router = useRouter(); const [supabase] = useState(createClient); const [authenticated, setAuthenticated] = useState(false); const focusedWorkout = isFocusedWorkoutRoute(pathname);
   useEffect(() => { let active = true; supabase.auth.getUser().then(({ data }) => { if (active) setAuthenticated(Boolean(data.user)); }); const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => { setAuthenticated(Boolean(session?.user)); router.refresh(); }); return () => { active = false; subscription.unsubscribe(); }; }, [router, supabase]);
   async function handleLogout() { await supabase.auth.signOut(); setAuthenticated(false); router.push("/login"); router.refresh(); }
