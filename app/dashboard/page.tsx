@@ -436,10 +436,16 @@ export default function DashboardPage() {
             Complete a few Daily Check-Ins and add optional events from Today to
             see your personal health snapshot take shape.
           </p>
+          <Link
+            href="/today"
+            className="mt-5 inline-flex min-h-11 items-center rounded-full bg-slate-950 px-5 font-black text-white"
+          >
+            Go to Today
+          </Link>
         </section>
       ) : null}
 
-      {!loading ? (
+      {!loading && (checkins.length > 0 || events.length > 0) ? (
         <>
           <section className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             <MetricCard

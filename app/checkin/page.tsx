@@ -11,6 +11,7 @@ import { CollapsibleSection, usePersistentDisclosure } from "@/components/ui/Col
 import { CheckInFieldGroup } from "@/components/checkin/CheckInFieldGroup";
 import { QuickLogDialog } from "@/components/checkin/QuickLogDialog";
 import { QuickLogTagPicker } from "@/components/checkin/QuickLogTagPicker";
+import { GettingStarted } from "@/components/checkin/GettingStarted";
 import { Timeline } from "@/components/timeline/Timeline";
 import { useSearchParams, useRouter } from "next/navigation";
 import { draftFromRecord, loadCheckin, saveCheckin, type CheckinRecord } from "@/lib/checkins/persistence";
@@ -586,6 +587,8 @@ function CheckInForm({ date, historical }: { date: string; historical: boolean }
         <p className="mt-1 text-sm font-medium text-slate-500">{new Intl.DateTimeFormat(undefined, { weekday: "long", month: "long", day: "numeric" }).format(new Date(`${date}T12:00:00`))}</p>
         <div className="mt-4 flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3"><div className="min-w-0 flex-1"><div className="flex justify-between gap-3 text-sm"><span className="font-medium text-slate-700">Daily Check-In</span><span className="tabular-nums text-slate-500">{questions.filter((question) => answers[question.id]).length} of {questions.length} complete</span></div><div className="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-100" role="progressbar" aria-label="Daily check-in progress" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100}><div className="h-full rounded-full bg-blue-600 transition-all motion-reduce:transition-none" style={{ width: `${progress}%` }}/></div></div></div>
       </header>
+
+      {!historical ? <GettingStarted checkinComplete={saved} /> : null}
 
       {historical && <a href="/today" className="inline-block py-3 text-blue-700 underline">Return to Today</a>}
 
