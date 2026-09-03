@@ -7,7 +7,7 @@ let releasePage: (() => void) | undefined;
 
 // Shared by Quick Log and Add Condition. Geometry follows the visible viewport,
 // while content changes affect only the sheet's scroll region.
-export function useSheetDialog(onClose: () => void, saving: boolean) {
+export function useSheetDialog(onClose: () => void, saving: boolean, { boundMobileViewport = false }: { boundMobileViewport?: boolean } = {}) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -44,8 +44,16 @@ export function useSheetDialog(onClose: () => void, saving: boolean) {
     };
     const updateViewport = () => {
       const overlay = overlayRef.current;
-      overlay?.style.setProperty("--sheet-vh", `${viewport?.height ?? window.innerHeight}px`);
-      overlay?.style.setProperty("--sheet-top", `${viewport?.offsetTop ?? 0}px`);
+      let height = viewport?.height ?? window.innerHeight;
+      let top = viewport?.offsetTop ?? 0;
+      if (boundMobileViewport && window.innerWidth < 640) {
+        // Add Condition opts in: disregard impossible transient native-picker
+        // bounds, while retaining compensation for real keyboard panning.
+        height = Math.min(window.innerHeight, height);
+        top = Math.max(0, Math.min(top, window.innerHeight - height));
+      }
+      overlay?.style.setProperty("--sheet-vh", `${height}px`);
+      overlay?.style.setProperty("--sheet-top", `${top}px`);
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(revealFocus);
     };
@@ -88,6 +96,6 @@ export function useSheetDialog(onClose: () => void, saving: boolean) {
       if (!sheets.length) { releasePage?.(); releasePage = undefined; }
       if (wasTop && previous?.isConnected) previous.focus({ preventScroll: true });
     };
-  }, []);
+  }, [boundMobileViewport]);
   return { overlayRef, dialogRef, closeRef };
 }
