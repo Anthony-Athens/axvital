@@ -24,22 +24,26 @@ await new Promise(r=>server.listen(0,"127.0.0.1",r));
 let browser;const measurements=[];
 try{
  browser=await chromium.launch({headless:true,channel:process.env.PLAYWRIGHT_CHANNEL||undefined});
- for(const width of [320,390]){
-  const page=await browser.newPage({viewport:{width,height:844}});
+ for(const width of [320,375,390]){
+  const page=await browser.newPage({viewport:{width,height:844},hasTouch:true});
   await page.addInitScript(()=>{const v=new EventTarget();Object.assign(v,{height:844,offsetTop:0,scale:1});Object.defineProperty(window,"visualViewport",{value:v});window.viewport=(height,offsetTop=0,scale=1)=>{Object.assign(v,{height,offsetTop,scale});v.dispatchEvent(new Event("resize"));v.dispatchEvent(new Event("scroll"));};});
   await mkdir("coverage",{recursive:true});
   await page.goto(`http://127.0.0.1:${server.address().port}`);await page.locator("#trigger").click();
   const sheet=page.getByRole("dialog"),body=sheet.locator("[data-sheet-body]");
   async function measure(stage){await page.waitForTimeout(40);const value=await sheet.evaluate(el=>{
-   const rect=node=>{if(!node)return null;const r=node.getBoundingClientRect();return {top:r.top,height:r.height,bottom:r.bottom,width:r.width}};
+   const rect=node=>{if(!node)return null;const r=node.getBoundingClientRect();return {top:r.top,height:r.height,bottom:r.bottom,width:r.width,left:r.left,right:r.right}};
    const body=el.querySelector("[data-sheet-body]"),header=el.firstElementChild,footer=el.querySelector("form").lastElementChild;
    const parts={sheet:el,header,footer,body};
    if(!window.conditionParts)window.conditionParts=parts;
    const sameParts=Object.entries(parts).every(([key,node])=>window.conditionParts[key]===node);
-   return {sameParts,innerHeight:innerHeight,transitionDuration:getComputedStyle(el).transitionDuration,sheet:rect(el),header:rect(header),footer:footer===body?null:rect(footer),body:rect(body),bodyScrollTop:body.scrollTop,shellScrollTop:el.scrollTop,documentScrollTop:document.scrollingElement.scrollTop,viewport:{height:visualViewport.height,offsetTop:visualViewport.offsetTop,scale:visualViewport.scale},focused:rect(document.activeElement),focusedTag:document.activeElement.tagName,font:getComputedStyle(document.activeElement).fontSize,transition:getComputedStyle(el).transitionProperty,verticalScrollers:[...el.querySelectorAll("*")].filter(n=>["auto","scroll"].includes(getComputedStyle(n).overflowY)&&n.scrollHeight>n.clientHeight).map(n=>({tag:n.tagName,body:n===body,overflow:getComputedStyle(n).overflowY}))};
+   return {bodyClientWidth:body.clientWidth,bodyScrollWidth:body.scrollWidth,documentClientWidth:document.documentElement.clientWidth,documentScrollWidth:document.documentElement.scrollWidth,sameParts,innerHeight:innerHeight,transitionDuration:getComputedStyle(el).transitionDuration,sheet:rect(el),header:rect(header),footer:footer===body?null:rect(footer),body:rect(body),bodyScrollTop:body.scrollTop,shellScrollTop:el.scrollTop,documentScrollTop:document.scrollingElement.scrollTop,viewport:{height:visualViewport.height,offsetTop:visualViewport.offsetTop,scale:visualViewport.scale},focused:rect(document.activeElement),focusedTag:document.activeElement.tagName,font:getComputedStyle(document.activeElement).fontSize,transition:getComputedStyle(el).transitionProperty,verticalScrollers:[...el.querySelectorAll("*")].filter(n=>["auto","scroll"].includes(getComputedStyle(n).overflowY)&&n.scrollHeight>n.clientHeight).map(n=>({tag:n.tagName,body:n===body,overflow:getComputedStyle(n).overflowY}))};
   });
    const expectedHeight=Math.min(value.innerHeight,value.viewport.height);
    const expectedTop=Math.max(0,Math.min(value.viewport.offsetTop,value.innerHeight-expectedHeight));
+   assert.ok(value.sheet.left>=-1&&value.sheet.right<=width+1,stage+": sheet fits horizontally");
+   assert.ok(value.body.left>=value.sheet.left-1&&value.body.right<=value.sheet.right+1,stage+": body fits sheet");
+   assert.ok(value.bodyScrollWidth<=value.bodyClientWidth+1,stage+": no clipped body content");
+   assert.ok(value.documentScrollWidth<=value.documentClientWidth,stage+": no document horizontal overflow");
    assert.equal(value.sameParts,true,stage+": shell/header/footer/body stay mounted");
    assert.ok(value.footer,stage+": footer always mounted");
    assert.ok(Math.abs(value.sheet.top-expectedTop-16)<1,stage+": anchored top");
@@ -53,6 +57,33 @@ try{
    if(previous){assert.equal(value.footer.height,previous.footer.height,stage+": fixed footer height");assert.equal(value.header.height,previous.header.height,stage+": fixed header height");if(value.viewport.height===previous.viewport.height&&value.viewport.offsetTop===previous.viewport.offsetTop)assert.equal(value.sheet.top,previous.sheet.top,stage+": no interaction jump");}
    measurements.push({width,stage,...value});return value;}
   await measure("open");
+  const strip=sheet.getByLabel("Condition categories");
+  const stripMetrics=await strip.evaluate(el=>({client:el.clientWidth,scroll:el.scrollWidth,overflowX:getComputedStyle(el).overflowX,overflowY:getComputedStyle(el).overflowY}));
+  assert.ok(stripMetrics.scroll>stripMetrics.client,"categories overflow within their own strip");
+  assert.equal(stripMetrics.overflowX,"auto");assert.equal(stripMetrics.overflowY,"hidden");
+  await strip.evaluate(el=>el.scrollLeft=el.scrollWidth);
+  const last=strip.getByRole("button").last();
+  const lastBox=await last.boundingBox(),stripBox=await strip.boundingBox();
+  assert.ok(lastBox.x+lastBox.width<=stripBox.x+stripBox.width+1,"last category revealed by strip scroll");
+  const scrollBefore=await strip.evaluate(el=>el.scrollLeft);
+  await last.click();assert.equal(await last.getAttribute("aria-pressed"),"true");
+  assert.ok(Math.abs(await strip.evaluate(el=>el.scrollLeft)-scrollBefore)<1,"selection does not snap strip");
+  await measure("far-right category selected");
+  await strip.evaluate(el=>el.scrollLeft=0);
+  const cdp=await page.context().newCDPSession(page);
+  for(let swipe=0;swipe<3;swipe++){
+    const box=await strip.boundingBox(),y=box.y+box.height/2,start=box.x+box.width-20,end=box.x+20;
+    await cdp.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[{x:start,y}]});
+    for(let step=1;step<=8;step++){await cdp.send("Input.dispatchTouchEvent",{type:"touchMove",touchPoints:[{x:start+(end-start)*step/8,y}]});await page.waitForTimeout(16);}
+    await cdp.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});await page.waitForTimeout(150);
+  }
+  assert.ok(await strip.evaluate(el=>el.scrollLeft>0),"native touch swipe scrolls the strip");
+  assert.ok(await strip.evaluate(el=>el.scrollWidth-el.clientWidth-el.scrollLeft<2),"touch swipes reach final category");
+  await measure("touch category swipe");
+  await last.tap();assert.equal(await last.getAttribute("aria-pressed"),"true");
+  await page.screenshot({path:`coverage/add-condition-categories-${width}.png`});
+  await cdp.detach();
+
   await sheet.getByRole("button",{name:"Digestive conditions",exact:true}).click();await measure("category filter");
   await sheet.getByRole("button",{name:"All",exact:true}).click();
   await sheet.getByLabel("Search conditions").focus();await measure("search focus");
@@ -88,7 +119,7 @@ try{
   assert.equal(await page.evaluate(()=>document.documentElement.style.overflow),"");
   assert.ok(await page.locator("#trigger").evaluate(el=>el===document.activeElement));
   await page.locator("#trigger").click();
-  console.log(`PASS ${width}px: anchored shell/header/footer, one body scroller, native validation, keyboard bounds, focus and state`);
+  console.log(`PASS ${width}px: horizontal fit, category swipe/reachability, anchored shell/header/footer, validation, keyboard and state`);
   await mkdir("coverage",{recursive:true});await page.screenshot({path:`coverage/add-condition-${width}.png`});await page.close();
  }
 
