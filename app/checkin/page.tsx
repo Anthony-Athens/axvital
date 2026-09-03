@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, Suspense, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { FormEvent, Suspense, useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import type { User } from "@supabase/supabase-js";
 import { friendlyErrorMessage, logDevError } from "@/lib/app-errors";
 import { supabase } from "@/lib/supabase/client";
@@ -9,6 +9,8 @@ import { TodayPlan } from "@/components/planner/TodayPlan";
 import { ActiveEpisodes } from "@/components/episodes/ActiveEpisodes";
 import { CollapsibleSection, usePersistentDisclosure } from "@/components/ui/CollapsibleSection";
 import { CheckInFieldGroup } from "@/components/checkin/CheckInFieldGroup";
+import { QuickLogDialog } from "@/components/checkin/QuickLogDialog";
+import { QuickLogTagPicker } from "@/components/checkin/QuickLogTagPicker";
 import { Timeline } from "@/components/timeline/Timeline";
 import { useSearchParams, useRouter } from "next/navigation";
 import { draftFromRecord, loadCheckin, saveCheckin, type CheckinRecord } from "@/lib/checkins/persistence";
@@ -30,6 +32,7 @@ type QuickAddField = {
   placeholder: string;
   kind?: FieldKind;
   options?: string[];
+  detail?: boolean;
 };
 
 const questions = [
@@ -175,8 +178,8 @@ const quickAddFields: Record<QuickAddType, QuickAddField[]> = {
       placeholder: "Water, electrolytes, coffee",
     },
     { label: "Amount", name: "amount", placeholder: "16 oz" },
-    { label: "Time", name: "time", placeholder: "10:30", kind: "time" },
-    { label: "Notes", name: "notes", placeholder: "Optional context", kind: "textarea" },
+    { label: "Time", name: "time", placeholder: "10:30", kind: "time", detail: true },
+    { label: "Notes", name: "notes", placeholder: "Optional context", kind: "textarea", detail: true },
   ],
   Supplement: [
     {
@@ -199,8 +202,8 @@ const quickAddFields: Record<QuickAddType, QuickAddField[]> = {
       kind: "select",
       options: doseUnitOptions,
     },
-    { label: "Time", name: "time", placeholder: "08:00", kind: "time" },
-    { label: "Notes", name: "notes", placeholder: "Optional context", kind: "textarea" },
+    { label: "Time", name: "time", placeholder: "08:00", kind: "time", detail: true },
+    { label: "Notes", name: "notes", placeholder: "Optional context", kind: "textarea", detail: true },
   ],
   Exercise: [
     {
@@ -222,17 +225,19 @@ const quickAddFields: Record<QuickAddType, QuickAddField[]> = {
       placeholder: "Select intensity",
       kind: "select",
       options: intensityOptions,
+      detail: true,
     },
-    { label: "Distance", name: "distance", placeholder: "4", kind: "number" },
+    { label: "Distance", name: "distance", placeholder: "4", kind: "number", detail: true },
     {
       label: "Distance unit",
       name: "distance_unit",
       placeholder: "Select unit",
       kind: "select",
       options: distanceUnitOptions,
+      detail: true,
     },
-    { label: "Time", name: "time", placeholder: "17:00", kind: "time" },
-    { label: "Notes", name: "notes", placeholder: "Optional context", kind: "textarea" },
+    { label: "Time", name: "time", placeholder: "17:00", kind: "time", detail: true },
+    { label: "Notes", name: "notes", placeholder: "Optional context", kind: "textarea", detail: true },
   ],
   Symptom: [
     { label: "Symptom", name: "symptom", placeholder: "Headache" },
@@ -260,12 +265,12 @@ const quickAddFields: Record<QuickAddType, QuickAddField[]> = {
       kind: "select",
       options: doseUnitOptions,
     },
-    { label: "Time", name: "time", placeholder: "09:00", kind: "time" },
-    { label: "Notes", name: "notes", placeholder: "Optional context", kind: "textarea" },
+    { label: "Time", name: "time", placeholder: "09:00", kind: "time", detail: true },
+    { label: "Notes", name: "notes", placeholder: "Optional context", kind: "textarea", detail: true },
   ],
   Note: [
     { label: "Note text", name: "note_text", placeholder: "What happened?", kind: "textarea" },
-    { label: "Time", name: "time", placeholder: "14:00", kind: "time" },
+    { label: "Time", name: "time", placeholder: "14:00", kind: "time", detail: true },
   ],
 };
 
@@ -302,6 +307,31 @@ function numberValue(formData: FormData, key: string) {
 function integerValue(formData: FormData, key: string) {
   const value = numberValue(formData, key);
   return value === null ? null : Math.trunc(value);
+}
+
+function QuickLogFieldControl({ field }: { field: QuickAddField }) {
+  return (
+    <label className="block">
+      <span className="text-sm font-semibold text-slate-700">{field.label}</span>
+      {field.kind === "select" ? (
+        <select name={field.name} defaultValue="" className="mt-2 min-h-12 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 text-base font-medium outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100">
+          <option value="" disabled>{field.placeholder}</option>
+          {field.options?.map((option) => <option key={option} value={option}>{option}</option>)}
+        </select>
+      ) : field.kind === "textarea" ? (
+        <textarea name={field.name} placeholder={field.placeholder} rows={3} className="mt-2 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-3 text-base font-medium outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100" />
+      ) : (
+        <input
+          name={field.name}
+          type={field.kind === "number" || field.kind === "integer" ? "number" : field.kind ?? "text"}
+          inputMode={field.kind === "number" || field.kind === "integer" ? "decimal" : undefined}
+          step={field.kind === "integer" ? "1" : field.kind === "number" ? "any" : undefined}
+          placeholder={field.placeholder}
+          className="mt-2 min-h-12 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 text-base font-medium outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+        />
+      )}
+    </label>
+  );
 }
 
 function quickAddTypeToEventType(type: QuickAddType): HealthEventType {
@@ -414,6 +444,7 @@ function CheckInForm({ date, historical }: { date: string; historical: boolean }
   const [savingEvent, setSavingEvent] = useState(false);
   const quickAddTriggerRef = useRef<HTMLButtonElement | null>(null);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [showEventDetails, setShowEventDetails] = useState(false);
   const [checkinExpanded, setCheckinExpanded] = usePersistentDisclosure("axvital.today.dailyCheckIn.expanded", false);
   const [eventsExpanded, setEventsExpanded] = usePersistentDisclosure("axvital.today.optionalEvents.expanded", false);
 
@@ -483,20 +514,23 @@ function CheckInForm({ date, historical }: { date: string; historical: boolean }
     quickAddTriggerRef.current = trigger;
     setEventMessage("");
     setSelectedTags([]);
+    setShowEventDetails(false);
     setActiveQuickAdd(type);
   }
 
-  function closeQuickAdd() {
+  const closeQuickAdd = useCallback(() => {
     setActiveQuickAdd(null);
+    setEventMessage("");
+    setSelectedTags([]);
+    setShowEventDetails(false);
     requestAnimationFrame(() => quickAddTriggerRef.current?.focus());
-  }
+  }, []);
 
-  function toggleTag(tag: string) {
-    setSelectedTags((current) =>
-      current.includes(tag)
-        ? current.filter((currentTag) => currentTag !== tag)
-        : [...current, tag],
-    );
+  function finishQuickAdd() {
+    setActiveQuickAdd(null);
+    setSelectedTags([]);
+    setShowEventDetails(false);
+    requestAnimationFrame(() => quickAddTriggerRef.current?.focus());
   }
 
   async function saveHealthEvent(event: FormEvent<HTMLFormElement>) {
@@ -536,7 +570,7 @@ function CheckInForm({ date, historical }: { date: string; historical: boolean }
 
       form.reset();
       setSelectedTags([]);
-      closeQuickAdd();
+      finishQuickAdd();
     } catch (error) {
       logDevError("Failed to save health event", error);
       setEventMessage(friendlyErrorMessage("save this event"));
@@ -670,149 +704,34 @@ function CheckInForm({ date, historical }: { date: string; historical: boolean }
       </div>
 
       {activeQuickAdd ? (
-        <div
-          className="fixed inset-0 z-50 bg-slate-950/35 px-4 pt-24 backdrop-blur-sm md:grid md:place-items-center md:p-6"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="quick-add-title"
-        >
-          <form
-            onSubmit={saveHealthEvent}
-            className="safe-bottom fixed inset-x-0 bottom-0 max-h-[82dvh] overflow-y-auto rounded-t-[2rem] bg-white p-5 shadow-2xl md:static md:w-full md:max-w-lg md:rounded-3xl md:p-6"
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="text-sm font-semibold text-blue-700">
-                  Quick Log
-                </p>
-                <h2
-                  id="quick-add-title"
-                  className="mt-2 text-3xl font-black tracking-tight"
-                >
-                  {activeQuickAdd}
-                </h2>
-              </div>
+        <QuickLogDialog title={activeQuickAdd} saving={savingEvent} message={eventMessage} onClose={closeQuickAdd} onSubmit={saveHealthEvent}>
+          <div className="space-y-4">
+            {quickAddFields[activeQuickAdd].filter((field) => !field.detail).map((field) => (
+              <QuickLogFieldControl key={field.name} field={field} />
+            ))}
+          </div>
+
+          {quickAddFields[activeQuickAdd].some((field) => field.detail) ? (
+            <section className="mt-5 border-t border-slate-200 pt-4">
               <button
                 type="button"
-                onClick={closeQuickAdd}
-                className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-slate-100 text-2xl font-black text-slate-700"
-                aria-label="Close quick log"
+                onClick={() => setShowEventDetails((value) => !value)}
+                className="min-h-11 rounded-lg px-2 text-sm font-semibold text-blue-700 hover:bg-blue-50 focus-visible:ring-2 focus-visible:ring-blue-600"
+                aria-expanded={showEventDetails}
+                aria-controls="quick-log-details"
               >
-                x
+                {showEventDetails ? "− Hide details" : "+ Add details"}
               </button>
-            </div>
-
-            <div className="mt-5 space-y-4">
-              {quickAddFields[activeQuickAdd].map((field) => (
-                <label key={field.name} className="block">
-                  <span className="text-sm font-black text-slate-700">
-                    {field.label}
-                  </span>
-                  {field.kind === "select" ? (
-                    <select
-                      name={field.name}
-                      defaultValue=""
-                      className="mt-2 min-h-12 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 text-base font-medium outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
-                    >
-                      <option value="" disabled>
-                        {field.placeholder}
-                      </option>
-                      {field.options?.map((option) => (
-                        <option key={option} value={option}>
-                          {option}
-                        </option>
-                      ))}
-                    </select>
-                  ) : field.kind === "textarea" ? (
-                    <textarea
-                      name={field.name}
-                      placeholder={field.placeholder}
-                      rows={4}
-                      className="mt-2 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-3 text-base font-medium outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
-                    />
-                  ) : (
-                    <input
-                      name={field.name}
-                      type={
-                        field.kind === "number" || field.kind === "integer"
-                          ? "number"
-                          : field.kind ?? "text"
-                      }
-                      inputMode={
-                        field.kind === "number" || field.kind === "integer"
-                          ? "decimal"
-                          : undefined
-                      }
-                      step={field.kind === "integer" ? "1" : undefined}
-                      placeholder={field.placeholder}
-                      className="mt-2 min-h-12 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 text-base font-medium outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
-                    />
-                  )}
-                </label>
-              ))}
-            </div>
-
-            <section className="mt-5 rounded-3xl border border-slate-100 bg-slate-50 p-4">
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <h3 className="text-sm font-black text-slate-700">
-                    Tags
-                  </h3>
-                  <p className="mt-1 text-xs font-bold leading-5 text-slate-500">
-                    Optional context for future pattern discovery.
-                  </p>
-                </div>
-                <span className="rounded-full bg-white px-3 py-1 text-xs font-black text-slate-400">
-                  Optional
-                </span>
-              </div>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {tagOptions.map((tag) => {
-                  const selected = selectedTags.includes(tag);
-                  return (
-                    <button
-                      key={tag}
-                      type="button"
-                      onClick={() => toggleTag(tag)}
-                      className={`min-h-11 rounded-full border px-3 text-sm font-black transition active:scale-[0.98] ${
-                        selected
-                          ? "border-blue-600 bg-blue-600 text-white"
-                          : "border-slate-200 bg-white text-slate-600"
-                      }`}
-                      aria-pressed={selected}
-                    >
-                      {tag}
-                    </button>
-                  );
-                })}
+              <div id="quick-log-details" hidden={!showEventDetails} className="mt-3 space-y-4">
+                {quickAddFields[activeQuickAdd].filter((field) => field.detail).map((field) => (
+                  <QuickLogFieldControl key={field.name} field={field} />
+                ))}
               </div>
             </section>
+          ) : null}
 
-            {eventMessage ? (
-              <p role="alert" className="mt-4 rounded-2xl bg-amber-50 p-4 text-sm font-black text-amber-900">
-                {eventMessage}
-              </p>
-            ) : null}
-
-            <div className="mt-5 grid grid-cols-[0.8fr_1.2fr] gap-3">
-              <button
-                type="button"
-                onClick={closeQuickAdd}
-                disabled={savingEvent}
-                className="min-h-14 rounded-2xl border border-slate-200 bg-white px-4 text-base font-black text-slate-700"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                disabled={savingEvent}
-                className="min-h-14 rounded-xl bg-blue-600 px-4 text-base font-semibold text-white hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
-              >
-                {savingEvent ? "Saving…" : "Save Event"}
-              </button>
-            </div>
-          </form>
-        </div>
+          <QuickLogTagPicker options={tagOptions} selected={selectedTags} onChange={setSelectedTags} />
+        </QuickLogDialog>
       ) : null}
     </div>
   );
