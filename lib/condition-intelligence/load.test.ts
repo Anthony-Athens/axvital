@@ -7,7 +7,7 @@ test("loader bounds and scopes each source, preserves partial failures, and igno
   const calls: Array<[string, string, unknown[]]> = [];
   const client = { from(table: string) {
     const query: Record<string, unknown> = {};
-    for (const method of ["select", "eq", "is", "gte", "lte", "order", "range"]) query[method] = (...args: unknown[]) => { calls.push([table,method,args]); return query; };
+    for (const method of ["select", "eq", "is", "gte", "lte", "order", "range", "or"]) query[method] = (...args: unknown[]) => { calls.push([table,method,args]); return query; };
     query.then = (resolve: (value: unknown) => void) => resolve({ error: table === "daily_checkins" ? { message: "offline" } : null, data: table === "condition_episodes" ? [{ id: "episode", started_at: "2026-09-01T00:00:00Z", ended_at: "2026-09-02T00:00:00Z", status: "ongoing", overall_severity: null }] : [] });
     return query;
   } } as unknown as SupabaseClient;
@@ -16,8 +16,10 @@ test("loader bounds and scopes each source, preserves partial failures, and igno
   assert.equal(result.episodes[0].end, null);
   for (const table of new Set(calls.map(c => c[0]))) {
     assert.ok(calls.some(c => c[0] === table && c[1] === "eq" && c[2][0] === "user_id" && c[2][1] === "owner"));
-    assert.ok(calls.some(c => c[0] === table && c[1] === "gte"));
+    assert.ok(calls.some(c => c[0] === table && c[1] === (table === "condition_episodes" ? "or" : "gte")));
     assert.ok(calls.some(c => c[0] === table && c[1] === "lte"));
   }
   assert.ok(calls.some(c => c[1] === "eq" && c[2][0] === "user_condition_id" && c[2][1] === "condition"));
+  assert.ok(result.associations.every(a => !a.sufficient && a.preEpisodeRate === null));
+  assert.ok(calls.some(c => c[1] === "or" && String(c[2][0]).includes("status.eq.ongoing")));
 });

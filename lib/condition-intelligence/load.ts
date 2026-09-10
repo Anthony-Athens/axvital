@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { DAY, PRE_EPISODE_LOOKBACK_DAYS, rangeStart, type Activity, type Episode } from "./model.ts";
+import { compareAssociations } from "./associations.ts";
 
 // One paginated query per physical source, not per episode or display category.
 // Explicit owner filters supplement existing RLS. Never use a service-role client.
@@ -7,7 +8,7 @@ export async function loadIntelligence(client: SupabaseClient, userId: string, c
   const start = rangeStart(now), activityStart = start - PRE_EPISODE_LOOKBACK_DAYS * DAY;
   const sources = [
     { table: "health_events", columns: "id,event_date,event_time,event_type", date: "event_date", category: "Health event", dateOnly: true },
-    { table: "daily_checkins", columns: "id,checkin_date", date: "checkin_date", category: "Check-in", dateOnly: true },
+    { table: "daily_checkins", columns: "id,checkin_date,sleep_quality,stress_level,energy_score,exercise_level", date: "checkin_date", category: "Check-in", dateOnly: true },
     { table: "nutrition_entries", columns: "id,consumed_at", date: "consumed_at", category: "Nutrition", deleted: true },
     { table: "workout_sessions", columns: "id,started_at", date: "started_at", category: "Workout" },
     { table: "user_symptom_events", columns: "id,started_at", date: "started_at", category: "Symptom", deleted: true },
@@ -26,11 +27,13 @@ export async function loadIntelligence(client: SupabaseClient, userId: string, c
       if (source.deleted) query = query.is("deleted_at", null);
       const { data, error } = await query;
       if (error || (offset === 10000 && data?.length)) { failed.push(source.category); return; }
-      for (const row of (data ?? []) as unknown as Record<string, string>[]) {
+      for (const row of (data ?? []) as unknown as Array<Record<string, unknown>>) {
         const dateOnly = Boolean(source.dateOnly && !row.event_time);
-        const stamp = source.dateOnly ? `${row[source.date]}T${row.event_time || "00:00:00"}Z` : row[source.date];
+        const stamp = source.dateOnly ? `${row[source.date]}T${row.event_time || "00:00:00"}Z` : String(row[source.date]);
         const at = Date.parse(stamp);
-        if (Number.isFinite(at) && at <= now) collected.push({ id: `${source.table}:${row.id}`, at, category: category[row.event_type] ?? source.category, dateOnly });
+        if (Number.isFinite(at) && at <= now) collected.push({ id: `${source.table}:${row.id}`, at, category: category[String(row.event_type)] ?? source.category, dateOnly,
+          ...(source.table === "daily_checkins" ? { checkin: { sleepQuality: row.sleep_quality, stress: row.stress_level, energy: row.energy_score, exercise: row.exercise_level } } : {}),
+        });
       }
       if ((data?.length ?? 0) < 500) break;
     }
@@ -40,11 +43,13 @@ export async function loadIntelligence(client: SupabaseClient, userId: string, c
   for (let offset = 0; ; offset += 500) {
     const { data, error } = await client.from("condition_episodes").select("id,started_at,ended_at,overall_severity,status")
       .eq("user_id", userId).eq("user_condition_id", conditionId).is("archived_at", null)
-      .gte("started_at", new Date(start).toISOString()).lte("started_at", new Date(now).toISOString())
+      // Include episodes intersecting the visible period, including older ongoing episodes.
+      .or(`started_at.gte.${new Date(start).toISOString()},ended_at.gte.${new Date(start).toISOString()},status.eq.ongoing,ended_at.is.null`).lte("started_at", new Date(now).toISOString())
       .order("started_at").order("id").range(offset, offset + 499);
     if (error) throw new Error("Episode history could not be loaded. Please try again.");
     episodes.push(...(data ?? []).map(row => ({ id: row.id, start: Date.parse(row.started_at), end: row.status === "resolved" && row.ended_at ? Date.parse(row.ended_at) : null, severity: row.overall_severity })));
     if ((data?.length ?? 0) < 500) break;
   }
-  return { episodes, healthEvents: events, unavailable: failed, now, start };
+  const associations = compareAssociations(episodes, events, start, now, !failed.includes("Check-in"));
+  return { episodes, healthEvents: events, associations, unavailable: failed, now, start };
 }

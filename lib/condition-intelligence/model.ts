@@ -1,7 +1,28 @@
 export const PRE_EPISODE_LOOKBACK_DAYS = 7;
 export const DAY = 86_400_000;
+export const CONDITION_RANGE_MONTHS = 12;
+export const CONDITION_RANGE_LABEL = `Last ${CONDITION_RANGE_MONTHS} months`;
 export type Episode = { id: string; start: number; end: number | null; severity: number | null };
-export type Activity = { id: string; at: number; category: string; dateOnly?: boolean };
+export type CheckinObservations = { sleepQuality?: unknown; stress?: unknown; energy?: unknown; exercise?: unknown };
+export type Activity = { id: string; at: number; category: string; dateOnly?: boolean; checkin?: CheckinObservations };
+export type FactorKey = "poor_sleep" | "high_stress" | "low_energy" | "exercise";
+export type AssociationEvidence = { episodeId: string; onset: number; start: number; end: number; eligibleDays: number; presentDays: number; eventIds: string[] };
+export type ConditionAssociation = {
+  factorKey: FactorKey; label: string; definition: string;
+  episodesObserved: number; eligibleEpisodes: number;
+  preEpisodeOccurrences: number; preEpisodeEligibleDays: number; preEpisodeRate: number | null;
+  baselineOccurrences: number; baselineEligibleDays: number; baselineRate: number | null;
+  relativeRate: number | null; sufficient: boolean; reasons: string[];
+  dataQuality: "low" | "moderate" | "strong"; evidence: AssociationEvidence[];
+};
+export const calendarDay = (at: number) => Math.floor(at / DAY) * DAY;
+// Shared proportional date axis for episodes, shading and activity.
+export function timelineX(at: number, start: number, end: number, width: number) { return 100 + (at - start) / (end - start) * (width - 220); }
+export function timelineLayout(categoryCount: number) {
+  const activityY = (index: number) => 75 + index * 12;
+  const plotBottom = Math.max(135, activityY(categoryCount) + 8);
+  return { activityY, plotTop: 60, plotBottom, intervalY: plotBottom + 25, axisY: plotBottom + 85, height: plotBottom + 105 };
+}
 export function lookback(start: number) { return { start: start - PRE_EPISODE_LOOKBACK_DAYS * DAY, end: start }; }
 const mean = (values: number[]) => values.length ? values.reduce((a, b) => a + b, 0) / values.length : null;
 export function metrics(episodes: Episode[], now: number) {
@@ -37,5 +58,10 @@ export function aggregateActivity(events: Activity[]) {
   }
   return [...groups.values()];
 }
-export function rangeStart(now: number) { const date = new Date(now); date.setUTCMonth(date.getUTCMonth() - 18); return date.getTime(); }
+export function rangeStart(now: number, months = CONDITION_RANGE_MONTHS) {
+  const date = new Date(now), day = date.getUTCDate();
+  date.setUTCDate(1); date.setUTCMonth(date.getUTCMonth() - months);
+  const lastDay = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth() + 1, 0)).getUTCDate();
+  date.setUTCDate(Math.min(day, lastDay)); return date.getTime();
+}
 export function days(value: number | null, missing = "Not recorded") { return value === null ? missing : `${Number(value.toFixed(1))} days`; }

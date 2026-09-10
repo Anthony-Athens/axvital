@@ -1,0 +1,37 @@
+import { Surface } from "@/components/ui/design-system";
+import { leadingAssociation } from "@/lib/condition-intelligence/associations";
+import { DAY, type ConditionAssociation } from "@/lib/condition-intelligence/model";
+import { dateLabel } from "./ConditionTimeline";
+
+const percent = (value: number | null) => value === null ? "Not enough data yet" : `${Math.round(value * 100)}%`;
+const qualityLabels = { low: "Limited data", moderate: "Moderate data coverage", strong: "More data coverage" };
+function relativeLabel(row: ConditionAssociation) {
+  if (!row.sufficient) return null;
+  if (row.baselineRate === 0) return "No factor-present baseline days were recorded; a ratio cannot be calculated.";
+  if (row.relativeRate === 1) return "Equally common in both groups of tracked days.";
+  return row.relativeRate === null ? null : `${Number(row.relativeRate.toFixed(2))}× the baseline frequency`;
+}
+export function AssociationEvidence({ association }: { association: ConditionAssociation }) {
+  return <details className="mt-4 border-t border-slate-200 pt-2"><summary className="min-h-11 cursor-pointer py-3 text-sm font-semibold text-blue-700 focus-visible:outline-2 focus-visible:outline-blue-600">View evidence<span className="sr-only"> for {association.label}</span></summary><div className="space-y-3 pb-2 text-sm leading-6 text-slate-600">
+    <p>{association.definition}</p><p>An eligible episode has at least one usable, non-episode lookback day. “Observed before” means at least one of those days contained the factor.</p>
+    <ul className="space-y-3">{association.evidence.map(e => <li key={e.episodeId} className="rounded-lg bg-slate-50 p-3"><strong className="block text-slate-900">Episode starting {dateLabel(e.onset)}</strong><span className="block">Lookback: {dateLabel(e.start)}–{dateLabel(e.end - DAY)}</span><span>{e.presentDays} factor-present / {e.eligibleDays} eligible days · {e.eligibleDays === 0 ? "Not eligible" : e.presentDays ? "Factor observed" : "Factor not observed"}</span></li>)}</ul>
+    <p>Combined lookbacks: {association.preEpisodeOccurrences} factor-present / {association.preEpisodeEligibleDays} unique eligible days. Baseline: {association.baselineOccurrences} / {association.baselineEligibleDays} eligible days.</p>
+    <p>Baseline excludes episode days and every lookback day. Shared lookback days count once in combined rates; they can support more than one episode’s observation count. Missing answers are excluded.</p>
+    {association.reasons.length ? <ul className="list-disc pl-5">{association.reasons.map(reason => <li key={reason}>{reason}</li>)}</ul> : null}
+  </div></details>;
+}
+export function AssociationCard({ association }: { association: ConditionAssociation }) {
+  const relative = relativeLabel(association);
+  return <Surface><p className="text-xs font-semibold text-slate-500">{qualityLabels[association.dataQuality]}</p><h3 className="mt-2 text-lg font-semibold">{association.label}</h3>
+    {association.sufficient ? <><p className="mt-2 text-sm text-slate-600">Observed before {association.episodesObserved} of {association.eligibleEpisodes} eligible episodes</p><dl className="mt-5 grid grid-cols-2 gap-4"><div><dt className="text-xs text-slate-500">Pre-episode tracked days</dt><dd className="mt-1 text-2xl font-semibold">{percent(association.preEpisodeRate)}</dd><dd className="text-xs text-slate-500">{association.preEpisodeOccurrences} / {association.preEpisodeEligibleDays} days</dd></div><div><dt className="text-xs text-slate-500">Typical eligible tracked days</dt><dd className="mt-1 text-2xl font-semibold">{percent(association.baselineRate)}</dd><dd className="text-xs text-slate-500">{association.baselineOccurrences} / {association.baselineEligibleDays} days</dd></div></dl><p className="mt-4 text-sm font-medium text-slate-700">{relative}</p></> : <p className="mt-3 text-sm text-slate-600">Not enough data yet</p>}
+    <AssociationEvidence association={association}/>
+  </Surface>;
+}
+export function ConditionPatterns({ associations }: { associations: ConditionAssociation[] }) {
+  const leading = leadingAssociation(associations);
+  const sufficient = associations.some(a => a.sufficient);
+  return <section className="mt-8" aria-labelledby="potential-patterns-title"><h2 id="potential-patterns-title" className="text-xl font-semibold">Potential patterns observed before episodes</h2><p className="mt-2 text-sm text-slate-500">Possible associations — not proof of causation. Comparisons use full UTC days within the displayed 12 months. Data coverage describes availability, not clinical confidence.</p>
+    <aside className="my-5 rounded-xl border border-blue-200 bg-blue-50 p-4 sm:p-5" aria-label="Key Insight"><p className="text-xs font-semibold uppercase tracking-wide text-blue-700">Key Insight</p>{leading ? <><h3 className="mt-2 text-lg font-semibold">{leading.label} was observed before {leading.episodesObserved} of {leading.eligibleEpisodes} eligible episodes.</h3><p className="mt-2 text-sm text-slate-600">{percent(leading.preEpisodeRate)} of tracked pre-episode days vs. {percent(leading.baselineRate)} of typical eligible tracked days.</p><p className="mt-2 text-xs text-slate-500">Largest observed increase among eligible factors; exploratory and unadjusted for other factors.</p></> : <p className="mt-2 text-sm text-slate-700">{sufficient ? "No repeated increase met the Key Insight criteria. You can still review the comparisons below." : "AXVital needs more tracked data around your episodes before it can compare patterns reliably."}</p>}</aside>
+    <div className="grid gap-4 md:grid-cols-2">{associations.map(association => <AssociationCard key={association.factorKey} association={association}/>)}</div>
+  </section>;
+}
