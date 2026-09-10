@@ -4,6 +4,7 @@ import { runInNewContext } from "node:vm";
 import { build } from "esbuild";
 
 async function route(file: string, globals: Record<string, unknown>, mocks: Record<string, string> = {}) {
+  mocks = { "server-only": "export {};", "next/server": "export const after = () => {};", ...mocks };
   const code = (await build({entryPoints:[file],bundle:true,write:false,platform:"node",format:"cjs",plugins:[{
     name:"providers",setup(b){
       b.onResolve({filter:/.*/},args=>mocks[args.path]?{path:args.path,namespace:"fixture"}:undefined);

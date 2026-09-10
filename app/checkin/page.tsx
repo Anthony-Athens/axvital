@@ -1,4 +1,5 @@
 "use client";
+import { reportActivation } from "@/lib/telemetry/activation";
 
 import { FormEvent, Suspense, useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import type { User } from "@supabase/supabase-js";
@@ -562,6 +563,7 @@ function CheckInForm({ date, historical }: { date: string; historical: boolean }
           return;
         }
 
+        reportActivation("first_health_event");
         refreshTimeline();
         setEventMessage("Event saved. Timeline refreshed.");
       } else {

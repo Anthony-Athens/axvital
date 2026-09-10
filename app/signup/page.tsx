@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { trackProduct } from "@/lib/telemetry/client";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { logDevError } from "@/lib/app-errors";
@@ -22,6 +23,7 @@ export default function SignupPage() {
     event.preventDefault();
     const validation = passwordError(password);
     if (validation) { setMessage(validation); return; }
+    trackProduct("Signup Started");
     setLoading(true);
     setMessage("");
 

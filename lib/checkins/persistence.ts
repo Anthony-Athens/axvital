@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { reportActivation } from "../telemetry/activation.ts";
 import { selectedCalendarDate } from "../timeline/dates.ts";
 
 export const answerFields = { energy: "energy_score", mood: "mood_score", sleep: "sleep_quality", exercise: "exercise_level", nutrition: "nutrition_quality", stress: "stress_level", alcohol: "alcohol" } as const;
@@ -66,5 +67,6 @@ export async function saveCheckin(client: SupabaseClient, date: string, userId: 
   }
   const { data, error } = await query.select("*").single();
   if (error || !data) throw new Error("SAVE_CONFLICT");
+  if (!baseline) reportActivation("first_daily_checkin");
   return data as CheckinRecord;
 }
