@@ -20,7 +20,7 @@ export function activeNavigationId(pathname: string): PrimaryNavigationId | null
   if (matchesRoute(pathname, ["/experiments"])) return "experiments";
   if (matchesRoute(pathname, ["/learn", "/dashboard", "/insights", "/weekly-recap", "/workouts/progress"]) || isConditionAnalysisRoute(pathname)) return "learn";
   if (matchesRoute(pathname, ["/track", "/weekly-overview", "/workouts", "/habits", "/protocols", "/health/nutrition", "/health/symptoms", "/health/episodes", "/health/timeline"])) return "track";
-  if (matchesRoute(pathname, ["/me", "/profile", "/settings"]) || pathname === "/health" || matchesRoute(pathname, ["/health/conditions"])) return "me";
+  if (matchesRoute(pathname, ["/me", "/profile", "/settings", "/my-health"]) || pathname === "/health" || matchesRoute(pathname, ["/health/conditions"])) return "me";
   return null;
 }
 export function isFocusedWorkoutRoute(pathname: string) { return /^\/workouts\/sessions\/[^/]+\/?$/.test(pathname); }

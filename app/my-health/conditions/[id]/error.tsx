@@ -1,0 +1,2 @@
+"use client";
+export default function Error({ reset }: { reset: () => void }) { return <div className="p-6"><h1 className="text-xl font-semibold">Condition history is unavailable</h1><p className="my-3">We couldn’t load this condition. Please try again or return to My Health.</p><button className="min-h-11 rounded-lg bg-blue-700 px-4 text-white" onClick={reset}>Try again</button><a href="/my-health" className="ml-4 text-blue-700">My Health</a></div>; }
