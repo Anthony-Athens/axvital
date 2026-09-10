@@ -19,7 +19,7 @@ test("12-month range clamps leap day and shared timeline coordinates put daily t
     assert.ok(x > timelineX(window.start, start, now, 1200));
     assert.ok(x < timelineX(window.end, start, now, 1200));
   }
-  const layout = timelineLayout(10);
+  const layout = timelineLayout(["Check-in", "Nutrition", "Fluid", "Note", "Health event", "Workout", "Exercise", "Supplement", "Medication", "Symptom"]);
   for (let i = 0; i < 10; i++) { assert.ok(layout.activityY(i) >= layout.plotTop); assert.ok(layout.activityY(i) + 8 < layout.plotBottom); }
   assert.ok(layout.intervalY > layout.plotBottom); assert.ok(layout.axisY < layout.height);
 });

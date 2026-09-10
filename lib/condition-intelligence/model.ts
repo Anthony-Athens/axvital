@@ -18,10 +18,16 @@ export type ConditionAssociation = {
 export const calendarDay = (at: number) => Math.floor(at / DAY) * DAY;
 // Shared proportional date axis for episodes, shading and activity.
 export function timelineX(at: number, start: number, end: number, width: number) { return 100 + (at - start) / (end - start) * (width - 220); }
-export function timelineLayout(categoryCount: number) {
-  const activityY = (index: number) => 75 + index * 12;
-  const plotBottom = Math.max(135, activityY(categoryCount) + 8);
-  return { activityY, plotTop: 60, plotBottom, intervalY: plotBottom + 25, axisY: plotBottom + 85, height: plotBottom + 105 };
+export function timelineLayout(categories: readonly string[]) {
+  // Fixed visual slots: removing a category never moves another category's lane.
+  // These are existing Activity labels, not additional data categories.
+  const offsets: Record<string, number> = {
+    "Check-in": -18, Nutrition: -36, Fluid: -54, Note: -72, "Health event": -90,
+    Workout: 18, Exercise: 36, Supplement: 54, Medication: 72, Symptom: 90,
+  };
+  const plotTop = 70, centerY = 170, plotBottom = 270;
+  const activityY = (index: number) => centerY + (offsets[categories[index]] ?? -90) - 4;
+  return { activityY, plotTop, centerY, plotBottom, intervalY: 300, axisY: 355, height: 375 };
 }
 export function lookback(start: number) { return { start: start - PRE_EPISODE_LOOKBACK_DAYS * DAY, end: start }; }
 const mean = (values: number[]) => values.length ? values.reduce((a, b) => a + b, 0) / values.length : null;
