@@ -20,7 +20,7 @@ async function fixture(file: string, values: Record<string, unknown> = {}, extra
     b.onLoad({ filter: /.*/, namespace: "mock" }, args => ({ contents: mocks[args.path] }));
   } }] })).outputFiles[0].text;
   const testModule = { exports: {} as Record<string, (...args: never[]) => Promise<unknown>> };
-  runInNewContext(code, { module: testModule, exports: testModule.exports, require: (name: string) => { if (name === "node:crypto") return { timingSafeEqual: (a: Buffer, b: Buffer) => a.equals(b) }; throw Error(name); }, Buffer, Request, Response, Headers, URL, TextDecoder, AbortSignal, Uint8Array,
+  runInNewContext(code, { module: testModule, exports: testModule.exports, require: (name: string) => { if (name === "node:crypto") return { timingSafeEqual: (a: Buffer, b: Buffer) => a.equals(b) }; throw Error(name); }, Buffer, Request, Response, Headers, URL, URLSearchParams, TextDecoder, AbortSignal, Uint8Array,
     process: { env: { VERCEL_ENV: "production", AXVITAL_SIGNUP_WEBHOOK_SECRET: "x".repeat(32), RESEND_API_KEY: "private-key", AXVITAL_EMAIL_FROM: "sender@example.test", AXVITAL_ADMIN_EMAIL: "owner@example.test", STRIPE_PRICE_PREMIUM_MONTHLY: "monthly-price", STRIPE_PRICE_PREMIUM_ANNUAL: "annual-price" } },
     pending, tracked, console: { error: (...args: unknown[]) => logs.push(args) }, fetch: async (_url: string, init: RequestInit) => { deliveries.push(String(init.body)); return new Response(null, { status: 200 }); }, ...values });
   return { exports: testModule.exports, pending, tracked, deliveries, logs, async flush() { for (const task of pending.splice(0)) await task(); } };
@@ -46,6 +46,8 @@ test("notifications are gated by Vercel production, not NODE_ENV production buil
 test("root layout includes application-wide Analytics with URL sanitization", async () => {
   const f = await fixture("app/layout.tsx", {}, {
     "@/components/Navbar": 'export const Navbar = () => null;',
+    "react": 'export const useEffect = () => {}; export const useRef = value => ({current:value});',
+    "next/navigation": 'export const usePathname = () => "/";',
     "react/jsx-runtime": 'export const jsx = (type, props) => typeof type === "function" ? type(props) : ({type,props}); export const jsxs = jsx;',
     "@vercel/analytics/next": 'export const Analytics = props => ({analytics:true,props});',
     "./globals.css": 'export {};',

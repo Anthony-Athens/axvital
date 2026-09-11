@@ -10,7 +10,7 @@ export function analyticsPayload(event: AnalyticsEvent, interval?: BillingInterv
   }
   return {};
 }
-const publicPaths = new Set(["/", "/signup", "/login", "/pricing", "/about", "/contact", "/privacy", "/terms", "/health-disclaimer"]);
+const publicPaths = new Set(["/", "/signup", "/login", "/pricing", "/about", "/contact", "/privacy", "/terms", "/health-disclaimer", "/conditions/ms", "/conditions/psoriasis", "/conditions/hsv"]);
 export function analyticsUrl(raw: string): string | null {
   try {
     const url = new URL(raw);

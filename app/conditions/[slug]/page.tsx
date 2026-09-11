@@ -1,3 +1,4 @@
+import { publicUrl } from "@/lib/seo";
 import { conditionIntelligenceDemos, type DemoConditionKey } from "@/lib/campaigns/condition-intelligence-demo";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -16,8 +17,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: content.title,
     description: content.description,
-    openGraph: { title: content.title, description: content.description, type: "website", siteName: "AXVital" },
-    alternates: { canonical: `https://www.axvital.com/conditions/${slug}` },
+    openGraph: { title: content.title, description: content.description, type: "website", siteName: "AXVital", url: publicUrl(`/conditions/${slug}`) },
+    alternates: { canonical: publicUrl(`/conditions/${slug}`) },
     robots: { index: true, follow: true },
     referrer: "no-referrer",
   };

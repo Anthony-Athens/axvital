@@ -87,3 +87,8 @@ Added:
 ## Local verification
 
 Production build and TypeScript passed. The full test suite passed 588 tests; the final focused telemetry suite passed eight tests, including an additional end-to-end mocked Stripe route retry/failure check. Coverage includes layout analytics wiring, URL/property filtering, environment gating, verified signup and duplicate suppression, Resend failure isolation, both billing intervals, paid invoice qualification, server header stripping, real PostgreSQL milestone claims and role denial. The existing suite exercises checkout/customer coordination, subscription synchronization, health-event validation and check-in persistence. Provider calls are mocked: no real accounts, charges, owner emails or production data were created. UI test bundling required running outside the filesystem sandbox because esbuild could not read the parent directory inside it.
+
+
+## Condition marketing funnel extension
+
+See `docs/condition-campaigns.md` for the current campaign policy, launch steps and limitations. Known public condition pages now retain their clean path in pageviews. The existing client SDK also receives Condition Marketing Viewed, Condition Marketing CTA Clicked, Signup Viewed, Signup Started, and conservative browser Signup Completed events with reconstructed source_page/approved UTM properties. This scoped exception supersedes the earlier statement that every event has only empty or billing-interval properties. Private routes, existing server milestones, header stripping and no-referrer policy remain unchanged. Account Created is still the authoritative deduplicated total and has no campaign attribution; do not add it to browser Signup Completed counts. No health/account fields or advertising scripts were added.

@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { trackProduct } from "@/lib/telemetry/client";
+import { attributionFromSearch, campaignEvents } from "@/lib/telemetry/campaign";
+import { newlyCreatedSignup } from "@/lib/auth/signup-result";
+import { trackCampaign } from "@/lib/telemetry/client";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useRef } from "react";
 import { logDevError } from "@/lib/app-errors";
 import { createClient } from "@/lib/supabase/browser";
 import { PASSWORD_MIN, PASSWORD_MAX, PASSWORD_HELP, passwordError } from "@/lib/auth/passwords";
@@ -19,36 +21,56 @@ export default function SignupPage() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const submitting = useRef(false);
+  const [submitted, setSubmitted] = useState(false);
+
   async function handleSignup(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (submitting.current || submitted) return;
     const validation = passwordError(password);
     if (validation) { setMessage(validation); return; }
-    trackProduct("Signup Started");
+    const attribution = attributionFromSearch(window.location.search);
+    trackCampaign(campaignEvents.submitted, attribution);
+    submitting.current = true;
+    const startedAt = Date.now();
     setLoading(true);
     setMessage("");
 
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          full_name: fullName,
-          preferred_name: preferredName || null,
-          primary_goal: primaryGoal || null,
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: fullName,
+            preferred_name: preferredName || null,
+            primary_goal: primaryGoal || null,
+          },
         },
-      },
-    });
+      });
 
-    if (error) {
+      if (error) {
+        logDevError("Failed to sign up", error);
+        setLoading(false);
+        setMessage("We couldn't create your account right now. Please try again.");
+        return;
+      }
+
+      if (newlyCreatedSignup(data.user, startedAt, Date.now())) trackCampaign(campaignEvents.completed, attribution);
+      setSubmitted(true);
+      if (data.session) {
+        router.push("/onboarding");
+        router.refresh();
+      } else {
+        setMessage("Check your email for the next step to access your account.");
+      }
+    } catch (error) {
       logDevError("Failed to sign up", error);
-      setLoading(false);
       setMessage("We couldn't create your account right now. Please try again.");
-      return;
+    } finally {
+      submitting.current = false;
+      setLoading(false);
     }
-
-    setLoading(false);
-    router.push("/onboarding");
-    router.refresh();
   }
 
   return (
@@ -110,7 +132,7 @@ export default function SignupPage() {
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || submitted}
             className="flex min-h-14 w-full items-center justify-center rounded-2xl bg-slate-950 px-6 text-base font-black text-white disabled:cursor-not-allowed disabled:bg-slate-400"
           >
             {loading ? "Creating account..." : "Sign Up"}

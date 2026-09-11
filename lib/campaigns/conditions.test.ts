@@ -19,10 +19,10 @@ test("only the three requested condition campaigns exist and are public", () => 
   assert.equal(getConditionCampaign("migraine"), undefined);
   assert.equal(isConditionCampaignPath("/health/conditions/123"), false);
 });
-test("campaign conversion does not attach health context or introduce telemetry", () => {
+test("campaign conversion uses the scoped CTA while preserving legal and privacy boundaries", () => {
   const source = read("../../components/campaigns/ConditionLandingPage.tsx");
-  assert.match(source, /href="\/signup" rel="noreferrer"/);
-  assert.equal((source.match(/<Signup\/>/g) ?? []).length, 4);
+  assert.match(read("../../components/campaigns/CampaignSignup.tsx"), /rel="noreferrer"/);
+  assert.equal((source.match(/<CampaignSignup condition=\{conditionKey\}\/>/g) ?? []).length, 4);
   for (const route of ["privacy", "terms", "contact", "health-disclaimer"]) assert.ok(source.includes(`href="/${route}"`));
   assert.doesNotMatch(source, /fetch\(|localStorage|sessionStorage|trackEvent|gtag|fbq|\/signup\?/);
   assert.match(source, /does not provide medical advice, diagnosis, or treatment/);

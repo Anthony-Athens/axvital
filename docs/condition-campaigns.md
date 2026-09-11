@@ -1,40 +1,80 @@
-# Condition campaign pages
+# Condition campaigns: SEO and funnel measurement
 
-Routes: `/conditions/ms`, `/conditions/psoriasis`, `/conditions/hsv`.
+## Public discovery
 
-`lib/campaigns/conditions.ts` owns the copy. `components/campaigns/ConditionLandingPage.tsx` owns the shared server-rendered layout. The dynamic route generates only configured slugs; unknown slugs return 404. Add one configuration object to add a future page after copy review. There is no CMS, data write, or condition inference from visits.
+Campaign URLs are `https://axvital.com/conditions/ms`, `https://axvital.com/conditions/psoriasis`, and `https://axvital.com/conditions/hsv`. The three statically generated pages retain unique observational titles, descriptions, Open Graph text, index/follow metadata, one primary H1, and the shared Condition Intelligence demo. Unknown slugs remain 404. No redesign or medical claims were added.
 
-Campaign routes use a simplified AXVital / Sign In header. Hero, experiment, and final Get Started links all go to `/signup` without query parameters. Legal links remain visible. Normal application navigation is unchanged outside `/conditions/:slug`.
+`lib/seo.ts` supplies the production origin to the existing metadata, sitemap and robots routes. Canonical and Open Graph URLs use the clean self URL regardless of campaign queries or preview environment. The existing sitemap already included all three pages; its localhost fallback is now removed. Existing build-time lastModified, monthly frequency and 0.6 priority remain. Robots permits condition pages and advertises the production sitemap; private-route rules are unchanged. Indexing is a search-engine decision, not guaranteed by inclusion.
 
-## Discoverability and metadata
+The audit found no reusable JSON-LD or Twitter metadata convention. No new structured-data subsystem, medical schema, or social-image pipeline was added. Those are optional future work. Older documentation describing these pages as noindex and excluded from the sitemap was stale and is superseded here.
 
-Each page has unique title, description, and Open Graph text. The existing application does not use canonical metadata, so none was introduced. The sitemap is an explicit list, not automatic route discovery; these routes are excluded. No inbound links were added to the homepage, footer, or product navigation. Campaign-only pages use `noindex, follow`; this discourages search indexing but is not access control. Direct visitors and advertising crawlers can load them without authentication.
+## Funnel
 
-## Privacy and analytics
+The existing Vercel Analytics integration is reused; no Google Ads/GTM scripts or new provider are installed. Event names are centralized in `lib/telemetry/campaign.ts`, matching the existing title-case product event convention.
 
-The homepage has no established CTA telemetry. The first-party client event allowlist only permits pricing/upgrade intent; it was not expanded. No new events, pixels, cookies, storage, or third-party scripts were added. If measurement is later required, review generic campaign-view and signup-intent events without topic, URL, referrer, or condition fields; do not add them casually to third-party advertising tools.
+| Step | Event | Source |
+|---|---|---|
+| Landing | Pageview plus Condition Marketing Viewed | Root ProductAnalytics on the exact three public paths |
+| CTA | Condition Marketing CTA Clicked | Every shared CampaignSignup link |
+| Signup reached | Signup Viewed | Root ProductAnalytics on /signup |
+| Valid submission | Signup Started (existing name) | After validation, before Supabase signUp |
+| New account observed | Signup Completed | Successful Auth response with nonempty identities and created_at within this request's client-clock interval |
+| Authoritative account total | Account Created (existing) | Verified, deduplicated profile INSERT webhook; no campaign attribution |
+| Paid conversion | Paid Subscription Started (existing) | Verified first positive invoice.paid; billing interval only |
 
-The campaign response has `Referrer-Policy: no-referrer`, matching metadata, and outbound links have `rel=noreferrer`. Plain links also avoid Next.js signup prefetching from the campaign page. These protections do not hide the initial URL from the host, CDN, browser history, or the advertising platform that supplied it. Do not use condition-page visits to infer a diagnosis, create remarketing audiences, or populate health records. Review access-log retention and any future pixels/link decoration before launching ads. No HIPAA or security certification claim is made.
+Do not sum Signup Completed and Account Created: they observe the same business milestone with different delivery/attribution boundaries. Browser completion conservatively skips obfuscated replies, existing accounts, malformed timestamps, clock-skewed responses and errors. It is best effort, not an accounting ledger or proof of email verification. The existing profile webhook is the authoritative deduplicated account-creation integration. No source-to-user identity stitching or campaign persistence in Auth, profiles, product_events, cookies or browser storage is introduced. Paid conversion remains unconnected to campaign source.
 
-## Copy boundaries
+Root route effects suppress Strict Mode/rerender duplicates. Signup suppresses in-flight and completed resubmissions. Reloads/revisits may count new views; this is not unique-user counting. An active session proceeds to existing onboarding; a confirmation-required response stays on signup with a generic check-email message instead of redirecting an unauthenticated user to protected onboarding. Existing signup validation and account provisioning remain in place.
 
-Examples are hypothetical personal questions, not recommended treatments or validated outcomes. Copy does not promise disease improvement or causal discovery. MS does not imply relapse diagnosis/progression prediction; psoriasis does not imply food or supplements treat it; HSV uses stigma-free language and disclaims transmission-risk assessment/prevention and replacement of antiviral care. The HSV precaution that absent symptoms do not establish safety is consistent with [CDC information](https://www.cdc.gov/herpes/about/index.html).
+## Attribution and privacy
 
-The pages clarify that available experiment outcomes/readiness depend on tracking and that saving/starting requires Premium. No pricing experiment was introduced. Medical/marketing review before paid launch is still recommended.
+The query key `source_page` accepts only `conditions_ms`, `conditions_psoriasis`, or `conditions_hsv`. All five standard UTM keys are supported: utm_source, utm_medium, utm_campaign, utm_term, utm_content. Values must match explicit approved labels. The initial Google Ads defaults in `lib/telemetry/campaign.ts` are source `google`, medium `cpc`, campaigns `ms_launch` / `psoriasis_launch` / `hsv_launch`, and content `ad_a` / `ad_b` / `ad_c`. Values are lowercase and exact-match; no case normalization occurs. `utm_term` has an empty default allowlist and is discarded for this release, including dynamic keyword/search text. Its existing support for explicitly reviewed labels remains available through configuration; no free-text pass-through is introduced. Configure additional labels before building using `NEXT_PUBLIC_CAMPAIGN_UTM_ALLOWLIST`, a JSON object of arrays keyed by UTM name. Supplied arrays replace defaults for that key. Maximum 100 labels per key, each 1–64 ASCII letters/digits/underscore/hyphen. Use nonpersonal campaign/keyword/ad codes; never approve names, identifiers, health narratives, emails or user-entered search text. A character filter alone cannot establish that a value is safe, which is why the exact allowlist is required.
 
-No migrations, RLS changes, authentication changes, or domain/backend changes are required. Possible future configurations: migraine, IBS, eczema, GERD, arthritis, sleep apnea (not implemented).
+Example URL pattern (placeholders must be replaced with reviewed configured labels):
 
-## Verification (September 3, 2026)
+`?utm_source=google&utm_medium=cpc&utm_campaign=<approved_campaign>&utm_content=<approved_ad_variant>`
 
-- TypeScript, ESLint, production build, and three new campaign tests passed.
-- Full sandbox test run: 554 passed; two existing UI test files failed because esbuild could not read the parent directory. Both files were rerun with approved elevated access: all 14 contained tests passed.
-- All three routes and `/signup`, `/privacy`, `/terms`, `/contact`, `/health-disclaimer` returned HTTP 200 without credentials. Each campaign response included `Referrer-Policy: no-referrer`.
-- Browser checks covered all three campaigns at 1440px desktop, 390px mobile, and 320px narrow-phone widths. No horizontal overflow or broken images; mobile hero signup remained within the first viewport. Campaigns use no raster images.
-- Hero, mid-page, and final signup CTAs reached the existing logged-out signup form. The signup document referrer was empty. The explanatory anchor and Health Disclaimer link worked. Unique titles/Open Graph metadata and `noindex, follow` were verified. No browser console errors/warnings were observed.
-- No account was created, no data was submitted, and no deployment was performed.
+No example campaign names are embedded in production links. Unlisted values, duplicate parameters, click IDs, referrers, arbitrary keys and fragments are discarded. The landing condition overrides forged source_page input. The same sanitizer reconstructs analytics properties instead of forwarding input objects. Attribution travels only in the signup URL and component memory; it is omitted from Auth requests and subsequent onboarding redirects. The source survives a no-JavaScript CTA; UTM propagation and custom events require JavaScript. No cross-tab/cross-device/email-confirmation attribution is attempted.
 
-## File inventory
+All analytics URLs strip query/hash. Only the three known marketing paths are added to the public path allowlist; private and unknown paths still collapse to /app. Event properties contain source_page and approved UTMs only, never emails, names, passwords, Auth IDs or health records. Condition source identifies a public campaign, not a diagnosis. Do not use these events for health-based advertising audiences. Global no-referrer handling and noreferrer CTA links remain. Incoming URLs are still visible to the browser, hosting/CDN infrastructure and referring ad platform; review their retention separately. The privacy page reflects campaign measurement.
 
-Created: `app/conditions/[slug]/page.tsx`, `components/campaigns/CampaignHeader.tsx`, `components/campaigns/ConditionLandingPage.tsx`, `lib/campaigns/conditions.ts`, `lib/campaigns/conditions.test.ts`, and this document.
+Delivery is best effort: blockers, disabled scripts, network failures, immediate navigation, clock skew or service settings can cause undercounting. Vendor failures are caught and never awaited before navigation/Auth. Fixed-category development errors omit credentials and payloads.
 
-Modified: `components/Navbar.tsx` (campaign-only header selection) and `next.config.ts` (campaign-only referrer header). Homepage, footer, sitemap, and domain features are unchanged.
+## External launch steps
+
+1. Confirm the apex domain is the intended production host; configure hosting redirects from www and HTTP to HTTPS apex. Repository canonicals do not configure DNS or redirects. Verify redirects preserve campaign queries.
+2. Verify the domain property in Google Search Console, submit `https://axvital.com/sitemap.xml`, and inspect each clean URL for live indexing eligibility. Preview-host noindex controls are hosting configuration.
+3. Enable/verify Vercel Web Analytics and custom event availability for the project. Configure reviewed UTM labels and redeploy. Test-service calls do not verify dashboard delivery.
+4. Complete/verify the migration, Supabase profile INSERT webhook, secrets and Stripe invoice.paid configuration documented in `docs/product-analytics.md`. Confirm Auth email confirmation, Site URL and redirect settings against the deployed onboarding flow.
+5. Run one controlled fresh signup in the intended test environment and reconcile browser funnel events with the authoritative Account Created webhook. Test confirmation enabled/disabled and an existing-account attempt. No real account, payment, owner email, or advertising campaign was created during local QA.
+6. Google Ads conversion import is not configured. If later approved, its browser integration point is the `campaignEvents.completed` call after `newlyCreatedSignup` in app/signup/page.tsx; do not attach to CTA clicks or generic success navigation. Define consent, conversion deduplication and eligible minimal payload separately. Do not send condition source, keyword/health context, or signup fields to advertising systems. The existing server Account Created event is an alternative authoritative signal but has no browser click attribution. Vercel custom events do not automatically become Google Ads conversions.
+
+Before paid launch, verify live redirects, indexing, dashboard events, webhook totals and applicable advertising/privacy requirements. This repository pass does not establish Google Ads policy eligibility or configure campaigns.
+
+External references: [Search Console sitemap submission](https://support.google.com/webmasters/answer/7451001), [Google Ads website conversion setup](https://support.google.com/google-ads/answer/16560108).
+
+References: [Vercel custom events](https://vercel.com/docs/analytics/custom-events), [Supabase signup responses](https://supabase.com/docs/reference/javascript/auth-signup).
+
+## Validation and files
+
+Regression coverage includes the real metadata/sitemap/robots exports, safe labels and forged/duplicate parameters, all three CTA keys, native navigation under analytics failure, Strict Mode view deduplication, actual signup UI success/confirmation/failure/existing-account responses, submission locking and separation of attribution from Auth fields. Service calls are mocked; the production-page browser pass uses real local Next routes without submitting real credentials.
+
+Main files: app/conditions/[slug]/page.tsx, app/sitemap.ts, app/robots.ts, lib/seo.ts, components/campaigns/CampaignSignup.tsx, components/campaigns/ConditionLandingPage.tsx, components/ProductAnalytics.tsx, lib/telemetry/{campaign,client,policy}.ts, lib/auth/signup-result.ts, app/signup/page.tsx, app/privacy/page.tsx, .env.example, campaign/SEO/UI tests and documentation. No dependencies, migrations, pricing changes or Condition Intelligence calculations changed.
+
+
+Final local results (September 11, 2026): all 627 tests pass, including the updated root-layout VM fixture with unchanged URL-sanitization assertions. TypeScript, ESLint and production build pass. Browser checks covered all three query-bearing routes at 320/390/1440 pixels, single title/description/canonical/H1, index/follow, Open Graph URL, demo presence, all four CTA destinations, and actual logged-out signup navigation with an empty referrer. No page overflow or browser errors occurred. Mobile signup navigation passed at 320 and 390 pixels; the generated sitemap and robots output were inspected. The unconfigured sample campaign label was correctly omitted while source and medium survived. Live vendor delivery, real account creation and Google dashboard setup remain external validation steps.
+
+
+## Initial Google Ads allowlist rollout
+
+The approved values ship as central defaults; an unset `NEXT_PUBLIC_CAMPAIGN_UTM_ALLOWLIST` or `{}` uses them. No environment variable is required for this rollout. Existing per-field environment arrays still replace defaults, so remove stale overrides or update them to match the approved values before rebuilding/deploying. NEXT_PUBLIC values are incorporated at build time; changing a deployed environment value requires a new build. No local or remote environment settings were changed.
+
+Approved examples:
+
+- https://axvital.com/conditions/ms?utm_source=google&utm_medium=cpc&utm_campaign=ms_launch&utm_content=ad_a
+- https://axvital.com/conditions/psoriasis?utm_source=google&utm_medium=cpc&utm_campaign=psoriasis_launch&utm_content=ad_b
+- https://axvital.com/conditions/hsv?utm_source=google&utm_medium=cpc&utm_campaign=hsv_launch&utm_content=ad_c
+
+Unknown source/medium/campaign/content values, uppercase variants, arbitrary fields and unapproved utm_term values remain discarded. The earlier QA note about dropping ms_launch describes the pre-configuration state; these three launch labels are now approved. Canonical URLs and all funnel event names/semantics remain unchanged. Attribution still never enters Auth/profile data.
+
+Allowlist validation: all 17 relevant attribution, signup UI, telemetry and SEO tests pass; TypeScript, ESLint and production build pass. Changes in this configuration pass are limited to lib/telemetry/campaign.ts, its two attribution/UI test files, .env.example and this document.

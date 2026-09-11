@@ -93,3 +93,6 @@ The wrapper reuses `ConditionMetricCard` and `KeyInsight` extracted from the aut
 The demo has no client boundary, data fetching, authentication dependency, database changes, or added packages. Detailed evidence and episode panels remain in the account experience and are described rather than presented as inactive controls. Fixtures use fixed dates intentionally and will not drift with build time.
 
 Validation: fixture mapping and numerical consistency tests; server rendering and bundled dependency checks; full suite (622 tests); TypeScript, ESLint, production build; real public-page browser checks at 320, 390, and 1440 pixels for all three campaigns. The timeline scrolls independently without page overflow, and signup destinations and canonical URLs are preserved.
+
+
+The subsequent SEO/funnel pass uses the same demo unchanged. Shared signup CTAs now carry approved marketing attribution, and canonicals use https://axvital.com. See `docs/condition-campaigns.md` for current URL, telemetry and privacy behavior; its details supersede the earlier plain-signup-link description.
