@@ -48,7 +48,8 @@ test("root layout includes application-wide Analytics with URL sanitization", as
     "@/components/Navbar": 'export const Navbar = () => null;',
     "react": 'export const useEffect = () => {}; export const useRef = value => ({current:value});',
     "next/navigation": 'export const usePathname = () => "/";',
-    "react/jsx-runtime": 'export const jsx = (type, props) => typeof type === "function" ? type(props) : ({type,props}); export const jsxs = jsx;',
+    "next/script": 'export default function Script(){return null;}',
+    "react/jsx-runtime": 'export const jsx = (type, props) => typeof type === "function" ? type(props) : ({type,props}); export const jsxs = jsx; export const Fragment = "fragment";',
     "@vercel/analytics/next": 'export const Analytics = props => ({analytics:true,props});',
     "./globals.css": 'export {};',
   });

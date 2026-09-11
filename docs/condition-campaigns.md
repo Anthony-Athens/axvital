@@ -78,3 +78,16 @@ Approved examples:
 Unknown source/medium/campaign/content values, uppercase variants, arbitrary fields and unapproved utm_term values remain discarded. The earlier QA note about dropping ms_launch describes the pre-configuration state; these three launch labels are now approved. Canonical URLs and all funnel event names/semantics remain unchanged. Attribution still never enters Auth/profile data.
 
 Allowlist validation: all 17 relevant attribution, signup UI, telemetry and SEO tests pass; TypeScript, ESLint and production build pass. Changes in this configuration pass are limited to lib/telemetry/campaign.ts, its two attribution/UI test files, .env.example and this document.
+
+
+## Google Ads base tag
+
+The root layout now includes `GoogleAdsTag` once, alongside the unchanged Vercel `ProductAnalytics`. This supersedes earlier notes that no Google script is installed. `NEXT_PUBLIC_GOOGLE_ADS_TAG_ID=AW-18445445142` is configured in .env.example and local .env.local; set the same value in the deployment environment and rebuild. Missing/invalid values omit the scripts. No GA4 or GTM container existed to extend.
+
+Two stable Next Script IDs load the initialization and gtag.js with afterInteractive, without repeating scripts on client navigation. Initialization queues one config for the destination. Configuration suppresses automatic pageviews, overrides page_location with the generic production homepage, clears page_referrer, sets a generic AXVital title, and disables personalized-ad signals and Enhanced Conversions. No existing Vercel events, UTM properties, forms, account IDs, or health data are forwarded to gtag. Optional initialization failures are caught; script/network failures do not gate rendering or Auth.
+
+Google's script still performs its own network/cookie processing; these settings are not a claim of zero technical data collection. Keep automatic user-provided data collection and Enhanced Conversions disabled in the Google tag destination settings; no account-side settings were changed here. Do not add health-based audiences or attach extra destinations with automatic collection. Review deployed tag behavior with Google's tooling after rollout. Reference: https://support.google.com/google-ads/answer/13438166 and https://developers.google.com/tag-platform/security/guides/privacy.
+
+No conversion label is available in the repository. Account Created conversion wiring remains deferred: obtain the label for AW-18445445142, then attach an explicitly deduplicated conversion to verified successful account creation, not a CTA or pageview. Existing browser Signup Completed and server Account Created events remain Vercel-only. The generic URL configuration intentionally gives up page/campaign detail in Google; aggregate campaign analysis stays in Vercel.
+
+Base-tag validation: all 21 relevant telemetry/campaign tests, TypeScript, ESLint and production build pass. Local production browser checks show one gtag.js loader and one config block on signup and all three condition pages; signup-to-login client navigation retains one of each. The configured destination is AW-18445445142, Vercel's script remains present, and no browser errors appeared. Remote Google Ads diagnostics and deployment environment settings were not changed or verified.

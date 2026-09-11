@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Navbar } from "@/components/Navbar";
 import { ProductAnalytics } from "@/components/ProductAnalytics";
+import { GoogleAdsTag } from "@/components/GoogleAdsTag";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -18,6 +19,7 @@ export default function RootLayout({
     <html lang="en" className="h-full antialiased" data-scroll-behavior="smooth">
       <body className="min-h-full bg-slate-50 text-slate-950">
         <ProductAnalytics />
+        <GoogleAdsTag />
         <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-2 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-4 focus:py-3 focus:text-blue-700 focus:ring-2 focus:ring-blue-600">Skip to content</a>
         <Navbar />
         <main id="main-content" tabIndex={-1} className="min-h-dvh pt-16 lg:pt-20">
