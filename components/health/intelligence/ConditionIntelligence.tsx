@@ -8,7 +8,8 @@ import { ConditionPatterns } from "./ConditionPatterns";
 import { episodeContext, focusEvidence, intervalContext, type IntelligenceFocus } from "@/lib/condition-intelligence/context";
 import { EpisodeContext } from "./EpisodeContext";
 
-export function ConditionMetricCard({ label, value, context }: { label: string; value: string; context?: string | null }) { return <Surface compact><p className="text-sm text-slate-500">{label}</p><p className="mt-2 text-xl font-semibold tracking-tight text-slate-900">{value}</p>{context ? <p className="mt-2 text-xs text-slate-500">{context}</p> : null}</Surface>; }
+import { ConditionMetricCard } from "./ConditionMetricCard";
+export { ConditionMetricCard } from "./ConditionMetricCard";
 export function EpisodeLookbackCard({ episode, events, index, incomplete, timeZone }: { episode: Episode; events: Activity[]; index: number; incomplete: boolean; timeZone: string }) {
   const counts = summarizeLookback(episode, events, timeZone);
   return <Surface compact><p className="text-xs font-semibold uppercase tracking-wide text-blue-700">Episode {index + 1}</p><h3 className="mt-1 font-semibold">{dateLabel(episode.start, timeZone)}</h3><p className="mt-1 text-xs text-slate-500">{episode.end === null ? "Ongoing" : days((episode.end - episode.start) / 86400000)} · Severity {episode.severity ?? "not recorded"}</p>{counts.length ? <ul className="mt-4 space-y-2 text-sm">{counts.map(([category, count]) => <li key={category} className="flex justify-between gap-3"><span>{category} records</span><strong>{count}</strong></li>)}</ul> : <p className="mt-4 text-sm text-slate-500">{incomplete ? "Activity is partially unavailable for this window." : "No health activity recorded in this window."}</p>}</Surface>;

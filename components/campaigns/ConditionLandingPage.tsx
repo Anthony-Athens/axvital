@@ -1,3 +1,5 @@
+import { ConditionIntelligenceMarketingDemo } from "./ConditionIntelligenceMarketingDemo";
+import type { DemoConditionKey } from "@/lib/campaigns/condition-intelligence-demo";
 import type { ConditionCampaign } from "@/lib/campaigns/conditions";
 
 const linkStyle = "inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-500";
@@ -8,7 +10,7 @@ function PrivacyNote() {
   return <p className="mt-3 text-sm leading-6">Choose what you record. Read how personal information is handled in our <a href="/privacy" rel="noreferrer" className={linkStyle}>Privacy Policy</a>.</p>;
 }
 
-export function ConditionLandingPage({ content }: { content: ConditionCampaign }) {
+export function ConditionLandingPage({ content, conditionKey }: { content: ConditionCampaign; conditionKey: DemoConditionKey }) {
   return <div className="[overflow-wrap:anywhere]">
     <section className="bg-slate-950 px-4 py-10 text-white sm:px-6 sm:py-16 lg:py-20">
       <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
@@ -16,6 +18,9 @@ export function ConditionLandingPage({ content }: { content: ConditionCampaign }
         <aside className="rounded-3xl border border-slate-700 bg-slate-900 p-6 sm:p-8" aria-label="Example tracking question"><p className="text-sm font-semibold text-blue-300">A question, not a conclusion</p><blockquote className="mt-4 text-2xl font-medium leading-snug">“{content.questions[0]}”</blockquote><div className="mt-6 space-y-3 border-t border-slate-700 pt-6">{["Record the days that matter", "Keep everyday context together", "Review your own history"].map((text, i) => <p key={text} className="flex gap-3 text-slate-300"><span className="font-semibold text-blue-300">0{i + 1}</span>{text}</p>)}</div><p className="mt-6 text-sm leading-6 text-slate-400">Illustrative question—not a finding or a promise of results.</p></aside>
       </div>
     </section>
+
+    <ConditionIntelligenceMarketingDemo conditionKey={conditionKey} name={content.name}/>
+    <div className="mx-auto max-w-6xl px-4 pb-12 sm:px-6"><p className="mb-4 text-lg font-semibold">Start building your own episode history.</p><Signup/><PrivacyNote/></div>
 
     <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16"><div className="max-w-3xl"><h2 className="text-3xl font-semibold tracking-tight">There’s more to remember than a symptom score.</h2><p className="mt-4 text-lg leading-8 text-slate-600">When symptoms change, it can be hard to remember the days around them. Sleep, stress, routines, and other circumstances are context you may want to record—not proof of a cause or a trigger.</p></div><div className="mt-8 grid gap-5 md:grid-cols-2">{[["What you may want to record", content.symptoms], ["Everyday context you may choose to track", content.context]].map(([heading, items]) => <article key={heading as string} className="rounded-2xl border border-slate-200 bg-white p-6"><h3 className="text-xl font-semibold">{heading}</h3><ul className="mt-4 space-y-2 text-slate-600">{(items as string[]).map(item => <li key={item} className="flex gap-3 leading-7"><span aria-hidden="true" className="text-blue-600">•</span>{item}</li>)}</ul></article>)}</div><p className="mt-4 text-sm leading-6 text-slate-500">Use available logs and notes for the information relevant to you. You do not need to track everything.</p></section>
 

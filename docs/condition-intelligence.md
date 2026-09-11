@@ -80,3 +80,16 @@ Release 2 validation: full suite 609/609 passed, TypeScript passed, ESLint passe
 Limitations: descriptive, unadjusted comparisons only. Tracking selection, seasonality, treatment changes, correlated factors and repeated/shared days may explain observed differences. No multiple-comparison correction, uncertainty intervals, independence assumptions or clinical validation are claimed. Long ongoing episodes can eliminate baseline eligibility. Dense episode labels can still overlap. The selected timezone applies to the entire visible history; only currently stored check-in answers are available, not historical edit snapshots.
 
 Next-release candidates: durable travel/timezone preferences, dense-marker collision handling, date-range controls, stronger coverage and uncertainty methods, and additional factors only after reliable observation/absence contracts exist. Any experiment integration needs its own scoped release. Existing advanced pattern screens are not embedded; no forecasting, notifications, treatment recommendations or automated experiments are added.
+
+
+## Public marketing demo
+
+The existing `/conditions/ms`, `/conditions/psoriasis`, and `/conditions/hsv` server-rendered campaigns now place `ConditionIntelligenceMarketingDemo` directly after the hero and introductory explanation, followed by the existing plain `/signup` CTA. Metadata, canonical URLs, campaign header, legal copy, and remaining benefits sections stay in place.
+
+`lib/campaigns/condition-intelligence-demo.ts` holds deterministic fictional snapshots keyed by campaign slug, covering September 2025–September 2026 in UTC. Each has four completed episodes and normalized `Episode`/`Activity` records. The existing `metrics` and `compareAssociations` helpers calculate every displayed value. Low energy, high stress, and poor sleep are curated examples, respectively, not condition-specific findings or medical claims. The visible “Illustrative example” label and surrounding copy identify the fictional data and limitations.
+
+The wrapper reuses `ConditionMetricCard` and `KeyInsight` extracted from the authenticated view without changing their presentation, plus `ConditionTimeline`, its markers, full-height lookback shading, interval labels, fixed activity lanes, and legend. Four metrics and one insight keep the preview compact. `interactive={false}` removes episode button semantics and selection prompts; native horizontal scrolling remains keyboard accessible. App defaults and evidence interactions remain enabled. SVG activity titles use one text value to avoid server-rendered title hydration mismatches.
+
+The demo has no client boundary, data fetching, authentication dependency, database changes, or added packages. Detailed evidence and episode panels remain in the account experience and are described rather than presented as inactive controls. Fixtures use fixed dates intentionally and will not drift with build time.
+
+Validation: fixture mapping and numerical consistency tests; server rendering and bundled dependency checks; full suite (622 tests); TypeScript, ESLint, production build; real public-page browser checks at 320, 390, and 1440 pixels for all three campaigns. The timeline scrolls independently without page overflow, and signup destinations and canonical URLs are preserved.

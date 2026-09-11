@@ -1,3 +1,4 @@
+import { conditionIntelligenceDemos, type DemoConditionKey } from "@/lib/campaigns/condition-intelligence-demo";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ConditionLandingPage } from "@/components/campaigns/ConditionLandingPage";
@@ -22,7 +23,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 export default async function Page({ params }: Props) {
-  const content = getConditionCampaign((await params).slug);
+  const { slug } = await params;
+  const content = getConditionCampaign(slug);
+  if (!Object.hasOwn(conditionIntelligenceDemos, slug)) notFound();
   if (!content) notFound();
-  return <ConditionLandingPage content={content}/>;
+  return <ConditionLandingPage content={content} conditionKey={slug as DemoConditionKey}/>;
 }

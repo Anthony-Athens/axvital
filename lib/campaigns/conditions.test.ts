@@ -22,7 +22,7 @@ test("only the three requested condition campaigns exist and are public", () => 
 test("campaign conversion does not attach health context or introduce telemetry", () => {
   const source = read("../../components/campaigns/ConditionLandingPage.tsx");
   assert.match(source, /href="\/signup" rel="noreferrer"/);
-  assert.equal((source.match(/<Signup\/>/g) ?? []).length, 3);
+  assert.equal((source.match(/<Signup\/>/g) ?? []).length, 4);
   for (const route of ["privacy", "terms", "contact", "health-disclaimer"]) assert.ok(source.includes(`href="/${route}"`));
   assert.doesNotMatch(source, /fetch\(|localStorage|sessionStorage|trackEvent|gtag|fbq|\/signup\?/);
   assert.match(source, /does not provide medical advice, diagnosis, or treatment/);

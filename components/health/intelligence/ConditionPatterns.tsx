@@ -1,5 +1,6 @@
+import { KeyInsight } from "./KeyInsight";
 import { Surface } from "@/components/ui/design-system";
-import { coverageLabels, leadingAssociation } from "@/lib/condition-intelligence/associations";
+import { coverageLabels } from "@/lib/condition-intelligence/associations";
 import { DAY, type ConditionAssociation, type FactorKey } from "@/lib/condition-intelligence/model";
 import { formatCalendarDay } from "@/lib/measurements/time-window";
 import { dateLabel } from "./ConditionTimeline";
@@ -31,10 +32,8 @@ export function AssociationCard({ association, ...selection }: { association: Co
   </Surface>;
 }
 export function ConditionPatterns({ associations, ...selection }: { associations: ConditionAssociation[] } & EvidenceSelection) {
-  const leading = leadingAssociation(associations);
-  const sufficient = associations.some(a => a.sufficient);
   return <section className="mt-8" aria-labelledby="potential-patterns-title"><h2 id="potential-patterns-title" className="text-xl font-semibold">Potential patterns observed before episodes</h2><p className="mt-2 text-sm text-slate-500">Possible associations — not proof of causation. Comparisons use full local calendar days within the displayed 12 months. Data coverage describes availability, not clinical confidence.</p>
-    <aside className="my-5 rounded-xl border border-blue-200 bg-blue-50 p-4 sm:p-5" aria-label="Key Insight"><p className="text-xs font-semibold uppercase tracking-wide text-blue-700">Key Insight</p>{leading ? <><h3 className="mt-2 text-lg font-semibold">{leading.label} was observed before {leading.episodesObserved} of {leading.eligibleEpisodes} eligible episodes.</h3><p className="mt-2 text-sm text-slate-600">{percent(leading.preEpisodeRate)} of tracked pre-episode days vs. {percent(leading.baselineRate)} of typical eligible tracked days.</p><p className="mt-2 text-xs text-slate-500">Largest observed increase among eligible factors; exploratory and unadjusted for other factors.</p></> : <p className="mt-2 text-sm text-slate-700">{sufficient ? "No repeated increase met the Key Insight criteria. You can still review the comparisons below." : "AXVital needs more tracked data around your episodes before it can compare patterns reliably."}</p>}</aside>
+    <KeyInsight associations={associations}/>
     <div className="grid gap-4 md:grid-cols-2">{associations.map(association => <AssociationCard key={association.factorKey} association={association} {...selection}/>)}</div>
   </section>;
 }
