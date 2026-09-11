@@ -1,10 +1,11 @@
+import { dayOrdinal, localDateBoundary } from "../measurements/time-window.ts";
 export const PRE_EPISODE_LOOKBACK_DAYS = 7;
 export const DAY = 86_400_000;
 export const CONDITION_RANGE_MONTHS = 12;
 export const CONDITION_RANGE_LABEL = `Last ${CONDITION_RANGE_MONTHS} months`;
 export type Episode = { id: string; start: number; end: number | null; severity: number | null };
 export type CheckinObservations = { sleepQuality?: unknown; stress?: unknown; energy?: unknown; exercise?: unknown };
-export type Activity = { id: string; at: number; category: string; dateOnly?: boolean; checkin?: CheckinObservations };
+export type Activity = { id: string; at: number; category: string; dateOnly?: boolean; logicalDate?: string; checkin?: CheckinObservations };
 export type FactorKey = "poor_sleep" | "high_stress" | "low_energy" | "exercise";
 export type AssociationEvidence = { episodeId: string; onset: number; start: number; end: number; eligibleDays: number; presentDays: number; eventIds: string[] };
 export type ConditionAssociation = {
@@ -15,7 +16,9 @@ export type ConditionAssociation = {
   relativeRate: number | null; sufficient: boolean; reasons: string[];
   dataQuality: "low" | "moderate" | "strong"; evidence: AssociationEvidence[];
 };
-export const calendarDay = (at: number) => Math.floor(at / DAY) * DAY;
+export const calendarDay = (at: number, timeZone = "UTC") => dayOrdinal(at, timeZone);
+export const activityDay = (event: Activity, timeZone = "UTC") => dayOrdinal(event.logicalDate ?? (event.dateOnly ? new Date(event.at).toISOString().slice(0, 10) : event.at), timeZone);
+export const episodeWindow = (episode: Episode, timeZone = "UTC") => lookback(calendarDay(episode.start, timeZone));
 // Shared proportional date axis for episodes, shading and activity.
 export function timelineX(at: number, start: number, end: number, width: number) { return 100 + (at - start) / (end - start) * (width - 220); }
 export function timelineLayout(categories: readonly string[]) {
@@ -43,7 +46,13 @@ export function metrics(episodes: Episode[], now: number) {
     recentSeverity: rows.at(-1)?.severity ?? null,
   };
 }
-export function summarizeLookback(episode: Episode, events: Activity[]) {
+export function summarizeLookback(episode: Episode, events: Activity[], timeZone?: string) {
+  // Explicit timezone uses local calendar-day context consistently with the timeline.
+  if (timeZone) {
+    const window = episodeWindow(episode, timeZone), counts = new Map<string, number>();
+    for (const event of events) { const day = activityDay(event, timeZone); if (day >= window.start && day < window.end) counts.set(event.category, (counts.get(event.category) ?? 0) + 1); }
+    return [...counts].sort(([a], [b]) => a.localeCompare(b));
+  }
   const window = lookback(episode.start);
   const counts = new Map<string, number>();
   for (const event of events) {
@@ -54,13 +63,13 @@ export function summarizeLookback(episode: Episode, events: Activity[]) {
   }
   return [...counts].sort(([a], [b]) => a.localeCompare(b));
 }
-export function aggregateActivity(events: Activity[]) {
-  const groups = new Map<string, { at: number; category: string; count: number }>();
+export function aggregateActivity(events: Activity[], timeZone = "UTC") {
+  const groups = new Map<string, { at: number; category: string; count: number; eventIds: string[] }>();
   for (const event of events) {
-    const at = Math.floor(event.at / DAY) * DAY;
+    const at = activityDay(event, timeZone);
     const key = `${at}:${event.category}`;
-    const group = groups.get(key) ?? { at, category: event.category, count: 0 };
-    group.count++; groups.set(key, group);
+    const group = groups.get(key) ?? { at, category: event.category, count: 0, eventIds: [] };
+    group.count++; group.eventIds.push(event.id); groups.set(key, group);
   }
   return [...groups.values()];
 }
@@ -71,3 +80,7 @@ export function rangeStart(now: number, months = CONDITION_RANGE_MONTHS) {
   date.setUTCDate(Math.min(day, lastDay)); return date.getTime();
 }
 export function days(value: number | null, missing = "Not recorded") { return value === null ? missing : `${Number(value.toFixed(1))} days`; }
+export function localRangeStart(now: number, timeZone: string) {
+  const day = rangeStart(calendarDay(now, timeZone));
+  return Date.parse(localDateBoundary(new Date(day).toISOString().slice(0, 10), timeZone));
+}

@@ -22,6 +22,19 @@ function formattedDate(formatter: Intl.DateTimeFormat, time: number) {
   return `${part("year")}-${part("month")}-${part("day")}`;
 }
 export function dateInZone(time: Date, timeZone: string) { return formattedDate(dateFormatter(timeZone), time.getTime()); }
+export function isTimeZone(value: unknown): value is string {
+  if (typeof value !== "string") return false;
+  try { dateFormatter(value); return true; } catch { return false; }
+}
+/** Calendar-day ordinal for comparisons/plotting, never an actual event instant.
+ * Date-only inputs retain their literal date; timestamp inputs use the chosen zone. */
+export function dayOrdinal(value: number | string, timeZone: string) {
+  const date = isLogicalDate(value) ? value : dateInZone(new Date(value), timeZone);
+  return Date.parse(`${date}T00:00:00Z`);
+}
+export function formatCalendarDay(day: number) {
+  return new Intl.DateTimeFormat("en-US", { timeZone: "UTC", month: "short", day: "numeric", year: "numeric" }).format(day);
+}
 /** First instant belonging to a local date, including a midnight DST gap or
  * repeated midnight. Entirely skipped dates fail explicitly. No process TZ.
  * Scan to the first date crossing, then bisect to millisecond precision.

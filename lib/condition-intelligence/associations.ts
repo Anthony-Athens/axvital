@@ -1,4 +1,5 @@
-import { calendarDay, DAY, lookback, type Activity, type CheckinObservations, type ConditionAssociation, type Episode, type FactorKey } from "./model.ts";
+import { activityDay, calendarDay, DAY, episodeWindow, type Activity, type CheckinObservations, type ConditionAssociation, type Episode, type FactorKey } from "./model.ts";
+import { localDateBoundary } from "../measurements/time-window.ts";
 
 export const MIN_EPISODES_FOR_ASSOCIATION = 2;
 export const MIN_LOOKBACK_DAYS = 7;
@@ -6,6 +7,7 @@ export const MIN_BASELINE_DAYS = 28;
 export const MIN_FACTOR_DAYS = 3;
 export const STRONG_DATA = { episodes: 4, lookbackDays: 21, baselineDays: 60 };
 export const LOW_ENERGY_MAX = 3;
+export const coverageLabels = { low: "Limited data", moderate: "Moderate data coverage", strong: "More data coverage" };
 const categorical = (value: unknown, allowed: string[], present: string[]) => typeof value === "string" && allowed.includes(value) ? present.includes(value) : null;
 export const factors: Array<{ key: FactorKey; label: string; definition: string; evaluate: (value: CheckinObservations) => boolean | null }> = [
   { key: "poor_sleep", label: "Poor sleep quality", definition: "Eligible: a Poor, Average, Good or Great sleep-quality answer. Present: Poor. Absent: Average, Good or Great. Missing or other values are ignored; this does not measure sleep hours.", evaluate: c => categorical(c.sleepQuality, ["Poor", "Average", "Good", "Great"], ["Poor"]) },
@@ -16,18 +18,20 @@ export const factors: Array<{ key: FactorKey; label: string; definition: string;
 
 /** Day-level descriptive comparisons, not significance tests. Input includes carry-in
  * episodes intersecting the range, so an older ongoing episode cannot enter baseline. */
-export function compareAssociations(episodes: Episode[], events: Activity[], start: number, now: number, checkinsComplete = true): ConditionAssociation[] {
-  // Exclude partial first/current days. Only full UTC days inside the visible range.
-  const first = Math.ceil(start / DAY) * DAY, end = calendarDay(now);
+export function compareAssociations(episodes: Episode[], events: Activity[], start: number, now: number, checkinsComplete = true, timeZone = "UTC"): ConditionAssociation[] {
+  // Ordinals enumerate local calendar dates, not 24-hour elapsed durations (DST safe).
+  const startDay = calendarDay(start, timeZone);
+  const boundary = Date.parse(localDateBoundary(new Date(startDay).toISOString().slice(0, 10), timeZone));
+  const first = startDay + (start > boundary ? DAY : 0), end = calendarDay(now, timeZone);
   const visible = episodes.filter(e => Number.isFinite(e.start) && e.start >= start && e.start <= now).sort((a,b) => a.start - b.start || a.id.localeCompare(b.id));
   const episodeDays = new Set<number>(), preDays = new Set<number>();
   for (const episode of episodes) {
     if (!Number.isFinite(episode.start) || episode.start > now) continue;
     const until = episode.end !== null && Number.isFinite(episode.end) && episode.end >= episode.start ? Math.min(episode.end, now) : now;
-    for (let day = Math.max(first, calendarDay(episode.start)); day <= calendarDay(until) && day < end; day += DAY) episodeDays.add(day);
+    for (let day = Math.max(first, calendarDay(episode.start, timeZone)); day <= calendarDay(until, timeZone) && day < end; day += DAY) episodeDays.add(day);
   }
   const windows = visible.map(episode => {
-    const window = lookback(calendarDay(episode.start));
+    const window = episodeWindow(episode, timeZone);
     for (let day = Math.max(first, window.start); day < Math.min(end, window.end); day += DAY) preDays.add(day);
     return { episode, ...window };
   });
@@ -35,7 +39,7 @@ export function compareAssociations(episodes: Episode[], events: Activity[], sta
     const observations = new Map<number, { present: boolean; ids: string[]; conflict: boolean }>();
     for (const event of events) {
       if (!event.checkin || !Number.isFinite(event.at)) continue;
-      const day = calendarDay(event.at), present = factor.evaluate(event.checkin);
+      const day = activityDay(event, timeZone), present = factor.evaluate(event.checkin);
       if (day < first || day >= end || present === null || episodeDays.has(day)) continue;
       const existing = observations.get(day);
       if (existing) { existing.conflict ||= existing.present !== present; existing.ids.push(event.id); }
