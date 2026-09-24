@@ -1,5 +1,6 @@
 "use client";
 import { reportActivation } from "@/lib/telemetry/activation";
+import { ingestHealthEvent } from "@/lib/health-events/ingestion";
 
 import { FormEvent, Suspense, useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import type { User } from "@supabase/supabase-js";
@@ -555,13 +556,7 @@ function CheckInForm({ date, historical }: { date: string; historical: boolean }
           user.id,
           selectedTags,
         );
-        const { error } = await supabase.from("health_events").insert(payload);
-
-        if (error) {
-          logDevError("Failed to save health event", error);
-          setEventMessage(friendlyErrorMessage("save this event"));
-          return;
-        }
+        await ingestHealthEvent(supabase, payload);
 
         reportActivation("first_health_event");
         refreshTimeline();

@@ -1,3 +1,5 @@
+export type HealthEventInputMethod = "manual" | "voice" | "integration" | "import" | "system";
+
 export type HealthEventType =
   | "food"
   | "fluid"
@@ -94,6 +96,7 @@ export type WeeklyRecap = {
 };
 
 export type HealthEvent = {
+  input_method?: HealthEventInputMethod;
   id: string;
   user_id: string;
   event_date: string;
@@ -123,6 +126,7 @@ export type HealthEvent = {
 };
 
 export type HealthEventRow = {
+  input_method?: HealthEventInputMethod;
   id: string;
   user_id: string;
   event_date: string;
