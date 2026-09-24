@@ -1,6 +1,7 @@
 export type BillingInterval = "monthly" | "annual";
-export type AnalyticsEvent = "Signup Started" | "Account Created" | "First Health Event Logged" | "First Daily Check In Completed" | "Experiment Created" | "Checkout Started" | "Paid Subscription Started";
-const events: readonly string[] = ["Signup Started", "Account Created", "First Health Event Logged", "First Daily Check In Completed", "Experiment Created", "Checkout Started", "Paid Subscription Started"];
+export const voiceAnalyticsEvents = ["Voice Log Opened", "Voice Recording Started", "Voice Recording Completed", "Voice Parse Succeeded", "Voice Parse Failed", "Voice Review Presented", "Voice Log Confirmed", "Voice Log Edited", "Voice Log Abandoned"] as const;
+export type AnalyticsEvent = "Signup Started" | "Account Created" | "First Health Event Logged" | "First Daily Check In Completed" | "Experiment Created" | "Checkout Started" | "Paid Subscription Started" | typeof voiceAnalyticsEvents[number];
+const events: readonly string[] = ["Signup Started", "Account Created", "First Health Event Logged", "First Daily Check In Completed", "Experiment Created", "Checkout Started", "Paid Subscription Started", ...voiceAnalyticsEvents];
 // Reconstruct properties, never forward caller objects to the vendor.
 export function analyticsPayload(event: AnalyticsEvent, interval?: BillingInterval) {
   if (!events.includes(event)) return null;

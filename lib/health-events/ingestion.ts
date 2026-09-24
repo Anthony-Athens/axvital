@@ -17,7 +17,7 @@ const textFields = ["title", "description", "amount", "dose", "duration", "inten
 const numberFields = ["severity", "calories", "protein_g", "carbs_g", "fat_g", "dose_amount", "duration_minutes", "distance"] as const;
 const methods = ["manual", "voice", "integration", "import", "system"];
 const allowed = new Set(["user_id", "event_date", "event_time", "event_type", "input_method", "tags", ...textFields, ...numberFields]);
-function validate(input: HealthEventInput): HealthEventInput {
+export function validateHealthEventInput(input: HealthEventInput): HealthEventInput {
   const invalid = () => { throw new HealthEventIngestionError("INVALID_EVENT"); };
   if (!input || typeof input !== "object" || Array.isArray(input)) return invalid();
   if (Object.keys(input).some(key => !allowed.has(key))) return invalid();
@@ -37,7 +37,7 @@ function validate(input: HealthEventInput): HealthEventInput {
  */
 export async function ingestHealthEvents(client: SupabaseClient, inputs: readonly HealthEventInput[]): Promise<void> {
   if (!Array.isArray(inputs) || inputs.length === 0) throw new HealthEventIngestionError("INVALID_EVENT");
-  const rows = inputs.map(validate);
+  const rows = inputs.map(validateHealthEventInput);
   try {
     const { data, error } = await client.auth.getUser();
     if (error || !data.user || rows.some(row => row.user_id !== data.user!.id)) throw new HealthEventIngestionError("AUTH_REQUIRED");

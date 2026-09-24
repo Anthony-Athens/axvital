@@ -1,6 +1,7 @@
 "use client";
 import { reportActivation } from "@/lib/telemetry/activation";
 import { ingestHealthEvent } from "@/lib/health-events/ingestion";
+import { VoiceLogDialog } from "@/components/checkin/VoiceLogDialog";
 
 import { FormEvent, Suspense, useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import type { User } from "@supabase/supabase-js";
@@ -445,6 +446,7 @@ function CheckInForm({ date, historical }: { date: string; historical: boolean }
   );
   const [eventMessage, setEventMessage] = useState("");
   const [savingEvent, setSavingEvent] = useState(false);
+  const [voiceOpen, setVoiceOpen] = useState(false);
   const quickAddTriggerRef = useRef<HTMLButtonElement | null>(null);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [showEventDetails, setShowEventDetails] = useState(false);
@@ -678,6 +680,10 @@ function CheckInForm({ date, historical }: { date: string; historical: boolean }
                 {eventMessage}
               </p>
             ) : null}
+            <button type="button" aria-label="Open Voice Log" onClick={() => setVoiceOpen(true)} className="mb-3 flex min-h-12 w-full items-center justify-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-4 font-semibold text-blue-800 focus-visible:ring-2 focus-visible:ring-blue-600">
+              <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8"/></svg>
+              Voice Log
+            </button>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
               {primaryQuickLogTypes.map((type) => (
                 <button
@@ -703,6 +709,7 @@ function CheckInForm({ date, historical }: { date: string; historical: boolean }
         </div>
       </div>
 
+      {voiceOpen && <VoiceLogDialog onClose={() => setVoiceOpen(false)} onSaved={() => { setVoiceOpen(false); refreshTimeline(); setEventMessage("Events saved. Timeline refreshed."); }} />}
       {activeQuickAdd ? (
         <QuickLogDialog title={activeQuickAdd} saving={savingEvent} message={eventMessage} onClose={closeQuickAdd} onSubmit={saveHealthEvent}>
           <div className="space-y-4">

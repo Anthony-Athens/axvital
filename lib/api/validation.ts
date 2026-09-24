@@ -53,6 +53,12 @@ export async function validateApiRequest(request: Request, route: string) {
   };
   for (const key of query.keys()) if (!allowed[route]?.includes(key) || query.getAll(key).length !== 1) invalid();
   let body: Record<string, unknown> = {};
+  if (route === "voice-log/parse") {
+    if (request.method !== "POST" || request.headers.get("origin") !== url.origin) throw new ApiError(403, "INVALID_ORIGIN");
+    if (!request.headers.get("content-type")?.toLowerCase().startsWith("multipart/form-data;")) throw new ApiError(415, "MULTIPART_REQUIRED");
+    if (Number(request.headers.get("content-length")) > 3_008_192) throw new ApiError(413, "BODY_TOO_LARGE");
+    return; // Bounded binary body and fields are validated by readVoiceUpload.
+  }
   if (request.method === "POST") {
     const raw = await boundedText(request.clone(), route === "http/experiments/draft" ? 24576 : 8192);
     if (route.startsWith("http/experiments/") && !raw) invalid();

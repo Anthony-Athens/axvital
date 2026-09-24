@@ -1,0 +1,21 @@
+const messages: Record<string, string> = {
+  MIC_UNSUPPORTED: "Voice recording is unavailable in this browser. Use a supported browser over HTTPS, or use manual Quick Log.",
+  MIC_DENIED: "Microphone permission was denied. Allow microphone access in your browser settings, then try again.",
+  MIC_UNAVAILABLE: "The microphone is unavailable. Check that it is connected and not in use, then try again.",
+  RECORDING_INTERRUPTED: "Recording stopped because the microphone or page became unavailable. Please record again.",
+  NO_AUDIO: "No audio was captured. Please record again.",
+  NO_SPEECH: "No speech was detected. Please speak clearly and record again.",
+  RECORDING_TOO_LONG: "The recording exceeded the 75-second limit. Please try a shorter recording.",
+  BODY_TOO_LARGE: "This recording is too large. Please try a shorter recording.",
+  UPLOAD_FAILED: "The recording could not be uploaded. Check your connection and record again.",
+  TRANSCRIPTION_FAILED: "We couldn’t transcribe this recording. Please record again.",
+  EXTRACTION_FAILED: "We couldn’t turn the recording into event drafts. Please try again.",
+  NO_EVENTS: "No health events were recognized. Try describing something you ate, drank, took, did or felt.",
+  INVALID_AI_RESPONSE: "The event drafts could not be safely validated. Nothing was saved. Please try again.",
+  INVALID_EVENT: "Check each event’s name, date, time and values before saving.",
+  AUTH_REQUIRED: "Your sign-in changed or expired. Close Voice Log and sign in again.",
+  RATE_LIMITED: "You’ve made several voice requests. Wait a minute before trying again.",
+  VOICE_UNAVAILABLE: "Voice processing is not configured yet. Manual Quick Log is still available.",
+  PERSISTENCE_FAILED: "We couldn’t confirm the save. Your drafts are still here. Check the timeline in another tab before retrying; the previous save may have succeeded.",
+};
+export function voiceErrorMessage(code: string) { return messages[code] ?? "Voice processing failed. Nothing was saved by this step. Please try again."; }
