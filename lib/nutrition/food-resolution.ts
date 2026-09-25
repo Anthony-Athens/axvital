@@ -65,8 +65,8 @@ export function matchFoodLabel(label: string, catalog: FoodCatalog) {
   return match;
 }
 /** Exactly one level, at most 16 components. No recursive ingredient inference. */
-export function resolveFood(label: string, context: string, catalog: FoodCatalog): FoodResolution {
-  const match = matchFoodLabel(label, catalog);
+export function resolveFood(label: string, context: string, catalog: FoodCatalog, selected?: ReturnType<typeof matchFoodLabel>): FoodResolution {
+  const match = selected ?? matchFoodLabel(label, catalog);
   const result = provisionalFood(label);
   let hasLibraryComponents = false;
   if (match.food) {

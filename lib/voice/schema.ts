@@ -1,13 +1,14 @@
 import type { HealthEventInput } from "../health-events/ingestion.ts";
 import { validateHealthEventInput } from "../health-events/ingestion.ts";
 import { addLocalDays, calendarDateInZone } from "../timeline/dates.ts";
+import type { NutritionDraft } from "../nutrition/voice-nutrition.ts";
 
 export const eventTypes = ["food", "fluid", "supplement", "exercise", "symptom", "medication", "note"] as const;
 export const MAX_SECONDS = 75;
 export const MAX_AUDIO_BYTES = 3_000_000;
 export const MAX_EVENTS = 12;
 export type VoiceEvent = Omit<HealthEventInput, "user_id" | "input_method">;
-export type VoiceCandidate = { event: VoiceEvent; source_fragment: string; time_note: string; requires_review: true };
+export type VoiceCandidate = { event: VoiceEvent; nutrition?: NutritionDraft; source_fragment: string; time_note: string; requires_review: true };
 const nullableText = { type: ["string", "null"] };
 const nullableNumber = { type: ["number", "null"] };
 const properties = {

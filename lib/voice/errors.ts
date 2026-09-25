@@ -13,6 +13,8 @@ const messages: Record<string, string> = {
   NO_EVENTS: "No health events were recognized. Try describing something you ate, drank, took, did or felt.",
   INVALID_AI_RESPONSE: "The event drafts could not be safely validated. Nothing was saved. Please try again.",
   INVALID_EVENT: "Check each event’s name, date, time and values before saving.",
+  NUTRITION_REVIEW_REQUIRED: "Review each food's serving and quantity, or explicitly choose to save it in Nutrition Tracker without macros.",
+  VOICE_RETRY_CHANGED: "This save request was already used with different details. Check Nutrition Tracker and the timeline before starting a new recording; nothing was added by this retry.",
   AUTH_REQUIRED: "Your sign-in changed or expired. Close Voice Log and sign in again.",
   RATE_LIMITED: "You’ve made several voice requests. Wait a minute before trying again.",
   VOICE_UNAVAILABLE: "Voice processing is not configured yet. Manual Quick Log is still available.",

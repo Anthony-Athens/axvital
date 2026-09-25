@@ -1,6 +1,14 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { rankFrequentFoods, rankRecentFoods, resolveTargets } from "./reuse.ts";
+import { rankFrequentFoods, rankRecentFoods, resolveTargets, totalKnownNutrition } from "./reuse.ts";
+import type { Entry } from "./nutrition.ts";
+
+test("incomplete voice intake marks totals unknown without fabricating zero-nutrient consumption", () => {
+  const entries = [{ items: [{ calories: 216, protein_grams: 18.9, carbohydrate_grams: 1.2, fat_grams: 14.4 }] }, { nutrition_status: "incomplete", items: [] }] as Entry[];
+  const total = totalKnownNutrition(entries);
+  assert.equal(total.calories, 216); assert.equal(total.protein_grams, 18.9);
+  assert.ok(total.incomplete.has("calories")); assert.ok(total.incomplete.has("protein_grams"));
+});
 
 const uses = [
   { key: "global:a", name: "Apple", usedAt: "2026-08-01T10:00:00Z" },

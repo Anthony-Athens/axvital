@@ -11,6 +11,10 @@ Numeric quantities must be explicitly stated, with their original units. Do not 
 duration_minutes is only for explicitly stated minutes. severity is only an explicitly rated 0–10 symptom severity.
 dose_amount/dose_unit are for supplements and medication; distance/duration/intensity for exercise.
 amount is verbatim stated quantity text for food/fluid. notes may only quote relevant stated context, otherwise null.
+For food/fluid, preserve the explicit quantity and unit together in amount (three eggs, six ounces, one cup).
+Keep explicitly stated brand/product words in the food title; never substitute a generic food or invent a brand.
+Include stated meal context, ingredients and exclusions in source_fragment. Preserve without/no/hold exactly.
+Food quantities and units are resolved against existing Nutrition Tracker servings after extraction; never output calories or macros.
 time_expression is a verbatim time phrase, otherwise null. Never invent a timestamp.
 'I took magnesium' has null dose. 'I ran this morning' has null distance, duration and intensity.
 'My knee hurts' is a symptom, not a diagnosis. Never provide diagnoses, advice or treatment recommendations.

@@ -67,6 +67,7 @@ export function totalKnownNutrition(entries: Entry[]): Nutrients & { incomplete:
   const result: Nutrients & { incomplete: Set<keyof Nutrients> } = {
     calories: 0, protein_grams: 0, carbohydrate_grams: 0, fat_grams: 0, fiber_grams: 0, incomplete: new Set(),
   };
+  if (entries.some(entry => entry.nutrition_status === "incomplete" || !entry.items.length)) fields.forEach(field => result.incomplete.add(field));
   for (const item of entries.flatMap((entry) => entry.items)) for (const field of fields) {
     const value = item[field];
     if (value == null) result.incomplete.add(field);

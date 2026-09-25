@@ -101,14 +101,16 @@ test("food review exclusions retain provenance through uncertain save and explic
     await t.click("Start recording"); await t.click("Stop recording");
     await t.resolve({ candidates: [{ ...candidates[1], event: { ...candidates[1].event, title: "Pizza", food } }, candidates[0]] });
     assert.equal(t.doc.querySelectorAll("article").length, 2); assert.match(t.doc.body.textContent!, /Typical library component/);
-    await t.h.act(async () => (t.doc.querySelector('article input[type="checkbox"]') as HTMLInputElement).click());
+    await t.h.act(async () => ([...t.doc.querySelectorAll("label")].find(label => label.textContent?.startsWith("Cheese"))!.querySelector("input") as HTMLInputElement).click());
     assert.match(t.doc.body.textContent!, /Cheese \(excluded\)/);
+    await t.h.act(async () => ([...t.doc.querySelectorAll("label")].find(label => label.textContent?.includes("Save in Nutrition Tracker without macros"))!.querySelector("input") as HTMLInputElement).click());
     Object.assign(t.w, { saveFail: true }); await t.click("Confirm and save events");
-    assert.equal(t.writes.length, 1); assert.equal(t.writes[0].table, "ingest_health_events_with_food");
+    assert.equal(t.writes.length, 1); assert.equal(t.writes[0].table, "ingest_voice_nutrition");
     const savedFood = t.writes[0].rows[0].food as { components: { source: string; included: boolean; confirmed: boolean }[] };
     assert.equal(savedFood.components[0].source, "library"); assert.equal(savedFood.components[0].included, false); assert.equal(savedFood.components[0].confirmed, true);
-    assert.equal((t.writes[0].rows[0].event as { input_method: string }).input_method, "voice");
-    assert.equal(t.writes[0].rows.length, 2); assert.equal(t.writes[0].rows[1].food, null);
+    assert.equal(t.writes[0].rows[0].kind, "nutrition"); assert.equal(t.writes[0].rows[0].event, undefined);
+    assert.equal((t.writes[0].rows[1].event as { input_method: string }).input_method, "voice");
+    assert.equal(t.writes[0].rows.length, 2); assert.equal(t.writes[0].rows[1].kind, "health");
     const retry = [...t.doc.querySelectorAll("label")].find(label => label.textContent?.includes("I checked the timeline"))!.querySelector("input")!;
     await t.h.act(async () => retry.click()); Object.assign(t.w, { saveFail: false }); await t.click("Confirm and save events");
     assert.equal(t.w.saved, 1); assert.equal(t.writes.length, 2); assert.equal(JSON.stringify(t.writes[1]), JSON.stringify(t.writes[0]));
@@ -122,10 +124,32 @@ test("editing a food label clears stale canonical components before saving", asy
     await t.click("Start recording"); await t.click("Stop recording");
     await t.resolve({ candidates: [candidates[1]] });
     await t.field("Name", "Family stew"); await t.click("Confirm and save events");
+    assert.equal(t.writes.length, 0); assert.match(t.doc.body.textContent!, /Review each food/);
+    await t.h.act(async () => ([...t.doc.querySelectorAll("label")].find(label => label.textContent?.includes("Save in Nutrition Tracker without macros"))!.querySelector("input") as HTMLInputElement).click());
+    await t.click("Confirm and save events");
     assert.equal(t.w.saved, 1);
-    assert.equal(t.writes[0].table, "ingest_health_events_with_food");
+    assert.equal(t.writes[0].table, "ingest_voice_nutrition");
     const food = t.writes[0].rows[0].food as { food_id: string | null; label: string; method: string; components: unknown[] };
     assert.equal(food.label, "Family stew"); assert.equal(food.food_id, null); assert.equal(food.method, "provisional"); assert.equal(food.components.length, 0);
+  } finally { await t.close(); }
+});
+
+test("resolved voice food previews existing macros and saves reviewed servings through nutrition", async () => {
+  const t = await fixture();
+  const foodId = "00000000-0000-4000-8000-000000000001", servingId = "00000000-0000-4000-8000-000000000002";
+  const food = { label: "eggs", food_id: foodId, canonical_name: "Egg", method: "alias", confirmed: false, categories: [], components: [] };
+  const nutrition = { servings: [{ id: servingId, food_id: foodId, serving_name: "1 large", serving_quantity: 1, serving_unit: "each", grams_equivalent: 50, is_default: true, display_order: 0, calories: 72, protein_grams: 6.3, carbohydrate_grams: 0.4, fat_grams: 4.8 }], serving_id: servingId, quantity: 3, unit: "each", meal_type: null, accept_incomplete: false, reference_confirmed: false };
+  try {
+    await t.click("Start recording"); await t.click("Stop recording");
+    await t.resolve({ candidates: [{ ...candidates[1], nutrition, event: { ...candidates[1].event, food, amount: "three eggs" } }, candidates[0]] });
+    assert.match(t.doc.body.textContent!, /216 kcal/); assert.equal(t.writes.length, 0);
+    await t.field("Food quantity", "2"); assert.match(t.doc.body.textContent!, /144 kcal/);
+    await t.click("Confirm and save events"); assert.equal(t.w.saved, 1);
+    assert.equal(t.writes[0].table, "ingest_voice_nutrition"); assert.equal(t.writes[0].rows.length, 2);
+    const saved = t.writes[0].rows[0].nutrition as { multiplier: number; serving_id: string; stated_amount: string };
+    assert.equal(saved.multiplier, 2); assert.equal(saved.serving_id, servingId); assert.equal(saved.stated_amount, "2 each");
+    assert.equal(t.writes[0].rows[0].event, undefined);
+    assert.ok(t.analytics.every(args => args.length === 1));
   } finally { await t.close(); }
 });
 test("cancel during permission/recording/processing cleans up and ignores late responses", async () => {

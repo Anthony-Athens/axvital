@@ -65,7 +65,7 @@ test("voice enrichment loads catalog once, preserves non-food events and bounds 
   const events: VoiceCandidate[] = ["pepperoni pizza", "Unlisted a", "Unlisted b", "Unlisted c", "Unlisted d", "Walk"].map((title, i) => ({ event: { title, event_type: i === 5 ? "exercise" : "food", event_date: "2026-09-24", event_time: "12:00", tags: [] }, source_fragment: title, time_note: "Review", requires_review: true }));
   let calls = 0;
   const result = await enrichFoodCandidates(client, events, new AbortController().signal, async base => { calls++; return base; });
-  assert.equal(result.length, events.length); assert.equal(calls, 3); assert.equal(reads.length, 5);
+  assert.equal(result.length, events.length); assert.equal(calls, 3); assert.equal(reads.length, 6);
   assert.equal(result[0].event.food?.components.length, 4); assert.deepEqual(result[5], events[5]);
   assert.ok(result.every((item, index) => item.event.title === events[index].event.title && item.event.event_time === "12:00"));
   assert.equal(events[0].event.food, undefined, "draft inputs are not mutated");

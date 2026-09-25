@@ -14,7 +14,7 @@ const code = (await build({ entryPoints: ["app/api/nutrition/resolve/route.ts"],
 } }] })).outputFiles[0].text;
 function fixture(user: string | null = "owner", budget = true) {
   const mod = { exports: {} as { POST: (request: Request) => Promise<Response> } };
-  const context = { module: mod, exports: mod.exports, Response, URL, TextDecoder, Date, Intl, catalogReads: 0, inferenceCalls: 0, console: { error: () => {} }, fixtureClient: { auth: { getUser: async () => ({ data: { user: user ? { id: user } : null } }) }, rpc: async (name: string, args: unknown) => { assert.equal(name, "axvital_consume_api_budget"); assert.equal(JSON.stringify(args), '{"route_key":"http/nutrition/resolve:POST"}'); return { data: budget }; } } };
+  const context = { module: mod, exports: mod.exports, Response, URL, TextDecoder, Date, Intl, catalogReads: 0, inferenceCalls: 0, console: { error: () => {} }, fixtureClient: { from: (table: string) => ({ select: () => ({ limit: async () => { assert.equal(table, "food_servings"); return { data: [], error: null }; } }) }), auth: { getUser: async () => ({ data: { user: user ? { id: user } : null } }) }, rpc: async (name: string, args: unknown) => { assert.equal(name, "axvital_consume_api_budget"); assert.equal(JSON.stringify(args), '{"route_key":"http/nutrition/resolve:POST"}'); return { data: budget }; } } };
   runInNewContext(code, context);
   return { context, run: (body: unknown = { label: "Bread", context: "Bread" }, origin = "https://example.test") => mod.exports.POST(new Request("https://example.test/api/nutrition/resolve", { method: "POST", headers: { origin, "Content-Type": "application/json" }, body: JSON.stringify(body) })) };
 }

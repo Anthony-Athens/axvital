@@ -10,6 +10,9 @@ import { voiceErrorMessage } from "@/lib/voice/errors";
 import { trackProduct } from "@/lib/telemetry/client";
 import { FoodReview } from "./FoodReview";
 import { provisionalFood } from "@/lib/nutrition/food-resolution";
+import { nutritionDraft, type NutritionDraft } from "@/lib/nutrition/voice-nutrition";
+import { logVoiceNutrition } from "@/lib/nutrition/ingestion";
+import { VoiceNutritionReview } from "./VoiceNutritionReview";
 
 type Phase = "idle" | "permission" | "recording" | "processing" | "review" | "saving" | "error";
 const control = "min-h-11 rounded-lg border border-slate-300 bg-white px-3 py-2 text-base focus-visible:ring-2 focus-visible:ring-blue-600";
@@ -26,6 +29,7 @@ export function VoiceLogDialog({ onClose, onSaved }: { onClose: () => void; onSa
   const [matchingCount, setMatchingCount] = useState(0);
   const [recorder] = useState(() => new VoiceRecorder());
   const owner = useRef("");
+  const requestId = useRef("");
   const phaseRef = useRef<Phase>("idle");
   const mounted = useRef(true);
   const run = useRef(0);
@@ -99,7 +103,7 @@ export function VoiceLogDialog({ onClose, onSaved }: { onClose: () => void; onSa
       const parsed = result.candidates as VoiceCandidate[];
       if (parsed.some(candidate => !candidate || typeof candidate.source_fragment !== "string" || typeof candidate.time_note !== "string")) throw Error("INVALID_AI_RESPONSE");
       reviewedInputs(parsed.map(candidate => candidate.event), owner.current);
-      setCandidates(parsed); transition("review"); setMessage("");
+      setCandidates(parsed.map(candidate => ["food", "fluid"].includes(candidate.event.event_type) ? { ...candidate, nutrition: candidate.nutrition ?? nutritionDraft(candidate.event.food ?? provisionalFood(candidate.event.title!), [], candidate.event.amount, candidate.source_fragment) } : candidate)); transition("review"); setMessage("");
       trackProduct("Voice Parse Succeeded"); trackProduct("Voice Review Presented");
     } catch (error) {
       if (!mounted.current || generation !== run.current) return;
@@ -112,7 +116,7 @@ export function VoiceLogDialog({ onClose, onSaved }: { onClose: () => void; onSa
   async function start() {
     if (!["idle", "error"].includes(phaseRef.current) || !owner.current) return;
     const generation = ++run.current;
-    setMessage(""); setElapsed(0); transition("permission");
+    setMessage(""); setElapsed(0); requestId.current = ""; transition("permission");
     try {
       await recorder.start(() => void stopAndProcess(true), code => {
         if (!mounted.current || generation !== run.current) return;
@@ -130,12 +134,20 @@ export function VoiceLogDialog({ onClose, onSaved }: { onClose: () => void; onSa
     setCandidates(current => current.map((candidate, i) => {
       if (i !== index) return candidate;
       const event = { ...candidate.event, ...patch };
+      let nutrition = candidate.nutrition;
       if (patch.title !== undefined || patch.event_type !== undefined) {
         delete event.food;
         if (["food", "fluid"].includes(event.event_type)) event.food = provisionalFood(event.title ?? "");
+        nutrition = event.food ? nutritionDraft(event.food, [], event.amount) : undefined;
       }
-      return { ...candidate, event };
+      if (patch.amount !== undefined && event.food) nutrition = nutritionDraft(event.food, nutrition?.servings ?? [], event.amount);
+      if (patch.food && nutrition) nutrition = { ...nutrition, reference_confirmed: false, accept_incomplete: false, ...(patch.food.food_id !== candidate.event.food?.food_id ? { servings: [], serving_id: null } : {}) };
+      return { ...candidate, event, nutrition };
     }));
+    trackProduct("Voice Log Edited");
+  }
+  function editNutrition(index: number, nutrition: NutritionDraft, food = candidates[index].event.food) {
+    setCandidates(current => current.map((candidate, i) => i === index ? { ...candidate, nutrition, event: { ...candidate.event, food } } : candidate));
     trackProduct("Voice Log Edited");
   }
   async function confirm() {
@@ -143,7 +155,10 @@ export function VoiceLogDialog({ onClose, onSaved }: { onClose: () => void; onSa
     transition("saving"); setMessage("");
     try {
       const inputs = reviewedInputs(candidates.map(candidate => candidate.event), owner.current);
-      await ingestHealthEvents(supabase, inputs);
+      if (inputs.some(event => ["food", "fluid"].includes(event.event_type))) {
+        requestId.current ||= crypto.randomUUID();
+        await logVoiceNutrition(supabase, candidates, owner.current, requestId.current);
+      } else await ingestHealthEvents(supabase, inputs);
       if (!mounted.current) return;
       trackProduct("Voice Log Confirmed"); onSaved();
     } catch (error) {
@@ -174,13 +189,16 @@ export function VoiceLogDialog({ onClose, onSaved }: { onClose: () => void; onSa
         </div>}
         {phase === "processing" && <p role="status">Transcribing and preparing event drafts… Nothing has been saved.</p>}
         {(phase === "review" || phase === "saving") && <div className="space-y-4">
-          <p>Review every event before saving. These logs appear in your activity timeline. Food and symptom logs here do not update the separate nutrition or symptom trackers.</p>
+          <p>Review every event before saving. Food and drinks go to Nutrition Tracker; other events go to your activity timeline. The whole recording saves together.</p>
           <fieldset disabled={phase === "saving"} className="space-y-4">
             {candidates.map((candidate, index) => <article key={index} className="space-y-3 rounded-xl border border-slate-200 p-4" aria-label={`Event ${index + 1}`}>
               <div className="flex items-center justify-between gap-3"><h3 className="font-semibold">Event {index + 1} — review details</h3><button type="button" className={`${button} text-red-700`} aria-label={`Remove event ${index + 1}`} onClick={() => { setCandidates(current => current.filter((_, i) => i !== index)); trackProduct("Voice Log Edited"); }}>Remove</button></div>
               <label className="grid gap-1">Event type<select className={control} value={candidate.event.event_type} onChange={e => edit(index, { event_type: e.target.value as VoiceEvent["event_type"], amount: null, dose_amount: null, dose_unit: null, duration_minutes: null, distance: null, distance_unit: null, intensity: null, severity: null })}>{eventTypes.map(type => <option key={type} value={type}>{type[0].toUpperCase() + type.slice(1)}</option>)}</select></label>
               <label className="grid gap-1">Name<input className={control} value={candidate.event.title ?? ""} maxLength={160} onChange={e => edit(index, { title: e.target.value })}/></label>
-              {(["food", "fluid"].includes(candidate.event.event_type)) && <FoodReview key={candidate.event.title} food={candidate.event.food} label={candidate.event.title ?? ""} onChange={food => edit(index, { food })} onBusy={delta => setMatchingCount(count => count + delta)}/>}
+              {(["food", "fluid"].includes(candidate.event.event_type)) && <>
+                <VoiceNutritionReview food={candidate.event.food} draft={candidate.nutrition ?? nutritionDraft(provisionalFood(candidate.event.title ?? ""), [])} onChange={draft => editNutrition(index, draft)}/>
+                <FoodReview key={candidate.event.title} food={candidate.event.food} label={candidate.event.title ?? ""} amount={candidate.event.amount} onResolved={(food, draft) => editNutrition(index, draft, food)} onChange={food => edit(index, { food })} onBusy={delta => setMatchingCount(count => count + delta)}/>
+              </>}
               <div className="grid grid-cols-2 gap-3">
                 <label className="grid min-w-0 gap-1">Date<input className={`${control} min-w-0`} type="date" value={candidate.event.event_date} onChange={e => edit(index, { event_date: e.target.value })}/></label>
                 <label className="grid min-w-0 gap-1">Time<input className={`${control} min-w-0`} type="time" step="1" value={candidate.event.event_time} onChange={e => edit(index, { event_time: e.target.value })}/></label>

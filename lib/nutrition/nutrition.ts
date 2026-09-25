@@ -4,7 +4,7 @@ export type Nutrients = { calories:number|null; protein_grams:number|null; carbo
 export type Serving = Nutrients & { id:string; food_id:string; serving_name:string; serving_quantity:number; serving_unit:string; grams_equivalent:number|null; is_default:boolean; display_order:number };
 export type Food = { id:string; name:string; brand_name:string|null; common_aliases:string[]; servings:Serving[] };
 export type UserFood = Nutrients & { id:string; name:string; brand_name:string|null; serving_name:string; serving_quantity:number; serving_unit:string; last_logged_at:string|null };
-export type Entry = { id:string; title:string|null; consumed_at:string; meal_type:string|null; notes:string|null; items:Array<Nutrients & { id:string; source_name:string; serving_name_snapshot:string; serving_quantity_snapshot:number; serving_unit_snapshot:string; quantity_multiplier:number }> };
+export type Entry = { id:string; title:string|null; consumed_at:string; meal_type:string|null; notes:string|null; nutrition_status?:"recorded"|"incomplete"; stated_amount?:string|null; source_type?:string; items:Array<Nutrients & { id:string; source_name:string; serving_name_snapshot:string; serving_quantity_snapshot:number; serving_unit_snapshot:string; quantity_multiplier:number }> };
 
 async function userId(client:SupabaseClient) {
   const { data, error } = await client.auth.getUser();
@@ -37,7 +37,7 @@ export async function loadNutrition(client:SupabaseClient) {
   const [foods,userFoods,entries]=await Promise.all([
     client.from("foods").select("id,name,brand_name,common_aliases,source_reference").eq("is_active",true).order("name"),
     client.from("user_foods").select("*").eq("user_id",user).eq("is_active",true).is("archived_at",null).order("last_logged_at",{ascending:false}),
-    client.from("nutrition_entries").select("id,title,consumed_at,meal_type,notes,items:nutrition_entry_items(*)").eq("user_id",user).is("deleted_at",null).gte("consumed_at",start.toISOString()).lt("consumed_at",end.toISOString()).order("consumed_at",{ascending:false}),
+    client.from("nutrition_entries").select("id,title,consumed_at,meal_type,notes,nutrition_status,stated_amount,source_type,items:nutrition_entry_items(*)").eq("user_id",user).is("deleted_at",null).gte("consumed_at",start.toISOString()).lt("consumed_at",end.toISOString()).order("consumed_at",{ascending:false}),
   ]);
   if (foods.error||userFoods.error||entries.error) throw new Error("We couldn’t load nutrition data.");
   return { foods:(foods.data??[]).filter(food=>food.source_reference!=="axvital:component-library:v1").map((food)=>({...food,servings:[]})) as Food[], userFoods:(userFoods.data??[]) as UserFood[], entries:(entries.data??[]) as unknown as Entry[] };
@@ -52,3 +52,8 @@ export async function logFood(client:SupabaseClient,args:{foodId?:string;serving
 export async function createUserFood(client:SupabaseClient,input:Omit<UserFood,"id"|"last_logged_at">){const user=await userId(client);if(input.name.trim().length<2||input.serving_quantity<=0||Object.values(input).filter((value)=>typeof value==="number").some((value)=>value<0))throw new Error("Enter a valid food, serving, and nutrition value.");const{data,error}=await client.from("user_foods").insert({...input,user_id:user}).select().single();if(error)throw new Error("We couldn’t create this custom food.");return data as UserFood;}
 export async function updateEntry(client:SupabaseClient,id:string,changes:{consumed_at?:string;meal_type?:string|null;notes?:string|null}){const user=await userId(client);const{error}=await client.from("nutrition_entries").update(changes).eq("id",id).eq("user_id",user);if(error)throw new Error("We couldn’t update this food log.");}
 export async function deleteEntry(client:SupabaseClient,id:string){const user=await userId(client);const{error}=await client.from("nutrition_entries").update({deleted_at:new Date().toISOString()}).eq("id",id).eq("user_id",user);if(error)throw new Error("We couldn’t delete this food log.");}
+export async function completeEntry(client:SupabaseClient,id:string,args:{foodId?:string;servingId?:string;userFoodId?:string;quantity:number}) {
+  if (!Number.isFinite(args.quantity) || args.quantity<=0 || ((args.foodId?1:0)+(args.userFoodId?1:0)!==1) || (args.foodId && !args.servingId)) throw new Error("Select a food, serving and positive quantity.");
+  const {error}=await client.rpc("complete_nutrition_entry",{entry_id:id,selected_food_id:args.foodId??null,selected_serving_id:args.servingId??null,selected_user_food_id:args.userFoodId??null,quantity:args.quantity});
+  if(error)throw new Error("We couldn’t complete this food log. Reload Nutrition Tracker before retrying.");
+}

@@ -6,9 +6,10 @@ import {
   PageHeader, Surface, controlClass, textareaClass,
 } from "@/components/ui/design-system";
 import {
-  createUserFood, deleteEntry, loadFoodServings, loadNutrition, logFood, scaleNutrition, searchFoods, selectInitialServing,
-  totalNutrition, type Entry, type Food, type Serving, type UserFood,
+  completeEntry, createUserFood, deleteEntry, loadFoodServings, loadNutrition, logFood, scaleNutrition, searchFoods, selectInitialServing,
+  type Entry, type Food, type Serving, type UserFood,
 } from "@/lib/nutrition/nutrition";
+import { totalKnownNutrition } from "@/lib/nutrition/reuse";
 import { createClient } from "@/lib/supabase/browser";
 
 type Selection = { food: Food; user?: never } | { user: UserFood; food?: never };
@@ -36,6 +37,7 @@ export function NutritionHome() {
   const [notes, setNotes] = useState("");
   const [saving, setSaving] = useState(false);
   const [custom, setCustom] = useState(false);
+  const [completing, setCompleting] = useState<string | null>(null);
   const servingRequest = useRef(0);
 
   const load = useCallback(async () => {
@@ -50,7 +52,7 @@ export function NutritionHome() {
   useEffect(() => { queueMicrotask(() => void load()); }, [load]);
 
   const results = useMemo(() => searchFoods(foods, userFoods, search), [foods, userFoods, search]);
-  const totals = totalNutrition(entries);
+  const totals = totalKnownNutrition(entries);
   const base = serving ?? selected?.user;
   const preview = base ? scaleNutrition(base, quantity) : null;
 
@@ -79,11 +81,13 @@ export function NutritionHome() {
     if (saving || !selected) return;
     setSaving(true); setError("");
     try {
-      await logFood(createClient(), {
+      const input = {
         foodId: selected.food?.id, servingId: serving?.id, userFoodId: selected.user?.id,
         quantity, consumedAt: new Date(consumed).toISOString(), mealType: meal, notes,
-      });
-      setSelected(null); setQuantity(1); setNotes("");
+      };
+      if (completing) await completeEntry(createClient(), completing, input);
+      else await logFood(createClient(), input);
+      setCompleting(null); setSelected(null); setQuantity(1); setNotes("");
       await load();
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Unable to log food.");
@@ -106,8 +110,10 @@ export function NutritionHome() {
           <Surface compact key={name}><p className="text-sm text-slate-500">{name}</p><p className="mt-1 text-xl font-semibold">{format(value)} {unit}</p></Surface>
         ))}
       </section>
+
       <section className="mt-8">
-        <h2 className="text-xl font-semibold">Log Food</h2>
+        {totals.incomplete.size > 0 && <p className="mb-3 text-sm text-amber-800">Some logged foods have incomplete nutrition. Totals include known values only.</p>}<h2 className="text-xl font-semibold">Log Food</h2>
+        {completing && <InlineNotice>Complete the existing food log by selecting nutrition that matches what you ate. Its original time, notes and component exclusions are retained. <button type="button" onClick={() => { setCompleting(null); setSelected(null); }}>Cancel completion</button></InlineNotice>}
         {!selected && !custom ? (
           <>
             <label htmlFor="nutrition-search" className="mt-3 block text-sm font-semibold">Search foods</label>
@@ -127,18 +133,19 @@ export function NutritionHome() {
             {selected.food ? <label className="grid gap-1 text-sm font-semibold">Serving<select disabled={servingLoading || !selected.food.servings.length} className={controlClass} value={serving?.id ?? ""} onChange={(event) => setServing(selected.food.servings.find((item) => item.id === event.target.value) ?? null)}>{servingLoading ? <option value="">Loading servings…</option> : null}{selected.food.servings.map((item) => <option value={item.id} key={item.id}>{item.serving_name}</option>)}</select></label> : <label className="grid gap-1 text-sm font-semibold">Serving<select className={controlClass} value={selected.user.id} disabled><option value={selected.user.id}>{selected.user.serving_name}</option></select></label>}
             {selected.food && !servingLoading && !selected.food.servings.length ? <InlineNotice>No serving options are available for this food.</InlineNotice> : null}
             <label className="grid gap-1 text-sm font-semibold">Quantity<input type="number" inputMode="decimal" min="0.01" step="0.01" className={controlClass} value={quantity} onChange={(event) => setQuantity(Number(event.target.value))} /></label>
-            <label className="grid gap-1 text-sm font-semibold">Consumed at<input type="datetime-local" className={controlClass} value={consumed} onChange={(event) => setConsumed(event.target.value)} /></label>
+            {!completing && <><label className="grid gap-1 text-sm font-semibold">Consumed at<input type="datetime-local" className={controlClass} value={consumed} onChange={(event) => setConsumed(event.target.value)} /></label>
             <label className="grid gap-1 text-sm font-semibold">Meal type<select className={controlClass} value={meal} onChange={(event) => setMeal(event.target.value)}><option value="">Not specified</option>{["breakfast", "lunch", "dinner", "snack", "other"].map((item) => <option key={item}>{item}</option>)}</select></label>
-            <label className="grid gap-1 text-sm font-semibold">Notes<textarea className={textareaClass} value={notes} onChange={(event) => setNotes(event.target.value)} /></label>
+            <label className="grid gap-1 text-sm font-semibold">Notes<textarea className={textareaClass} value={notes} onChange={(event) => setNotes(event.target.value)} /></label></>}
             {preview ? <div className="rounded-lg bg-blue-50 p-4"><p className="font-semibold">Nutrition preview</p><p className="mt-1 text-sm">{format(preview.calories)} calories · {format(preview.protein_grams)} g protein · {format(preview.carbohydrate_grams)} g carbohydrates · {format(preview.fat_grams)} g fat</p></div> : null}
             <Button disabled={saving || servingLoading || (Boolean(selected.food) && !serving)}>{saving ? "Saving…" : "Log food"}</Button>
           </form>
         ) : null}
       </section>
+
       <section className="mt-8">
         <h2 className="text-xl font-semibold">Today’s food</h2>
         <div className="mt-3 grid gap-3">
-          {entries.map((entry) => <Surface compact key={entry.id}><div className="flex justify-between gap-3"><div><p className="font-semibold">{entry.title}</p><p className="text-sm text-slate-500">{new Date(entry.consumed_at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}{entry.meal_type ? ` · ${entry.meal_type}` : ""}</p><p className="mt-1 text-sm">{format(entry.items[0]?.calories)} calories · {format(entry.items[0]?.protein_grams)} g protein</p></div><Button variant="tertiary" aria-label={`Delete ${entry.title} food log`} onClick={() => { if (confirm(`Delete ${entry.title}?`)) void deleteEntry(createClient(), entry.id).then(load).catch(() => setError("We couldn’t delete this food log. Please try again.")); }}>Delete</Button></div></Surface>)}
+          {entries.map((entry) => <Surface compact key={entry.id}><div className="flex justify-between gap-3"><div><p className="font-semibold">{entry.title}</p><p className="text-sm text-slate-500">{new Date(entry.consumed_at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}{entry.meal_type ? ` · ${entry.meal_type}` : ""}</p><p className="mt-1 text-sm">{entry.nutrition_status === "incomplete" ? `Macros unavailable${entry.stated_amount ? ` · ${entry.stated_amount}` : ""}` : `${format(entry.items[0]?.calories)} calories · ${format(entry.items[0]?.protein_grams)} g protein`}</p>{entry.nutrition_status === "incomplete" && <Button variant="secondary" onClick={() => { setCompleting(entry.id); setSelected(null); setSearch(entry.title ?? ""); setQuantity(1); }}>Complete nutrition</Button>}</div><Button variant="tertiary" aria-label={`Delete ${entry.title} food log`} onClick={() => { if (confirm(`Delete ${entry.title}?`)) void deleteEntry(createClient(), entry.id).then(load).catch(() => setError("We couldn’t delete this food log. Please try again.")); }}>Delete</Button></div></Surface>)}
           {!entries.length ? <EmptyState title="No foods logged yet" description="Log a food to begin building your nutrition history." /> : null}
         </div>
       </section>

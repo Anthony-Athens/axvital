@@ -2,10 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import { foodCategories, provisionalFood, validateFoodResolution, type FoodResolution } from "@/lib/nutrition/food-resolution";
+import type { NutritionDraft } from "@/lib/nutrition/voice-nutrition";
 
 const control = "min-h-11 rounded-lg border border-slate-300 bg-white px-3 py-2 text-base";
 const sources = { library: "Typical library component — verify", explicit: "Stated in your description", ai_inferred: "AI suggestion — uncertain", user_confirmed: "Added or corrected by you" };
-export function FoodReview({ food, label, onChange, onBusy }: { food?: FoodResolution; label: string; onChange: (food: FoodResolution) => void; onBusy: (delta: number) => void }) {
+export function FoodReview({ food, label, amount, onResolved, onChange, onBusy }: { food?: FoodResolution; label: string; amount?: string | null; onResolved?: (food: FoodResolution, nutrition: NutritionDraft) => void; onChange: (food: FoodResolution) => void; onBusy: (delta: number) => void }) {
   const [busy, setBusy] = useState(false), [message, setMessage] = useState("");
   const [addition, setAddition] = useState("");
   const request = useRef<AbortController | null>(null);
@@ -17,11 +18,12 @@ export function FoodReview({ food, label, onChange, onBusy }: { food?: FoodResol
     setBusy(true); setMessage(""); onBusy(1);
     try {
       // The edited label is the authority; stale transcript ingredients are never reapplied.
-      const response = await fetch("/api/nutrition/resolve", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ label, context: label }), signal: AbortSignal.any([controller.signal, AbortSignal.timeout(18000)]) });
+      const response = await fetch("/api/nutrition/resolve", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ label, context: label, amount }), signal: AbortSignal.any([controller.signal, AbortSignal.timeout(18000)]) });
       if (!response.ok) throw Error();
-      const result = validateFoodResolution((await response.json()).food);
+      const body = await response.json();
+      const result = validateFoodResolution(body.food);
       if (result.label !== label) throw Error();
-      if (!controller.signal.aborted) onChange(result);
+      if (!controller.signal.aborted) { if (onResolved && body.nutrition) onResolved(result, body.nutrition); else onChange(result); }
     } catch { if (!controller.signal.aborted) setMessage("Matching is unavailable. You can save this food as entered."); }
     finally { onBusy(-1); setBusy(false); }
   }

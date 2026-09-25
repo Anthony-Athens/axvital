@@ -2,6 +2,17 @@
 import assert from"node:assert/strict";import test from"node:test";import type{SupabaseClient}from"@supabase/supabase-js";import{addLocalDays,localDateForTimestamp,localDayRange}from"./dates.ts";import{filterTimeline}from"./filter.ts";import{getTimeline}from"./getTimeline.ts";import{getCheckinEvents}from"./sources/checkins.ts";import{getNutritionEvents}from"./sources/nutrition.ts";import{getRoutineEvents}from"./sources/routines.ts";import type{TimelineEvent,TimelineSourceContext}from"./types.ts";
 function client(rows:unknown[]):SupabaseClient{const chain:any={select:()=>chain,eq:()=>chain,gte:()=>chain,lte:()=>chain,lt:()=>chain,is:()=>chain,neq:()=>chain,then:(resolve:(x:unknown)=>unknown)=>resolve({data:rows,error:null})};return{from:()=>chain,auth:{getUser:async()=>({data:{user:{id:"user"}},error:null})}}as unknown as SupabaseClient;}
 const context=(rows:unknown[]):TimelineSourceContext=>({client:client(rows),userId:"user",...localDayRange("2026-08-21")});
+test("manual and voice nutrition each hydrate once; incomplete intake never displays zero macros", async () => {
+  const common = { entry_type: "food", meal_type: null, consumed_at: "2026-08-21T12:00:00Z", notes: null };
+  const rows = await getNutritionEvents(context([
+    { ...common, id: "manual", title: "Egg", source_type: "manual", items: [{ source_name: "Egg", calories: 216, protein_grams: 18.9 }] },
+    { ...common, id: "voice", title: "Egg", source_type: "voice", items: [{ source_name: "Egg", calories: 216, protein_grams: 18.9 }] },
+    { ...common, id: "pending", title: "Family stew", nutrition_status: "incomplete", source_type: "voice", items: [] },
+  ]));
+  assert.equal(rows.length, 3); assert.ok(rows.every(row => row.sourceType === "nutrition_entry"));
+  assert.equal(rows[0].subtitle, rows[1].subtitle); assert.equal(rows[1].metadata.inputMethod, "voice");
+  assert.equal(rows[2].metadata.calories, null); assert.match(rows[2].subtitle!, /incomplete/); assert.doesNotMatch(rows[2].subtitle!, /0 kcal/);
+});
 const event=(eventType:TimelineEvent["eventType"]):TimelineEvent=>({id:`x:${eventType}`,sourceId:eventType,sourceType:"x",eventType,occurredAt:"2026-08-21T12:00:00Z",endedAt:null,title:eventType,subtitle:null,description:null,status:null,metadata:{},editable:false,deletable:false,detailHref:null,editHref:null});
 import { calendarDateInZone, calendarNoonInZone } from "./dates.ts";
 test("daily analysis anchors preserve the calendar date across DST and the international date line",()=>{for(const zone of["America/Los_Angeles","America/New_York","Pacific/Kiritimati","Pacific/Pago_Pago"]){for(const date of["2026-03-08","2026-11-01","2026-08-21"]){const at=calendarNoonInZone(date,zone);assert.equal(calendarDateInZone(at,zone),date);assert.equal(new Intl.DateTimeFormat("en-US",{timeZone:zone,hour:"2-digit",hourCycle:"h23"}).format(new Date(at)),"12")}}});
