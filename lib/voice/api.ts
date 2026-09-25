@@ -39,10 +39,13 @@ export async function readVoiceUpload(request: Request, now = new Date()) {
   return { audio, now: instant, timeZone: zone };
 }
 
-export function voiceParseApi(createClient: () => Promise<SupabaseClient>, process: Processor) {
-  return guardWithClient("voice-log/parse", async request => {
+export function voiceParseApi(createClient: () => Promise<SupabaseClient>, process: Processor, enrich?: (client: SupabaseClient, candidates: VoiceCandidate[], signal: AbortSignal) => Promise<VoiceCandidate[]>) {
+  return guardWithClient("voice-log/parse", async (request, { client }) => {
     const upload = await readVoiceUpload(request);
-    try { return Response.json(await process(upload.audio, { now: upload.now, timeZone: upload.timeZone, signal: request.signal })); }
+    try {
+      const result = await process(upload.audio, { now: upload.now, timeZone: upload.timeZone, signal: request.signal });
+      return Response.json({ candidates: enrich ? await enrich(client, result.candidates, request.signal) : result.candidates });
+    }
     catch (error) {
       const known = ["VOICE_UNAVAILABLE", "TRANSCRIPTION_FAILED", "EXTRACTION_FAILED", "INVALID_AI_RESPONSE", "NO_SPEECH", "NO_EVENTS", "RECORDING_TOO_LONG"];
       if (error instanceof VoiceError && known.includes(error.message)) throw new ApiError(error.message === "VOICE_UNAVAILABLE" ? 503 : 422, error.message);

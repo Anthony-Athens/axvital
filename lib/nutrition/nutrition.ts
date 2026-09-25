@@ -35,12 +35,12 @@ export async function loadFoodServings(client:SupabaseClient, foodId:string):Pro
 export async function loadNutrition(client:SupabaseClient) {
   const user=await userId(client), start=new Date(); start.setHours(0,0,0,0); const end=new Date(start); end.setDate(end.getDate()+1);
   const [foods,userFoods,entries]=await Promise.all([
-    client.from("foods").select("id,name,brand_name,common_aliases").eq("is_active",true).order("name"),
+    client.from("foods").select("id,name,brand_name,common_aliases,source_reference").eq("is_active",true).order("name"),
     client.from("user_foods").select("*").eq("user_id",user).eq("is_active",true).is("archived_at",null).order("last_logged_at",{ascending:false}),
     client.from("nutrition_entries").select("id,title,consumed_at,meal_type,notes,items:nutrition_entry_items(*)").eq("user_id",user).is("deleted_at",null).gte("consumed_at",start.toISOString()).lt("consumed_at",end.toISOString()).order("consumed_at",{ascending:false}),
   ]);
   if (foods.error||userFoods.error||entries.error) throw new Error("We couldn’t load nutrition data.");
-  return { foods:(foods.data??[]).map((food)=>({...food,servings:[]})) as Food[], userFoods:(userFoods.data??[]) as UserFood[], entries:(entries.data??[]) as unknown as Entry[] };
+  return { foods:(foods.data??[]).filter(food=>food.source_reference!=="axvital:component-library:v1").map((food)=>({...food,servings:[]})) as Food[], userFoods:(userFoods.data??[]) as UserFood[], entries:(entries.data??[]) as unknown as Entry[] };
 }
 export async function logFood(client:SupabaseClient,args:{foodId?:string;servingId?:string;userFoodId?:string;quantity:number;consumedAt:string;mealType?:string;notes?:string}) {
   if (!Number.isFinite(args.quantity)||args.quantity<=0) throw new Error("Quantity must be greater than zero.");

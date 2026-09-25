@@ -7,6 +7,8 @@ const A = "aaaaaaaa-aaaa-4aaa-aaaa-aaaaaaaaaaaa", B = "bbbbbbbb-bbbb-4bbb-bbbb-b
 export async function database(withInsights=false, beforeAccount?:(db:PGlite)=>Promise<void>, throughMigration?:string) {
   const db = new PGlite();
   await db.exec(`
+    -- Fixtures declaring UTC analysis dates must not inherit the host's local timezone.
+    set time zone 'UTC';
     create role anon; create role authenticated; create role service_role bypassrls;
     create schema auth;
     create table auth.users(id uuid primary key);

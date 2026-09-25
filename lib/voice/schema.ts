@@ -120,7 +120,7 @@ export function validateExtraction(value: unknown, transcript: string, now: Date
   });
 }
 
-/** Explicit UI confirmation is the only caller of this conversion. No AI metadata is persisted. */
+/** Explicit UI confirmation is the only caller. Food relationship provenance is retained; raw AI output is not. */
 export function reviewedInputs(events: VoiceEvent[], userId: string): HealthEventInput[] {
   if (!events.length || events.length > MAX_EVENTS) throw new VoiceError("INVALID_EVENT");
   return events.map(event => {

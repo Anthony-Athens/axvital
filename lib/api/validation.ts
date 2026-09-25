@@ -67,7 +67,7 @@ export async function validateApiRequest(request: Request, route: string) {
       try { body = JSON.parse(raw); } catch { invalid(); }
       if (!body || typeof body !== "object" || Array.isArray(body)) invalid();
     }
-    const experimentKeys: Record<string, string[]> = { "http/nutrition/goals": ["action","input","id","revision"], "http/experiments/results": ["id","expectedAnalysisRevision","expectedLifecycleRevision"], "http/experiments/draft": ["id", "revision", "input"], "http/experiments/start": ["id", "revision"], "http/experiments/readiness": ["outcome", "timeZone", "startDate", "endDateExclusive"] };
+    const experimentKeys: Record<string, string[]> = { "http/nutrition/resolve": ["label", "context"], "http/nutrition/goals": ["action","input","id","revision"], "http/experiments/results": ["id","expectedAnalysisRevision","expectedLifecycleRevision"], "http/experiments/draft": ["id", "revision", "input"], "http/experiments/start": ["id", "revision"], "http/experiments/readiness": ["outcome", "timeZone", "startDate", "endDateExclusive"] };
     const keys = experimentKeys[route] ?? (route === "account/delete" ? ["confirmation","password","acceptConsequences"] : route === "weekly-recap" ? ["start","end","endDate","timeZone"] : route === "billing/checkout" ? ["interval"] : route === "product-events" ? ["event"] : []);
     if (Object.keys(body).some(key => !keys.includes(key))) invalid();
   }

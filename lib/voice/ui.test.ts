@@ -12,7 +12,7 @@ export function mount(){root=createRoot(document.getElementById('root'));root.re
   define: { "process.env.NODE_ENV": '"test"', "process.env": "{}" },
   plugins: [{ name: "voice-fixture", setup(b) {
     const mocks: Record<string, string> = {
-      "@/lib/supabase/client": `export const supabase={auth:{getUser:async()=>({data:{user:{id:'owner'}},error:null}),onAuthStateChange:callback=>{window.authChanged=callback;return {data:{subscription:{unsubscribe(){}}}}}},from:table=>({insert:async rows=>{window.writes.push({table,rows});return {error:window.saveFail?{message:'private database error'}:null}}})};`,
+      "@/lib/supabase/client": `export const supabase={auth:{getUser:async()=>({data:{user:{id:'owner'}},error:null}),onAuthStateChange:callback=>{window.authChanged=callback;return {data:{subscription:{unsubscribe(){}}}}}},rpc:async(table,{rows})=>{window.writes.push({table,rows});return {error:window.saveFail?{message:'private database error'}:null}},from:table=>({insert:async rows=>{window.writes.push({table,rows});return {error:window.saveFail?{message:'private database error'}:null}}})};`,
       "@/lib/telemetry/client": "export const trackProduct=(...args)=>window.analytics.push(args);",
     };
     b.onResolve({ filter: /^@\// }, args => mocks[args.path] ? { path: args.path, namespace: "mock" } : undefined);
@@ -91,6 +91,41 @@ test("voice UI requests permission only on start, recovers from permission/parse
     await t.click("Confirm and save events"); assert.equal(t.w.saved, 1); assert.equal(t.doc.querySelector('[role="dialog"]'), null);
     assert.ok(t.analytics.some(([event]) => event === "Voice Log Confirmed"));
     assert.ok(t.analytics.every(args => args.length === 1));
+  } finally { await t.close(); }
+});
+
+test("food review exclusions retain provenance through uncertain save and explicit retry", async () => {
+  const t = await fixture();
+  const food = { label: "Pizza", food_id: "00000000-0000-4000-8000-000000000001", canonical_name: "Pizza", method: "exact", confirmed: false, categories: [], components: [{ food_id: "00000000-0000-4000-8000-000000000002", label: "Cheese", source: "library", confidence: null, included: true, confirmed: false, categories: [{ id: "dairy", name: "Dairy", slug: "dairy" }] }] };
+  try {
+    await t.click("Start recording"); await t.click("Stop recording");
+    await t.resolve({ candidates: [{ ...candidates[1], event: { ...candidates[1].event, title: "Pizza", food } }, candidates[0]] });
+    assert.equal(t.doc.querySelectorAll("article").length, 2); assert.match(t.doc.body.textContent!, /Typical library component/);
+    await t.h.act(async () => (t.doc.querySelector('article input[type="checkbox"]') as HTMLInputElement).click());
+    assert.match(t.doc.body.textContent!, /Cheese \(excluded\)/);
+    Object.assign(t.w, { saveFail: true }); await t.click("Confirm and save events");
+    assert.equal(t.writes.length, 1); assert.equal(t.writes[0].table, "ingest_health_events_with_food");
+    const savedFood = t.writes[0].rows[0].food as { components: { source: string; included: boolean; confirmed: boolean }[] };
+    assert.equal(savedFood.components[0].source, "library"); assert.equal(savedFood.components[0].included, false); assert.equal(savedFood.components[0].confirmed, true);
+    assert.equal((t.writes[0].rows[0].event as { input_method: string }).input_method, "voice");
+    assert.equal(t.writes[0].rows.length, 2); assert.equal(t.writes[0].rows[1].food, null);
+    const retry = [...t.doc.querySelectorAll("label")].find(label => label.textContent?.includes("I checked the timeline"))!.querySelector("input")!;
+    await t.h.act(async () => retry.click()); Object.assign(t.w, { saveFail: false }); await t.click("Confirm and save events");
+    assert.equal(t.w.saved, 1); assert.equal(t.writes.length, 2); assert.equal(JSON.stringify(t.writes[1]), JSON.stringify(t.writes[0]));
+    assert.ok(t.analytics.every(args => args.length === 1)); assert.doesNotMatch(JSON.stringify(t.analytics), /Pizza|Cheese|Dairy/);
+  } finally { await t.close(); }
+});
+
+test("editing a food label clears stale canonical components before saving", async () => {
+  const t = await fixture();
+  try {
+    await t.click("Start recording"); await t.click("Stop recording");
+    await t.resolve({ candidates: [candidates[1]] });
+    await t.field("Name", "Family stew"); await t.click("Confirm and save events");
+    assert.equal(t.w.saved, 1);
+    assert.equal(t.writes[0].table, "ingest_health_events_with_food");
+    const food = t.writes[0].rows[0].food as { food_id: string | null; label: string; method: string; components: unknown[] };
+    assert.equal(food.label, "Family stew"); assert.equal(food.food_id, null); assert.equal(food.method, "provisional"); assert.equal(food.components.length, 0);
   } finally { await t.close(); }
 });
 test("cancel during permission/recording/processing cleans up and ignores late responses", async () => {

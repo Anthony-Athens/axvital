@@ -8,6 +8,8 @@ import { eventTypes, MAX_SECONDS, reviewedInputs, type VoiceCandidate, type Voic
 import { VoiceRecorder } from "@/lib/voice/recording";
 import { voiceErrorMessage } from "@/lib/voice/errors";
 import { trackProduct } from "@/lib/telemetry/client";
+import { FoodReview } from "./FoodReview";
+import { provisionalFood } from "@/lib/nutrition/food-resolution";
 
 type Phase = "idle" | "permission" | "recording" | "processing" | "review" | "saving" | "error";
 const control = "min-h-11 rounded-lg border border-slate-300 bg-white px-3 py-2 text-base focus-visible:ring-2 focus-visible:ring-blue-600";
@@ -21,6 +23,7 @@ export function VoiceLogDialog({ onClose, onSaved }: { onClose: () => void; onSa
   const [candidates, setCandidates] = useState<VoiceCandidate[]>([]);
   const [uncertain, setUncertain] = useState(false);
   const [retryChecked, setRetryChecked] = useState(false);
+  const [matchingCount, setMatchingCount] = useState(0);
   const [recorder] = useState(() => new VoiceRecorder());
   const owner = useRef("");
   const phaseRef = useRef<Phase>("idle");
@@ -124,11 +127,19 @@ export function VoiceLogDialog({ onClose, onSaved }: { onClose: () => void; onSa
   }
 
   function edit(index: number, patch: Partial<VoiceEvent>) {
-    setCandidates(current => current.map((candidate, i) => i === index ? { ...candidate, event: { ...candidate.event, ...patch } } : candidate));
+    setCandidates(current => current.map((candidate, i) => {
+      if (i !== index) return candidate;
+      const event = { ...candidate.event, ...patch };
+      if (patch.title !== undefined || patch.event_type !== undefined) {
+        delete event.food;
+        if (["food", "fluid"].includes(event.event_type)) event.food = provisionalFood(event.title ?? "");
+      }
+      return { ...candidate, event };
+    }));
     trackProduct("Voice Log Edited");
   }
   async function confirm() {
-    if (phaseRef.current !== "review" || (uncertain && !retryChecked)) return;
+    if (phaseRef.current !== "review" || matchingCount > 0 || (uncertain && !retryChecked)) return;
     transition("saving"); setMessage("");
     try {
       const inputs = reviewedInputs(candidates.map(candidate => candidate.event), owner.current);
@@ -169,6 +180,7 @@ export function VoiceLogDialog({ onClose, onSaved }: { onClose: () => void; onSa
               <div className="flex items-center justify-between gap-3"><h3 className="font-semibold">Event {index + 1} — review details</h3><button type="button" className={`${button} text-red-700`} aria-label={`Remove event ${index + 1}`} onClick={() => { setCandidates(current => current.filter((_, i) => i !== index)); trackProduct("Voice Log Edited"); }}>Remove</button></div>
               <label className="grid gap-1">Event type<select className={control} value={candidate.event.event_type} onChange={e => edit(index, { event_type: e.target.value as VoiceEvent["event_type"], amount: null, dose_amount: null, dose_unit: null, duration_minutes: null, distance: null, distance_unit: null, intensity: null, severity: null })}>{eventTypes.map(type => <option key={type} value={type}>{type[0].toUpperCase() + type.slice(1)}</option>)}</select></label>
               <label className="grid gap-1">Name<input className={control} value={candidate.event.title ?? ""} maxLength={160} onChange={e => edit(index, { title: e.target.value })}/></label>
+              {(["food", "fluid"].includes(candidate.event.event_type)) && <FoodReview key={candidate.event.title} food={candidate.event.food} label={candidate.event.title ?? ""} onChange={food => edit(index, { food })} onBusy={delta => setMatchingCount(count => count + delta)}/>}
               <div className="grid grid-cols-2 gap-3">
                 <label className="grid min-w-0 gap-1">Date<input className={`${control} min-w-0`} type="date" value={candidate.event.event_date} onChange={e => edit(index, { event_date: e.target.value })}/></label>
                 <label className="grid min-w-0 gap-1">Time<input className={`${control} min-w-0`} type="time" step="1" value={candidate.event.event_time} onChange={e => edit(index, { event_time: e.target.value })}/></label>
@@ -193,7 +205,7 @@ export function VoiceLogDialog({ onClose, onSaved }: { onClose: () => void; onSa
       </div>
       <footer className="safe-bottom flex shrink-0 gap-3 border-t border-slate-200 p-4">
         <button type="button" className={`${button} border border-slate-300`} onClick={cancel} disabled={phase === "saving"}>Cancel</button>
-        {(phase === "review" || phase === "saving") && <button type="button" className={`${button} flex-1 bg-blue-600 text-white`} disabled={phase === "saving" || !candidates.length || (uncertain && !retryChecked)} onClick={() => void confirm()}>{phase === "saving" ? "Saving…" : "Confirm and save events"}</button>}
+        {(phase === "review" || phase === "saving") && <button type="button" className={`${button} flex-1 bg-blue-600 text-white`} disabled={phase === "saving" || matchingCount > 0 || !candidates.length || (uncertain && !retryChecked)} onClick={() => void confirm()}>{phase === "saving" ? "Saving…" : "Confirm and save events"}</button>}
       </footer>
     </div>
   </div>;
