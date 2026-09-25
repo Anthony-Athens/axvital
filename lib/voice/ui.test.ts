@@ -69,6 +69,27 @@ const candidates = [
 const eggFood = { label: "eggs", food_id: "00000000-0000-4000-8000-000000000001", canonical_name: "Egg", method: "alias", confirmed: false, categories: [], components: [] };
 const eggDraft = { quantity: 3, unit: "each", meal_type: null, serving_id: "00000000-0000-4000-8000-000000000002", accept_incomplete: false, reference_confirmed: false,
   servings: [{ id: "00000000-0000-4000-8000-000000000002", food_id: eggFood.food_id, serving_name: "1 large", serving_quantity: 1, serving_unit: "each", grams_equivalent: 50, calories: 72, protein_grams: 6.3, carbohydrate_grams: 0.4, fat_grams: 4.8, is_default: true, display_order: 0 }] };
+test("voice composite review uses edited component snapshots and remains one event", async () => {
+  const t = await fixture();
+  const breadId = "00000000-0000-4000-8000-000000000003";
+  const food = { ...eggFood, label: "Eggs and Toast", canonical_name: "Eggs and Toast", recipe_unit: "serving", components: [
+    { food_id: eggFood.food_id, label: "Egg", source: "library", confidence: null, included: true, confirmed: false, categories: [], nutrition: { ...eggDraft, quantity: 2 } },
+    { food_id: breadId, label: "Bread", source: "library", confidence: null, included: true, confirmed: false, categories: [], nutrition: { ...eggDraft, quantity: 2, unit: "slice", servings: [{ ...eggDraft.servings[0], food_id: breadId, serving_unit: "slice", calories: 100 }] } },
+  ] };
+  try {
+    await t.click("Start recording"); await t.click("Stop recording");
+    await t.resolve({ candidates: [{ ...candidates[1], event: { ...candidates[1].event, title: food.label, food }, nutrition: { ...eggDraft, quantity: 1, unit: "serving", recipe_unit: "serving", servings: [], serving_id: null } }] });
+    await t.h.act(async () => ([...t.doc.querySelectorAll("label")].find(node => node.textContent?.startsWith("I checked this component recipe"))!.querySelector("input") as HTMLInputElement).click());
+    assert.match(t.doc.body.textContent!, /344 kcal/);
+    await t.field("Quantity for Egg", "3"); assert.match(t.doc.body.textContent!, /416 kcal/);
+    await t.click("Remove component Bread"); assert.match(t.doc.body.textContent!, /216 kcal/);
+    await t.click("Confirm and save events");
+    assert.equal(t.writes.length, 1); assert.equal(t.writes[0].table, "ingest_voice_nutrition");
+    assert.equal(t.writes[0].rows.length, 1);
+    const nutrition = t.writes[0].rows[0].nutrition as { recipe: { multiplier: number }[] };
+    assert.equal(nutrition.recipe.length, 1); assert.equal(nutrition.recipe[0].multiplier, 3);
+  } finally { await t.close(); }
+});
 test("review displays extracted quantity; edits and removal reach nutrition persistence unchanged through retry", async () => {
   const t = await fixture();
   try {

@@ -1,3 +1,4 @@
+import { enrichRecipe } from "./recipes.ts";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { loadFoodCatalog } from "./food-catalog.ts";
 import { matchFoodLabel, provisionalFood, resolveFood, type FoodCatalog, type FoodResolution } from "./food-resolution.ts";
@@ -34,7 +35,7 @@ export async function enrichFoodCandidates(client: SupabaseClient, candidates: V
     const deterministic = resolveNutritionFood(label, candidate.source_fragment, catalog, servings);
     // A bounded number run concurrently under their provider deadlines.
     const eligible = !deterministic.food_id && inferenceCount++ < 3;
-    const food = deterministic.food_id ? deterministic : await resolveWithCatalog(label, candidate.source_fragment, catalog, signal, eligible ? infer : undefined);
+    const food = enrichRecipe(deterministic.food_id ? deterministic : await resolveWithCatalog(label, candidate.source_fragment, catalog, signal, eligible ? infer : undefined), servings);
     return { ...candidate, event: { ...candidate.event, food }, nutrition: nutritionDraft(food, servings, candidate.event.amount, candidate.source_fragment, intake) };
   }));
 }

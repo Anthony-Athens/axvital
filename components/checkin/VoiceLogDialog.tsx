@@ -142,7 +142,7 @@ export function VoiceLogDialog({ onClose, onSaved }: { onClose: () => void; onSa
         nutrition = event.food ? nutritionDraft(event.food, [], event.amount) : undefined;
       }
       if (patch.amount !== undefined && event.food) nutrition = nutritionDraft(event.food, nutrition?.servings ?? [], event.amount);
-      if (patch.food && nutrition) nutrition = { ...nutrition, reference_confirmed: false, accept_incomplete: false, ...(patch.food.food_id !== candidate.event.food?.food_id ? { servings: [], serving_id: null } : {}) };
+      if (patch.food && nutrition) nutrition = { ...nutrition, recipe_edited: JSON.stringify(patch.food.components) !== JSON.stringify(candidate.event.food?.components), reference_confirmed: false, accept_incomplete: false, ...(patch.food.food_id !== candidate.event.food?.food_id ? { servings: [], serving_id: null } : {}) };
       return { ...candidate, intake: undefined, event, nutrition };
     }));
     trackProduct("Voice Log Edited");

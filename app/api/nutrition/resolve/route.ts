@@ -1,3 +1,4 @@
+import { enrichRecipe } from "@/lib/nutrition/recipes";
 import { createClient } from "@/lib/supabase/server";
 import { guardWithClient } from "@/lib/api/boundary";
 import { ApiError } from "@/lib/api/validation";
@@ -17,6 +18,6 @@ export const POST = guardWithClient("http/nutrition/resolve", async (request, { 
   const identity = foodIdentity(label);
   const intake = parseIntake(amount, label, context);
   const deterministic = resolveNutritionFood(identity, context, catalog, servings);
-  const food = deterministic.food_id ? deterministic : await resolveWithCatalog(identity, context, catalog, request.signal, inferFood);
+  const food = enrichRecipe(deterministic.food_id ? deterministic : await resolveWithCatalog(identity, context, catalog, request.signal, inferFood), servings);
   return Response.json({ food, nutrition: nutritionDraft(food, servings, amount, context, intake) });
 }, createClient);
