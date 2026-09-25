@@ -5,7 +5,7 @@ import { analyticsPayload, voiceAnalyticsEvents, type BillingInterval } from "..
 
 const now = new Date("2026-09-24T17:23:45Z"), zone = "America/New_York";
 export function raw(event_type: string, title: string, source_fragment: string, patch: Record<string, unknown> = {}) {
-  return { event_type, title, source_fragment, amount: null, dose_amount: null, dose_unit: null, duration_minutes: null, distance: null, distance_unit: null, intensity: null, severity: null, notes: null, time_expression: null, ...patch };
+  return { event_type, title, source_fragment, amount: null, food_quantity: null, food_unit: null, dose_amount: null, dose_unit: null, duration_minutes: null, distance: null, distance_unit: null, intensity: null, severity: null, notes: null, time_expression: null, ...patch };
 }
 const parse = (transcript: string, events: unknown[]) => validateExtraction({ events }, transcript, now, zone);
 

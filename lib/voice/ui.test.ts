@@ -65,6 +65,52 @@ const candidates = [
   { event: { event_type: "supplement", title: "creatine", dose_amount: 5, dose_unit: "grams", event_date: "2026-09-23", event_time: "08:00:00", tags: [] }, source_fragment: "5 grams of creatine", time_note: "Please check the time.", requires_review: true },
   { event: { event_type: "food", title: "eggs", event_date: "2026-09-23", event_time: "08:00:00", tags: [] }, source_fragment: "eggs", time_note: "Please check the time.", requires_review: true },
 ];
+
+const eggFood = { label: "eggs", food_id: "00000000-0000-4000-8000-000000000001", canonical_name: "Egg", method: "alias", confirmed: false, categories: [], components: [] };
+const eggDraft = { quantity: 3, unit: "each", meal_type: null, serving_id: "00000000-0000-4000-8000-000000000002", accept_incomplete: false, reference_confirmed: false,
+  servings: [{ id: "00000000-0000-4000-8000-000000000002", food_id: eggFood.food_id, serving_name: "1 large", serving_quantity: 1, serving_unit: "each", grams_equivalent: 50, calories: 72, protein_grams: 6.3, carbohydrate_grams: 0.4, fat_grams: 4.8, is_default: true, display_order: 0 }] };
+test("review displays extracted quantity; edits and removal reach nutrition persistence unchanged through retry", async () => {
+  const t = await fixture();
+  try {
+    await t.click("Start recording"); await t.click("Stop recording");
+    await t.resolve({ candidates: [{ ...candidates[1], event: { ...candidates[1].event, food: eggFood, amount: "three eggs" }, nutrition: eggDraft }, candidates[0]] });
+    const quantity = () => [...t.doc.querySelectorAll("label")].find(node => node.textContent?.startsWith("Food quantity"))!.querySelector("input")!;
+    assert.equal(quantity().value, "3"); assert.match(t.doc.body.textContent!, /216 kcal/);
+    await t.field("Food quantity", "2"); await t.field("Food unit", "items");
+    assert.match(t.doc.body.textContent!, /144 kcal/);
+    const amount = [...t.doc.querySelectorAll("label")].find(node => node.textContent?.startsWith("Amount (optional)"))!.querySelector("input")!;
+    assert.equal(amount.value, "2 items");
+    await t.click("Remove event 2");
+    Object.assign(t.w, { saveFail: true }); await t.click("Confirm and save events");
+    assert.equal(t.writes[0].table, "ingest_voice_nutrition"); assert.equal(t.writes[0].rows.length, 1);
+    const nutrition = t.writes[0].rows[0].nutrition as Record<string, unknown>;
+    assert.equal(nutrition.multiplier, 2); assert.equal(nutrition.stated_amount, "2 items");
+    assert.equal(nutrition.serving_id, eggDraft.serving_id); assert.equal(quantity().value, "2");
+    Object.assign(t.w, { saveFail: false });
+    await t.h.act(async () => ([...t.doc.querySelectorAll("label")].find(node => node.textContent?.includes("checked the timeline"))!.querySelector("input") as HTMLInputElement).click());
+    await t.click("Confirm and save events");
+    assert.deepEqual(t.writes[1].rows, t.writes[0].rows); assert.equal(t.w.saved, 1);
+  } finally { await t.close(); }
+});
+test("food name edits clear canonical identity and stale quantity; quantity-prefixed replacement reparses", async () => {
+  const t = await fixture();
+  try {
+    await t.click("Start recording"); await t.click("Stop recording");
+    await t.resolve({ candidates: [{ ...candidates[1], event: { ...candidates[1].event, food: eggFood, amount: "three eggs" }, nutrition: eggDraft }] });
+    await t.field("Name", "2 eggs");
+    const quantity = () => [...t.doc.querySelectorAll("label")].find(node => node.textContent?.startsWith("Food quantity"))!.querySelector("input")!;
+    assert.equal(quantity().value, "2"); assert.doesNotMatch(t.doc.body.textContent!, /216 kcal|144 kcal/);
+    await t.field("Food quantity", "4");
+    assert.equal([...t.doc.querySelectorAll("label")].find(node => node.textContent?.startsWith("Name"))!.querySelector("input")!.value, "eggs");
+    await t.field("Name", "chicken"); assert.equal(quantity().value, "");
+    await t.h.act(async () => ([...t.doc.querySelectorAll("label")].find(node => node.textContent?.startsWith("Save in Nutrition Tracker without macros"))!.querySelector("input") as HTMLInputElement).click());
+    await t.click("Confirm and save events");
+    const row = t.writes[0].rows[0];
+    assert.equal((row.nutrition as Record<string, unknown>).multiplier, null);
+    assert.equal((row.nutrition as Record<string, unknown>).serving_id, null);
+    assert.doesNotMatch(JSON.stringify(row.food), new RegExp(eggFood.food_id));
+  } finally { await t.close(); }
+});
 test("voice UI requests permission only on start, recovers from permission/parse failure, reviews/edits/removes, and saves only on confirmation", async () => {
   const t = await fixture();
   try {

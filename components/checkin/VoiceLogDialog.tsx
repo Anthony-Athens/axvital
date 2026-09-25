@@ -10,7 +10,7 @@ import { voiceErrorMessage } from "@/lib/voice/errors";
 import { trackProduct } from "@/lib/telemetry/client";
 import { FoodReview } from "./FoodReview";
 import { provisionalFood } from "@/lib/nutrition/food-resolution";
-import { nutritionDraft, type NutritionDraft } from "@/lib/nutrition/voice-nutrition";
+import { nutritionDraft, foodIdentity, type NutritionDraft } from "@/lib/nutrition/voice-nutrition";
 import { logVoiceNutrition } from "@/lib/nutrition/ingestion";
 import { VoiceNutritionReview } from "./VoiceNutritionReview";
 
@@ -136,18 +136,20 @@ export function VoiceLogDialog({ onClose, onSaved }: { onClose: () => void; onSa
       const event = { ...candidate.event, ...patch };
       let nutrition = candidate.nutrition;
       if (patch.title !== undefined || patch.event_type !== undefined) {
+        event.amount = null;
         delete event.food;
         if (["food", "fluid"].includes(event.event_type)) event.food = provisionalFood(event.title ?? "");
         nutrition = event.food ? nutritionDraft(event.food, [], event.amount) : undefined;
       }
       if (patch.amount !== undefined && event.food) nutrition = nutritionDraft(event.food, nutrition?.servings ?? [], event.amount);
       if (patch.food && nutrition) nutrition = { ...nutrition, reference_confirmed: false, accept_incomplete: false, ...(patch.food.food_id !== candidate.event.food?.food_id ? { servings: [], serving_id: null } : {}) };
-      return { ...candidate, event, nutrition };
+      return { ...candidate, intake: undefined, event, nutrition };
     }));
     trackProduct("Voice Log Edited");
   }
   function editNutrition(index: number, nutrition: NutritionDraft, food = candidates[index].event.food) {
-    setCandidates(current => current.map((candidate, i) => i === index ? { ...candidate, nutrition, event: { ...candidate.event, food } } : candidate));
+    if (food) food = { ...food, label: foodIdentity(food.label) };
+    setCandidates(current => current.map((candidate, i) => i === index ? { ...candidate, intake: undefined, nutrition, event: { ...candidate.event, title: foodIdentity(candidate.event.title ?? ""), food, amount: nutrition.quantity === null ? null : `${nutrition.quantity}${nutrition.unit ? ` ${nutrition.unit}` : ""}` } } : candidate));
     trackProduct("Voice Log Edited");
   }
   async function confirm() {

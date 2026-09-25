@@ -7,7 +7,7 @@ const code = (await build({ entryPoints: ["lib/voice/provider.ts"], bundle: true
   b.onResolve({ filter: /^server-only$/ }, () => ({ path: "server-only", namespace: "mock" }));
   b.onLoad({ filter: /.*/, namespace: "mock" }, () => ({ contents: "export {};" }));
 } }] })).outputFiles[0].text;
-const event = { event_type: "supplement", title: "magnesium", source_fragment: "I took magnesium.", amount: null, dose_amount: null, dose_unit: null, duration_minutes: null, distance: null, distance_unit: null, intensity: null, severity: null, notes: null, time_expression: null };
+const event = { event_type: "supplement", title: "magnesium", source_fragment: "I took magnesium.", amount: null, food_quantity: null, food_unit: null, dose_amount: null, dose_unit: null, duration_minutes: null, distance: null, distance_unit: null, intensity: null, severity: null, notes: null, time_expression: null };
 function fixture(options: { missingKey?: boolean; transcribe?: unknown; extract?: unknown; fail?: number } = {}) {
   const calls: { url: string; init: RequestInit }[] = [];
   const fixtureModule = { exports: {} as { processVoice: (file: File, context: unknown) => Promise<{ candidates: { event: { dose_amount: number | null } }[] }> } };

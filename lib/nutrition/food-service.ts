@@ -3,7 +3,7 @@ import { loadFoodCatalog } from "./food-catalog.ts";
 import { matchFoodLabel, provisionalFood, resolveFood, type FoodCatalog, type FoodResolution } from "./food-resolution.ts";
 import type { VoiceCandidate } from "../voice/schema.ts";
 import type { Serving } from "./nutrition.ts";
-import { nutritionDraft, resolveNutritionFood } from "./voice-nutrition.ts";
+import { nutritionDraft, resolveNutritionFood, foodIdentity, parseIntake } from "./voice-nutrition.ts";
 
 export async function loadNutritionServings(client: SupabaseClient): Promise<Serving[]> {
   const { data, error } = await client.from("food_servings").select("*").limit(1001);
@@ -24,16 +24,17 @@ export async function enrichFoodCandidates(client: SupabaseClient, candidates: V
   catch { return candidates.map(candidate => {
     if (!["food", "fluid"].includes(candidate.event.event_type)) return candidate;
     const food = provisionalFood(candidate.event.title ?? "Food");
-    return { ...candidate, event: { ...candidate.event, food }, nutrition: nutritionDraft(food, [], candidate.event.amount, candidate.source_fragment) };
+    return { ...candidate, event: { ...candidate.event, food }, nutrition: nutritionDraft(food, [], candidate.event.amount, candidate.source_fragment, candidate.intake) };
   }); }
   let inferenceCount = 0;
   return Promise.all(candidates.map(async candidate => {
     if (!["food", "fluid"].includes(candidate.event.event_type)) return candidate;
-    const label = candidate.event.title ?? "Food";
+    const label = foodIdentity(candidate.event.title ?? "Food");
+    const intake = candidate.intake ?? parseIntake(candidate.event.amount, candidate.event.title ?? "Food", candidate.source_fragment);
     const deterministic = resolveNutritionFood(label, candidate.source_fragment, catalog, servings);
     // A bounded number run concurrently under their provider deadlines.
     const eligible = !deterministic.food_id && inferenceCount++ < 3;
     const food = deterministic.food_id ? deterministic : await resolveWithCatalog(label, candidate.source_fragment, catalog, signal, eligible ? infer : undefined);
-    return { ...candidate, event: { ...candidate.event, food }, nutrition: nutritionDraft(food, servings, candidate.event.amount, candidate.source_fragment) };
+    return { ...candidate, event: { ...candidate.event, food }, nutrition: nutritionDraft(food, servings, candidate.event.amount, candidate.source_fragment, intake) };
   }));
 }

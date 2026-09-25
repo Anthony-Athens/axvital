@@ -1,3 +1,4 @@
+import { foodIdentity, parseIntake, normalizeServingUnit } from "../nutrition/voice-nutrition.ts";
 import type { HealthEventInput } from "../health-events/ingestion.ts";
 import { validateHealthEventInput } from "../health-events/ingestion.ts";
 import { addLocalDays, calendarDateInZone } from "../timeline/dates.ts";
@@ -8,11 +9,12 @@ export const MAX_SECONDS = 75;
 export const MAX_AUDIO_BYTES = 3_000_000;
 export const MAX_EVENTS = 12;
 export type VoiceEvent = Omit<HealthEventInput, "user_id" | "input_method">;
-export type VoiceCandidate = { event: VoiceEvent; nutrition?: NutritionDraft; source_fragment: string; time_note: string; requires_review: true };
+export type VoiceCandidate = { event: VoiceEvent; nutrition?: NutritionDraft; intake?: ReturnType<typeof parseIntake>; source_fragment: string; time_note: string; requires_review: true };
 const nullableText = { type: ["string", "null"] };
 const nullableNumber = { type: ["number", "null"] };
 const properties = {
   event_type: { type: "string", enum: eventTypes }, title: { type: "string" },
+  food_quantity: nullableNumber, food_unit: nullableText,
   amount: nullableText, dose_amount: nullableNumber, dose_unit: nullableText,
   duration_minutes: nullableNumber, distance: nullableNumber, distance_unit: nullableText,
   intensity: nullableText, severity: nullableNumber, notes: nullableText,
@@ -85,7 +87,7 @@ export function validateExtraction(value: unknown, transcript: string, now: Date
     if (Object.keys(row).length !== Object.keys(properties).length || Object.keys(row).some(key => !(key in properties))) return invalid();
     const fragment = text(row.source_fragment, 1200);
     if (!contains(transcript, fragment)) return invalid();
-    const title = text(row.title, 160);
+    let title = text(row.title, 160);
     if (!contains(fragment, title) || !eventTypes.includes(row.event_type as typeof eventTypes[number])) return invalid();
     const type = row.event_type as typeof eventTypes[number];
     const optionalText = (key: string) => {
@@ -106,6 +108,15 @@ export function validateExtraction(value: unknown, transcript: string, now: Date
     if (distance !== null && (!distance_unit || !hasQuantity(distance, distance_unit, fragment))) return invalid();
     if (duration_minutes !== null && !["minute", "minutes", "min", "mins"].some(unit => hasQuantity(duration_minutes, unit, fragment))) return invalid();
     if (severity !== null && (type !== "symptom" || severity > 10 || !new RegExp(`(?:\\bseverity\\s*(?:of\\s*)?(?:${numberPattern(severity)})\\b|\\b(?:${numberPattern(severity)})\\s*(?:out of\\s*10|/\\s*10)\\b)`, "i").test(fragment))) return invalid();
+    let intake: ReturnType<typeof parseIntake> | undefined;
+    if (["food", "fluid"].includes(type)) {
+      intake = parseIntake(amount, title, fragment);
+      const grounded = parseIntake(null, title, fragment);
+      if (row.food_quantity !== null && row.food_quantity !== grounded.quantity) return invalid();
+      if (row.food_unit !== null && (typeof row.food_unit !== "string" || normalizeServingUnit(row.food_unit) !== grounded.unit)) return invalid();
+      if (intake.quantity !== grounded.quantity || intake.unit !== grounded.unit) return invalid();
+      title = foodIdentity(title);
+    } else if (row.food_quantity !== null || row.food_unit !== null) return invalid();
     const { time_note, ...time } = resolveVoiceTime(expression, now, timeZone);
     const event: VoiceEvent = {
       event_type: type, title, ...time, amount, dose_amount, dose_unit, duration_minutes, distance, distance_unit,
@@ -117,7 +128,7 @@ export function validateExtraction(value: unknown, transcript: string, now: Date
       duration: duration_minutes !== null ? `${duration_minutes} min` : null,
     };
     validateHealthEventInput({ ...event, user_id: "validation", input_method: "voice" });
-    return { event, source_fragment: fragment, time_note, requires_review: true };
+    return { event, ...(intake ? { intake } : {}), source_fragment: fragment, time_note, requires_review: true };
   });
 }
 

@@ -8,8 +8,8 @@ export function VoiceNutritionReview({ food, draft, onChange }: { food?: FoodRes
   const modified = food?.components.some(component => !component.included || component.source !== "library");
   return <div className="space-y-3 rounded-lg border border-blue-100 bg-blue-50 p-3" aria-label="Nutrition review">
     <p className="font-semibold">Nutrition Tracker</p>
-    {!!draft.servings.length && <>
-      <label className="grid gap-1">Nutrition serving<select className={control} value={draft.serving_id ?? ""} onChange={e => onChange({ ...draft, serving_id: e.target.value, accept_incomplete: false })}>{draft.servings.map(serving => <option key={serving.id} value={serving.id}>{serving.serving_name}</option>)}</select></label>
+    {<>
+      <label className="grid gap-1">Nutrition serving<select className={control} value={draft.serving_id ?? ""} onChange={e => onChange({ ...draft, serving_id: e.target.value, accept_incomplete: false })}><option value="">Select a compatible serving</option>{draft.servings.map(serving => <option key={serving.id} value={serving.id}>{serving.serving_name}</option>)}</select></label>
       <div className="grid grid-cols-2 gap-2"><label className="grid gap-1">Food quantity<input className={control} type="number" min="0.01" max="10000" step="any" value={draft.quantity ?? ""} onChange={e => onChange({ ...draft, quantity: e.target.value ? Number(e.target.value) : null, accept_incomplete: false })}/></label>
         <label className="grid gap-1">Food unit<input className={control} maxLength={40} value={draft.unit ?? ""} placeholder="each, oz, cup…" onChange={e => onChange({ ...draft, unit: e.target.value || null, accept_incomplete: false })}/></label></div>
       {modified && <label className="flex min-h-11 items-center gap-2"><input type="checkbox" checked={draft.reference_confirmed} onChange={e => onChange({ ...draft, reference_confirmed: e.target.checked, accept_incomplete: false })}/>I checked that this reference serving’s nutrition applies to my modified food. Exclusions do not automatically subtract nutrients.</label>}

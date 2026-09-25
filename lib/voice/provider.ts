@@ -11,6 +11,7 @@ Numeric quantities must be explicitly stated, with their original units. Do not 
 duration_minutes is only for explicitly stated minutes. severity is only an explicitly rated 0–10 symptom severity.
 dose_amount/dose_unit are for supplements and medication; distance/duration/intensity for exercise.
 amount is verbatim stated quantity text for food/fluid. notes may only quote relevant stated context, otherwise null.
+For food/fluid, title is the food identity only, excluding quantity and measurement units. food_quantity is the explicit numeric quantity (three = 3, half a = 0.5, one and a half = 1.5); food_unit is the normalized stated unit (eggs = each, ounces = oz, cups = cup). For other bare count nouns such as bananas, food_unit is null; the catalog determines whether an item serving exists. Both are null for nonfood. Unknown quantities/units are null. Bare ounces in a drink are ambiguous: food_unit must be null until review.
 For food/fluid, preserve the explicit quantity and unit together in amount (three eggs, six ounces, one cup).
 Keep explicitly stated brand/product words in the food title; never substitute a generic food or invent a brand.
 Include stated meal context, ingredients and exclusions in source_fragment. Preserve without/no/hold exactly.
