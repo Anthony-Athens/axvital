@@ -1,0 +1,4579 @@
+[
+  {
+    "selection": {
+      "slug": "bread",
+      "name": "Bread",
+      "query": "Bread NFS",
+      "categories": [
+        "grains"
+      ],
+      "existingSlug": "bread",
+      "fdcId": 2707598,
+      "expectedDescription": "Bread, white",
+      "reviewed": true,
+      "expectedDataType": "Survey (FNDDS)"
+    },
+    "food": {
+      "external_id": 2707598,
+      "data_type": "Survey (FNDDS)",
+      "description": "Bread, white",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": null,
+      "basis": {
+        "calories": 267,
+        "protein_grams": 9.43,
+        "carbohydrate_grams": 49.2,
+        "fat_grams": 3.59,
+        "fiber_grams": 2.3,
+        "sugar_grams": 5.34,
+        "sodium_mg": 450,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 267,
+          "protein_grams": 9.43,
+          "carbohydrate_grams": 49.2,
+          "fat_grams": 3.59,
+          "fiber_grams": 2.3,
+          "sugar_grams": 5.34,
+          "sodium_mg": 450,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 106.80000000000001,
+          "protein_grams": 3.7720000000000002,
+          "carbohydrate_grams": 19.680000000000003,
+          "fat_grams": 1.436,
+          "fiber_grams": 0.9199999999999999,
+          "sugar_grams": 2.136,
+          "sodium_mg": 180,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:298814",
+          "serving_name": "1 cup (1 cup)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 40
+        },
+        {
+          "calories": 74.76,
+          "protein_grams": 2.6404,
+          "carbohydrate_grams": 13.776000000000002,
+          "fat_grams": 1.0052,
+          "fiber_grams": 0.644,
+          "sugar_grams": 1.4951999999999999,
+          "sodium_mg": 126,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:298810",
+          "serving_name": "1 slice (1 medium or regular slice)",
+          "serving_quantity": 1,
+          "serving_unit": "slice",
+          "grams_equivalent": 28
+        }
+      ],
+      "omitted_portions": 6
+    },
+    "digest": "b22bd3d22b28e7fd1ca2b93a48faa0100c04117d93c8508b547e8e3e0d602140"
+  },
+  {
+    "selection": {
+      "slug": "turkey",
+      "name": "Turkey",
+      "query": "Turkey cooked NFS",
+      "categories": [
+        "poultry"
+      ],
+      "existingSlug": "turkey",
+      "fdcId": 2706104,
+      "expectedDescription": "Turkey, NFS",
+      "reviewed": true,
+      "expectedDataType": "Survey (FNDDS)"
+    },
+    "food": {
+      "external_id": 2706104,
+      "data_type": "Survey (FNDDS)",
+      "description": "Turkey, NFS",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": null,
+      "basis": {
+        "calories": 139,
+        "protein_grams": 28.8,
+        "carbohydrate_grams": 0,
+        "fat_grams": 2.06,
+        "fiber_grams": 0,
+        "sugar_grams": 0,
+        "sodium_mg": 467,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 139,
+          "protein_grams": 28.8,
+          "carbohydrate_grams": 0,
+          "fat_grams": 2.06,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 467,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 39.4065,
+          "protein_grams": 8.164800000000001,
+          "carbohydrate_grams": 0,
+          "fat_grams": 0.58401,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 132.3945,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:293628",
+          "serving_name": "1 oz (1 oz, boneless, cooked)",
+          "serving_quantity": 1,
+          "serving_unit": "oz",
+          "grams_equivalent": 28.35
+        },
+        {
+          "calories": 187.65,
+          "protein_grams": 38.88,
+          "carbohydrate_grams": 0,
+          "fat_grams": 2.781,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 630.45,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:293627",
+          "serving_name": "1 cup (1 cup, diced, cooked)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 135
+        }
+      ],
+      "omitted_portions": 4
+    },
+    "digest": "1ab24f2272643dda7a891eaaa8051efcfbebba491224a2a9d7d95207fc4fc6f1"
+  },
+  {
+    "selection": {
+      "slug": "ham",
+      "name": "Ham",
+      "query": "Ham sliced deli",
+      "categories": [
+        "pork",
+        "processed_meat"
+      ],
+      "existingSlug": "ham",
+      "fdcId": 332397,
+      "expectedDescription": "Ham, sliced, pre-packaged, deli meat (96%fat free, water added)",
+      "reviewed": true,
+      "expectedDataType": "Foundation"
+    },
+    "food": {
+      "external_id": 332397,
+      "data_type": "Foundation",
+      "description": "Ham, sliced, pre-packaged, deli meat (96%fat free, water added)",
+      "source_updated_at": "2019-04-01T04:00:00.000Z",
+      "source_category": "Sausages and Luncheon Meats",
+      "basis": {
+        "calories": 106,
+        "protein_grams": 16.7,
+        "carbohydrate_grams": 0.27,
+        "fat_grams": 3.73,
+        "fiber_grams": null,
+        "sugar_grams": null,
+        "sodium_mg": 1040,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "servings": [
+        {
+          "calories": 106,
+          "protein_grams": 16.7,
+          "carbohydrate_grams": 0.27,
+          "fat_grams": 3.73,
+          "fiber_grams": null,
+          "sugar_grams": null,
+          "sodium_mg": 1040,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 14.31,
+          "protein_grams": 2.2545,
+          "carbohydrate_grams": 0.03645,
+          "fat_grams": 0.50355,
+          "fiber_grams": null,
+          "sugar_grams": null,
+          "sodium_mg": 140.4,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "portion:121438",
+          "serving_name": "1 slice (slice)",
+          "serving_quantity": 1,
+          "serving_unit": "slice",
+          "grams_equivalent": 13.5
+        }
+      ],
+      "omitted_portions": 1
+    },
+    "digest": "82ff14c1f0c9cb584b488598854376899a9f0acc2e5e5b7b11d2431875123f21"
+  },
+  {
+    "selection": {
+      "slug": "cheese",
+      "name": "Cheese",
+      "query": "Cheese NFS",
+      "categories": [
+        "dairy"
+      ],
+      "existingSlug": "cheese",
+      "fdcId": 2705704,
+      "expectedDescription": "Cheese, NFS",
+      "reviewed": true,
+      "expectedDataType": "Survey (FNDDS)"
+    },
+    "food": {
+      "external_id": 2705704,
+      "data_type": "Survey (FNDDS)",
+      "description": "Cheese, NFS",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": null,
+      "basis": {
+        "calories": 381,
+        "protein_grams": 20.7,
+        "carbohydrate_grams": 4.33,
+        "fat_grams": 31.3,
+        "fiber_grams": 0,
+        "sugar_grams": 2.08,
+        "sodium_mg": 964,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 381,
+          "protein_grams": 20.7,
+          "carbohydrate_grams": 4.33,
+          "fat_grams": 31.3,
+          "fiber_grams": 0,
+          "sugar_grams": 2.08,
+          "sodium_mg": 964,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 80.00999999999999,
+          "protein_grams": 4.3469999999999995,
+          "carbohydrate_grams": 0.9093,
+          "fat_grams": 6.5729999999999995,
+          "fiber_grams": 0,
+          "sugar_grams": 0.4368,
+          "sodium_mg": 202.44,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:291530",
+          "serving_name": "1 slice (1 slice)",
+          "serving_quantity": 1,
+          "serving_unit": "slice",
+          "grams_equivalent": 21
+        },
+        {
+          "calories": 929.64,
+          "protein_grams": 50.507999999999996,
+          "carbohydrate_grams": 10.5652,
+          "fat_grams": 76.372,
+          "fiber_grams": 0,
+          "sugar_grams": 5.075200000000001,
+          "sodium_mg": 2352.16,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:291533",
+          "serving_name": "1 cup (1 cup, melted)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 244
+        },
+        {
+          "calories": 430.53,
+          "protein_grams": 23.391,
+          "carbohydrate_grams": 4.8929,
+          "fat_grams": 35.369,
+          "fiber_grams": 0,
+          "sugar_grams": 2.3504,
+          "sodium_mg": 1089.32,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:291532",
+          "serving_name": "1 cup (1 cup)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 113
+        }
+      ],
+      "omitted_portions": 4
+    },
+    "digest": "29dbb7312b716dc8b6ecad9a48bdae29be3a934b9a477b22c6324cee4a92e946"
+  },
+  {
+    "selection": {
+      "slug": "beef-patty",
+      "name": "Beef Patty",
+      "query": "Beef patty cooked",
+      "categories": [
+        "beef"
+      ],
+      "existingSlug": "beef-patty",
+      "fdcId": 2705855,
+      "expectedDescription": "Beef, ground, patty",
+      "reviewed": true,
+      "expectedDataType": "Survey (FNDDS)"
+    },
+    "food": {
+      "external_id": 2705855,
+      "data_type": "Survey (FNDDS)",
+      "description": "Beef, ground, patty",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": null,
+      "basis": {
+        "calories": 272,
+        "protein_grams": 25.4,
+        "carbohydrate_grams": 0,
+        "fat_grams": 18.2,
+        "fiber_grams": 0,
+        "sugar_grams": 0,
+        "sodium_mg": 383,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 272,
+          "protein_grams": 25.4,
+          "carbohydrate_grams": 0,
+          "fat_grams": 18.2,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 383,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 54.400000000000006,
+          "protein_grams": 5.08,
+          "carbohydrate_grams": 0,
+          "fat_grams": 3.64,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 76.6,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:292280",
+          "serving_name": "1 oz (1 oz yields)",
+          "serving_quantity": 1,
+          "serving_unit": "oz",
+          "grams_equivalent": 20
+        },
+        {
+          "calories": 340,
+          "protein_grams": 31.75,
+          "carbohydrate_grams": 0,
+          "fat_grams": 22.75,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 478.75,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:292282",
+          "serving_name": "1 cup (1 cup)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 125
+        }
+      ],
+      "omitted_portions": 8
+    },
+    "digest": "e62a734b5ae0831c0b93605a4c243ef8aec5438d0f2d2f15b8dd243f1ea78caf"
+  },
+  {
+    "selection": {
+      "slug": "burger-bun",
+      "name": "Burger Bun",
+      "query": "Rolls hamburger plain",
+      "categories": [
+        "grains"
+      ],
+      "existingSlug": "burger-bun",
+      "fdcId": 2707657,
+      "expectedDescription": "Roll, white, hamburger bun",
+      "reviewed": true,
+      "expectedDataType": "Survey (FNDDS)"
+    },
+    "food": {
+      "external_id": 2707657,
+      "data_type": "Survey (FNDDS)",
+      "description": "Roll, white, hamburger bun",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": null,
+      "basis": {
+        "calories": 267,
+        "protein_grams": 9.43,
+        "carbohydrate_grams": 49.2,
+        "fat_grams": 3.59,
+        "fiber_grams": 2.3,
+        "sugar_grams": 5.34,
+        "sodium_mg": 450,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 267,
+          "protein_grams": 9.43,
+          "carbohydrate_grams": 49.2,
+          "fat_grams": 3.59,
+          "fiber_grams": 2.3,
+          "sugar_grams": 5.34,
+          "sodium_mg": 450,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 138.84,
+          "protein_grams": 4.9036,
+          "carbohydrate_grams": 25.584000000000003,
+          "fat_grams": 1.8668,
+          "fiber_grams": 1.196,
+          "sugar_grams": 2.7768,
+          "sodium_mg": 234,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:299168",
+          "serving_name": "1 each (1 hamburger bun)",
+          "serving_quantity": 1,
+          "serving_unit": "each",
+          "grams_equivalent": 52
+        }
+      ],
+      "omitted_portions": 2
+    },
+    "digest": "9e8049d25c1fdd2854b679f8600f72dbcbdbe8f137581ad018a0e4051de86ac4"
+  },
+  {
+    "selection": {
+      "slug": "tortilla",
+      "name": "Tortilla",
+      "query": "Tortilla flour",
+      "categories": [
+        "grains"
+      ],
+      "existingSlug": "tortilla",
+      "fdcId": 2707822,
+      "expectedDescription": "Tortilla, NFS",
+      "reviewed": true,
+      "expectedDataType": "Survey (FNDDS)"
+    },
+    "food": {
+      "external_id": 2707822,
+      "data_type": "Survey (FNDDS)",
+      "description": "Tortilla, NFS",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": null,
+      "basis": {
+        "calories": 262,
+        "protein_grams": 6.95,
+        "carbohydrate_grams": 47,
+        "fat_grams": 5.42,
+        "fiber_grams": 4.9,
+        "sugar_grams": 2.3,
+        "sodium_mg": 372,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 262,
+          "protein_grams": 6.95,
+          "carbohydrate_grams": 47,
+          "fat_grams": 5.42,
+          "fiber_grams": 4.9,
+          "sugar_grams": 2.3,
+          "sodium_mg": 372,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 73.36000000000001,
+          "protein_grams": 1.9460000000000002,
+          "carbohydrate_grams": 13.160000000000002,
+          "fat_grams": 1.5176,
+          "fiber_grams": 1.3720000000000003,
+          "sugar_grams": 0.6439999999999999,
+          "sodium_mg": 104.16,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:299961",
+          "serving_name": "1 each (1 medium)",
+          "serving_quantity": 1,
+          "serving_unit": "each",
+          "grams_equivalent": 28
+        }
+      ],
+      "omitted_portions": 4
+    },
+    "digest": "198ea166c9e274e0cd7e32ccfb1b78fca1518061a16a8e1fcef9d5b0bb4815df"
+  },
+  {
+    "selection": {
+      "slug": "mayonnaise",
+      "name": "Mayonnaise",
+      "query": "Mayonnaise regular",
+      "categories": [
+        "condiments",
+        "oils-fats"
+      ],
+      "existingSlug": "mayonnaise",
+      "fdcId": 2710204,
+      "expectedDescription": "Mayonnaise, regular",
+      "reviewed": true,
+      "expectedDataType": "Survey (FNDDS)"
+    },
+    "food": {
+      "external_id": 2710204,
+      "data_type": "Survey (FNDDS)",
+      "description": "Mayonnaise, regular",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": null,
+      "basis": {
+        "calories": 680,
+        "protein_grams": 0.96,
+        "carbohydrate_grams": 0.57,
+        "fat_grams": 74.8,
+        "fiber_grams": 0,
+        "sugar_grams": 0.57,
+        "sodium_mg": 635,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 680,
+          "protein_grams": 0.96,
+          "carbohydrate_grams": 0.57,
+          "fat_grams": 74.8,
+          "fiber_grams": 0,
+          "sugar_grams": 0.57,
+          "sodium_mg": 635,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 1496.0000000000002,
+          "protein_grams": 2.112,
+          "carbohydrate_grams": 1.254,
+          "fat_grams": 164.56,
+          "fiber_grams": 0,
+          "sugar_grams": 1.254,
+          "sodium_mg": 1397,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:309655",
+          "serving_name": "1 cup (1 cup)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 220
+        },
+        {
+          "calories": 93.84,
+          "protein_grams": 0.13248000000000001,
+          "carbohydrate_grams": 0.07866,
+          "fat_grams": 10.3224,
+          "fiber_grams": 0,
+          "sugar_grams": 0.07866,
+          "sodium_mg": 87.63,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:309656",
+          "serving_name": "1 tbsp (1 tablespoon)",
+          "serving_quantity": 1,
+          "serving_unit": "tbsp",
+          "grams_equivalent": 13.8
+        }
+      ],
+      "omitted_portions": 6
+    },
+    "digest": "533345cd7e7433201e8690b9973ecfef01b1620bcc9e14ff439beea74315461d"
+  },
+  {
+    "selection": {
+      "slug": "lettuce",
+      "name": "Lettuce",
+      "query": "Lettuce iceberg raw",
+      "categories": [
+        "vegetables"
+      ],
+      "existingSlug": "lettuce",
+      "fdcId": 2346388,
+      "expectedDescription": "Lettuce, iceberg, raw",
+      "reviewed": true,
+      "expectedDataType": "Foundation"
+    },
+    "food": {
+      "external_id": 2346388,
+      "data_type": "Foundation",
+      "description": "Lettuce, iceberg, raw",
+      "source_updated_at": "2022-10-28T04:00:00.000Z",
+      "source_category": "Vegetables and Vegetable Products",
+      "basis": {
+        "calories": 14.455425,
+        "protein_grams": 0.7425,
+        "carbohydrate_grams": 3.36875,
+        "fat_grams": 0.07375,
+        "fiber_grams": null,
+        "sugar_grams": null,
+        "sodium_mg": 16.11,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "servings": [
+        {
+          "calories": 14.455425,
+          "protein_grams": 0.7425,
+          "carbohydrate_grams": 3.36875,
+          "fat_grams": 0.07375,
+          "fiber_grams": null,
+          "sugar_grams": null,
+          "sodium_mg": 16.11,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        }
+      ],
+      "omitted_portions": 1
+    },
+    "digest": "037712b65c3f9a52214502c91f220b9281fc7112d017e3f81b053f09e2dcb3ec"
+  },
+  {
+    "selection": {
+      "slug": "tomato-sauce",
+      "name": "Tomato Sauce",
+      "query": "Tomato sauce canned",
+      "categories": [
+        "vegetables"
+      ],
+      "existingSlug": "tomato-sauce",
+      "fdcId": 2685579,
+      "expectedDescription": "Tomato, sauce, canned, with salt added",
+      "reviewed": true,
+      "expectedDataType": "Foundation"
+    },
+    "food": {
+      "external_id": 2685579,
+      "data_type": "Foundation",
+      "description": "Tomato, sauce, canned, with salt added",
+      "source_updated_at": "2024-04-18T04:00:00.000Z",
+      "source_category": "Vegetables and Vegetable Products",
+      "basis": {
+        "calories": 29.10400125,
+        "protein_grams": 1.351875,
+        "carbohydrate_grams": 6.331625,
+        "fat_grams": 0.3825,
+        "fiber_grams": 1.636,
+        "sugar_grams": 3.517,
+        "sodium_mg": 416.9,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "servings": [
+        {
+          "calories": 29.10400125,
+          "protein_grams": 1.351875,
+          "carbohydrate_grams": 6.331625,
+          "fat_grams": 0.3825,
+          "fiber_grams": 1.636,
+          "sugar_grams": 3.517,
+          "sodium_mg": 416.9,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        }
+      ],
+      "omitted_portions": 1
+    },
+    "digest": "82053dab40f877b2b3bf6de51845812a474bbb813d63438ad4ebe61e7a728023"
+  },
+  {
+    "selection": {
+      "slug": "pepperoni",
+      "name": "Pepperoni",
+      "query": "Pepperoni pork beef",
+      "categories": [
+        "processed_meat"
+      ],
+      "existingSlug": "pepperoni",
+      "fdcId": 2706185,
+      "expectedDescription": "Pepperoni, NFS",
+      "reviewed": true,
+      "expectedDataType": "Survey (FNDDS)"
+    },
+    "food": {
+      "external_id": 2706185,
+      "data_type": "Survey (FNDDS)",
+      "description": "Pepperoni, NFS",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": null,
+      "basis": {
+        "calories": 504,
+        "protein_grams": 19.2,
+        "carbohydrate_grams": 1.18,
+        "fat_grams": 46.3,
+        "fiber_grams": 0,
+        "sugar_grams": 0,
+        "sodium_mg": 1580,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 504,
+          "protein_grams": 19.2,
+          "carbohydrate_grams": 1.18,
+          "fat_grams": 46.3,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 1580,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 10.08,
+          "protein_grams": 0.384,
+          "carbohydrate_grams": 0.0236,
+          "fat_grams": 0.9259999999999999,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 31.6,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:294026",
+          "serving_name": "1 slice (1 slice)",
+          "serving_quantity": 1,
+          "serving_unit": "slice",
+          "grams_equivalent": 2
+        },
+        {
+          "calories": 705.5999999999999,
+          "protein_grams": 26.88,
+          "carbohydrate_grams": 1.652,
+          "fat_grams": 64.82,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 2212,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:294025",
+          "serving_name": "1 cup (1 cup, NFS)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 140
+        }
+      ],
+      "omitted_portions": 2
+    },
+    "digest": "cc653b61737f1eb9c7272341e91aeb91bf6f6264cb8d9848dade57e7fbc02af0"
+  },
+  {
+    "selection": {
+      "slug": "chicken",
+      "name": "Chicken",
+      "query": "Chicken meat cooked NFS",
+      "categories": [
+        "poultry"
+      ],
+      "existingSlug": "chicken",
+      "fdcId": 2705931,
+      "expectedDescription": "Chicken, NS as to part and cooking method, skin not eaten",
+      "reviewed": true,
+      "expectedDataType": "Survey (FNDDS)"
+    },
+    "food": {
+      "external_id": 2705931,
+      "data_type": "Survey (FNDDS)",
+      "description": "Chicken, NS as to part and cooking method, skin not eaten",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": null,
+      "basis": {
+        "calories": 164,
+        "protein_grams": 26.8,
+        "carbohydrate_grams": 0,
+        "fat_grams": 6.36,
+        "fiber_grams": 0,
+        "sugar_grams": 0,
+        "sodium_mg": 345,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 164,
+          "protein_grams": 26.8,
+          "carbohydrate_grams": 0,
+          "fat_grams": 6.36,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 345,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 221.4,
+          "protein_grams": 36.18000000000001,
+          "carbohydrate_grams": 0,
+          "fat_grams": 8.586,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 465.75,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:292634",
+          "serving_name": "1 cup (1 cup, cooked, diced)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 135
+        },
+        {
+          "calories": 98.39999999999999,
+          "protein_grams": 16.08,
+          "carbohydrate_grams": 0,
+          "fat_grams": 3.816,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 207,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:292636",
+          "serving_name": "1 slice (1 slice)",
+          "serving_quantity": 1,
+          "serving_unit": "slice",
+          "grams_equivalent": 60
+        },
+        {
+          "calories": 46.49400000000001,
+          "protein_grams": 7.597800000000001,
+          "carbohydrate_grams": 0,
+          "fat_grams": 1.8030600000000003,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 97.8075,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:292637",
+          "serving_name": "1 oz (1 oz, cooked)",
+          "serving_quantity": 1,
+          "serving_unit": "oz",
+          "grams_equivalent": 28.35
+        }
+      ],
+      "omitted_portions": 2
+    },
+    "digest": "cdef4c35149c524067e55ec621f818fbe593c79956ef3452081e0e395439dfc2"
+  },
+  {
+    "selection": {
+      "slug": "cereal",
+      "name": "Cereal",
+      "query": "Ready to eat cereal NFS",
+      "categories": [
+        "grains"
+      ],
+      "existingSlug": "cereal",
+      "fdcId": 2708445,
+      "expectedDescription": "Cereal, ready-to-eat, NFS",
+      "reviewed": true,
+      "expectedDataType": "Survey (FNDDS)"
+    },
+    "food": {
+      "external_id": 2708445,
+      "data_type": "Survey (FNDDS)",
+      "description": "Cereal, ready-to-eat, NFS",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": null,
+      "basis": {
+        "calories": 379,
+        "protein_grams": 7.74,
+        "carbohydrate_grams": 77.7,
+        "fat_grams": 4.01,
+        "fiber_grams": 6.6,
+        "sugar_grams": 25.4,
+        "sodium_mg": 527,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 379,
+          "protein_grams": 7.74,
+          "carbohydrate_grams": 77.7,
+          "fat_grams": 4.01,
+          "fiber_grams": 6.6,
+          "sugar_grams": 25.4,
+          "sodium_mg": 527,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 132.65,
+          "protein_grams": 2.709,
+          "carbohydrate_grams": 27.195,
+          "fat_grams": 1.4034999999999997,
+          "fiber_grams": 2.3099999999999996,
+          "sugar_grams": 8.89,
+          "sodium_mg": 184.45,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:302993",
+          "serving_name": "1 cup (1 cup)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 35
+        }
+      ],
+      "omitted_portions": 2
+    },
+    "digest": "03c0cc4ba604bc13878f79b4550be9e980cc73a1d50f8e7eb3b5970e6dc7df24"
+  },
+  {
+    "selection": {
+      "slug": "berries",
+      "name": "Berries",
+      "query": "Berries mixed raw",
+      "categories": [
+        "fruits"
+      ],
+      "existingSlug": "berries",
+      "fdcId": 2709271,
+      "expectedDescription": "Berries, NFS",
+      "reviewed": true,
+      "expectedDataType": "Survey (FNDDS)"
+    },
+    "food": {
+      "external_id": 2709271,
+      "data_type": "Survey (FNDDS)",
+      "description": "Berries, NFS",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": null,
+      "basis": {
+        "calories": 44,
+        "protein_grams": 0.66,
+        "carbohydrate_grams": 9.94,
+        "fat_grams": 0.25,
+        "fiber_grams": 2,
+        "sugar_grams": 6.21,
+        "sodium_mg": 0,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 44,
+          "protein_grams": 0.66,
+          "carbohydrate_grams": 9.94,
+          "fat_grams": 0.25,
+          "fiber_grams": 2,
+          "sugar_grams": 6.21,
+          "sodium_mg": 0,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 66,
+          "protein_grams": 0.99,
+          "carbohydrate_grams": 14.91,
+          "fat_grams": 0.375,
+          "fiber_grams": 3,
+          "sugar_grams": 9.315,
+          "sodium_mg": 0,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:306293",
+          "serving_name": "1 cup (1 cup)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 150
+        }
+      ],
+      "omitted_portions": 1
+    },
+    "digest": "49dde764cd0846d1eab3bc21421a04041e68c93ee56908bb446caa8915222379"
+  },
+  {
+    "selection": {
+      "slug": "egg",
+      "name": "Egg",
+      "query": "Egg whole raw fresh",
+      "categories": [
+        "eggs"
+      ],
+      "existingSlug": "egg",
+      "fdcId": 748967,
+      "expectedDescription": "Eggs, Grade A, Large, egg whole",
+      "reviewed": true,
+      "expectedDataType": "Foundation"
+    },
+    "food": {
+      "external_id": 748967,
+      "data_type": "Foundation",
+      "description": "Eggs, Grade A, Large, egg whole",
+      "source_updated_at": "2019-12-16T05:00:00.000Z",
+      "source_category": "Dairy and Egg Products",
+      "basis": {
+        "calories": 148,
+        "protein_grams": 12.4,
+        "carbohydrate_grams": 0.96,
+        "fat_grams": 9.96,
+        "fiber_grams": 0,
+        "sugar_grams": 0.2,
+        "sodium_mg": 129,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "servings": [
+        {
+          "calories": 148,
+          "protein_grams": 12.4,
+          "carbohydrate_grams": 0.96,
+          "fat_grams": 9.96,
+          "fiber_grams": 0,
+          "sugar_grams": 0.2,
+          "sodium_mg": 129,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 74.444,
+          "protein_grams": 6.2372000000000005,
+          "carbohydrate_grams": 0.48288,
+          "fat_grams": 5.009880000000001,
+          "fiber_grams": 0,
+          "sugar_grams": 0.10060000000000001,
+          "sodium_mg": 64.887,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "portion:193781",
+          "serving_name": "1 each (whole without shell)",
+          "serving_quantity": 1,
+          "serving_unit": "each",
+          "grams_equivalent": 50.3
+        }
+      ],
+      "omitted_portions": 1
+    },
+    "digest": "c1c3bf26f5edd5148e7a1719289889f8e5859e7f400f67f4a91c2736fdd12d73"
+  },
+  {
+    "selection": {
+      "slug": "chicken-breast-cooked",
+      "name": "Chicken Breast, Cooked",
+      "query": "Chicken breast meat only cooked roasted",
+      "categories": [
+        "poultry"
+      ],
+      "existingSlug": "chicken-breast-cooked",
+      "fdcId": 171477,
+      "expectedDescription": "Chicken, broilers or fryers, breast, meat only, cooked, roasted",
+      "reviewed": true,
+      "expectedDataType": "SR Legacy"
+    },
+    "food": {
+      "external_id": 171477,
+      "data_type": "SR Legacy",
+      "description": "Chicken, broilers or fryers, breast, meat only, cooked, roasted",
+      "source_updated_at": "2019-04-01T04:00:00.000Z",
+      "source_category": "Poultry Products",
+      "basis": {
+        "calories": 165,
+        "protein_grams": 31.02,
+        "carbohydrate_grams": 0,
+        "fat_grams": 3.57,
+        "fiber_grams": 0,
+        "sugar_grams": 0,
+        "sodium_mg": 74,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 165,
+          "protein_grams": 31.02,
+          "carbohydrate_grams": 0,
+          "fat_grams": 3.57,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 74,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 230.99999999999997,
+          "protein_grams": 43.428,
+          "carbohydrate_grams": 0,
+          "fat_grams": 4.997999999999999,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 103.6,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:88817",
+          "serving_name": "1 cup (cup, chopped or diced)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 140
+        }
+      ],
+      "omitted_portions": 2
+    },
+    "digest": "a037112a6e7608edba6bbcf4beb43d680b8eb005f395f0d126f4d489903076dc"
+  },
+  {
+    "selection": {
+      "slug": "turkey-breast-roasted",
+      "name": "Turkey Breast Roasted",
+      "query": "Turkey breast meat only cooked roasted",
+      "categories": [
+        "poultry"
+      ],
+      "fdcId": 171496,
+      "expectedDescription": "Turkey, whole, breast, meat only, cooked, roasted",
+      "reviewed": true,
+      "expectedDataType": "SR Legacy"
+    },
+    "food": {
+      "external_id": 171496,
+      "data_type": "SR Legacy",
+      "description": "Turkey, whole, breast, meat only, cooked, roasted",
+      "source_updated_at": "2019-04-01T04:00:00.000Z",
+      "source_category": "Poultry Products",
+      "basis": {
+        "calories": 147,
+        "protein_grams": 30.13,
+        "carbohydrate_grams": 0,
+        "fat_grams": 2.08,
+        "fiber_grams": 0,
+        "sugar_grams": 0,
+        "sodium_mg": 99,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 147,
+          "protein_grams": 30.13,
+          "carbohydrate_grams": 0,
+          "fat_grams": 2.08,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 99,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 124.95,
+          "protein_grams": 25.6105,
+          "carbohydrate_grams": 0,
+          "fat_grams": 1.768,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 84.15,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:88856",
+          "serving_name": "3 oz (oz)",
+          "serving_quantity": 3,
+          "serving_unit": "oz",
+          "grams_equivalent": 85
+        }
+      ],
+      "omitted_portions": 1
+    },
+    "digest": "121da1ff6062c27761eda9536e4c274ee6a8552f05607fff75e0f2bba31b4847"
+  },
+  {
+    "selection": {
+      "slug": "deli-turkey",
+      "name": "Deli Turkey",
+      "query": "Turkey breast deli sliced",
+      "categories": [
+        "poultry",
+        "processed_meat"
+      ],
+      "fdcId": 2706215,
+      "expectedDescription": "Turkey, prepackaged or deli, luncheon meat",
+      "reviewed": true,
+      "expectedDataType": "Survey (FNDDS)"
+    },
+    "food": {
+      "external_id": 2706215,
+      "data_type": "Survey (FNDDS)",
+      "description": "Turkey, prepackaged or deli, luncheon meat",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": null,
+      "basis": {
+        "calories": 106,
+        "protein_grams": 14.8,
+        "carbohydrate_grams": 2.2,
+        "fat_grams": 3.77,
+        "fiber_grams": 0,
+        "sugar_grams": 0.91,
+        "sodium_mg": 810,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 106,
+          "protein_grams": 14.8,
+          "carbohydrate_grams": 2.2,
+          "fat_grams": 3.77,
+          "fiber_grams": 0,
+          "sugar_grams": 0.91,
+          "sodium_mg": 810,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 29.680000000000003,
+          "protein_grams": 4.144000000000001,
+          "carbohydrate_grams": 0.6160000000000001,
+          "fat_grams": 1.0556,
+          "fiber_grams": 0,
+          "sugar_grams": 0.2548,
+          "sodium_mg": 226.8,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:294223",
+          "serving_name": "1 slice (1 slice, NFS)",
+          "serving_quantity": 1,
+          "serving_unit": "slice",
+          "grams_equivalent": 28
+        },
+        {
+          "calories": 148.39999999999998,
+          "protein_grams": 20.72,
+          "carbohydrate_grams": 3.08,
+          "fat_grams": 5.278,
+          "fiber_grams": 0,
+          "sugar_grams": 1.274,
+          "sodium_mg": 1134,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:294224",
+          "serving_name": "1 cup (1 cup, pieces)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 140
+        }
+      ],
+      "omitted_portions": 3
+    },
+    "digest": "814663d98cab7c64ee67ca76988fa22dcdddc61a9eb60b2489a15e0e633b7d86"
+  },
+  {
+    "selection": {
+      "slug": "ground-beef-90-lean-cooked",
+      "name": "Ground Beef, 90% Lean, Cooked",
+      "query": "Beef ground 90% lean cooked",
+      "categories": [
+        "beef"
+      ],
+      "existingSlug": "ground-beef-90-lean-cooked",
+      "fdcId": 171794,
+      "expectedDescription": "Beef, ground, 90% lean meat / 10% fat, crumbles, cooked, pan-browned",
+      "reviewed": true,
+      "expectedDataType": "SR Legacy"
+    },
+    "food": {
+      "external_id": 171794,
+      "data_type": "SR Legacy",
+      "description": "Beef, ground, 90% lean meat / 10% fat, crumbles, cooked, pan-browned",
+      "source_updated_at": "2019-04-01T04:00:00.000Z",
+      "source_category": "Beef Products",
+      "basis": {
+        "calories": 230,
+        "protein_grams": 28.45,
+        "carbohydrate_grams": 0,
+        "fat_grams": 12.04,
+        "fiber_grams": 0,
+        "sugar_grams": 0,
+        "sodium_mg": 87,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 230,
+          "protein_grams": 28.45,
+          "carbohydrate_grams": 0,
+          "fat_grams": 12.04,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 87,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 195.5,
+          "protein_grams": 24.182499999999997,
+          "carbohydrate_grams": 0,
+          "fat_grams": 10.233999999999998,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 73.95,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:89378",
+          "serving_name": "3 oz (oz)",
+          "serving_quantity": 3,
+          "serving_unit": "oz",
+          "grams_equivalent": 85
+        }
+      ],
+      "omitted_portions": 1
+    },
+    "digest": "4c51037771132895f5b9f2e919d30769fb73c6c66d1fe5f813b37b5b16bc71f2"
+  },
+  {
+    "selection": {
+      "slug": "sirloin-steak-cooked",
+      "name": "Sirloin Steak, Cooked",
+      "query": "Beef sirloin steak cooked grilled",
+      "categories": [
+        "beef"
+      ],
+      "existingSlug": "sirloin-steak-cooked",
+      "fdcId": 2705832,
+      "expectedDescription": "Beef, steak, sirloin, NS as to fat eaten",
+      "reviewed": true,
+      "expectedDataType": "Survey (FNDDS)"
+    },
+    "food": {
+      "external_id": 2705832,
+      "data_type": "Survey (FNDDS)",
+      "description": "Beef, steak, sirloin, NS as to fat eaten",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": null,
+      "basis": {
+        "calories": 239,
+        "protein_grams": 27.1,
+        "carbohydrate_grams": 0,
+        "fat_grams": 14,
+        "fiber_grams": 0,
+        "sugar_grams": 0,
+        "sodium_mg": 361,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 239,
+          "protein_grams": 27.1,
+          "carbohydrate_grams": 0,
+          "fat_grams": 14,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 361,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 47.800000000000004,
+          "protein_grams": 5.420000000000001,
+          "carbohydrate_grams": 0,
+          "fat_grams": 2.8000000000000003,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 72.2,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:292135",
+          "serving_name": "1 oz (1 oz yields)",
+          "serving_quantity": 1,
+          "serving_unit": "oz",
+          "grams_equivalent": 20
+        },
+        {
+          "calories": 322.65000000000003,
+          "protein_grams": 36.585,
+          "carbohydrate_grams": 0,
+          "fat_grams": 18.900000000000002,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 487.35,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:292137",
+          "serving_name": "1 cup (1 cup)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 135
+        }
+      ],
+      "omitted_portions": 6
+    },
+    "digest": "05bfe5c48f6a69f90799cbc6dd4ae219c72d54e803da1feb26b1312f0cd3cb8b"
+  },
+  {
+    "selection": {
+      "slug": "pork-chop-cooked",
+      "name": "Pork Chop, Cooked",
+      "query": "Pork chop cooked broiled",
+      "categories": [
+        "pork"
+      ],
+      "existingSlug": "pork-chop-cooked",
+      "fdcId": 167841,
+      "expectedDescription": "Pork, fresh, loin, top loin (chops), boneless, separable lean and fat, cooked, broiled",
+      "reviewed": true,
+      "expectedDataType": "SR Legacy"
+    },
+    "food": {
+      "external_id": 167841,
+      "data_type": "SR Legacy",
+      "description": "Pork, fresh, loin, top loin (chops), boneless, separable lean and fat, cooked, broiled",
+      "source_updated_at": "2019-04-01T04:00:00.000Z",
+      "source_category": "Pork Products",
+      "basis": {
+        "calories": 196,
+        "protein_grams": 26.62,
+        "carbohydrate_grams": 0,
+        "fat_grams": 9.14,
+        "fiber_grams": 0,
+        "sugar_grams": 0,
+        "sodium_mg": 44,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 196,
+          "protein_grams": 26.62,
+          "carbohydrate_grams": 0,
+          "fat_grams": 9.14,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 44,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 166.6,
+          "protein_grams": 22.627,
+          "carbohydrate_grams": 0,
+          "fat_grams": 7.769,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 37.4,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:82072",
+          "serving_name": "3 oz (oz)",
+          "serving_quantity": 3,
+          "serving_unit": "oz",
+          "grams_equivalent": 85
+        }
+      ],
+      "omitted_portions": 1
+    },
+    "digest": "217426b2e9fdbb24dde5278f13bbdc7554c92cd2e152daa614c1f5aa469e7023"
+  },
+  {
+    "selection": {
+      "slug": "bacon-cooked",
+      "name": "Bacon Cooked",
+      "query": "Pork bacon cooked pan fried",
+      "categories": [
+        "pork",
+        "processed_meat"
+      ],
+      "fdcId": 2705889,
+      "expectedDescription": "Pork bacon, smoked or cured, cooked",
+      "reviewed": true,
+      "expectedDataType": "Survey (FNDDS)"
+    },
+    "food": {
+      "external_id": 2705889,
+      "data_type": "Survey (FNDDS)",
+      "description": "Pork bacon, smoked or cured, cooked",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": null,
+      "basis": {
+        "calories": 468,
+        "protein_grams": 33.9,
+        "carbohydrate_grams": 1.7,
+        "fat_grams": 35.1,
+        "fiber_grams": 0,
+        "sugar_grams": 0,
+        "sodium_mg": 1680,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 468,
+          "protein_grams": 33.9,
+          "carbohydrate_grams": 1.7,
+          "fat_grams": 35.1,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 1680,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 37.44,
+          "protein_grams": 2.7119999999999997,
+          "carbohydrate_grams": 0.136,
+          "fat_grams": 2.8080000000000003,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 134.4,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:292488",
+          "serving_name": "1 oz (1 oz, raw (yield after cooking))",
+          "serving_quantity": 1,
+          "serving_unit": "oz",
+          "grams_equivalent": 8
+        },
+        {
+          "calories": 374.40000000000003,
+          "protein_grams": 27.12,
+          "carbohydrate_grams": 1.36,
+          "fat_grams": 28.080000000000002,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 1344,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:292490",
+          "serving_name": "1 cup (1 cup, pieces)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 80
+        },
+        {
+          "calories": 132.67800000000003,
+          "protein_grams": 9.610650000000001,
+          "carbohydrate_grams": 0.48195000000000005,
+          "fat_grams": 9.95085,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 476.28,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:292489",
+          "serving_name": "1 oz (1 oz, cooked)",
+          "serving_quantity": 1,
+          "serving_unit": "oz",
+          "grams_equivalent": 28.35
+        }
+      ],
+      "omitted_portions": 6
+    },
+    "digest": "74e988d5f96dead85df3b753d4c6de403b7e514e7feb8c180ff3f6fac1f738f9"
+  },
+  {
+    "selection": {
+      "slug": "salmon",
+      "name": "Salmon",
+      "query": "Salmon cooked dry heat",
+      "categories": [
+        "fish"
+      ],
+      "existingSlug": "salmon",
+      "fdcId": 171998,
+      "expectedDescription": "Fish, salmon, Atlantic, wild, cooked, dry heat",
+      "reviewed": true,
+      "expectedDataType": "SR Legacy"
+    },
+    "food": {
+      "external_id": 171998,
+      "data_type": "SR Legacy",
+      "description": "Fish, salmon, Atlantic, wild, cooked, dry heat",
+      "source_updated_at": "2019-04-01T04:00:00.000Z",
+      "source_category": "Finfish and Shellfish Products",
+      "basis": {
+        "calories": 182,
+        "protein_grams": 25.44,
+        "carbohydrate_grams": 0,
+        "fat_grams": 8.13,
+        "fiber_grams": 0,
+        "sugar_grams": null,
+        "sodium_mg": 56,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "servings": [
+        {
+          "calories": 182,
+          "protein_grams": 25.44,
+          "carbohydrate_grams": 0,
+          "fat_grams": 8.13,
+          "fiber_grams": 0,
+          "sugar_grams": null,
+          "sodium_mg": 56,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 154.7,
+          "protein_grams": 21.624,
+          "carbohydrate_grams": 0,
+          "fat_grams": 6.910500000000001,
+          "fiber_grams": 0,
+          "sugar_grams": null,
+          "sodium_mg": 47.6,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "portion:89708",
+          "serving_name": "3 oz (oz)",
+          "serving_quantity": 3,
+          "serving_unit": "oz",
+          "grams_equivalent": 85
+        }
+      ],
+      "omitted_portions": 1
+    },
+    "digest": "efb0a3d4907853de4ae350e5c1010afaf9ad5c59819e835015c8259fe14ed27f"
+  },
+  {
+    "selection": {
+      "slug": "tuna",
+      "name": "Tuna",
+      "query": "Tuna canned in water drained",
+      "categories": [
+        "fish"
+      ],
+      "existingSlug": "tuna",
+      "fdcId": 334194,
+      "expectedDescription": "Fish, tuna, light, canned in water, drained solids",
+      "reviewed": true,
+      "expectedDataType": "Foundation"
+    },
+    "food": {
+      "external_id": 334194,
+      "data_type": "Foundation",
+      "description": "Fish, tuna, light, canned in water, drained solids",
+      "source_updated_at": "2019-04-01T04:00:00.000Z",
+      "source_category": "Finfish and Shellfish Products",
+      "basis": {
+        "calories": 90,
+        "protein_grams": 19,
+        "carbohydrate_grams": 0.08,
+        "fat_grams": 0.94,
+        "fiber_grams": null,
+        "sugar_grams": 0,
+        "sodium_mg": 219,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "servings": [
+        {
+          "calories": 90,
+          "protein_grams": 19,
+          "carbohydrate_grams": 0.08,
+          "fat_grams": 0.94,
+          "fiber_grams": null,
+          "sugar_grams": 0,
+          "sodium_mg": 219,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        }
+      ],
+      "omitted_portions": 3
+    },
+    "digest": "76f1e8e97efc6bffc2afbd908f069b3393d58532bc206690004606fe98d2ad64"
+  },
+  {
+    "selection": {
+      "slug": "shrimp-cooked",
+      "name": "Shrimp Cooked",
+      "query": "Shrimp cooked",
+      "categories": [
+        "shellfish"
+      ],
+      "fdcId": 2706363,
+      "expectedDescription": "Shrimp, steamed or boiled",
+      "reviewed": true,
+      "expectedDataType": "Survey (FNDDS)"
+    },
+    "food": {
+      "external_id": 2706363,
+      "data_type": "Survey (FNDDS)",
+      "description": "Shrimp, steamed or boiled",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": null,
+      "basis": {
+        "calories": 90,
+        "protein_grams": 17.2,
+        "carbohydrate_grams": 1.15,
+        "fat_grams": 1.28,
+        "fiber_grams": 0,
+        "sugar_grams": 0,
+        "sodium_mg": 248,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 90,
+          "protein_grams": 17.2,
+          "carbohydrate_grams": 1.15,
+          "fat_grams": 1.28,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 248,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 121.50000000000001,
+          "protein_grams": 23.22,
+          "carbohydrate_grams": 1.5525,
+          "fat_grams": 1.7280000000000002,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 334.8,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:295070",
+          "serving_name": "1 cup (1 cup)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 135
+        }
+      ],
+      "omitted_portions": 5
+    },
+    "digest": "91c5525ea8c85e534117dda184a692f624555b001a4c0c61a603c7402e8a9f59"
+  },
+  {
+    "selection": {
+      "slug": "milk",
+      "name": "Milk",
+      "query": "Milk whole 3.25% milkfat",
+      "categories": [
+        "dairy"
+      ],
+      "existingSlug": "milk",
+      "fdcId": 746782,
+      "expectedDescription": "Milk, whole, 3.25% milkfat, with added vitamin D",
+      "reviewed": true,
+      "expectedDataType": "Foundation"
+    },
+    "food": {
+      "external_id": 746782,
+      "data_type": "Foundation",
+      "description": "Milk, whole, 3.25% milkfat, with added vitamin D",
+      "source_updated_at": "2019-12-16T05:00:00.000Z",
+      "source_category": "Dairy and Egg Products",
+      "basis": {
+        "calories": 60,
+        "protein_grams": 3.27,
+        "carbohydrate_grams": 4.63,
+        "fat_grams": 3.2,
+        "fiber_grams": null,
+        "sugar_grams": 4.81,
+        "sodium_mg": 38,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "servings": [
+        {
+          "calories": 60,
+          "protein_grams": 3.27,
+          "carbohydrate_grams": 4.63,
+          "fat_grams": 3.2,
+          "fiber_grams": null,
+          "sugar_grams": 4.81,
+          "sodium_mg": 38,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 149.4,
+          "protein_grams": 8.1423,
+          "carbohydrate_grams": 11.5287,
+          "fat_grams": 7.968000000000001,
+          "fiber_grams": null,
+          "sugar_grams": 11.976899999999999,
+          "sodium_mg": 94.62,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "portion:187530",
+          "serving_name": "1 cup (cup)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 249
+        }
+      ],
+      "omitted_portions": 0
+    },
+    "digest": "c413fd87442ec3ceaf8325b1f9cc70582d741878ca066325466ba7d6788f3df3"
+  },
+  {
+    "selection": {
+      "slug": "milk-two-percent",
+      "name": "Milk Two Percent",
+      "query": "Milk reduced fat 2% milkfat",
+      "categories": [
+        "dairy"
+      ],
+      "fdcId": 746778,
+      "expectedDescription": "Milk, reduced fat, fluid, 2% milkfat, with added vitamin A and vitamin D",
+      "reviewed": true,
+      "expectedDataType": "Foundation"
+    },
+    "food": {
+      "external_id": 746778,
+      "data_type": "Foundation",
+      "description": "Milk, reduced fat, fluid, 2% milkfat, with added vitamin A and vitamin D",
+      "source_updated_at": "2019-12-16T05:00:00.000Z",
+      "source_category": "Dairy and Egg Products",
+      "basis": {
+        "calories": 50,
+        "protein_grams": 3.36,
+        "carbohydrate_grams": 4.9,
+        "fat_grams": 1.9,
+        "fiber_grams": null,
+        "sugar_grams": 4.89,
+        "sodium_mg": 39,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "servings": [
+        {
+          "calories": 50,
+          "protein_grams": 3.36,
+          "carbohydrate_grams": 4.9,
+          "fat_grams": 1.9,
+          "fiber_grams": null,
+          "sugar_grams": 4.89,
+          "sodium_mg": 39,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 122.50000000000001,
+          "protein_grams": 8.232000000000001,
+          "carbohydrate_grams": 12.005000000000003,
+          "fat_grams": 4.655,
+          "fiber_grams": null,
+          "sugar_grams": 11.9805,
+          "sodium_mg": 95.55,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "portion:187524",
+          "serving_name": "1 cup (cup)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 245
+        }
+      ],
+      "omitted_portions": 0
+    },
+    "digest": "8c15705e358c78ed66160f156c452ac2f9b19c80754434ff5935b422e739b976"
+  },
+  {
+    "selection": {
+      "slug": "milk-skim",
+      "name": "Milk Skim",
+      "query": "Milk nonfat fluid",
+      "categories": [
+        "dairy"
+      ],
+      "fdcId": 746776,
+      "expectedDescription": "Milk, nonfat, fluid, with added vitamin A and vitamin D (fat free or skim)",
+      "reviewed": true,
+      "expectedDataType": "Foundation"
+    },
+    "food": {
+      "external_id": 746776,
+      "data_type": "Foundation",
+      "description": "Milk, nonfat, fluid, with added vitamin A and vitamin D (fat free or skim)",
+      "source_updated_at": "2019-12-16T05:00:00.000Z",
+      "source_category": "Dairy and Egg Products",
+      "basis": {
+        "calories": 34,
+        "protein_grams": 3.43,
+        "carbohydrate_grams": 4.92,
+        "fat_grams": 0.08,
+        "fiber_grams": null,
+        "sugar_grams": 5.05,
+        "sodium_mg": 41,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "servings": [
+        {
+          "calories": 34,
+          "protein_grams": 3.43,
+          "carbohydrate_grams": 4.92,
+          "fat_grams": 0.08,
+          "fiber_grams": null,
+          "sugar_grams": 5.05,
+          "sodium_mg": 41,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 83.64,
+          "protein_grams": 8.437800000000001,
+          "carbohydrate_grams": 12.1032,
+          "fat_grams": 0.1968,
+          "fiber_grams": null,
+          "sugar_grams": 12.423,
+          "sodium_mg": 100.86,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "portion:187522",
+          "serving_name": "1 cup (cup)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 246
+        }
+      ],
+      "omitted_portions": 0
+    },
+    "digest": "c9be274c0a7301b4fc6fc5e70b49ad1b3453351145cd93b4b0d5cadfea1557ae"
+  },
+  {
+    "selection": {
+      "slug": "greek-yogurt",
+      "name": "Greek Yogurt",
+      "query": "Yogurt Greek plain nonfat",
+      "categories": [
+        "dairy"
+      ],
+      "existingSlug": "greek-yogurt",
+      "fdcId": 330137,
+      "expectedDescription": "Yogurt, Greek, plain, nonfat",
+      "reviewed": true,
+      "expectedDataType": "Foundation"
+    },
+    "food": {
+      "external_id": 330137,
+      "data_type": "Foundation",
+      "description": "Yogurt, Greek, plain, nonfat",
+      "source_updated_at": "2019-04-01T04:00:00.000Z",
+      "source_category": "Dairy and Egg Products",
+      "basis": {
+        "calories": 61,
+        "protein_grams": 10.3,
+        "carbohydrate_grams": 3.64,
+        "fat_grams": 0.37,
+        "fiber_grams": null,
+        "sugar_grams": 3.27,
+        "sodium_mg": 36,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "servings": [
+        {
+          "calories": 61,
+          "protein_grams": 10.3,
+          "carbohydrate_grams": 3.64,
+          "fat_grams": 0.37,
+          "fiber_grams": null,
+          "sugar_grams": 3.27,
+          "sodium_mg": 36,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        }
+      ],
+      "omitted_portions": 2
+    },
+    "digest": "bcfbef196e9dd84474aa3dba26c6059d956f59182ec190307623a56c62d17f2f"
+  },
+  {
+    "selection": {
+      "slug": "yogurt-plain",
+      "name": "Yogurt Plain",
+      "query": "Yogurt plain whole milk",
+      "categories": [
+        "dairy"
+      ],
+      "fdcId": 2259793,
+      "expectedDescription": "Yogurt, plain, whole milk",
+      "reviewed": true,
+      "expectedDataType": "Foundation"
+    },
+    "food": {
+      "external_id": 2259793,
+      "data_type": "Foundation",
+      "description": "Yogurt, plain, whole milk",
+      "source_updated_at": "2022-04-28T04:00:00.000Z",
+      "source_category": "Dairy and Egg Products",
+      "basis": {
+        "calories": 77.3185458,
+        "protein_grams": 3.824172,
+        "carbohydrate_grams": 5.574928,
+        "fat_grams": 4.484,
+        "fiber_grams": null,
+        "sugar_grams": 4.0936,
+        "sodium_mg": 41.78,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "servings": [
+        {
+          "calories": 77.3185458,
+          "protein_grams": 3.824172,
+          "carbohydrate_grams": 5.574928,
+          "fat_grams": 4.484,
+          "fiber_grams": null,
+          "sugar_grams": 4.0936,
+          "sodium_mg": 41.78,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        }
+      ],
+      "omitted_portions": 1
+    },
+    "digest": "4a2aefa68d6591f3ada98db8cf48262ee4b40b9756125267d0fd455c70fe3a24"
+  },
+  {
+    "selection": {
+      "slug": "cheddar-cheese",
+      "name": "Cheddar Cheese",
+      "query": "Cheese cheddar",
+      "categories": [
+        "dairy"
+      ],
+      "fdcId": 2705709,
+      "expectedDescription": "Cheese, Cheddar",
+      "reviewed": true,
+      "expectedDataType": "Survey (FNDDS)"
+    },
+    "food": {
+      "external_id": 2705709,
+      "data_type": "Survey (FNDDS)",
+      "description": "Cheese, Cheddar",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": null,
+      "basis": {
+        "calories": 409,
+        "protein_grams": 23.3,
+        "carbohydrate_grams": 2.44,
+        "fat_grams": 34,
+        "fiber_grams": 0,
+        "sugar_grams": 0.33,
+        "sodium_mg": 654,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 409,
+          "protein_grams": 23.3,
+          "carbohydrate_grams": 2.44,
+          "fat_grams": 34,
+          "fiber_grams": 0,
+          "sugar_grams": 0.33,
+          "sodium_mg": 654,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 85.89,
+          "protein_grams": 4.893,
+          "carbohydrate_grams": 0.5124,
+          "fat_grams": 7.14,
+          "fiber_grams": 0,
+          "sugar_grams": 0.0693,
+          "sodium_mg": 137.34,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:291559",
+          "serving_name": "1 slice (1 slice)",
+          "serving_quantity": 1,
+          "serving_unit": "slice",
+          "grams_equivalent": 21
+        },
+        {
+          "calories": 539.88,
+          "protein_grams": 30.756000000000004,
+          "carbohydrate_grams": 3.2208,
+          "fat_grams": 44.88,
+          "fiber_grams": 0,
+          "sugar_grams": 0.43560000000000004,
+          "sodium_mg": 863.28,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:291562",
+          "serving_name": "1 cup (1 cup, diced)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 132
+        },
+        {
+          "calories": 462.16999999999996,
+          "protein_grams": 26.328999999999997,
+          "carbohydrate_grams": 2.7571999999999997,
+          "fat_grams": 38.419999999999995,
+          "fiber_grams": 0,
+          "sugar_grams": 0.3729,
+          "sodium_mg": 739.02,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:291561",
+          "serving_name": "1 cup (1 cup, shredded)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 113
+        },
+        {
+          "calories": 462.16999999999996,
+          "protein_grams": 26.328999999999997,
+          "carbohydrate_grams": 2.7571999999999997,
+          "fat_grams": 38.419999999999995,
+          "fiber_grams": 0,
+          "sugar_grams": 0.3729,
+          "sodium_mg": 739.02,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:291564",
+          "serving_name": "1 cup (1 cup, NFS)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 113
+        },
+        {
+          "calories": 997.9599999999999,
+          "protein_grams": 56.852000000000004,
+          "carbohydrate_grams": 5.9536,
+          "fat_grams": 82.96,
+          "fiber_grams": 0,
+          "sugar_grams": 0.8052000000000001,
+          "sodium_mg": 1595.76,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:291563",
+          "serving_name": "1 cup (1 cup, melted)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 244
+        },
+        {
+          "calories": 539.88,
+          "protein_grams": 30.756000000000004,
+          "carbohydrate_grams": 3.2208,
+          "fat_grams": 44.88,
+          "fiber_grams": 0,
+          "sugar_grams": 0.43560000000000004,
+          "sodium_mg": 863.28,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:291565",
+          "serving_name": "1 cup (1 cup, cubed)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 132
+        }
+      ],
+      "omitted_portions": 4
+    },
+    "digest": "572e9886548a0d2adf753c6e1fc6c690f9595a2dcfe8944ed7305c442c4e6743"
+  },
+  {
+    "selection": {
+      "slug": "mozzarella-cheese",
+      "name": "Mozzarella Cheese",
+      "query": "Cheese mozzarella whole milk",
+      "categories": [
+        "dairy"
+      ],
+      "fdcId": 170845,
+      "expectedDescription": "Cheese, mozzarella, whole milk",
+      "reviewed": true,
+      "expectedDataType": "SR Legacy"
+    },
+    "food": {
+      "external_id": 170845,
+      "data_type": "SR Legacy",
+      "description": "Cheese, mozzarella, whole milk",
+      "source_updated_at": "2019-04-01T04:00:00.000Z",
+      "source_category": "Dairy and Egg Products",
+      "basis": {
+        "calories": 299,
+        "protein_grams": 22.17,
+        "carbohydrate_grams": 2.4,
+        "fat_grams": 22.14,
+        "fiber_grams": 0,
+        "sugar_grams": 0,
+        "sodium_mg": 486,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 299,
+          "protein_grams": 22.17,
+          "carbohydrate_grams": 2.4,
+          "fat_grams": 22.14,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 486,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 84.76650000000001,
+          "protein_grams": 6.285195000000001,
+          "carbohydrate_grams": 0.6804,
+          "fat_grams": 6.276690000000001,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 137.781,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:87382",
+          "serving_name": "1 oz (oz)",
+          "serving_quantity": 1,
+          "serving_unit": "oz",
+          "grams_equivalent": 28.35
+        },
+        {
+          "calories": 334.88000000000005,
+          "protein_grams": 24.830400000000004,
+          "carbohydrate_grams": 2.688,
+          "fat_grams": 24.796800000000005,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 544.32,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:87381",
+          "serving_name": "1 cup (cup, shredded)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 112
+        },
+        {
+          "calories": 508.3,
+          "protein_grams": 37.689,
+          "carbohydrate_grams": 4.08,
+          "fat_grams": 37.638,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 826.2,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:87383",
+          "serving_name": "6 slice (slices)",
+          "serving_quantity": 6,
+          "serving_unit": "slice",
+          "grams_equivalent": 170
+        }
+      ],
+      "omitted_portions": 0
+    },
+    "digest": "4ecea81e0eb6411475b690a0545f5fe57da95cfac1d47b515912b40ee108e232"
+  },
+  {
+    "selection": {
+      "slug": "cottage-cheese",
+      "name": "Cottage Cheese",
+      "query": "Cheese cottage lowfat 2%",
+      "categories": [
+        "dairy"
+      ],
+      "existingSlug": "cottage-cheese",
+      "fdcId": 328841,
+      "expectedDescription": "Cheese, cottage, lowfat, 2% milkfat",
+      "reviewed": true,
+      "expectedDataType": "Foundation"
+    },
+    "food": {
+      "external_id": 328841,
+      "data_type": "Foundation",
+      "description": "Cheese, cottage, lowfat, 2% milkfat",
+      "source_updated_at": "2019-04-01T04:00:00.000Z",
+      "source_category": "Dairy and Egg Products",
+      "basis": {
+        "calories": 84,
+        "protein_grams": 11,
+        "carbohydrate_grams": 4.31,
+        "fat_grams": 2.3,
+        "fiber_grams": null,
+        "sugar_grams": 4.1,
+        "sodium_mg": 321,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "servings": [
+        {
+          "calories": 84,
+          "protein_grams": 11,
+          "carbohydrate_grams": 4.31,
+          "fat_grams": 2.3,
+          "fiber_grams": null,
+          "sugar_grams": 4.1,
+          "sodium_mg": 321,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 184.8,
+          "protein_grams": 24.200000000000003,
+          "carbohydrate_grams": 9.482,
+          "fat_grams": 5.06,
+          "fiber_grams": null,
+          "sugar_grams": 9.02,
+          "sodium_mg": 706.2,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "portion:119652",
+          "serving_name": "1 cup (cup)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 220
+        }
+      ],
+      "omitted_portions": 1
+    },
+    "digest": "ef627ba1fac8ec2e77fa7a3b529c51f363c1f0146e5cd5fd74f57e40654cfa9a"
+  },
+  {
+    "selection": {
+      "slug": "whole-wheat-bread",
+      "name": "Whole Wheat Bread",
+      "query": "Bread whole wheat commercially prepared",
+      "categories": [
+        "grains"
+      ],
+      "existingSlug": "whole-wheat-bread",
+      "fdcId": 2707709,
+      "expectedDescription": "Bread, whole wheat",
+      "reviewed": true,
+      "expectedDataType": "Survey (FNDDS)"
+    },
+    "food": {
+      "external_id": 2707709,
+      "data_type": "Survey (FNDDS)",
+      "description": "Bread, whole wheat",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": null,
+      "basis": {
+        "calories": 254,
+        "protein_grams": 12.3,
+        "carbohydrate_grams": 43.1,
+        "fat_grams": 3.55,
+        "fiber_grams": 6,
+        "sugar_grams": 4.41,
+        "sodium_mg": 430,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 254,
+          "protein_grams": 12.3,
+          "carbohydrate_grams": 43.1,
+          "fat_grams": 3.55,
+          "fiber_grams": 6,
+          "sugar_grams": 4.41,
+          "sodium_mg": 430,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 91.44,
+          "protein_grams": 4.428,
+          "carbohydrate_grams": 15.516,
+          "fat_grams": 1.2779999999999998,
+          "fiber_grams": 2.16,
+          "sugar_grams": 1.5876,
+          "sodium_mg": 154.8,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:299397",
+          "serving_name": "1 slice (1 medium or regular slice)",
+          "serving_quantity": 1,
+          "serving_unit": "slice",
+          "grams_equivalent": 36
+        }
+      ],
+      "omitted_portions": 6
+    },
+    "digest": "e72a07b50e8b09fbac9f2a55ec29b071303f271e81e006d898c0cea894c3d8e2"
+  },
+  {
+    "selection": {
+      "slug": "corn-tortilla",
+      "name": "Corn Tortilla",
+      "query": "Tortillas corn",
+      "categories": [
+        "grains"
+      ],
+      "fdcId": 2707823,
+      "expectedDescription": "Tortilla, corn",
+      "reviewed": true,
+      "expectedDataType": "Survey (FNDDS)"
+    },
+    "food": {
+      "external_id": 2707823,
+      "data_type": "Survey (FNDDS)",
+      "description": "Tortilla, corn",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": null,
+      "basis": {
+        "calories": 218,
+        "protein_grams": 5.7,
+        "carbohydrate_grams": 44.6,
+        "fat_grams": 2.85,
+        "fiber_grams": 6.3,
+        "sugar_grams": 0.88,
+        "sodium_mg": 45,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 218,
+          "protein_grams": 5.7,
+          "carbohydrate_grams": 44.6,
+          "fat_grams": 2.85,
+          "fiber_grams": 6.3,
+          "sugar_grams": 0.88,
+          "sodium_mg": 45,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 61.040000000000006,
+          "protein_grams": 1.5960000000000003,
+          "carbohydrate_grams": 12.488000000000001,
+          "fat_grams": 0.7980000000000002,
+          "fiber_grams": 1.764,
+          "sugar_grams": 0.2464,
+          "sodium_mg": 12.6,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:299966",
+          "serving_name": "1 each (1 medium)",
+          "serving_quantity": 1,
+          "serving_unit": "each",
+          "grams_equivalent": 28
+        }
+      ],
+      "omitted_portions": 4
+    },
+    "digest": "0c208175ffccf8a421ea110ee406fcdfc2b978ca5926f3fc294fd6c83a510eb0"
+  },
+  {
+    "selection": {
+      "slug": "white-rice-cooked",
+      "name": "White Rice, Cooked",
+      "query": "Rice white cooked",
+      "categories": [
+        "grains"
+      ],
+      "existingSlug": "white-rice-cooked",
+      "fdcId": 2708408,
+      "expectedDescription": "Rice, white, cooked, no added fat",
+      "reviewed": true,
+      "expectedDataType": "Survey (FNDDS)"
+    },
+    "food": {
+      "external_id": 2708408,
+      "data_type": "Survey (FNDDS)",
+      "description": "Rice, white, cooked, no added fat",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": null,
+      "basis": {
+        "calories": 129,
+        "protein_grams": 2.67,
+        "carbohydrate_grams": 28,
+        "fat_grams": 0.28,
+        "fiber_grams": 0.4,
+        "sugar_grams": 0.05,
+        "sodium_mg": 245,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 129,
+          "protein_grams": 2.67,
+          "carbohydrate_grams": 28,
+          "fat_grams": 0.28,
+          "fiber_grams": 0.4,
+          "sugar_grams": 0.05,
+          "sodium_mg": 245,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 203.82000000000002,
+          "protein_grams": 4.2186,
+          "carbohydrate_grams": 44.24,
+          "fat_grams": 0.44240000000000007,
+          "fiber_grams": 0.6320000000000001,
+          "sugar_grams": 0.079,
+          "sodium_mg": 387.1,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:302892",
+          "serving_name": "1 cup (1 cup, cooked)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 158
+        }
+      ],
+      "omitted_portions": 1
+    },
+    "digest": "7b9f9687774724eb5bb98ed23f91c31e379412ee4d07647aa9d3221ed5c69655"
+  },
+  {
+    "selection": {
+      "slug": "brown-rice-cooked",
+      "name": "Brown Rice, Cooked",
+      "query": "Rice brown cooked",
+      "categories": [
+        "grains"
+      ],
+      "existingSlug": "brown-rice-cooked",
+      "fdcId": 2708414,
+      "expectedDescription": "Rice, brown, cooked, no added fat",
+      "reviewed": true,
+      "expectedDataType": "Survey (FNDDS)"
+    },
+    "food": {
+      "external_id": 2708414,
+      "data_type": "Survey (FNDDS)",
+      "description": "Rice, brown, cooked, no added fat",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": null,
+      "basis": {
+        "calories": 123,
+        "protein_grams": 2.43,
+        "carbohydrate_grams": 25.8,
+        "fat_grams": 1.11,
+        "fiber_grams": 1,
+        "sugar_grams": 0.22,
+        "sodium_mg": 201,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 123,
+          "protein_grams": 2.43,
+          "carbohydrate_grams": 25.8,
+          "fat_grams": 1.11,
+          "fiber_grams": 1,
+          "sugar_grams": 0.22,
+          "sodium_mg": 201,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 239.85,
+          "protein_grams": 4.7385,
+          "carbohydrate_grams": 50.31,
+          "fat_grams": 2.1645000000000003,
+          "fiber_grams": 1.95,
+          "sugar_grams": 0.429,
+          "sodium_mg": 391.95,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:302904",
+          "serving_name": "1 cup (1 cup, cooked)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 195
+        }
+      ],
+      "omitted_portions": 1
+    },
+    "digest": "b94101a6c57be4e8f7205ca129554bb3ae0f449c0a60d7c78660d44824ec7ca5"
+  },
+  {
+    "selection": {
+      "slug": "oatmeal",
+      "name": "Oatmeal",
+      "query": "Oats cooked with water",
+      "categories": [
+        "grains"
+      ],
+      "existingSlug": "oatmeal",
+      "fdcId": 173905,
+      "expectedDescription": "Cereals, oats, regular and quick, unenriched, cooked with water (includes boiling and microwaving), without salt",
+      "reviewed": true,
+      "expectedDataType": "SR Legacy"
+    },
+    "food": {
+      "external_id": 173905,
+      "data_type": "SR Legacy",
+      "description": "Cereals, oats, regular and quick, unenriched, cooked with water (includes boiling and microwaving), without salt",
+      "source_updated_at": "2019-04-01T04:00:00.000Z",
+      "source_category": "Breakfast Cereals",
+      "basis": {
+        "calories": 71,
+        "protein_grams": 2.54,
+        "carbohydrate_grams": 12,
+        "fat_grams": 1.52,
+        "fiber_grams": 1.7,
+        "sugar_grams": 0.27,
+        "sodium_mg": 4,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 71,
+          "protein_grams": 2.54,
+          "carbohydrate_grams": 12,
+          "fat_grams": 1.52,
+          "fiber_grams": 1.7,
+          "sugar_grams": 0.27,
+          "sodium_mg": 4,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 10.366,
+          "protein_grams": 0.37084,
+          "carbohydrate_grams": 1.7519999999999998,
+          "fat_grams": 0.22191999999999998,
+          "fiber_grams": 0.24819999999999998,
+          "sugar_grams": 0.039420000000000004,
+          "sodium_mg": 0.584,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:93457",
+          "serving_name": "1 tbsp (tbsp)",
+          "serving_quantity": 1,
+          "serving_unit": "tbsp",
+          "grams_equivalent": 14.6
+        },
+        {
+          "calories": 166.14,
+          "protein_grams": 5.9436,
+          "carbohydrate_grams": 28.08,
+          "fat_grams": 3.5568,
+          "fiber_grams": 3.9779999999999998,
+          "sugar_grams": 0.6318,
+          "sodium_mg": 9.36,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:93456",
+          "serving_name": "1 cup (cup)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 234
+        },
+        {
+          "calories": 124.25,
+          "protein_grams": 4.445,
+          "carbohydrate_grams": 21,
+          "fat_grams": 2.66,
+          "fiber_grams": 2.975,
+          "sugar_grams": 0.4725,
+          "sodium_mg": 7,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:93458",
+          "serving_name": "0.75 cup (cup)",
+          "serving_quantity": 0.75,
+          "serving_unit": "cup",
+          "grams_equivalent": 175
+        }
+      ],
+      "omitted_portions": 0
+    },
+    "digest": "578d53db2463da5617796f0612da8bed6caee4e4b519decfbe7999ac832ebb88"
+  },
+  {
+    "selection": {
+      "slug": "corn-flakes",
+      "name": "Corn Flakes",
+      "query": "Cereals ready to eat corn flakes plain",
+      "categories": [
+        "grains"
+      ],
+      "fdcId": 2708453,
+      "expectedDescription": "Cereal, corn flakes, plain",
+      "reviewed": true,
+      "expectedDataType": "Survey (FNDDS)"
+    },
+    "food": {
+      "external_id": 2708453,
+      "data_type": "Survey (FNDDS)",
+      "description": "Cereal, corn flakes, plain",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": null,
+      "basis": {
+        "calories": 365,
+        "protein_grams": 6.4,
+        "carbohydrate_grams": 79.5,
+        "fat_grams": 1.6,
+        "fiber_grams": 3.5,
+        "sugar_grams": 9.44,
+        "sodium_mg": 703,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 365,
+          "protein_grams": 6.4,
+          "carbohydrate_grams": 79.5,
+          "fat_grams": 1.6,
+          "fiber_grams": 3.5,
+          "sugar_grams": 9.44,
+          "sodium_mg": 703,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 109.5,
+          "protein_grams": 1.92,
+          "carbohydrate_grams": 23.849999999999998,
+          "fat_grams": 0.48,
+          "fiber_grams": 1.05,
+          "sugar_grams": 2.832,
+          "sodium_mg": 210.9,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:303018",
+          "serving_name": "1 cup (1 cup)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 30
+        }
+      ],
+      "omitted_portions": 2
+    },
+    "digest": "f9b10d8acaef43e27b7711d292c08730efb4bbcec04fb6b1618e945acfeda7b3"
+  },
+  {
+    "selection": {
+      "slug": "pasta-cooked",
+      "name": "Pasta Cooked",
+      "query": "Pasta cooked unenriched without salt",
+      "categories": [
+        "grains"
+      ],
+      "fdcId": 169737,
+      "expectedDescription": "Pasta, cooked, enriched, without added salt",
+      "reviewed": true,
+      "expectedDataType": "SR Legacy"
+    },
+    "food": {
+      "external_id": 169737,
+      "data_type": "SR Legacy",
+      "description": "Pasta, cooked, enriched, without added salt",
+      "source_updated_at": "2019-04-01T04:00:00.000Z",
+      "source_category": "Cereal Grains and Pasta",
+      "basis": {
+        "calories": 158,
+        "protein_grams": 5.8,
+        "carbohydrate_grams": 30.86,
+        "fat_grams": 0.93,
+        "fiber_grams": 1.8,
+        "sugar_grams": 0.56,
+        "sodium_mg": 1,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 158,
+          "protein_grams": 5.8,
+          "carbohydrate_grams": 30.86,
+          "fat_grams": 0.93,
+          "fiber_grams": 1.8,
+          "sugar_grams": 0.56,
+          "sodium_mg": 1,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 183.28,
+          "protein_grams": 6.728,
+          "carbohydrate_grams": 35.797599999999996,
+          "fat_grams": 1.0788,
+          "fiber_grams": 2.088,
+          "sugar_grams": 0.6496000000000001,
+          "sodium_mg": 1.16,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:85428",
+          "serving_name": "1 cup (cup lasagne)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 116
+        },
+        {
+          "calories": 165.9,
+          "protein_grams": 6.09,
+          "carbohydrate_grams": 32.403,
+          "fat_grams": 0.9765000000000001,
+          "fiber_grams": 1.8900000000000001,
+          "sugar_grams": 0.5880000000000001,
+          "sodium_mg": 1.05,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:85427",
+          "serving_name": "1 cup (cup shells)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 105
+        },
+        {
+          "calories": 169.06,
+          "protein_grams": 6.206,
+          "carbohydrate_grams": 33.0202,
+          "fat_grams": 0.9951000000000001,
+          "fiber_grams": 1.9260000000000002,
+          "sugar_grams": 0.5992000000000001,
+          "sodium_mg": 1.07,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:85425",
+          "serving_name": "1 cup (cup farfalle)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 107
+        },
+        {
+          "calories": 195.92,
+          "protein_grams": 7.192,
+          "carbohydrate_grams": 38.2664,
+          "fat_grams": 1.1532,
+          "fiber_grams": 2.232,
+          "sugar_grams": 0.6944000000000001,
+          "sodium_mg": 1.24,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:85420",
+          "serving_name": "1 cup (cup spaghetti not packed)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 124
+        },
+        {
+          "calories": 208.56,
+          "protein_grams": 7.656,
+          "carbohydrate_grams": 40.7352,
+          "fat_grams": 1.2276,
+          "fiber_grams": 2.3760000000000003,
+          "sugar_grams": 0.7392,
+          "sodium_mg": 1.32,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:85423",
+          "serving_name": "1 cup (cup elbows packed)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 132
+        },
+        {
+          "calories": 189.6,
+          "protein_grams": 6.96,
+          "carbohydrate_grams": 37.032,
+          "fat_grams": 1.116,
+          "fiber_grams": 2.16,
+          "sugar_grams": 0.672,
+          "sodium_mg": 1.2,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:85422",
+          "serving_name": "1 cup (cup elbows not packed)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 120
+        },
+        {
+          "calories": 169.06,
+          "protein_grams": 6.206,
+          "carbohydrate_grams": 33.0202,
+          "fat_grams": 0.9951000000000001,
+          "fiber_grams": 1.9260000000000002,
+          "sugar_grams": 0.5992000000000001,
+          "sodium_mg": 1.07,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:85426",
+          "serving_name": "1 cup (cup rotini)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 107
+        },
+        {
+          "calories": 169.06,
+          "protein_grams": 6.206,
+          "carbohydrate_grams": 33.0202,
+          "fat_grams": 0.9951000000000001,
+          "fiber_grams": 1.9260000000000002,
+          "sugar_grams": 0.5992000000000001,
+          "sodium_mg": 1.07,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:85424",
+          "serving_name": "1 cup (cup penne)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 107
+        },
+        {
+          "calories": 238.58,
+          "protein_grams": 8.758,
+          "carbohydrate_grams": 46.5986,
+          "fat_grams": 1.4043,
+          "fiber_grams": 2.718,
+          "sugar_grams": 0.8456,
+          "sodium_mg": 1.51,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:85421",
+          "serving_name": "1 cup (cup spaghetti packed)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 151
+        }
+      ],
+      "omitted_portions": 0
+    },
+    "digest": "b696be250010c0e1e5444828ea1146a2a302d20277fd0b83cfc57c898f5e2eb2"
+  },
+  {
+    "selection": {
+      "slug": "white-potato",
+      "name": "White Potato",
+      "query": "Potato baked flesh and skin",
+      "categories": [
+        "vegetables"
+      ],
+      "existingSlug": "white-potato",
+      "fdcId": 170030,
+      "expectedDescription": "Potatoes, Russet, flesh and skin, baked",
+      "reviewed": true,
+      "expectedDataType": "SR Legacy"
+    },
+    "food": {
+      "external_id": 170030,
+      "data_type": "SR Legacy",
+      "description": "Potatoes, Russet, flesh and skin, baked",
+      "source_updated_at": "2019-04-01T04:00:00.000Z",
+      "source_category": "Vegetables and Vegetable Products",
+      "basis": {
+        "calories": 95,
+        "protein_grams": 2.63,
+        "carbohydrate_grams": 21.44,
+        "fat_grams": 0.13,
+        "fiber_grams": 2.3,
+        "sugar_grams": 1.08,
+        "sodium_mg": 14,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 95,
+          "protein_grams": 2.63,
+          "carbohydrate_grams": 21.44,
+          "fat_grams": 0.13,
+          "fiber_grams": 2.3,
+          "sugar_grams": 1.08,
+          "sodium_mg": 14,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        }
+      ],
+      "omitted_portions": 3
+    },
+    "digest": "1c0dc3003c5599f56e25622de185e985ca51f296f21481b17fe8814c96e0ceff"
+  },
+  {
+    "selection": {
+      "slug": "sweet-potato",
+      "name": "Sweet Potato",
+      "query": "Sweet potato cooked baked",
+      "categories": [
+        "vegetables"
+      ],
+      "existingSlug": "sweet-potato",
+      "fdcId": 2709699,
+      "expectedDescription": "Sweet potato, baked, no added fat",
+      "reviewed": true,
+      "expectedDataType": "Survey (FNDDS)"
+    },
+    "food": {
+      "external_id": 2709699,
+      "data_type": "Survey (FNDDS)",
+      "description": "Sweet potato, baked, no added fat",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": null,
+      "basis": {
+        "calories": 82,
+        "protein_grams": 1.64,
+        "carbohydrate_grams": 18,
+        "fat_grams": 0.39,
+        "fiber_grams": 3.1,
+        "sugar_grams": 6.29,
+        "sodium_mg": 154,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 82,
+          "protein_grams": 1.64,
+          "carbohydrate_grams": 18,
+          "fat_grams": 0.39,
+          "fiber_grams": 3.1,
+          "sugar_grams": 6.29,
+          "sodium_mg": 154,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 205,
+          "protein_grams": 4.1,
+          "carbohydrate_grams": 45,
+          "fat_grams": 0.9750000000000001,
+          "fiber_grams": 7.75,
+          "sugar_grams": 15.725,
+          "sodium_mg": 385,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:307960",
+          "serving_name": "1 cup (1 cup, mashed)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 250
+        },
+        {
+          "calories": 20.5,
+          "protein_grams": 0.41,
+          "carbohydrate_grams": 4.5,
+          "fat_grams": 0.0975,
+          "fiber_grams": 0.775,
+          "sugar_grams": 1.5725,
+          "sodium_mg": 38.5,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:307961",
+          "serving_name": "1 oz (1 oz, raw, yields)",
+          "serving_quantity": 1,
+          "serving_unit": "oz",
+          "grams_equivalent": 25
+        }
+      ],
+      "omitted_portions": 4
+    },
+    "digest": "67fafba58fedd5c86be6e90fe23509b7c286e2492cb3212c51a014607943724a"
+  },
+  {
+    "selection": {
+      "slug": "banana",
+      "name": "Banana",
+      "query": "Bananas raw",
+      "categories": [
+        "fruits"
+      ],
+      "existingSlug": "banana",
+      "fdcId": 1105314,
+      "expectedDescription": "Bananas, ripe and slightly ripe, raw",
+      "reviewed": true,
+      "expectedDataType": "Foundation"
+    },
+    "food": {
+      "external_id": 1105314,
+      "data_type": "Foundation",
+      "description": "Bananas, ripe and slightly ripe, raw",
+      "source_updated_at": "2020-04-01T04:00:00.000Z",
+      "source_category": "Fruits and Fruit Juices",
+      "basis": {
+        "calories": 97,
+        "protein_grams": 0.74,
+        "carbohydrate_grams": 23,
+        "fat_grams": 0.29,
+        "fiber_grams": 1.7,
+        "sugar_grams": 15.8,
+        "sodium_mg": 0,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "servings": [
+        {
+          "calories": 97,
+          "protein_grams": 0.74,
+          "carbohydrate_grams": 23,
+          "fat_grams": 0.29,
+          "fiber_grams": 1.7,
+          "sugar_grams": 15.8,
+          "sodium_mg": 0,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        }
+      ],
+      "omitted_portions": 2
+    },
+    "digest": "fb251d255a3801babacfc20a7942762afdd71729eb44ac285a6ee7da2074dc40"
+  },
+  {
+    "selection": {
+      "slug": "apple",
+      "name": "Apple",
+      "query": "Apples raw with skin",
+      "categories": [
+        "fruits"
+      ],
+      "existingSlug": "apple",
+      "fdcId": 2709215,
+      "expectedDescription": "Apple, raw",
+      "reviewed": true,
+      "expectedDataType": "Survey (FNDDS)"
+    },
+    "food": {
+      "external_id": 2709215,
+      "data_type": "Survey (FNDDS)",
+      "description": "Apple, raw",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": null,
+      "basis": {
+        "calories": 61,
+        "protein_grams": 0.17,
+        "carbohydrate_grams": 14.8,
+        "fat_grams": 0.15,
+        "fiber_grams": 2.1,
+        "sugar_grams": 12.1,
+        "sodium_mg": 0,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 61,
+          "protein_grams": 0.17,
+          "carbohydrate_grams": 14.8,
+          "fat_grams": 0.15,
+          "fiber_grams": 2.1,
+          "sugar_grams": 12.1,
+          "sodium_mg": 0,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 15.25,
+          "protein_grams": 0.0425,
+          "carbohydrate_grams": 3.7,
+          "fat_grams": 0.0375,
+          "fiber_grams": 0.525,
+          "sugar_grams": 3.025,
+          "sodium_mg": 0,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:306067",
+          "serving_name": "1 slice (1 slice)",
+          "serving_quantity": 1,
+          "serving_unit": "slice",
+          "grams_equivalent": 25
+        },
+        {
+          "calories": 76.25,
+          "protein_grams": 0.21250000000000002,
+          "carbohydrate_grams": 18.5,
+          "fat_grams": 0.1875,
+          "fiber_grams": 2.625,
+          "sugar_grams": 15.125,
+          "sodium_mg": 0,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:306068",
+          "serving_name": "1 cup (1 cup)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 125
+        }
+      ],
+      "omitted_portions": 6
+    },
+    "digest": "494473969ac46b229f3ff47534e0481de815003f7f1fdb00f00c54707400fae9"
+  },
+  {
+    "selection": {
+      "slug": "orange",
+      "name": "Orange",
+      "query": "Oranges raw",
+      "categories": [
+        "fruits"
+      ],
+      "fdcId": 746771,
+      "expectedDescription": "Oranges, raw, navels",
+      "reviewed": true,
+      "expectedDataType": "Foundation"
+    },
+    "food": {
+      "external_id": 746771,
+      "data_type": "Foundation",
+      "description": "Oranges, raw, navels",
+      "source_updated_at": "2019-12-16T05:00:00.000Z",
+      "source_category": "Fruits and Fruit Juices",
+      "basis": {
+        "calories": 47,
+        "protein_grams": 0.91,
+        "carbohydrate_grams": 11.8,
+        "fat_grams": 0.15,
+        "fiber_grams": 2,
+        "sugar_grams": 8.57,
+        "sodium_mg": 9,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "servings": [
+        {
+          "calories": 47,
+          "protein_grams": 0.91,
+          "carbohydrate_grams": 11.8,
+          "fat_grams": 0.15,
+          "fiber_grams": 2,
+          "sugar_grams": 8.57,
+          "sodium_mg": 9,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 77.55,
+          "protein_grams": 1.5015,
+          "carbohydrate_grams": 19.47,
+          "fat_grams": 0.24749999999999997,
+          "fiber_grams": 3.3,
+          "sugar_grams": 14.1405,
+          "sodium_mg": 14.85,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "portion:187512",
+          "serving_name": "1 cup (sections no membranes)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 165
+        },
+        {
+          "calories": 65.8,
+          "protein_grams": 1.274,
+          "carbohydrate_grams": 16.52,
+          "fat_grams": 0.21,
+          "fiber_grams": 2.8,
+          "sugar_grams": 11.998,
+          "sodium_mg": 12.6,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "portion:187513",
+          "serving_name": "1 each (2-7/8\" dia)",
+          "serving_quantity": 1,
+          "serving_unit": "each",
+          "grams_equivalent": 140
+        }
+      ],
+      "omitted_portions": 1
+    },
+    "digest": "7ee31f8b07e68938bc3c625061442443b3b8051db9a3a048f5886443a7ef08e0"
+  },
+  {
+    "selection": {
+      "slug": "strawberries",
+      "name": "Strawberries",
+      "query": "Strawberries raw",
+      "categories": [
+        "fruits"
+      ],
+      "existingSlug": "strawberries",
+      "fdcId": 2346409,
+      "expectedDescription": "Strawberries, raw",
+      "reviewed": true,
+      "expectedDataType": "Foundation"
+    },
+    "food": {
+      "external_id": 2346409,
+      "data_type": "Foundation",
+      "description": "Strawberries, raw",
+      "source_updated_at": "2022-10-28T04:00:00.000Z",
+      "source_category": "Fruits and Fruit Juices",
+      "basis": {
+        "calories": 32.66565,
+        "protein_grams": 0.640625,
+        "carbohydrate_grams": 7.964375,
+        "fat_grams": 0.22,
+        "fiber_grams": null,
+        "sugar_grams": 4.862,
+        "sodium_mg": 0,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "servings": [
+        {
+          "calories": 32.66565,
+          "protein_grams": 0.640625,
+          "carbohydrate_grams": 7.964375,
+          "fat_grams": 0.22,
+          "fiber_grams": null,
+          "sugar_grams": 4.862,
+          "sodium_mg": 0,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        }
+      ],
+      "omitted_portions": 1
+    },
+    "digest": "dcf16c541fd79923fc3091841dba5f9bbb09c0fdfc02fda668c60494ac0d70b4"
+  },
+  {
+    "selection": {
+      "slug": "blueberries",
+      "name": "Blueberries",
+      "query": "Blueberries raw",
+      "categories": [
+        "fruits"
+      ],
+      "existingSlug": "blueberries",
+      "fdcId": 2346411,
+      "expectedDescription": "Blueberries, raw",
+      "reviewed": true,
+      "expectedDataType": "Foundation"
+    },
+    "food": {
+      "external_id": 2346411,
+      "data_type": "Foundation",
+      "description": "Blueberries, raw",
+      "source_updated_at": "2022-10-28T04:00:00.000Z",
+      "source_category": "Fruits and Fruit Juices",
+      "basis": {
+        "calories": 57.384621,
+        "protein_grams": 0.703125,
+        "carbohydrate_grams": 14.571775,
+        "fat_grams": 0.3063,
+        "fiber_grams": null,
+        "sugar_grams": 9.356,
+        "sodium_mg": 0,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "servings": [
+        {
+          "calories": 57.384621,
+          "protein_grams": 0.703125,
+          "carbohydrate_grams": 14.571775,
+          "fat_grams": 0.3063,
+          "fiber_grams": null,
+          "sugar_grams": 9.356,
+          "sodium_mg": 0,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        }
+      ],
+      "omitted_portions": 1
+    },
+    "digest": "138e70e43988784e4f115b7f2170d6b6d080765f98767273c9f2d5ede001788c"
+  },
+  {
+    "selection": {
+      "slug": "grapes",
+      "name": "Grapes",
+      "query": "Grapes raw",
+      "categories": [
+        "fruits"
+      ],
+      "fdcId": 2709237,
+      "expectedDescription": "Grapes, raw",
+      "reviewed": true,
+      "expectedDataType": "Survey (FNDDS)"
+    },
+    "food": {
+      "external_id": 2709237,
+      "data_type": "Survey (FNDDS)",
+      "description": "Grapes, raw",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": null,
+      "basis": {
+        "calories": 83,
+        "protein_grams": 0.9,
+        "carbohydrate_grams": 19.4,
+        "fat_grams": 0.2,
+        "fiber_grams": 0.9,
+        "sugar_grams": 16.7,
+        "sodium_mg": 5,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 83,
+          "protein_grams": 0.9,
+          "carbohydrate_grams": 19.4,
+          "fat_grams": 0.2,
+          "fiber_grams": 0.9,
+          "sugar_grams": 16.7,
+          "sodium_mg": 5,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 124.5,
+          "protein_grams": 1.35,
+          "carbohydrate_grams": 29.099999999999998,
+          "fat_grams": 0.30000000000000004,
+          "fiber_grams": 1.35,
+          "sugar_grams": 25.05,
+          "sodium_mg": 7.5,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:306149",
+          "serving_name": "1 cup (1 cup)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 150
+        }
+      ],
+      "omitted_portions": 2
+    },
+    "digest": "3551a89b6bbca8de41f58a105f3b9f20827cafd9147050ee3e5b711881b6c8a8"
+  },
+  {
+    "selection": {
+      "slug": "avocado",
+      "name": "Avocado",
+      "query": "Avocados raw",
+      "categories": [
+        "fruits"
+      ],
+      "existingSlug": "avocado",
+      "fdcId": 2710824,
+      "expectedDescription": "Avocado, Hass, peeled, raw",
+      "reviewed": true,
+      "expectedDataType": "Foundation"
+    },
+    "food": {
+      "external_id": 2710824,
+      "data_type": "Foundation",
+      "description": "Avocado, Hass, peeled, raw",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": "Fruits and Fruit Juices",
+      "basis": {
+        "calories": 206.0493,
+        "protein_grams": 1.8125,
+        "carbohydrate_grams": 8.3235,
+        "fat_grams": 20.31,
+        "fiber_grams": null,
+        "sugar_grams": null,
+        "sodium_mg": 0,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "servings": [
+        {
+          "calories": 206.0493,
+          "protein_grams": 1.8125,
+          "carbohydrate_grams": 8.3235,
+          "fat_grams": 20.31,
+          "fiber_grams": null,
+          "sugar_grams": null,
+          "sodium_mg": 0,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        }
+      ],
+      "omitted_portions": 1
+    },
+    "digest": "41dcadf2d1c4d5fccd08e5dd19b4ec6a9aaf11d9b116d30b05b1800597910ee9"
+  },
+  {
+    "selection": {
+      "slug": "tomato",
+      "name": "Tomato",
+      "query": "Tomatoes red ripe raw",
+      "categories": [
+        "vegetables"
+      ],
+      "fdcId": 2709719,
+      "expectedDescription": "Tomatoes, raw",
+      "reviewed": true,
+      "expectedDataType": "Survey (FNDDS)"
+    },
+    "food": {
+      "external_id": 2709719,
+      "data_type": "Survey (FNDDS)",
+      "description": "Tomatoes, raw",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": null,
+      "basis": {
+        "calories": 20,
+        "protein_grams": 0.82,
+        "carbohydrate_grams": 4.04,
+        "fat_grams": 0.31,
+        "fiber_grams": 1.2,
+        "sugar_grams": 2.63,
+        "sodium_mg": 4,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 20,
+          "protein_grams": 0.82,
+          "carbohydrate_grams": 4.04,
+          "fat_grams": 0.31,
+          "fiber_grams": 1.2,
+          "sugar_grams": 2.63,
+          "sodium_mg": 4,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 4,
+          "protein_grams": 0.164,
+          "carbohydrate_grams": 0.808,
+          "fat_grams": 0.062,
+          "fiber_grams": 0.24,
+          "sugar_grams": 0.5259999999999999,
+          "sodium_mg": 0.8,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:308039",
+          "serving_name": "1 slice (1 slice)",
+          "serving_quantity": 1,
+          "serving_unit": "slice",
+          "grams_equivalent": 20
+        },
+        {
+          "calories": 36,
+          "protein_grams": 1.476,
+          "carbohydrate_grams": 7.272,
+          "fat_grams": 0.558,
+          "fiber_grams": 2.16,
+          "sugar_grams": 4.734,
+          "sodium_mg": 7.2,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:308045",
+          "serving_name": "1 cup (1 cup)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 180
+        }
+      ],
+      "omitted_portions": 6
+    },
+    "digest": "91fc025e582c9ba4bc59fba29727544a3eb78a026ee2a138164e515c82030eec"
+  },
+  {
+    "selection": {
+      "slug": "spinach",
+      "name": "Spinach",
+      "query": "Spinach raw",
+      "categories": [
+        "vegetables"
+      ],
+      "existingSlug": "spinach",
+      "fdcId": 1999633,
+      "expectedDescription": "Spinach, mature",
+      "reviewed": true,
+      "expectedDataType": "Foundation"
+    },
+    "food": {
+      "external_id": 1999633,
+      "data_type": "Foundation",
+      "description": "Spinach, mature",
+      "source_updated_at": "2021-10-28T04:00:00.000Z",
+      "source_category": "Vegetables and Vegetable Products",
+      "basis": {
+        "calories": 21.5796975,
+        "protein_grams": 2.90625,
+        "carbohydrate_grams": 2.64135,
+        "fat_grams": 0.6044,
+        "fiber_grams": 1.588,
+        "sugar_grams": null,
+        "sodium_mg": 106.6,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "servings": [
+        {
+          "calories": 21.5796975,
+          "protein_grams": 2.90625,
+          "carbohydrate_grams": 2.64135,
+          "fat_grams": 0.6044,
+          "fiber_grams": 1.588,
+          "sugar_grams": null,
+          "sodium_mg": 106.6,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        }
+      ],
+      "omitted_portions": 1
+    },
+    "digest": "67101a0d0735906908190df57bc1e156b80d77082340be26097e6f89fbc5c31a"
+  },
+  {
+    "selection": {
+      "slug": "broccoli",
+      "name": "Broccoli",
+      "query": "Broccoli raw",
+      "categories": [
+        "vegetables"
+      ],
+      "existingSlug": "broccoli",
+      "fdcId": 747447,
+      "expectedDescription": "Broccoli, raw",
+      "reviewed": true,
+      "expectedDataType": "Foundation"
+    },
+    "food": {
+      "external_id": 747447,
+      "data_type": "Foundation",
+      "description": "Broccoli, raw",
+      "source_updated_at": "2019-12-16T05:00:00.000Z",
+      "source_category": "Vegetables and Vegetable Products",
+      "basis": {
+        "calories": 31,
+        "protein_grams": 2.57,
+        "carbohydrate_grams": 6.27,
+        "fat_grams": 0.34,
+        "fiber_grams": 2.4,
+        "sugar_grams": 1.4,
+        "sodium_mg": 36,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "servings": [
+        {
+          "calories": 31,
+          "protein_grams": 2.57,
+          "carbohydrate_grams": 6.27,
+          "fat_grams": 0.34,
+          "fiber_grams": 2.4,
+          "sugar_grams": 1.4,
+          "sodium_mg": 36,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 23.56,
+          "protein_grams": 1.9531999999999998,
+          "carbohydrate_grams": 4.7652,
+          "fat_grams": 0.2584,
+          "fiber_grams": 1.8239999999999998,
+          "sugar_grams": 1.0639999999999998,
+          "sodium_mg": 27.36,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "portion:187633",
+          "serving_name": "1 cup (chopped)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 76
+        }
+      ],
+      "omitted_portions": 1
+    },
+    "digest": "b99061a8e6cb31b2b2a3eeb25ac73e544ceb2413d75c6ff2ca469e5dc0271686"
+  },
+  {
+    "selection": {
+      "slug": "onion",
+      "name": "Onion",
+      "query": "Onions raw",
+      "categories": [
+        "vegetables"
+      ],
+      "fdcId": 790646,
+      "expectedDescription": "Onions, yellow, raw",
+      "reviewed": true,
+      "expectedDataType": "Foundation"
+    },
+    "food": {
+      "external_id": 790646,
+      "data_type": "Foundation",
+      "description": "Onions, yellow, raw",
+      "source_updated_at": "2020-04-01T04:00:00.000Z",
+      "source_category": "Vegetables and Vegetable Products",
+      "basis": {
+        "calories": 38,
+        "protein_grams": 0.83,
+        "carbohydrate_grams": 8.61,
+        "fat_grams": 0.05,
+        "fiber_grams": 1.9,
+        "sugar_grams": 5.82,
+        "sodium_mg": 1,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "servings": [
+        {
+          "calories": 38,
+          "protein_grams": 0.83,
+          "carbohydrate_grams": 8.61,
+          "fat_grams": 0.05,
+          "fiber_grams": 1.9,
+          "sugar_grams": 5.82,
+          "sodium_mg": 1,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        }
+      ],
+      "omitted_portions": 2
+    },
+    "digest": "7b573b78539a859294a77c4c6fa8936a55f50474416c87e1a893654c808b8972"
+  },
+  {
+    "selection": {
+      "slug": "bell-pepper",
+      "name": "Bell Pepper",
+      "query": "Peppers sweet red raw",
+      "categories": [
+        "vegetables"
+      ],
+      "fdcId": 2258590,
+      "expectedDescription": "Peppers, bell, red, raw",
+      "reviewed": true,
+      "expectedDataType": "Foundation"
+    },
+    "food": {
+      "external_id": 2258590,
+      "data_type": "Foundation",
+      "description": "Peppers, bell, red, raw",
+      "source_updated_at": "2022-04-28T04:00:00.000Z",
+      "source_category": "Vegetables and Vegetable Products",
+      "basis": {
+        "calories": 26.98843175,
+        "protein_grams": 0.895625,
+        "carbohydrate_grams": 6.653175,
+        "fat_grams": 0.1256,
+        "fiber_grams": 1.158,
+        "sugar_grams": null,
+        "sodium_mg": 0,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "servings": [
+        {
+          "calories": 26.98843175,
+          "protein_grams": 0.895625,
+          "carbohydrate_grams": 6.653175,
+          "fat_grams": 0.1256,
+          "fiber_grams": 1.158,
+          "sugar_grams": null,
+          "sodium_mg": 0,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        }
+      ],
+      "omitted_portions": 1
+    },
+    "digest": "47b38759fbedca7f4f251b277f26f7ad5a35624dc35c1892ecd8c31e8d180a7f"
+  },
+  {
+    "selection": {
+      "slug": "carrots",
+      "name": "Carrots",
+      "query": "Carrots raw",
+      "categories": [
+        "vegetables"
+      ],
+      "existingSlug": "carrots",
+      "fdcId": 2258586,
+      "expectedDescription": "Carrots, mature, raw",
+      "reviewed": true,
+      "expectedDataType": "Foundation"
+    },
+    "food": {
+      "external_id": 2258586,
+      "data_type": "Foundation",
+      "description": "Carrots, mature, raw",
+      "source_updated_at": "2022-04-28T04:00:00.000Z",
+      "source_category": "Vegetables and Vegetable Products",
+      "basis": {
+        "calories": 44.978589,
+        "protein_grams": 0.94125,
+        "carbohydrate_grams": 10.26755,
+        "fat_grams": 0.3506,
+        "fiber_grams": 3.095,
+        "sugar_grams": null,
+        "sodium_mg": 86.65,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "servings": [
+        {
+          "calories": 44.978589,
+          "protein_grams": 0.94125,
+          "carbohydrate_grams": 10.26755,
+          "fat_grams": 0.3506,
+          "fiber_grams": 3.095,
+          "sugar_grams": null,
+          "sodium_mg": 86.65,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        }
+      ],
+      "omitted_portions": 1
+    },
+    "digest": "dddfc8cd3f0e6e9b68e05331971bdda0a4af0b24988a89be5f965fe58f43c0ff"
+  },
+  {
+    "selection": {
+      "slug": "mustard",
+      "name": "Mustard",
+      "query": "Mustard prepared yellow",
+      "categories": [
+        "condiments"
+      ],
+      "fdcId": 326698,
+      "expectedDescription": "Mustard, prepared, yellow",
+      "reviewed": true,
+      "expectedDataType": "Foundation"
+    },
+    "food": {
+      "external_id": 326698,
+      "data_type": "Foundation",
+      "description": "Mustard, prepared, yellow",
+      "source_updated_at": "2019-04-01T04:00:00.000Z",
+      "source_category": "Spices and Herbs",
+      "basis": {
+        "calories": 61,
+        "protein_grams": 4.25,
+        "carbohydrate_grams": 5.3,
+        "fat_grams": 3.38,
+        "fiber_grams": 4.3,
+        "sugar_grams": 1.42,
+        "sodium_mg": 1100,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "servings": [
+        {
+          "calories": 61,
+          "protein_grams": 4.25,
+          "carbohydrate_grams": 5.3,
+          "fat_grams": 3.38,
+          "fiber_grams": 4.3,
+          "sugar_grams": 1.42,
+          "sodium_mg": 1100,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 151.89000000000001,
+          "protein_grams": 10.582500000000001,
+          "carbohydrate_grams": 13.197000000000001,
+          "fat_grams": 8.4162,
+          "fiber_grams": 10.707,
+          "sugar_grams": 3.5358,
+          "sodium_mg": 2739,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "portion:119501",
+          "serving_name": "1 cup (cup)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 249
+        },
+        {
+          "calories": 3.6599999999999997,
+          "protein_grams": 0.255,
+          "carbohydrate_grams": 0.318,
+          "fat_grams": 0.20279999999999998,
+          "fiber_grams": 0.258,
+          "sugar_grams": 0.0852,
+          "sodium_mg": 66,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "portion:119500",
+          "serving_name": "1 tsp (teaspoon)",
+          "serving_quantity": 1,
+          "serving_unit": "tsp",
+          "grams_equivalent": 6
+        }
+      ],
+      "omitted_portions": 0
+    },
+    "digest": "6e4b066c30f765dabb221744f8ed2d11dc8dc2cf048639346a255bea7b7ca2b5"
+  },
+  {
+    "selection": {
+      "slug": "olive-oil",
+      "name": "Olive Oil",
+      "query": "Oil olive",
+      "categories": [
+        "oils-fats"
+      ],
+      "existingSlug": "olive-oil",
+      "fdcId": 2710186,
+      "expectedDescription": "Olive oil",
+      "reviewed": true,
+      "expectedDataType": "Survey (FNDDS)"
+    },
+    "food": {
+      "external_id": 2710186,
+      "data_type": "Survey (FNDDS)",
+      "description": "Olive oil",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": null,
+      "basis": {
+        "calories": 900,
+        "protein_grams": 0,
+        "carbohydrate_grams": 0,
+        "fat_grams": 100,
+        "fiber_grams": 0,
+        "sugar_grams": 0,
+        "sodium_mg": 2,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 900,
+          "protein_grams": 0,
+          "carbohydrate_grams": 0,
+          "fat_grams": 100,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 2,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 2016.0000000000002,
+          "protein_grams": 0,
+          "carbohydrate_grams": 0,
+          "fat_grams": 224.00000000000003,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 4.48,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:309585",
+          "serving_name": "1 cup (1 cup)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 224
+        },
+        {
+          "calories": 126.00000000000001,
+          "protein_grams": 0,
+          "carbohydrate_grams": 0,
+          "fat_grams": 14.000000000000002,
+          "fiber_grams": 0,
+          "sugar_grams": 0,
+          "sodium_mg": 0.28,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:309586",
+          "serving_name": "1 tbsp (1 tablespoon)",
+          "serving_quantity": 1,
+          "serving_unit": "tbsp",
+          "grams_equivalent": 14
+        }
+      ],
+      "omitted_portions": 1
+    },
+    "digest": "c60963f3c8f9aeb40c204609f9f6e2f7b86e5d1380079ffb651d9a109a5962b5"
+  },
+  {
+    "selection": {
+      "slug": "butter",
+      "name": "Butter",
+      "query": "Butter salted",
+      "categories": [
+        "oils-fats"
+      ],
+      "existingSlug": "butter",
+      "fdcId": 2710155,
+      "expectedDescription": "Butter, stick",
+      "reviewed": true,
+      "expectedDataType": "Survey (FNDDS)"
+    },
+    "food": {
+      "external_id": 2710155,
+      "data_type": "Survey (FNDDS)",
+      "description": "Butter, stick",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": null,
+      "basis": {
+        "calories": 743,
+        "protein_grams": 0.85,
+        "carbohydrate_grams": 0.06,
+        "fat_grams": 82.2,
+        "fiber_grams": 0,
+        "sugar_grams": 0.58,
+        "sodium_mg": 524,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 743,
+          "protein_grams": 0.85,
+          "carbohydrate_grams": 0.06,
+          "fat_grams": 82.2,
+          "fiber_grams": 0,
+          "sugar_grams": 0.58,
+          "sodium_mg": 524,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 1664.3200000000002,
+          "protein_grams": 1.9040000000000001,
+          "carbohydrate_grams": 0.13440000000000002,
+          "fat_grams": 184.12800000000001,
+          "fiber_grams": 0,
+          "sugar_grams": 1.2992,
+          "sodium_mg": 1173.76,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:309451",
+          "serving_name": "1 cup (1 cup)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 224
+        },
+        {
+          "calories": 104.02000000000001,
+          "protein_grams": 0.11900000000000001,
+          "carbohydrate_grams": 0.008400000000000001,
+          "fat_grams": 11.508000000000001,
+          "fiber_grams": 0,
+          "sugar_grams": 0.0812,
+          "sodium_mg": 73.36,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:309452",
+          "serving_name": "1 tbsp (1 tablespoon)",
+          "serving_quantity": 1,
+          "serving_unit": "tbsp",
+          "grams_equivalent": 14
+        }
+      ],
+      "omitted_portions": 6
+    },
+    "digest": "29a9bc3caaaa516f42e44b34c2ebf707bb76bd529b29a49b0b19aff487e54a2a"
+  },
+  {
+    "selection": {
+      "slug": "peanut-butter",
+      "name": "Peanut Butter",
+      "query": "Peanut butter smooth without salt",
+      "categories": [
+        "nuts"
+      ],
+      "existingSlug": "peanut-butter",
+      "fdcId": 2262072,
+      "expectedDescription": "Peanut butter, creamy",
+      "reviewed": true,
+      "expectedDataType": "Foundation"
+    },
+    "food": {
+      "external_id": 2262072,
+      "data_type": "Foundation",
+      "description": "Peanut butter, creamy",
+      "source_updated_at": "2022-04-28T04:00:00.000Z",
+      "source_category": "Legumes and Legume Products",
+      "basis": {
+        "calories": 589.383006,
+        "protein_grams": 23.99124,
+        "carbohydrate_grams": 22.70376,
+        "fat_grams": 49.43,
+        "fiber_grams": 6.323,
+        "sugar_grams": null,
+        "sodium_mg": 220.7,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "servings": [
+        {
+          "calories": 589.383006,
+          "protein_grams": 23.99124,
+          "carbohydrate_grams": 22.70376,
+          "fat_grams": 49.43,
+          "fiber_grams": 6.323,
+          "sugar_grams": null,
+          "sodium_mg": 220.7,
+          "caffeine_mg": null,
+          "alcohol_grams": null,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        }
+      ],
+      "omitted_portions": 0
+    },
+    "digest": "a948bf44d41c04e9f82e65bdf31b354125f0d665ccc473118ad2c53cfff918ca"
+  },
+  {
+    "selection": {
+      "slug": "black-beans-cooked",
+      "name": "Black Beans Cooked",
+      "query": "Beans black cooked without salt",
+      "categories": [
+        "legumes"
+      ],
+      "fdcId": 2707361,
+      "expectedDescription": "Black beans, from dried, no added fat",
+      "reviewed": true,
+      "expectedDataType": "Survey (FNDDS)"
+    },
+    "food": {
+      "external_id": 2707361,
+      "data_type": "Survey (FNDDS)",
+      "description": "Black beans, from dried, no added fat",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": null,
+      "basis": {
+        "calories": 131,
+        "protein_grams": 8.81,
+        "carbohydrate_grams": 23.6,
+        "fat_grams": 0.54,
+        "fiber_grams": 8.6,
+        "sugar_grams": 0.32,
+        "sodium_mg": 232,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 131,
+          "protein_grams": 8.81,
+          "carbohydrate_grams": 23.6,
+          "fat_grams": 0.54,
+          "fiber_grams": 8.6,
+          "sugar_grams": 0.32,
+          "sodium_mg": 232,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 235.8,
+          "protein_grams": 15.858,
+          "carbohydrate_grams": 42.480000000000004,
+          "fat_grams": 0.9720000000000001,
+          "fiber_grams": 15.48,
+          "sugar_grams": 0.5760000000000001,
+          "sodium_mg": 417.6,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:297928",
+          "serving_name": "1 cup (1 cup)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 180
+        },
+        {
+          "calories": 91.69999999999999,
+          "protein_grams": 6.167,
+          "carbohydrate_grams": 16.52,
+          "fat_grams": 0.378,
+          "fiber_grams": 6.02,
+          "sugar_grams": 0.22400000000000003,
+          "sodium_mg": 162.4,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:297929",
+          "serving_name": "1 oz (1 oz dry, yield after cooking)",
+          "serving_quantity": 1,
+          "serving_unit": "oz",
+          "grams_equivalent": 70
+        }
+      ],
+      "omitted_portions": 1
+    },
+    "digest": "2b7146b8732ed95cd858f1f35fec34aaf217fa01b33e47656272d4611ff69f6d"
+  },
+  {
+    "selection": {
+      "slug": "lentils-cooked",
+      "name": "Lentils Cooked",
+      "query": "Lentils cooked without salt",
+      "categories": [
+        "legumes"
+      ],
+      "fdcId": 2707425,
+      "expectedDescription": "Lentils, from dried, no added fat",
+      "reviewed": true,
+      "expectedDataType": "Survey (FNDDS)"
+    },
+    "food": {
+      "external_id": 2707425,
+      "data_type": "Survey (FNDDS)",
+      "description": "Lentils, from dried, no added fat",
+      "source_updated_at": "2024-10-31T04:00:00.000Z",
+      "source_category": null,
+      "basis": {
+        "calories": 115,
+        "protein_grams": 8.97,
+        "carbohydrate_grams": 20,
+        "fat_grams": 0.38,
+        "fiber_grams": 7.9,
+        "sugar_grams": 1.79,
+        "sodium_mg": 233,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "servings": [
+        {
+          "calories": 115,
+          "protein_grams": 8.97,
+          "carbohydrate_grams": 20,
+          "fat_grams": 0.38,
+          "fiber_grams": 7.9,
+          "sugar_grams": 1.79,
+          "sodium_mg": 233,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "100g",
+          "serving_name": "100 g",
+          "serving_quantity": 100,
+          "serving_unit": "g",
+          "grams_equivalent": 100
+        },
+        {
+          "calories": 207,
+          "protein_grams": 16.146,
+          "carbohydrate_grams": 36,
+          "fat_grams": 0.684,
+          "fiber_grams": 14.22,
+          "sugar_grams": 3.222,
+          "sodium_mg": 419.4,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:298083",
+          "serving_name": "1 cup (1 cup)",
+          "serving_quantity": 1,
+          "serving_unit": "cup",
+          "grams_equivalent": 180
+        },
+        {
+          "calories": 80.5,
+          "protein_grams": 6.279,
+          "carbohydrate_grams": 14,
+          "fat_grams": 0.26599999999999996,
+          "fiber_grams": 5.53,
+          "sugar_grams": 1.253,
+          "sodium_mg": 163.1,
+          "caffeine_mg": 0,
+          "alcohol_grams": 0,
+          "key": "portion:298084",
+          "serving_name": "1 oz (1 oz dry, yield after cooking)",
+          "serving_quantity": 1,
+          "serving_unit": "oz",
+          "grams_equivalent": 70
+        }
+      ],
+      "omitted_portions": 1
+    },
+    "digest": "90880351c366917fe49adcd71ed5ea24193798cd488676d29f5ccbdc57f56e8e"
+  }
+]

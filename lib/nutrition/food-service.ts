@@ -9,7 +9,7 @@ import { nutritionDraft, resolveNutritionFood, foodIdentity, parseIntake } from 
 export async function loadNutritionServings(client: SupabaseClient): Promise<Serving[]> {
   const { data, error } = await client.from("food_servings").select("*").limit(1001);
   if (error || !data || data.length >= 1000) throw new Error("FOOD_CATALOG_UNAVAILABLE");
-  return data as Serving[];
+  return (data as Serving[]).filter(serving => !serving.source_retired);
 }
 
 export type FoodInference = (base: FoodResolution, context: string, catalog: FoodCatalog, signal: AbortSignal) => Promise<FoodResolution>;

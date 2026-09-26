@@ -1,0 +1,1459 @@
+{
+  "source": "Local repository migration chain; not a production database audit",
+  "foods": 97,
+  "foodsWithMacros": 64,
+  "foodsWithAnyServing": 64,
+  "servingUnits": [
+    "oz",
+    "cup",
+    "tbsp",
+    "each",
+    "slice",
+    "fl oz",
+    "scoop"
+  ],
+  "templates": [
+    {
+      "slug": "ham-sandwich",
+      "components": [
+        {
+          "slug": "bread",
+          "quantity": "2",
+          "unit": "slice",
+          "usable": false
+        },
+        {
+          "slug": "ham",
+          "quantity": "3",
+          "unit": "oz",
+          "usable": false
+        }
+      ]
+    },
+    {
+      "slug": "hamburger",
+      "components": [
+        {
+          "slug": "beef-burger-patty-cooked",
+          "quantity": "4",
+          "unit": "oz",
+          "usable": true
+        },
+        {
+          "slug": "burger-bun",
+          "quantity": "1",
+          "unit": "each",
+          "usable": false
+        }
+      ]
+    },
+    {
+      "slug": "chicken-burrito",
+      "components": [
+        {
+          "slug": "chicken-breast-cooked",
+          "quantity": "4",
+          "unit": "oz",
+          "usable": true
+        },
+        {
+          "slug": "white-rice-cooked",
+          "quantity": "0.5",
+          "unit": "cup",
+          "usable": true
+        },
+        {
+          "slug": "tortilla",
+          "quantity": "1",
+          "unit": "each",
+          "usable": false
+        }
+      ]
+    },
+    {
+      "slug": "chicken-tacos",
+      "components": [
+        {
+          "slug": "chicken-breast-cooked",
+          "quantity": "2",
+          "unit": "oz",
+          "usable": true
+        },
+        {
+          "slug": "tortilla",
+          "quantity": "1",
+          "unit": "each",
+          "usable": false
+        }
+      ]
+    },
+    {
+      "slug": "chicken-salad",
+      "components": [
+        {
+          "slug": "mayonnaise",
+          "quantity": "1",
+          "unit": "tbsp",
+          "usable": false
+        },
+        {
+          "slug": "chicken",
+          "quantity": "4",
+          "unit": "oz",
+          "usable": false
+        }
+      ]
+    },
+    {
+      "slug": "oatmeal-with-fruit",
+      "components": [
+        {
+          "slug": "oatmeal",
+          "quantity": "1",
+          "unit": "cup",
+          "usable": true
+        },
+        {
+          "slug": "blueberries",
+          "quantity": "0.5",
+          "unit": "cup",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "eggs-and-toast",
+      "components": [
+        {
+          "slug": "egg",
+          "quantity": "2",
+          "unit": "each",
+          "usable": true
+        },
+        {
+          "slug": "whole-wheat-bread",
+          "quantity": "2",
+          "unit": "slice",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "grilled-chicken-with-rice",
+      "components": [
+        {
+          "slug": "chicken-breast-cooked",
+          "quantity": "4",
+          "unit": "oz",
+          "usable": true
+        },
+        {
+          "slug": "white-rice-cooked",
+          "quantity": "1",
+          "unit": "cup",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "turkey-sandwich",
+      "components": [
+        {
+          "slug": "bread",
+          "quantity": "2",
+          "unit": "slice",
+          "usable": false
+        },
+        {
+          "slug": "turkey",
+          "quantity": "4",
+          "unit": "oz",
+          "usable": false
+        }
+      ]
+    },
+    {
+      "slug": "peanut-butter-sandwich",
+      "components": [
+        {
+          "slug": "peanut-butter",
+          "quantity": "2",
+          "unit": "tbsp",
+          "usable": true
+        },
+        {
+          "slug": "bread",
+          "quantity": "2",
+          "unit": "slice",
+          "usable": false
+        }
+      ]
+    },
+    {
+      "slug": "cheeseburger",
+      "components": [
+        {
+          "slug": "cheese",
+          "quantity": "1",
+          "unit": "oz",
+          "usable": false
+        },
+        {
+          "slug": "beef-patty",
+          "quantity": "4",
+          "unit": "oz",
+          "usable": false
+        },
+        {
+          "slug": "burger-bun",
+          "quantity": "1",
+          "unit": "each",
+          "usable": false
+        }
+      ]
+    },
+    {
+      "slug": "pepperoni-pizza",
+      "components": [
+        {
+          "slug": "pizza-crust",
+          "quantity": null,
+          "unit": null,
+          "usable": false
+        },
+        {
+          "slug": "cheese",
+          "quantity": null,
+          "unit": null,
+          "usable": false
+        },
+        {
+          "slug": "tomato-sauce",
+          "quantity": null,
+          "unit": null,
+          "usable": false
+        },
+        {
+          "slug": "pepperoni",
+          "quantity": null,
+          "unit": null,
+          "usable": false
+        }
+      ]
+    },
+    {
+      "slug": "cheese-pizza",
+      "components": [
+        {
+          "slug": "pizza-crust",
+          "quantity": null,
+          "unit": null,
+          "usable": false
+        },
+        {
+          "slug": "cheese",
+          "quantity": null,
+          "unit": null,
+          "usable": false
+        },
+        {
+          "slug": "tomato-sauce",
+          "quantity": null,
+          "unit": null,
+          "usable": false
+        }
+      ]
+    },
+    {
+      "slug": "cereal-with-milk",
+      "components": [
+        {
+          "slug": "milk",
+          "quantity": "1",
+          "unit": "cup",
+          "usable": true
+        },
+        {
+          "slug": "cereal",
+          "quantity": "1",
+          "unit": "cup",
+          "usable": false
+        }
+      ]
+    },
+    {
+      "slug": "greek-yogurt-with-berries",
+      "components": [
+        {
+          "slug": "greek-yogurt",
+          "quantity": "1",
+          "unit": "cup",
+          "usable": true
+        },
+        {
+          "slug": "berries",
+          "quantity": "0.5",
+          "unit": "cup",
+          "usable": false
+        }
+      ]
+    }
+  ],
+  "catalog": [
+    {
+      "slug": "tuna",
+      "name": "Tuna",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "3",
+          "grams": "85",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "salmon",
+      "name": "Salmon",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "ground-turkey",
+      "name": "Ground Turkey",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "ground-beef-90",
+      "name": "Ground Beef, 90% Lean",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "chicken-thigh-cooked",
+      "name": "Chicken Thigh, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "chicken-breast-cooked",
+      "name": "Chicken Breast, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "milk",
+      "name": "Milk",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "cup",
+          "quantity": "1",
+          "grams": "244",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "cottage-cheese",
+      "name": "Cottage Cheese",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "cup",
+          "quantity": "1",
+          "grams": "226",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "greek-yogurt",
+      "name": "Greek Yogurt",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "cup",
+          "quantity": "1",
+          "grams": "227",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "egg-whites",
+      "name": "Egg Whites",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "tbsp",
+          "quantity": "3",
+          "grams": "46",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "egg",
+      "name": "Egg",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "each",
+          "quantity": "1",
+          "grams": "50",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "quinoa",
+      "name": "Quinoa",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "cup",
+          "quantity": "1",
+          "grams": "185",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "oatmeal",
+      "name": "Oatmeal",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "cup",
+          "quantity": "1",
+          "grams": "234",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "brown-rice-cooked",
+      "name": "Brown Rice, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "cup",
+          "quantity": "1",
+          "grams": "195",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "white-rice-cooked",
+      "name": "White Rice, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "cup",
+          "quantity": "1",
+          "grams": "158",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "whole-wheat-bread",
+      "name": "Whole Wheat Bread",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "slice",
+          "quantity": "1",
+          "grams": "43",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "sourdough-bread",
+      "name": "Sourdough Bread",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "slice",
+          "quantity": "1",
+          "grams": "50",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "avocado",
+      "name": "Avocado",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "each",
+          "quantity": "1",
+          "grams": "150",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "strawberries",
+      "name": "Strawberries",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "cup",
+          "quantity": "1",
+          "grams": "152",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "blueberries",
+      "name": "Blueberries",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "cup",
+          "quantity": "1",
+          "grams": "148",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "apple",
+      "name": "Apple",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "each",
+          "quantity": "1",
+          "grams": "182",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "banana",
+      "name": "Banana",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "each",
+          "quantity": "1",
+          "grams": "118",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "carrots",
+      "name": "Carrots",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "cup",
+          "quantity": "1",
+          "grams": "128",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "mixed-greens",
+      "name": "Mixed Greens",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "cup",
+          "quantity": "2",
+          "grams": "85",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "spinach",
+      "name": "Spinach",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "cup",
+          "quantity": "2",
+          "grams": "60",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "broccoli",
+      "name": "Broccoli",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "cup",
+          "quantity": "1",
+          "grams": "91",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "white-potato",
+      "name": "White Potato",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "each",
+          "quantity": "1",
+          "grams": "173",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "sweet-potato",
+      "name": "Sweet Potato",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "each",
+          "quantity": "1",
+          "grams": "130",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "almonds",
+      "name": "Almonds",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "1",
+          "grams": "28",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "peanut-butter",
+      "name": "Peanut Butter",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "tbsp",
+          "quantity": "2",
+          "grams": "32",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "butter",
+      "name": "Butter",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "tbsp",
+          "quantity": "1",
+          "grams": "14",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "olive-oil",
+      "name": "Olive Oil",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "tbsp",
+          "quantity": "1",
+          "grams": "14",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "almond-milk",
+      "name": "Almond Milk",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "cup",
+          "quantity": "1",
+          "grams": "240",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "coffee",
+      "name": "Coffee",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "fl oz",
+          "quantity": "8",
+          "grams": "237",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "water",
+      "name": "Water",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "fl oz",
+          "quantity": "8",
+          "grams": "237",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "whey-protein-powder",
+      "name": "Whey Protein Powder",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "scoop",
+          "quantity": "1",
+          "grams": "30",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "ground-beef-80-lean-cooked",
+      "name": "Ground Beef, 80% Lean, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "ground-beef-85-lean-cooked",
+      "name": "Ground Beef, 85% Lean, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "ground-beef-90-lean-cooked",
+      "name": "Ground Beef, 90% Lean, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "ground-beef-93-lean-cooked",
+      "name": "Ground Beef, 93% Lean, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "sirloin-steak-cooked",
+      "name": "Sirloin Steak, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "ribeye-steak-cooked",
+      "name": "Ribeye Steak, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "new-york-strip-steak-cooked",
+      "name": "New York Strip Steak, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "filet-mignon-cooked",
+      "name": "Filet Mignon, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "flank-steak-cooked",
+      "name": "Flank Steak, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "skirt-steak-cooked",
+      "name": "Skirt Steak, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "flat-iron-steak-cooked",
+      "name": "Flat Iron Steak, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "chuck-roast-cooked",
+      "name": "Chuck Roast, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "beef-tenderloin-cooked",
+      "name": "Beef Tenderloin, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "london-broil-cooked",
+      "name": "London Broil, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "beef-brisket-cooked",
+      "name": "Beef Brisket, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "beef-short-ribs-cooked",
+      "name": "Beef Short Ribs, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "beef-roast-cooked",
+      "name": "Beef Roast, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "beef-stew-meat-cooked",
+      "name": "Beef Stew Meat, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "corned-beef-cooked",
+      "name": "Corned Beef, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "beef-burger-patty-cooked",
+      "name": "Beef Burger Patty, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "lamb-chop-cooked",
+      "name": "Lamb Chop, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "ground-lamb-cooked",
+      "name": "Ground Lamb, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "pork-tenderloin-cooked",
+      "name": "Pork Tenderloin, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "pork-chop-cooked",
+      "name": "Pork Chop, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "pork-loin-cooked",
+      "name": "Pork Loin, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "ground-pork-cooked",
+      "name": "Ground Pork, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "ground-bison-cooked",
+      "name": "Bison, Ground, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "venison-cooked",
+      "name": "Venison, Cooked",
+      "source_type": "curated",
+      "source_reference": null,
+      "servings": [
+        {
+          "unit": "oz",
+          "quantity": "4",
+          "grams": "113",
+          "usable": true
+        }
+      ]
+    },
+    {
+      "slug": "salad-with-chicken",
+      "name": "Salad with Chicken",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "tacos",
+      "name": "Tacos",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "pizza-crust",
+      "name": "Pizza Crust",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "cheese",
+      "name": "Cheese",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "tomato-sauce",
+      "name": "Tomato Sauce",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "pepperoni",
+      "name": "Pepperoni",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "bread",
+      "name": "Bread",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "turkey",
+      "name": "Turkey",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "mayonnaise",
+      "name": "Mayonnaise",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "lettuce",
+      "name": "Lettuce",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "beef-patty",
+      "name": "Beef Patty",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "burger-bun",
+      "name": "Burger Bun",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "berries",
+      "name": "Berries",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "chicken",
+      "name": "Chicken",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "tortilla",
+      "name": "Tortilla",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "cereal",
+      "name": "Cereal",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "coca-cola-zero-sugar",
+      "name": "Coca-Cola Zero Sugar",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "ham-sandwich",
+      "name": "Ham Sandwich",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "hamburger",
+      "name": "Hamburger",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "chicken-burrito",
+      "name": "Chicken Burrito",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "chicken-tacos",
+      "name": "Chicken Tacos",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "chicken-salad",
+      "name": "Chicken Salad",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "oatmeal-with-fruit",
+      "name": "Oatmeal with Fruit",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "eggs-and-toast",
+      "name": "Eggs and Toast",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "grilled-chicken-with-rice",
+      "name": "Grilled Chicken with Rice",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "turkey-sandwich",
+      "name": "Turkey Sandwich",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "peanut-butter-sandwich",
+      "name": "Peanut Butter Sandwich",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "cheeseburger",
+      "name": "Cheeseburger",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "pepperoni-pizza",
+      "name": "Pepperoni Pizza",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "cheese-pizza",
+      "name": "Cheese Pizza",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "cereal-with-milk",
+      "name": "Cereal with Milk",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "greek-yogurt-with-berries",
+      "name": "Greek Yogurt with Berries",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    },
+    {
+      "slug": "ham",
+      "name": "Ham",
+      "source_type": "curated",
+      "source_reference": "axvital:component-library:v1",
+      "servings": []
+    }
+  ],
+  "categorySlugs": [
+    "protein",
+    "dairy",
+    "eggs",
+    "grains",
+    "bread-bakery",
+    "fruits",
+    "vegetables",
+    "legumes",
+    "nuts-seeds",
+    "oils-fats",
+    "snacks",
+    "beverages",
+    "prepared-foods",
+    "condiments",
+    "other",
+    "beef",
+    "pork",
+    "poultry",
+    "fish",
+    "shellfish",
+    "nuts",
+    "seeds",
+    "added_sugar",
+    "artificial_sweetener",
+    "processed_meat"
+  ],
+  "aliases": 84
+}

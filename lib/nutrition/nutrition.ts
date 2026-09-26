@@ -2,7 +2,7 @@ import { comparisonKey, singularKey } from "./food-resolution.ts";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 export type Nutrients = { calories:number|null; protein_grams:number|null; carbohydrate_grams:number|null; fat_grams:number|null; fiber_grams?:number|null };
-export type Serving = Nutrients & { id:string; food_id:string; serving_name:string; serving_quantity:number; serving_unit:string; grams_equivalent:number|null; is_default:boolean; display_order:number };
+export type Serving = Nutrients & { id:string; food_id:string; serving_name:string; serving_quantity:number; serving_unit:string; grams_equivalent:number|null; is_default:boolean; display_order:number; source_retired?:boolean };
 export type Food = { id:string; name:string; brand_name:string|null; recipe_unit?:string|null; common_aliases:string[]; servings:Serving[] };
 export type UserFood = Nutrients & { id:string; name:string; brand_name:string|null; serving_name:string; serving_quantity:number; serving_unit:string; last_logged_at:string|null };
 export type Entry = { id:string; title:string|null; consumed_at:string; meal_type:string|null; notes:string|null; nutrition_status?:"recorded"|"incomplete"; stated_amount?:string|null; source_type?:string; items:Array<Nutrients & { id:string; source_name:string; serving_name_snapshot:string; serving_quantity_snapshot:number; serving_unit_snapshot:string; quantity_multiplier:number }> };
@@ -36,19 +36,19 @@ export async function loadFoodServings(client:SupabaseClient, foodId:string):Pro
   if (error) {
     throw new Error("Serving options could not be loaded. Try selecting the food again.");
   }
-  return (data??[]) as Serving[];
+  return (data??[]).filter(serving => !serving.source_retired) as Serving[];
 }
 export async function loadNutrition(client:SupabaseClient) {
   const user=await userId(client), start=new Date(); start.setHours(0,0,0,0); const end=new Date(start); end.setDate(end.getDate()+1);
   const [foods,userFoods,entries,aliases]=await Promise.all([
-    client.from("foods").select("id,name,brand_name,common_aliases,source_reference,recipe_unit").eq("is_active",true).order("name"),
+    client.from("foods").select("id,name,brand_name,common_aliases,source_reference,recipe_unit,external_sources:food_external_sources(external_id)").eq("is_active",true).order("name"),
     client.from("user_foods").select("*").eq("user_id",user).eq("is_active",true).is("archived_at",null).order("last_logged_at",{ascending:false}),
     client.from("nutrition_entries").select("id,title,consumed_at,meal_type,notes,nutrition_status,stated_amount,source_type,items:nutrition_entry_items(*)").eq("user_id",user).is("deleted_at",null).gte("consumed_at",start.toISOString()).lt("consumed_at",end.toISOString()).order("consumed_at",{ascending:false}),
     client.from("food_aliases").select("food_id,alias").limit(1001),
   ]);
   if (aliases.error || !aliases.data || aliases.data.length >= 1000) throw new Error("We couldn’t load food aliases.");
   if (foods.error||userFoods.error||entries.error) throw new Error("We couldn’t load nutrition data.");
-  return { foods:(foods.data??[]).filter(food=>food.source_reference!=="axvital:component-library:v1" || food.recipe_unit).map((food)=>({...food,common_aliases:[...new Set([...(food.common_aliases??[]),...aliases.data.filter(alias=>alias.food_id===food.id).map(alias=>alias.alias)])],servings:[]})) as Food[], userFoods:(userFoods.data??[]) as UserFood[], entries:(entries.data??[]) as unknown as Entry[] };
+  return { foods:(foods.data??[]).filter(food=>food.source_reference!=="axvital:component-library:v1" || food.recipe_unit || food.external_sources?.length).map((food)=>({...food,common_aliases:[...new Set([...(food.common_aliases??[]),...aliases.data.filter(alias=>alias.food_id===food.id).map(alias=>alias.alias)])],servings:[]})) as Food[], userFoods:(userFoods.data??[]) as UserFood[], entries:(entries.data??[]) as unknown as Entry[] };
 }
 export async function logFood(client:SupabaseClient,args:{foodId?:string;servingId?:string;userFoodId?:string;quantity:number;consumedAt:string;mealType?:string;notes?:string}) {
   if (!Number.isFinite(args.quantity)||args.quantity<=0) throw new Error("Quantity must be greater than zero.");

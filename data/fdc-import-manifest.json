@@ -1,0 +1,753 @@
+[
+  {
+    "slug": "bread",
+    "name": "Bread",
+    "query": "Bread NFS",
+    "categories": [
+      "grains"
+    ],
+    "existingSlug": "bread",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "turkey",
+    "name": "Turkey",
+    "query": "Turkey cooked NFS",
+    "categories": [
+      "poultry"
+    ],
+    "existingSlug": "turkey",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "ham",
+    "name": "Ham",
+    "query": "Ham sliced deli",
+    "categories": [
+      "pork",
+      "processed_meat"
+    ],
+    "existingSlug": "ham",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "cheese",
+    "name": "Cheese",
+    "query": "Cheese NFS",
+    "categories": [
+      "dairy"
+    ],
+    "existingSlug": "cheese",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "beef-patty",
+    "name": "Beef Patty",
+    "query": "Beef patty cooked",
+    "categories": [
+      "beef"
+    ],
+    "existingSlug": "beef-patty",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "burger-bun",
+    "name": "Burger Bun",
+    "query": "Rolls hamburger plain",
+    "categories": [
+      "grains"
+    ],
+    "existingSlug": "burger-bun",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "tortilla",
+    "name": "Tortilla",
+    "query": "Tortilla flour",
+    "categories": [
+      "grains"
+    ],
+    "existingSlug": "tortilla",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "mayonnaise",
+    "name": "Mayonnaise",
+    "query": "Mayonnaise regular",
+    "categories": [
+      "condiments",
+      "oils-fats"
+    ],
+    "existingSlug": "mayonnaise",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "lettuce",
+    "name": "Lettuce",
+    "query": "Lettuce iceberg raw",
+    "categories": [
+      "vegetables"
+    ],
+    "existingSlug": "lettuce",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "tomato-sauce",
+    "name": "Tomato Sauce",
+    "query": "Tomato sauce canned",
+    "categories": [
+      "vegetables"
+    ],
+    "existingSlug": "tomato-sauce",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "pepperoni",
+    "name": "Pepperoni",
+    "query": "Pepperoni pork beef",
+    "categories": [
+      "processed_meat"
+    ],
+    "existingSlug": "pepperoni",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "pizza-crust",
+    "name": "Pizza Crust",
+    "query": "Pizza crust baked",
+    "categories": [
+      "grains"
+    ],
+    "existingSlug": "pizza-crust",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "chicken",
+    "name": "Chicken",
+    "query": "Chicken meat cooked NFS",
+    "categories": [
+      "poultry"
+    ],
+    "existingSlug": "chicken",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "cereal",
+    "name": "Cereal",
+    "query": "Ready to eat cereal NFS",
+    "categories": [
+      "grains"
+    ],
+    "existingSlug": "cereal",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "berries",
+    "name": "Berries",
+    "query": "Berries mixed raw",
+    "categories": [
+      "fruits"
+    ],
+    "existingSlug": "berries",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "egg",
+    "name": "Egg",
+    "query": "Egg whole raw fresh",
+    "categories": [
+      "eggs"
+    ],
+    "existingSlug": "egg",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "chicken-breast-cooked",
+    "name": "Chicken Breast, Cooked",
+    "query": "Chicken breast meat only cooked roasted",
+    "categories": [
+      "poultry"
+    ],
+    "existingSlug": "chicken-breast-cooked",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "turkey-breast-roasted",
+    "name": "Turkey Breast Roasted",
+    "query": "Turkey breast meat only cooked roasted",
+    "categories": [
+      "poultry"
+    ],
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "deli-turkey",
+    "name": "Deli Turkey",
+    "query": "Turkey breast deli sliced",
+    "categories": [
+      "poultry",
+      "processed_meat"
+    ],
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "ground-beef-90-lean-cooked",
+    "name": "Ground Beef, 90% Lean, Cooked",
+    "query": "Beef ground 90% lean cooked",
+    "categories": [
+      "beef"
+    ],
+    "existingSlug": "ground-beef-90-lean-cooked",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "beef-burger-patty-cooked",
+    "name": "Beef Burger Patty, Cooked",
+    "query": "Beef ground patty cooked",
+    "categories": [
+      "beef"
+    ],
+    "existingSlug": "beef-burger-patty-cooked",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "sirloin-steak-cooked",
+    "name": "Sirloin Steak, Cooked",
+    "query": "Beef sirloin steak cooked grilled",
+    "categories": [
+      "beef"
+    ],
+    "existingSlug": "sirloin-steak-cooked",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "pork-chop-cooked",
+    "name": "Pork Chop, Cooked",
+    "query": "Pork chop cooked broiled",
+    "categories": [
+      "pork"
+    ],
+    "existingSlug": "pork-chop-cooked",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "bacon-cooked",
+    "name": "Bacon Cooked",
+    "query": "Pork bacon cooked pan fried",
+    "categories": [
+      "pork",
+      "processed_meat"
+    ],
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "salmon",
+    "name": "Salmon",
+    "query": "Salmon cooked dry heat",
+    "categories": [
+      "fish"
+    ],
+    "existingSlug": "salmon",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "tuna",
+    "name": "Tuna",
+    "query": "Tuna canned in water drained",
+    "categories": [
+      "fish"
+    ],
+    "existingSlug": "tuna",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "shrimp-cooked",
+    "name": "Shrimp Cooked",
+    "query": "Shrimp cooked",
+    "categories": [
+      "shellfish"
+    ],
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "milk",
+    "name": "Milk",
+    "query": "Milk whole 3.25% milkfat",
+    "categories": [
+      "dairy"
+    ],
+    "existingSlug": "milk",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "milk-two-percent",
+    "name": "Milk Two Percent",
+    "query": "Milk reduced fat 2% milkfat",
+    "categories": [
+      "dairy"
+    ],
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "milk-skim",
+    "name": "Milk Skim",
+    "query": "Milk nonfat fluid",
+    "categories": [
+      "dairy"
+    ],
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "greek-yogurt",
+    "name": "Greek Yogurt",
+    "query": "Yogurt Greek plain nonfat",
+    "categories": [
+      "dairy"
+    ],
+    "existingSlug": "greek-yogurt",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "yogurt-plain",
+    "name": "Yogurt Plain",
+    "query": "Yogurt plain whole milk",
+    "categories": [
+      "dairy"
+    ],
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "cheddar-cheese",
+    "name": "Cheddar Cheese",
+    "query": "Cheese cheddar",
+    "categories": [
+      "dairy"
+    ],
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "mozzarella-cheese",
+    "name": "Mozzarella Cheese",
+    "query": "Cheese mozzarella whole milk",
+    "categories": [
+      "dairy"
+    ],
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "cottage-cheese",
+    "name": "Cottage Cheese",
+    "query": "Cheese cottage lowfat 2%",
+    "categories": [
+      "dairy"
+    ],
+    "existingSlug": "cottage-cheese",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "white-bread",
+    "name": "White Bread",
+    "query": "Bread white commercially prepared",
+    "categories": [
+      "grains"
+    ],
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "whole-wheat-bread",
+    "name": "Whole Wheat Bread",
+    "query": "Bread whole wheat commercially prepared",
+    "categories": [
+      "grains"
+    ],
+    "existingSlug": "whole-wheat-bread",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "corn-tortilla",
+    "name": "Corn Tortilla",
+    "query": "Tortillas corn",
+    "categories": [
+      "grains"
+    ],
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "white-rice-cooked",
+    "name": "White Rice, Cooked",
+    "query": "Rice white cooked",
+    "categories": [
+      "grains"
+    ],
+    "existingSlug": "white-rice-cooked",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "brown-rice-cooked",
+    "name": "Brown Rice, Cooked",
+    "query": "Rice brown cooked",
+    "categories": [
+      "grains"
+    ],
+    "existingSlug": "brown-rice-cooked",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "oatmeal",
+    "name": "Oatmeal",
+    "query": "Oats cooked with water",
+    "categories": [
+      "grains"
+    ],
+    "existingSlug": "oatmeal",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "corn-flakes",
+    "name": "Corn Flakes",
+    "query": "Cereals ready to eat corn flakes plain",
+    "categories": [
+      "grains"
+    ],
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "pasta-cooked",
+    "name": "Pasta Cooked",
+    "query": "Pasta cooked unenriched without salt",
+    "categories": [
+      "grains"
+    ],
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "white-potato",
+    "name": "White Potato",
+    "query": "Potato baked flesh and skin",
+    "categories": [
+      "vegetables"
+    ],
+    "existingSlug": "white-potato",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "sweet-potato",
+    "name": "Sweet Potato",
+    "query": "Sweet potato cooked baked",
+    "categories": [
+      "vegetables"
+    ],
+    "existingSlug": "sweet-potato",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "banana",
+    "name": "Banana",
+    "query": "Bananas raw",
+    "categories": [
+      "fruits"
+    ],
+    "existingSlug": "banana",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "apple",
+    "name": "Apple",
+    "query": "Apples raw with skin",
+    "categories": [
+      "fruits"
+    ],
+    "existingSlug": "apple",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "orange",
+    "name": "Orange",
+    "query": "Oranges raw",
+    "categories": [
+      "fruits"
+    ],
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "strawberries",
+    "name": "Strawberries",
+    "query": "Strawberries raw",
+    "categories": [
+      "fruits"
+    ],
+    "existingSlug": "strawberries",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "blueberries",
+    "name": "Blueberries",
+    "query": "Blueberries raw",
+    "categories": [
+      "fruits"
+    ],
+    "existingSlug": "blueberries",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "grapes",
+    "name": "Grapes",
+    "query": "Grapes raw",
+    "categories": [
+      "fruits"
+    ],
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "avocado",
+    "name": "Avocado",
+    "query": "Avocados raw",
+    "categories": [
+      "fruits"
+    ],
+    "existingSlug": "avocado",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "tomato",
+    "name": "Tomato",
+    "query": "Tomatoes red ripe raw",
+    "categories": [
+      "vegetables"
+    ],
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "spinach",
+    "name": "Spinach",
+    "query": "Spinach raw",
+    "categories": [
+      "vegetables"
+    ],
+    "existingSlug": "spinach",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "broccoli",
+    "name": "Broccoli",
+    "query": "Broccoli raw",
+    "categories": [
+      "vegetables"
+    ],
+    "existingSlug": "broccoli",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "onion",
+    "name": "Onion",
+    "query": "Onions raw",
+    "categories": [
+      "vegetables"
+    ],
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "bell-pepper",
+    "name": "Bell Pepper",
+    "query": "Peppers sweet red raw",
+    "categories": [
+      "vegetables"
+    ],
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "carrots",
+    "name": "Carrots",
+    "query": "Carrots raw",
+    "categories": [
+      "vegetables"
+    ],
+    "existingSlug": "carrots",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "mustard",
+    "name": "Mustard",
+    "query": "Mustard prepared yellow",
+    "categories": [
+      "condiments"
+    ],
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "olive-oil",
+    "name": "Olive Oil",
+    "query": "Oil olive",
+    "categories": [
+      "oils-fats"
+    ],
+    "existingSlug": "olive-oil",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "butter",
+    "name": "Butter",
+    "query": "Butter salted",
+    "categories": [
+      "oils-fats"
+    ],
+    "existingSlug": "butter",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "peanut-butter",
+    "name": "Peanut Butter",
+    "query": "Peanut butter smooth without salt",
+    "categories": [
+      "nuts"
+    ],
+    "existingSlug": "peanut-butter",
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "black-beans-cooked",
+    "name": "Black Beans Cooked",
+    "query": "Beans black cooked without salt",
+    "categories": [
+      "legumes"
+    ],
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  },
+  {
+    "slug": "lentils-cooked",
+    "name": "Lentils Cooked",
+    "query": "Lentils cooked without salt",
+    "categories": [
+      "legumes"
+    ],
+    "fdcId": null,
+    "expectedDescription": null,
+    "reviewed": false
+  }
+]

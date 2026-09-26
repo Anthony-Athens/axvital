@@ -1,0 +1,7281 @@
+[
+  {
+    "fdcId": 2707598,
+    "dataType": "Survey (FNDDS)",
+    "description": "Bread, white",
+    "publicationDate": "10/31/2024",
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 9.43
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 3.59
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 49.2
+      },
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 267
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 5.34
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 2.3
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 450
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 298809,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "64354",
+        "gramWeight": 24,
+        "portionDescription": "1 small or thin/very thin slice",
+        "sequenceNumber": 1
+      },
+      {
+        "id": 298813,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "62014",
+        "gramWeight": 10,
+        "portionDescription": "1 slice, snack-size",
+        "sequenceNumber": 5
+      },
+      {
+        "id": 298814,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10205",
+        "gramWeight": 40,
+        "portionDescription": "1 cup",
+        "sequenceNumber": 6
+      },
+      {
+        "id": 298816,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "90000",
+        "gramWeight": 28,
+        "portionDescription": "Quantity not specified",
+        "sequenceNumber": 8
+      },
+      {
+        "id": 298812,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "62011",
+        "gramWeight": 13,
+        "portionDescription": "1 slice, crust not eaten",
+        "sequenceNumber": 4
+      },
+      {
+        "id": 298810,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "64355",
+        "gramWeight": 28,
+        "portionDescription": "1 medium or regular slice",
+        "sequenceNumber": 2
+      },
+      {
+        "id": 298815,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "51000",
+        "gramWeight": 2.8,
+        "portionDescription": "1 cubic inch",
+        "sequenceNumber": 7
+      },
+      {
+        "id": 298811,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "61039",
+        "gramWeight": 43,
+        "portionDescription": "1 large or thick slice",
+        "sequenceNumber": 3
+      }
+    ]
+  },
+  {
+    "fdcId": 2706104,
+    "dataType": "Survey (FNDDS)",
+    "description": "Turkey, NFS",
+    "publicationDate": "10/31/2024",
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 28.8
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 2.06
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 139
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 467
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 293628,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "40018",
+        "gramWeight": 28.35,
+        "portionDescription": "1 oz, boneless, cooked",
+        "sequenceNumber": 5
+      },
+      {
+        "id": 293629,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "90000",
+        "gramWeight": 85,
+        "portionDescription": "Quantity not specified",
+        "sequenceNumber": 11
+      },
+      {
+        "id": 293624,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "62138",
+        "gramWeight": 30,
+        "portionDescription": "1 small or thin slice",
+        "sequenceNumber": 1
+      },
+      {
+        "id": 293626,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "61039",
+        "gramWeight": 85,
+        "portionDescription": "1 large or thick slice",
+        "sequenceNumber": 3
+      },
+      {
+        "id": 293627,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10068",
+        "gramWeight": 135,
+        "portionDescription": "1 cup, diced, cooked",
+        "sequenceNumber": 4
+      },
+      {
+        "id": 293625,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "61398",
+        "gramWeight": 60,
+        "portionDescription": "1 medium slice",
+        "sequenceNumber": 2
+      }
+    ]
+  },
+  {
+    "fdcId": 332397,
+    "dataType": "Foundation",
+    "description": "Ham, sliced, pre-packaged, deli meat (96%fat free, water added)",
+    "publicationDate": "4/1/2019",
+    "foodCategory": {
+      "id": 7,
+      "code": "0700",
+      "description": "Sausages and Luncheon Meats"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 106
+      },
+      {
+        "nutrient": {
+          "id": 1062,
+          "unitName": "kJ"
+        },
+        "amount": 443
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 16.7
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 3.73
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 0.27
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 1040
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 121438,
+        "dataPoints": 21,
+        "gramWeight": 13.5,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "modifier": "",
+        "minDateAcquired": "5/30/2015",
+        "measureUnit": {
+          "id": 1050,
+          "name": "slice",
+          "abbreviation": "slice"
+        },
+        "minYearAcquired": 2015
+      },
+      {
+        "id": 312746,
+        "dataPoints": 0,
+        "gramWeight": 85,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "measureUnit": {
+          "id": 1121,
+          "name": "RACC",
+          "abbreviation": "RACC"
+        }
+      }
+    ]
+  },
+  {
+    "fdcId": 2705704,
+    "dataType": "Survey (FNDDS)",
+    "description": "Cheese, NFS",
+    "publicationDate": "10/31/2024",
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 20.7
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 31.3
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 4.33
+      },
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 381
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 2.08
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 964
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 291529,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "64017",
+        "gramWeight": 9,
+        "portionDescription": "1 cracker-size slice",
+        "sequenceNumber": 1
+      },
+      {
+        "id": 291534,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "51000",
+        "gramWeight": 17.3,
+        "portionDescription": "1 cubic inch",
+        "sequenceNumber": 6
+      },
+      {
+        "id": 291531,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "62239",
+        "gramWeight": 28,
+        "portionDescription": "1 stick",
+        "sequenceNumber": 3
+      },
+      {
+        "id": 291530,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "61935",
+        "gramWeight": 21,
+        "portionDescription": "1 slice",
+        "sequenceNumber": 2
+      },
+      {
+        "id": 291533,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10120",
+        "gramWeight": 244,
+        "portionDescription": "1 cup, melted",
+        "sequenceNumber": 5
+      },
+      {
+        "id": 291532,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10205",
+        "gramWeight": 113,
+        "portionDescription": "1 cup",
+        "sequenceNumber": 4
+      },
+      {
+        "id": 291535,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "90000",
+        "gramWeight": 21,
+        "portionDescription": "Quantity not specified",
+        "sequenceNumber": 7
+      }
+    ]
+  },
+  {
+    "fdcId": 2705855,
+    "dataType": "Survey (FNDDS)",
+    "description": "Beef, ground, patty",
+    "publicationDate": "10/31/2024",
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 25.4
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 18.2
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 272
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 383
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 292277,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "64627",
+        "gramWeight": 85,
+        "portionDescription": "1 quarter lb patty",
+        "sequenceNumber": 4
+      },
+      {
+        "id": 292283,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "90000",
+        "gramWeight": 85,
+        "portionDescription": "Quantity not specified",
+        "sequenceNumber": 10
+      },
+      {
+        "id": 292280,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "40016",
+        "gramWeight": 20,
+        "portionDescription": "1 oz yields",
+        "sequenceNumber": 7
+      },
+      {
+        "id": 292275,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "62142",
+        "gramWeight": 65,
+        "portionDescription": "1 small patty",
+        "sequenceNumber": 2
+      },
+      {
+        "id": 292276,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "61375",
+        "gramWeight": 85,
+        "portionDescription": "1 medium patty",
+        "sequenceNumber": 3
+      },
+      {
+        "id": 292274,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "64716",
+        "gramWeight": 30,
+        "portionDescription": "1 miniature patty",
+        "sequenceNumber": 1
+      },
+      {
+        "id": 292282,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10205",
+        "gramWeight": 125,
+        "portionDescription": "1 cup",
+        "sequenceNumber": 9
+      },
+      {
+        "id": 292281,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "51000",
+        "gramWeight": 17,
+        "portionDescription": "1 cubic inch",
+        "sequenceNumber": 8
+      },
+      {
+        "id": 292279,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "61644",
+        "gramWeight": 85,
+        "portionDescription": "1 patty, NFS",
+        "sequenceNumber": 6
+      },
+      {
+        "id": 292278,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "61042",
+        "gramWeight": 120,
+        "portionDescription": "1 large patty",
+        "sequenceNumber": 5
+      }
+    ]
+  },
+  {
+    "fdcId": 2707657,
+    "dataType": "Survey (FNDDS)",
+    "description": "Roll, white, hamburger bun",
+    "publicationDate": "10/31/2024",
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 9.43
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 3.59
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 49.2
+      },
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 267
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 5.34
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 2.3
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 450
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 299169,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "90000",
+        "gramWeight": 52,
+        "portionDescription": "Quantity not specified",
+        "sequenceNumber": 3
+      },
+      {
+        "id": 299168,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "64538",
+        "gramWeight": 52,
+        "portionDescription": "1 hamburger bun",
+        "sequenceNumber": 2
+      },
+      {
+        "id": 299167,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "64301",
+        "gramWeight": 28,
+        "portionDescription": "1 miniature/small hamburger bun",
+        "sequenceNumber": 1
+      }
+    ]
+  },
+  {
+    "fdcId": 2707822,
+    "dataType": "Survey (FNDDS)",
+    "description": "Tortilla, NFS",
+    "publicationDate": "10/31/2024",
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 6.95
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 5.42
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 47
+      },
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 262
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 2.3
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 4.9
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 372
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 299959,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "90000",
+        "gramWeight": 77,
+        "portionDescription": "Quantity not specified",
+        "sequenceNumber": 11
+      },
+      {
+        "id": 299961,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "61238",
+        "gramWeight": 28,
+        "portionDescription": "1 medium",
+        "sequenceNumber": 16
+      },
+      {
+        "id": 299962,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "60919",
+        "gramWeight": 44,
+        "portionDescription": "1 large",
+        "sequenceNumber": 17
+      },
+      {
+        "id": 299960,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "62015",
+        "gramWeight": 18,
+        "portionDescription": "1 small",
+        "sequenceNumber": 15
+      },
+      {
+        "id": 299963,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "60749",
+        "gramWeight": 65,
+        "portionDescription": "1 extra large",
+        "sequenceNumber": 18
+      }
+    ]
+  },
+  {
+    "fdcId": 2758986,
+    "dataType": "Foundation",
+    "description": "Mayonnaise, Regular",
+    "publicationDate": "4/30/2026",
+    "foodCategory": {
+      "id": 4,
+      "code": "0400",
+      "description": "Fats and Oils"
+    },
+    "foodNutrients": []
+  },
+  {
+    "fdcId": 2346388,
+    "dataType": "Foundation",
+    "description": "Lettuce, iceberg, raw",
+    "publicationDate": "10/28/2022",
+    "foodCategory": {
+      "id": 11,
+      "code": "1100",
+      "description": "Vegetables and Vegetable Products"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 2047,
+          "unitName": "kcal"
+        },
+        "amount": 17.10875
+      },
+      {
+        "nutrient": {
+          "id": 2048,
+          "unitName": "kcal"
+        },
+        "amount": 14.455425
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 0.7425
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 0.07375
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 3.36875
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 16.11
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 312788,
+        "dataPoints": 0,
+        "gramWeight": 85,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "measureUnit": {
+          "id": 1121,
+          "name": "RACC",
+          "abbreviation": "RACC"
+        }
+      }
+    ]
+  },
+  {
+    "fdcId": 2685579,
+    "dataType": "Foundation",
+    "description": "Tomato, sauce, canned, with salt added",
+    "publicationDate": "4/18/2024",
+    "foodCategory": {
+      "id": 11,
+      "code": "1100",
+      "description": "Vegetables and Vegetable Products"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 2047,
+          "unitName": "kcal"
+        },
+        "amount": 34.1765
+      },
+      {
+        "nutrient": {
+          "id": 2048,
+          "unitName": "kcal"
+        },
+        "amount": 29.10400125
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 1.351875
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 0.3825
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 6.331625
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 1.636
+      },
+      {
+        "nutrient": {
+          "id": 1063,
+          "unitName": "g"
+        },
+        "amount": 3.517
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 416.9
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 312769,
+        "dataPoints": 0,
+        "gramWeight": 130,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "measureUnit": {
+          "id": 1121,
+          "name": "RACC",
+          "abbreviation": "RACC"
+        }
+      }
+    ]
+  },
+  {
+    "fdcId": 2759006,
+    "dataType": "Foundation",
+    "description": "Pepperoni, beef and pork, sliced",
+    "publicationDate": "4/30/2026",
+    "foodCategory": {
+      "id": 7,
+      "code": "0700",
+      "description": "Sausages and Luncheon Meats"
+    },
+    "foodNutrients": []
+  },
+  {
+    "fdcId": 2705931,
+    "dataType": "Survey (FNDDS)",
+    "description": "Chicken, NS as to part and cooking method, skin not eaten",
+    "publicationDate": "10/31/2024",
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 26.8
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 6.36
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 164
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 345
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 292634,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10049",
+        "gramWeight": 135,
+        "portionDescription": "1 cup, cooked, diced",
+        "sequenceNumber": 1
+      },
+      {
+        "id": 292635,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "61667",
+        "gramWeight": 50,
+        "portionDescription": "1 piece",
+        "sequenceNumber": 2
+      },
+      {
+        "id": 292638,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "90000",
+        "gramWeight": 85,
+        "portionDescription": "Quantity not specified",
+        "sequenceNumber": 20
+      },
+      {
+        "id": 292636,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "61935",
+        "gramWeight": 60,
+        "portionDescription": "1 slice",
+        "sequenceNumber": 3
+      },
+      {
+        "id": 292637,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "40040",
+        "gramWeight": 28.35,
+        "portionDescription": "1 oz, cooked",
+        "sequenceNumber": 4
+      }
+    ]
+  },
+  {
+    "fdcId": 2708445,
+    "dataType": "Survey (FNDDS)",
+    "description": "Cereal, ready-to-eat, NFS",
+    "publicationDate": "10/31/2024",
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 7.74
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 4.01
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 77.7
+      },
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 379
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 25.4
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 6.6
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 527
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 302993,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10205",
+        "gramWeight": 35,
+        "portionDescription": "1 cup",
+        "sequenceNumber": 1
+      },
+      {
+        "id": 302995,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "90000",
+        "gramWeight": 35,
+        "portionDescription": "Quantity not specified",
+        "sequenceNumber": 3
+      },
+      {
+        "id": 302994,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "64235",
+        "gramWeight": 30,
+        "portionDescription": "1 prepackaged single serving",
+        "sequenceNumber": 2
+      }
+    ]
+  },
+  {
+    "fdcId": 2709271,
+    "dataType": "Survey (FNDDS)",
+    "description": "Berries, NFS",
+    "publicationDate": "10/31/2024",
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 0.66
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 0.25
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 9.94
+      },
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 44
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 6.21
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 2
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 0
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 306293,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10205",
+        "gramWeight": 150,
+        "portionDescription": "1 cup",
+        "sequenceNumber": 1
+      },
+      {
+        "id": 306294,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "90000",
+        "gramWeight": 75,
+        "portionDescription": "Quantity not specified",
+        "sequenceNumber": 2
+      }
+    ]
+  },
+  {
+    "fdcId": 748967,
+    "dataType": "Foundation",
+    "description": "Eggs, Grade A, Large, egg whole",
+    "publicationDate": "12/16/2019",
+    "foodCategory": {
+      "id": 1,
+      "code": "0100",
+      "description": "Dairy and Egg Products"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 148
+      },
+      {
+        "nutrient": {
+          "id": 1062,
+          "unitName": "kJ"
+        },
+        "amount": 617
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 12.4
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 9.96
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 0.96
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1063,
+          "unitName": "g"
+        },
+        "amount": 0.2
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 129
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 193781,
+        "dataPoints": 526,
+        "gramWeight": 50.3,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "modifier": "whole without shell",
+        "minDateAcquired": "5/14/2019",
+        "measureUnit": {
+          "id": 1099,
+          "name": "egg",
+          "abbreviation": "egg"
+        },
+        "minYearAcquired": 2019
+      },
+      {
+        "id": 312625,
+        "dataPoints": 0,
+        "gramWeight": 50,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "measureUnit": {
+          "id": 1121,
+          "name": "RACC",
+          "abbreviation": "RACC"
+        }
+      }
+    ]
+  },
+  {
+    "fdcId": 171477,
+    "dataType": "SR Legacy",
+    "description": "Chicken, broilers or fryers, breast, meat only, cooked, roasted",
+    "publicationDate": "4/1/2019",
+    "foodCategory": {
+      "id": 5,
+      "code": "0500",
+      "description": "Poultry Products"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 165
+      },
+      {
+        "nutrient": {
+          "id": 1062,
+          "unitName": "kJ"
+        },
+        "amount": 690
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 31.02
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 3.57
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 74
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 88817,
+        "gramWeight": 140,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "modifier": "cup, chopped or diced",
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        }
+      },
+      {
+        "id": 88818,
+        "gramWeight": 52,
+        "sequenceNumber": 2,
+        "amount": 1,
+        "modifier": "unit (yield from 1 lb ready-to-cook chicken)",
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        }
+      },
+      {
+        "id": 88819,
+        "gramWeight": 86,
+        "sequenceNumber": 3,
+        "amount": 0.5,
+        "modifier": "breast, bone and skin removed",
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        }
+      }
+    ]
+  },
+  {
+    "fdcId": 171496,
+    "dataType": "SR Legacy",
+    "description": "Turkey, whole, breast, meat only, cooked, roasted",
+    "publicationDate": "4/1/2019",
+    "foodCategory": {
+      "id": 5,
+      "code": "0500",
+      "description": "Poultry Products"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 147
+      },
+      {
+        "nutrient": {
+          "id": 1062,
+          "unitName": "kJ"
+        },
+        "amount": 617
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 30.13
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 2.08
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 99
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 88856,
+        "dataPoints": 1,
+        "gramWeight": 85,
+        "sequenceNumber": 1,
+        "amount": 3,
+        "modifier": "oz",
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        }
+      },
+      {
+        "id": 88857,
+        "dataPoints": 8,
+        "gramWeight": 1413,
+        "sequenceNumber": 2,
+        "amount": 1,
+        "modifier": "breast",
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        }
+      }
+    ]
+  },
+  {
+    "fdcId": 2759001,
+    "dataType": "Foundation",
+    "description": "Lunchmeat, turkey, oven roasted, sliced",
+    "publicationDate": "4/30/2026",
+    "foodCategory": {
+      "id": 7,
+      "code": "0700",
+      "description": "Sausages and Luncheon Meats"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1063,
+          "unitName": "g"
+        },
+        "amount": 0.9866
+      }
+    ]
+  },
+  {
+    "fdcId": 171794,
+    "dataType": "SR Legacy",
+    "description": "Beef, ground, 90% lean meat / 10% fat, crumbles, cooked, pan-browned",
+    "publicationDate": "4/1/2019",
+    "foodCategory": {
+      "id": 13,
+      "code": "1300",
+      "description": "Beef Products"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 230
+      },
+      {
+        "nutrient": {
+          "id": 1062,
+          "unitName": "kJ"
+        },
+        "amount": 963
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 28.45
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 12.04
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 87
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 89379,
+        "dataPoints": 18,
+        "gramWeight": 154,
+        "sequenceNumber": 2,
+        "amount": 1,
+        "modifier": "portion ( yield from 1/2 lb raw meat )",
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        }
+      },
+      {
+        "id": 89378,
+        "gramWeight": 85,
+        "sequenceNumber": 1,
+        "amount": 3,
+        "modifier": "oz",
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        }
+      }
+    ]
+  },
+  {
+    "fdcId": 2705832,
+    "dataType": "Survey (FNDDS)",
+    "description": "Beef, steak, sirloin, NS as to fat eaten",
+    "publicationDate": "10/31/2024",
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 27.1
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 14
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 239
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 361
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 292136,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "51000",
+        "gramWeight": 17,
+        "portionDescription": "1 cubic inch",
+        "sequenceNumber": 6
+      },
+      {
+        "id": 292135,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "40016",
+        "gramWeight": 20,
+        "portionDescription": "1 oz yields",
+        "sequenceNumber": 5
+      },
+      {
+        "id": 292138,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "90000",
+        "gramWeight": 160,
+        "portionDescription": "Quantity not specified",
+        "sequenceNumber": 8
+      },
+      {
+        "id": 292132,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "62307",
+        "gramWeight": 120,
+        "portionDescription": "1 thin",
+        "sequenceNumber": 2
+      },
+      {
+        "id": 292133,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "62862",
+        "gramWeight": 160,
+        "portionDescription": "1 regular",
+        "sequenceNumber": 3
+      },
+      {
+        "id": 292131,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "64747",
+        "gramWeight": 30,
+        "portionDescription": "1 piece/slice, any size",
+        "sequenceNumber": 1
+      },
+      {
+        "id": 292134,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "64744",
+        "gramWeight": 240,
+        "portionDescription": "1 thick",
+        "sequenceNumber": 4
+      },
+      {
+        "id": 292137,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10205",
+        "gramWeight": 135,
+        "portionDescription": "1 cup",
+        "sequenceNumber": 7
+      }
+    ]
+  },
+  {
+    "fdcId": 167841,
+    "dataType": "SR Legacy",
+    "description": "Pork, fresh, loin, top loin (chops), boneless, separable lean and fat, cooked, broiled",
+    "publicationDate": "4/1/2019",
+    "foodCategory": {
+      "id": 10,
+      "code": "1000",
+      "description": "Pork Products"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 196
+      },
+      {
+        "nutrient": {
+          "id": 1062,
+          "unitName": "kJ"
+        },
+        "amount": 820
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 26.62
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 9.14
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 44
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 82072,
+        "gramWeight": 85,
+        "sequenceNumber": 2,
+        "amount": 3,
+        "modifier": "oz",
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        }
+      },
+      {
+        "id": 82071,
+        "dataPoints": 91,
+        "gramWeight": 145,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "modifier": "chop",
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        }
+      }
+    ]
+  },
+  {
+    "fdcId": 2705889,
+    "dataType": "Survey (FNDDS)",
+    "description": "Pork bacon, smoked or cured, cooked",
+    "publicationDate": "10/31/2024",
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 33.9
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 35.1
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 1.7
+      },
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 468
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 1680
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 292487,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "62303",
+        "gramWeight": 12,
+        "portionDescription": "1 thick slice (yield after cooking)",
+        "sequenceNumber": 3
+      },
+      {
+        "id": 292488,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "40054",
+        "gramWeight": 8,
+        "portionDescription": "1 oz, raw (yield after cooking)",
+        "sequenceNumber": 4
+      },
+      {
+        "id": 292486,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "61410",
+        "gramWeight": 8,
+        "portionDescription": "1 medium slice (yield after cooking)",
+        "sequenceNumber": 2
+      },
+      {
+        "id": 292485,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "62314",
+        "gramWeight": 5,
+        "portionDescription": "1 thin slice (yield after cooking)",
+        "sequenceNumber": 1
+      },
+      {
+        "id": 292490,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10129",
+        "gramWeight": 80,
+        "portionDescription": "1 cup, pieces",
+        "sequenceNumber": 6
+      },
+      {
+        "id": 292493,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "64546",
+        "gramWeight": 16,
+        "portionDescription": "Guideline amount on regular sandwich",
+        "sequenceNumber": 9
+      },
+      {
+        "id": 292492,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "64545",
+        "gramWeight": 8,
+        "portionDescription": "Guideline amount if topping",
+        "sequenceNumber": 8
+      },
+      {
+        "id": 292489,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "40040",
+        "gramWeight": 28.35,
+        "portionDescription": "1 oz, cooked",
+        "sequenceNumber": 5
+      },
+      {
+        "id": 292491,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "90000",
+        "gramWeight": 16,
+        "portionDescription": "Quantity not specified",
+        "sequenceNumber": 7
+      }
+    ]
+  },
+  {
+    "fdcId": 171998,
+    "dataType": "SR Legacy",
+    "description": "Fish, salmon, Atlantic, wild, cooked, dry heat",
+    "publicationDate": "4/1/2019",
+    "foodCategory": {
+      "id": 15,
+      "code": "1500",
+      "description": "Finfish and Shellfish Products"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 182
+      },
+      {
+        "nutrient": {
+          "id": 1062,
+          "unitName": "kJ"
+        },
+        "amount": 761
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 25.44
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 8.13
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 56
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 89708,
+        "gramWeight": 85,
+        "sequenceNumber": 1,
+        "amount": 3,
+        "modifier": "oz",
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        }
+      },
+      {
+        "id": 89709,
+        "gramWeight": 154,
+        "sequenceNumber": 2,
+        "amount": 0.5,
+        "modifier": "fillet",
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        }
+      }
+    ]
+  },
+  {
+    "fdcId": 334194,
+    "dataType": "Foundation",
+    "description": "Fish, tuna, light, canned in water, drained solids",
+    "publicationDate": "4/1/2019",
+    "foodCategory": {
+      "id": 15,
+      "code": "1500",
+      "description": "Finfish and Shellfish Products"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 90
+      },
+      {
+        "nutrient": {
+          "id": 1062,
+          "unitName": "kJ"
+        },
+        "amount": 376
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 19
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 0.94
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 0.08
+      },
+      {
+        "nutrient": {
+          "id": 1063,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 219
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 121698,
+        "dataPoints": 48,
+        "gramWeight": 142,
+        "sequenceNumber": 2,
+        "amount": 1,
+        "modifier": "total can contents",
+        "minDateAcquired": "11/25/2011",
+        "measureUnit": {
+          "id": 1019,
+          "name": "can",
+          "abbreviation": "can"
+        },
+        "minYearAcquired": 2011
+      },
+      {
+        "id": 121697,
+        "dataPoints": 48,
+        "gramWeight": 107,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "modifier": "drained solids",
+        "minDateAcquired": "11/25/2011",
+        "measureUnit": {
+          "id": 1019,
+          "name": "can",
+          "abbreviation": "can"
+        },
+        "minYearAcquired": 2011
+      },
+      {
+        "id": 312644,
+        "dataPoints": 0,
+        "gramWeight": 85,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "measureUnit": {
+          "id": 1121,
+          "name": "RACC",
+          "abbreviation": "RACC"
+        }
+      }
+    ]
+  },
+  {
+    "fdcId": 2706363,
+    "dataType": "Survey (FNDDS)",
+    "description": "Shrimp, steamed or boiled",
+    "publicationDate": "10/31/2024",
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 17.2
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 1.28
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 1.15
+      },
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 90
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 248
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 295068,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "64763",
+        "gramWeight": 15,
+        "portionDescription": "1 large/jumbo shrimp",
+        "sequenceNumber": 3
+      },
+      {
+        "id": 295070,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10205",
+        "gramWeight": 135,
+        "portionDescription": "1 cup",
+        "sequenceNumber": 5
+      },
+      {
+        "id": 295071,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "90000",
+        "gramWeight": 85,
+        "portionDescription": "Quantity not specified",
+        "sequenceNumber": 6
+      },
+      {
+        "id": 295067,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "64745",
+        "gramWeight": 10,
+        "portionDescription": "1 small/medium shrimp",
+        "sequenceNumber": 2
+      },
+      {
+        "id": 295069,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "61784",
+        "gramWeight": 20,
+        "portionDescription": "1 prawn",
+        "sequenceNumber": 4
+      },
+      {
+        "id": 295066,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "62320",
+        "gramWeight": 5,
+        "portionDescription": "1 tiny shrimp",
+        "sequenceNumber": 1
+      }
+    ]
+  },
+  {
+    "fdcId": 746782,
+    "dataType": "Foundation",
+    "description": "Milk, whole, 3.25% milkfat, with added vitamin D",
+    "publicationDate": "12/16/2019",
+    "foodCategory": {
+      "id": 1,
+      "code": "0100",
+      "description": "Dairy and Egg Products"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 60
+      },
+      {
+        "nutrient": {
+          "id": 1062,
+          "unitName": "kJ"
+        },
+        "amount": 251
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 3.27
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 3.2
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 4.63
+      },
+      {
+        "nutrient": {
+          "id": 1063,
+          "unitName": "g"
+        },
+        "amount": 4.81
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 38
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 187530,
+        "dataPoints": 3,
+        "gramWeight": 249,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "modifier": "",
+        "minDateAcquired": "4/7/2018",
+        "measureUnit": {
+          "id": 1000,
+          "name": "cup",
+          "abbreviation": "cup"
+        },
+        "minYearAcquired": 2018
+      }
+    ]
+  },
+  {
+    "fdcId": 746778,
+    "dataType": "Foundation",
+    "description": "Milk, reduced fat, fluid, 2% milkfat, with added vitamin A and vitamin D",
+    "publicationDate": "12/16/2019",
+    "foodCategory": {
+      "id": 1,
+      "code": "0100",
+      "description": "Dairy and Egg Products"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 50
+      },
+      {
+        "nutrient": {
+          "id": 1062,
+          "unitName": "kJ"
+        },
+        "amount": 209
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 3.36
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 1.9
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 4.9
+      },
+      {
+        "nutrient": {
+          "id": 1063,
+          "unitName": "g"
+        },
+        "amount": 4.89
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 39
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 187524,
+        "dataPoints": 3,
+        "gramWeight": 245,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "modifier": "",
+        "minDateAcquired": "4/16/2018",
+        "measureUnit": {
+          "id": 1000,
+          "name": "cup",
+          "abbreviation": "cup"
+        },
+        "minYearAcquired": 2018
+      }
+    ]
+  },
+  {
+    "fdcId": 746776,
+    "dataType": "Foundation",
+    "description": "Milk, nonfat, fluid, with added vitamin A and vitamin D (fat free or skim)",
+    "publicationDate": "12/16/2019",
+    "foodCategory": {
+      "id": 1,
+      "code": "0100",
+      "description": "Dairy and Egg Products"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 34
+      },
+      {
+        "nutrient": {
+          "id": 1062,
+          "unitName": "kJ"
+        },
+        "amount": 144
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 3.43
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 0.08
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 4.92
+      },
+      {
+        "nutrient": {
+          "id": 1063,
+          "unitName": "g"
+        },
+        "amount": 5.05
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 41
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 187522,
+        "dataPoints": 3,
+        "gramWeight": 246,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "modifier": "",
+        "minDateAcquired": "4/16/2018",
+        "measureUnit": {
+          "id": 1000,
+          "name": "cup",
+          "abbreviation": "cup"
+        },
+        "minYearAcquired": 2018
+      }
+    ]
+  },
+  {
+    "fdcId": 330137,
+    "dataType": "Foundation",
+    "description": "Yogurt, Greek, plain, nonfat",
+    "publicationDate": "4/1/2019",
+    "foodCategory": {
+      "id": 1,
+      "code": "0100",
+      "description": "Dairy and Egg Products"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 61
+      },
+      {
+        "nutrient": {
+          "id": 1062,
+          "unitName": "kJ"
+        },
+        "amount": 256
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 10.3
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 0.37
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 3.64
+      },
+      {
+        "nutrient": {
+          "id": 1063,
+          "unitName": "g"
+        },
+        "amount": 3.27
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 36
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 119735,
+        "dataPoints": 21,
+        "gramWeight": 156,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "minDateAcquired": "4/21/2012",
+        "measureUnit": {
+          "id": 1023,
+          "name": "container",
+          "abbreviation": "container"
+        },
+        "minYearAcquired": 2012
+      },
+      {
+        "id": 312634,
+        "dataPoints": 0,
+        "gramWeight": 170,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "measureUnit": {
+          "id": 1121,
+          "name": "RACC",
+          "abbreviation": "RACC"
+        }
+      }
+    ]
+  },
+  {
+    "fdcId": 2259793,
+    "dataType": "Foundation",
+    "description": "Yogurt, plain, whole milk",
+    "publicationDate": "4/28/2022",
+    "foodCategory": {
+      "id": 1,
+      "code": "0100",
+      "description": "Dairy and Egg Products"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 2047,
+          "unitName": "kcal"
+        },
+        "amount": 77.9524
+      },
+      {
+        "nutrient": {
+          "id": 2048,
+          "unitName": "kcal"
+        },
+        "amount": 77.3185458
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 3.824172
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 4.484
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 5.574928
+      },
+      {
+        "nutrient": {
+          "id": 1063,
+          "unitName": "g"
+        },
+        "amount": 4.0936
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 41.78
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 312622,
+        "dataPoints": 0,
+        "gramWeight": 170,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "measureUnit": {
+          "id": 1121,
+          "name": "RACC",
+          "abbreviation": "RACC"
+        }
+      }
+    ]
+  },
+  {
+    "fdcId": 170845,
+    "dataType": "SR Legacy",
+    "description": "Cheese, mozzarella, whole milk",
+    "publicationDate": "4/1/2019",
+    "foodCategory": {
+      "id": 1,
+      "code": "0100",
+      "description": "Dairy and Egg Products"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 299
+      },
+      {
+        "nutrient": {
+          "id": 1062,
+          "unitName": "kJ"
+        },
+        "amount": 1249
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 22.17
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 22.14
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 2.4
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 486
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 87382,
+        "gramWeight": 28.35,
+        "sequenceNumber": 2,
+        "amount": 1,
+        "modifier": "oz",
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        }
+      },
+      {
+        "id": 87381,
+        "gramWeight": 112,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "modifier": "cup, shredded",
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        }
+      },
+      {
+        "id": 87383,
+        "gramWeight": 170,
+        "sequenceNumber": 3,
+        "amount": 6,
+        "modifier": "slices",
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        }
+      }
+    ]
+  },
+  {
+    "fdcId": 328841,
+    "dataType": "Foundation",
+    "description": "Cheese, cottage, lowfat, 2% milkfat",
+    "publicationDate": "4/1/2019",
+    "foodCategory": {
+      "id": 1,
+      "code": "0100",
+      "description": "Dairy and Egg Products"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 84
+      },
+      {
+        "nutrient": {
+          "id": 1062,
+          "unitName": "kJ"
+        },
+        "amount": 352
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 11
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 2.3
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 4.31
+      },
+      {
+        "nutrient": {
+          "id": 1063,
+          "unitName": "g"
+        },
+        "amount": 4.1
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 321
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 119652,
+        "dataPoints": 31,
+        "gramWeight": 220,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "minDateAcquired": "3/22/2013",
+        "measureUnit": {
+          "id": 1000,
+          "name": "cup",
+          "abbreviation": "cup"
+        },
+        "minYearAcquired": 2013
+      },
+      {
+        "id": 312632,
+        "dataPoints": 0,
+        "gramWeight": 55,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "measureUnit": {
+          "id": 1121,
+          "name": "RACC",
+          "abbreviation": "RACC"
+        }
+      }
+    ]
+  },
+  {
+    "fdcId": 2758993,
+    "dataType": "Foundation",
+    "description": "Bread, white, commercial",
+    "publicationDate": "4/30/2026",
+    "foodCategory": {
+      "id": 18,
+      "code": "1800",
+      "description": "Baked Products"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 419.7
+      }
+    ]
+  },
+  {
+    "fdcId": 2758994,
+    "dataType": "Foundation",
+    "description": "Bread, 100% whole wheat, commercial",
+    "publicationDate": "4/30/2026",
+    "foodCategory": {
+      "id": 18,
+      "code": "1800",
+      "description": "Baked Products"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 408.2
+      }
+    ]
+  },
+  {
+    "fdcId": 2758997,
+    "dataType": "Foundation",
+    "description": "Tortilla, corn, shelf stable",
+    "publicationDate": "4/30/2026",
+    "foodCategory": {
+      "id": 18,
+      "code": "1800",
+      "description": "Baked Products"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 34.91
+      }
+    ]
+  },
+  {
+    "fdcId": 2708408,
+    "dataType": "Survey (FNDDS)",
+    "description": "Rice, white, cooked, no added fat",
+    "publicationDate": "10/31/2024",
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 2.67
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 0.28
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 28
+      },
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 129
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 0.05
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 0.4
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 245
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 302893,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "90000",
+        "gramWeight": 118,
+        "portionDescription": "Quantity not specified",
+        "sequenceNumber": 2
+      },
+      {
+        "id": 302892,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10043",
+        "gramWeight": 158,
+        "portionDescription": "1 cup, cooked",
+        "sequenceNumber": 1
+      }
+    ]
+  },
+  {
+    "fdcId": 2708414,
+    "dataType": "Survey (FNDDS)",
+    "description": "Rice, brown, cooked, no added fat",
+    "publicationDate": "10/31/2024",
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 2.43
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 1.11
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 25.8
+      },
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 123
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 0.22
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 1
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 201
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 302904,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10043",
+        "gramWeight": 195,
+        "portionDescription": "1 cup, cooked",
+        "sequenceNumber": 3
+      },
+      {
+        "id": 302905,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "90000",
+        "gramWeight": 147,
+        "portionDescription": "Quantity not specified",
+        "sequenceNumber": 6
+      }
+    ]
+  },
+  {
+    "fdcId": 173905,
+    "dataType": "SR Legacy",
+    "description": "Cereals, oats, regular and quick, unenriched, cooked with water (includes boiling and microwaving), without salt",
+    "publicationDate": "4/1/2019",
+    "foodCategory": {
+      "id": 8,
+      "code": "0800",
+      "description": "Breakfast Cereals"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 71
+      },
+      {
+        "nutrient": {
+          "id": 1062,
+          "unitName": "kJ"
+        },
+        "amount": 297
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 2.54
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 1.52
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 12
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 1.7
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 0.27
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 4
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 93457,
+        "gramWeight": 14.6,
+        "sequenceNumber": 2,
+        "amount": 1,
+        "modifier": "tbsp",
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        }
+      },
+      {
+        "id": 93456,
+        "gramWeight": 234,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "modifier": "cup",
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        }
+      },
+      {
+        "id": 93458,
+        "gramWeight": 175,
+        "sequenceNumber": 3,
+        "amount": 0.75,
+        "modifier": "cup",
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        }
+      }
+    ]
+  },
+  {
+    "fdcId": 2708453,
+    "dataType": "Survey (FNDDS)",
+    "description": "Cereal, corn flakes, plain",
+    "publicationDate": "10/31/2024",
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 6.4
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 1.6
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 79.5
+      },
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 365
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 9.44
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 3.5
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 703
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 303019,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "64235",
+        "gramWeight": 30,
+        "portionDescription": "1 prepackaged single serving",
+        "sequenceNumber": 2
+      },
+      {
+        "id": 303020,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "90000",
+        "gramWeight": 30,
+        "portionDescription": "Quantity not specified",
+        "sequenceNumber": 3
+      },
+      {
+        "id": 303018,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10205",
+        "gramWeight": 30,
+        "portionDescription": "1 cup",
+        "sequenceNumber": 1
+      }
+    ]
+  },
+  {
+    "fdcId": 169737,
+    "dataType": "SR Legacy",
+    "description": "Pasta, cooked, enriched, without added salt",
+    "publicationDate": "4/1/2019",
+    "foodCategory": {
+      "id": 20,
+      "code": "2000",
+      "description": "Cereal Grains and Pasta"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 158
+      },
+      {
+        "nutrient": {
+          "id": 1062,
+          "unitName": "kJ"
+        },
+        "amount": 660
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 5.8
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 0.93
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 30.86
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 1.8
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 0.56
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 1
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 85428,
+        "dataPoints": 18,
+        "gramWeight": 116,
+        "sequenceNumber": 9,
+        "amount": 1,
+        "modifier": "cup lasagne",
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        }
+      },
+      {
+        "id": 85427,
+        "dataPoints": 22,
+        "gramWeight": 105,
+        "sequenceNumber": 8,
+        "amount": 1,
+        "modifier": "cup shells",
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        }
+      },
+      {
+        "id": 85425,
+        "dataPoints": 9,
+        "gramWeight": 107,
+        "sequenceNumber": 6,
+        "amount": 1,
+        "modifier": "cup farfalle",
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        }
+      },
+      {
+        "id": 85420,
+        "dataPoints": 52,
+        "gramWeight": 124,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "modifier": "cup spaghetti not packed",
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        }
+      },
+      {
+        "id": 85423,
+        "dataPoints": 6,
+        "gramWeight": 132,
+        "sequenceNumber": 4,
+        "amount": 1,
+        "modifier": "cup elbows packed",
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        }
+      },
+      {
+        "id": 85422,
+        "dataPoints": 32,
+        "gramWeight": 120,
+        "sequenceNumber": 3,
+        "amount": 1,
+        "modifier": "cup elbows not packed",
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        }
+      },
+      {
+        "id": 85426,
+        "dataPoints": 10,
+        "gramWeight": 107,
+        "sequenceNumber": 7,
+        "amount": 1,
+        "modifier": "cup rotini",
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        }
+      },
+      {
+        "id": 85424,
+        "dataPoints": 36,
+        "gramWeight": 107,
+        "sequenceNumber": 5,
+        "amount": 1,
+        "modifier": "cup penne",
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        }
+      },
+      {
+        "id": 85421,
+        "dataPoints": 49,
+        "gramWeight": 151,
+        "sequenceNumber": 2,
+        "amount": 1,
+        "modifier": "cup spaghetti packed",
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        }
+      }
+    ]
+  },
+  {
+    "fdcId": 170030,
+    "dataType": "SR Legacy",
+    "description": "Potatoes, Russet, flesh and skin, baked",
+    "publicationDate": "4/1/2019",
+    "foodCategory": {
+      "id": 11,
+      "code": "1100",
+      "description": "Vegetables and Vegetable Products"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 95
+      },
+      {
+        "nutrient": {
+          "id": 1062,
+          "unitName": "kJ"
+        },
+        "amount": 397
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 2.63
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 0.13
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 21.44
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 2.3
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 1.08
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 14
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 85934,
+        "gramWeight": 173,
+        "sequenceNumber": 2,
+        "amount": 1,
+        "modifier": "potato medium (2-1/4\" to 3-1/4\" dia.)",
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        }
+      },
+      {
+        "id": 85933,
+        "gramWeight": 299,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "modifier": "potato large (3\" to 4-1/4\" dia.",
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        }
+      },
+      {
+        "id": 85935,
+        "gramWeight": 138,
+        "sequenceNumber": 3,
+        "amount": 1,
+        "modifier": "potato small (1-3/4\" to 2-1/2\" dia.)",
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        }
+      }
+    ]
+  },
+  {
+    "fdcId": 2709699,
+    "dataType": "Survey (FNDDS)",
+    "description": "Sweet potato, baked, no added fat",
+    "publicationDate": "10/31/2024",
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 1.64
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 0.39
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 18
+      },
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 82
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 6.29
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 3.1
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 154
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 307958,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "61238",
+        "gramWeight": 150,
+        "portionDescription": "1 medium",
+        "sequenceNumber": 2
+      },
+      {
+        "id": 307960,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10118",
+        "gramWeight": 250,
+        "portionDescription": "1 cup, mashed",
+        "sequenceNumber": 4
+      },
+      {
+        "id": 307961,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "40061",
+        "gramWeight": 25,
+        "portionDescription": "1 oz, raw, yields",
+        "sequenceNumber": 5
+      },
+      {
+        "id": 307959,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "60919",
+        "gramWeight": 235,
+        "portionDescription": "1 large",
+        "sequenceNumber": 3
+      },
+      {
+        "id": 307957,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "62015",
+        "gramWeight": 80,
+        "portionDescription": "1 small",
+        "sequenceNumber": 1
+      },
+      {
+        "id": 307962,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "90000",
+        "gramWeight": 100,
+        "portionDescription": "Quantity not specified",
+        "sequenceNumber": 8
+      }
+    ]
+  },
+  {
+    "fdcId": 1105314,
+    "dataType": "Foundation",
+    "description": "Bananas, ripe and slightly ripe, raw",
+    "publicationDate": "4/1/2020",
+    "foodCategory": {
+      "id": 9,
+      "code": "0900",
+      "description": "Fruits and Fruit Juices"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 97
+      },
+      {
+        "nutrient": {
+          "id": 1062,
+          "unitName": "kJ"
+        },
+        "amount": 408
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 0.74
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 0.29
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 23
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 1.7
+      },
+      {
+        "nutrient": {
+          "id": 1063,
+          "unitName": "g"
+        },
+        "amount": 15.8
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 0
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 267795,
+        "dataPoints": 102,
+        "gramWeight": 115,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "modifier": "Peeled",
+        "minDateAcquired": "12/2/2019",
+        "measureUnit": {
+          "id": 1119,
+          "name": "Banana",
+          "abbreviation": "Banana"
+        },
+        "minYearAcquired": 2019
+      },
+      {
+        "id": 312674,
+        "dataPoints": 0,
+        "gramWeight": 140,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "measureUnit": {
+          "id": 1121,
+          "name": "RACC",
+          "abbreviation": "RACC"
+        }
+      }
+    ]
+  },
+  {
+    "fdcId": 2709215,
+    "dataType": "Survey (FNDDS)",
+    "description": "Apple, raw",
+    "publicationDate": "10/31/2024",
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 0.17
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 0.15
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 14.8
+      },
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 61
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 12.1
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 2.1
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 0
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 306063,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "62015",
+        "gramWeight": 165,
+        "portionDescription": "1 small",
+        "sequenceNumber": 1
+      },
+      {
+        "id": 306069,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "64236",
+        "gramWeight": 34,
+        "portionDescription": "1 single serving package",
+        "sequenceNumber": 7
+      },
+      {
+        "id": 306070,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "90000",
+        "gramWeight": 200,
+        "portionDescription": "Quantity not specified",
+        "sequenceNumber": 8
+      },
+      {
+        "id": 306067,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "61935",
+        "gramWeight": 25,
+        "portionDescription": "1 slice",
+        "sequenceNumber": 5
+      },
+      {
+        "id": 306064,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "61238",
+        "gramWeight": 200,
+        "portionDescription": "1 medium",
+        "sequenceNumber": 2
+      },
+      {
+        "id": 306066,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "60749",
+        "gramWeight": 295,
+        "portionDescription": "1 extra large",
+        "sequenceNumber": 4
+      },
+      {
+        "id": 306065,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "60919",
+        "gramWeight": 242,
+        "portionDescription": "1 large",
+        "sequenceNumber": 3
+      },
+      {
+        "id": 306068,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10205",
+        "gramWeight": 125,
+        "portionDescription": "1 cup",
+        "sequenceNumber": 6
+      }
+    ]
+  },
+  {
+    "fdcId": 746771,
+    "dataType": "Foundation",
+    "description": "Oranges, raw, navels",
+    "publicationDate": "12/16/2019",
+    "foodCategory": {
+      "id": 9,
+      "code": "0900",
+      "description": "Fruits and Fruit Juices"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 47
+      },
+      {
+        "nutrient": {
+          "id": 1062,
+          "unitName": "kJ"
+        },
+        "amount": 196
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 0.91
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 0.15
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 11.8
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 2
+      },
+      {
+        "nutrient": {
+          "id": 1063,
+          "unitName": "g"
+        },
+        "amount": 8.57
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 9
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 187512,
+        "dataPoints": 1,
+        "gramWeight": 165,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "modifier": "sections no membranes",
+        "minDateAcquired": "5/20/2001",
+        "measureUnit": {
+          "id": 1000,
+          "name": "cup",
+          "abbreviation": "cup"
+        },
+        "minYearAcquired": 2001
+      },
+      {
+        "id": 187513,
+        "dataPoints": 1,
+        "gramWeight": 140,
+        "sequenceNumber": 2,
+        "amount": 1,
+        "modifier": " 2-7/8\" dia",
+        "minDateAcquired": "5/20/2001",
+        "measureUnit": {
+          "id": 1071,
+          "name": "each",
+          "abbreviation": "each"
+        },
+        "minYearAcquired": 2001
+      },
+      {
+        "id": 312681,
+        "dataPoints": 0,
+        "gramWeight": 140,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "measureUnit": {
+          "id": 1121,
+          "name": "RACC",
+          "abbreviation": "RACC"
+        }
+      }
+    ]
+  },
+  {
+    "fdcId": 2346409,
+    "dataType": "Foundation",
+    "description": "Strawberries, raw",
+    "publicationDate": "10/28/2022",
+    "foodCategory": {
+      "id": 9,
+      "code": "0900",
+      "description": "Fruits and Fruit Juices"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 2047,
+          "unitName": "kcal"
+        },
+        "amount": 36.4
+      },
+      {
+        "nutrient": {
+          "id": 2048,
+          "unitName": "kcal"
+        },
+        "amount": 32.66565
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 0.640625
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 0.22
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 7.964375
+      },
+      {
+        "nutrient": {
+          "id": 1063,
+          "unitName": "g"
+        },
+        "amount": 4.862
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 0
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 312666,
+        "dataPoints": 0,
+        "gramWeight": 140,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "measureUnit": {
+          "id": 1121,
+          "name": "RACC",
+          "abbreviation": "RACC"
+        }
+      }
+    ]
+  },
+  {
+    "fdcId": 2346411,
+    "dataType": "Foundation",
+    "description": "Blueberries, raw",
+    "publicationDate": "10/28/2022",
+    "foodCategory": {
+      "id": 9,
+      "code": "0900",
+      "description": "Fruits and Fruit Juices"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 2047,
+          "unitName": "kcal"
+        },
+        "amount": 63.8563
+      },
+      {
+        "nutrient": {
+          "id": 2048,
+          "unitName": "kcal"
+        },
+        "amount": 57.384621
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 0.703125
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 0.3063
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 14.571775
+      },
+      {
+        "nutrient": {
+          "id": 1063,
+          "unitName": "g"
+        },
+        "amount": 9.356
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 0
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 312663,
+        "dataPoints": 0,
+        "gramWeight": 140,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "measureUnit": {
+          "id": 1121,
+          "name": "RACC",
+          "abbreviation": "RACC"
+        }
+      }
+    ]
+  },
+  {
+    "fdcId": 2709237,
+    "dataType": "Survey (FNDDS)",
+    "description": "Grapes, raw",
+    "publicationDate": "10/31/2024",
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 0.9
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 0.2
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 19.4
+      },
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 83
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 16.7
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 0.9
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 5
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 306150,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "90000",
+        "gramWeight": 75,
+        "portionDescription": "Quantity not specified",
+        "sequenceNumber": 3
+      },
+      {
+        "id": 306149,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10205",
+        "gramWeight": 150,
+        "portionDescription": "1 cup",
+        "sequenceNumber": 2
+      },
+      {
+        "id": 306148,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "60831",
+        "gramWeight": 7,
+        "portionDescription": "1 grape",
+        "sequenceNumber": 1
+      }
+    ]
+  },
+  {
+    "fdcId": 2710824,
+    "dataType": "Foundation",
+    "description": "Avocado, Hass, peeled, raw",
+    "publicationDate": "10/31/2024",
+    "foodCategory": {
+      "id": 9,
+      "code": "0900",
+      "description": "Fruits and Fruit Juices"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 2047,
+          "unitName": "kcal"
+        },
+        "amount": 223.334
+      },
+      {
+        "nutrient": {
+          "id": 2048,
+          "unitName": "kcal"
+        },
+        "amount": 206.0493
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 1.8125
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 20.31
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 8.3235
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 0
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 312657,
+        "dataPoints": 0,
+        "gramWeight": 140,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "measureUnit": {
+          "id": 1121,
+          "name": "RACC",
+          "abbreviation": "RACC"
+        }
+      }
+    ]
+  },
+  {
+    "fdcId": 2709719,
+    "dataType": "Survey (FNDDS)",
+    "description": "Tomatoes, raw",
+    "publicationDate": "10/31/2024",
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 0.82
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 0.31
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 4.04
+      },
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 20
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 2.63
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 1.2
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 4
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 308039,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "61935",
+        "gramWeight": 20,
+        "portionDescription": "1 slice",
+        "sequenceNumber": 1
+      },
+      {
+        "id": 308041,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "60550",
+        "gramWeight": 17,
+        "portionDescription": "1 cherry",
+        "sequenceNumber": 3
+      },
+      {
+        "id": 308044,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "62368",
+        "gramWeight": 125,
+        "portionDescription": "1 whole",
+        "sequenceNumber": 6
+      },
+      {
+        "id": 308043,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "61763",
+        "gramWeight": 60,
+        "portionDescription": "1 plum tomato",
+        "sequenceNumber": 5
+      },
+      {
+        "id": 308045,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10205",
+        "gramWeight": 180,
+        "portionDescription": "1 cup",
+        "sequenceNumber": 7
+      },
+      {
+        "id": 308046,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "90000",
+        "gramWeight": 90,
+        "portionDescription": "Quantity not specified",
+        "sequenceNumber": 8
+      },
+      {
+        "id": 308042,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "60141",
+        "gramWeight": 60,
+        "portionDescription": "1 Italian tomato",
+        "sequenceNumber": 4
+      },
+      {
+        "id": 308040,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "64073",
+        "gramWeight": 8,
+        "portionDescription": "1 grape tomato",
+        "sequenceNumber": 2
+      }
+    ]
+  },
+  {
+    "fdcId": 1999633,
+    "dataType": "Foundation",
+    "description": "Spinach, mature",
+    "publicationDate": "10/28/2021",
+    "foodCategory": {
+      "id": 11,
+      "code": "1100",
+      "description": "Vegetables and Vegetable Products"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 2047,
+          "unitName": "kcal"
+        },
+        "amount": 27.63
+      },
+      {
+        "nutrient": {
+          "id": 2048,
+          "unitName": "kcal"
+        },
+        "amount": 21.5796975
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 2.90625
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 0.6044
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 2.64135
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 1.588
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 106.6
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 312805,
+        "dataPoints": 0,
+        "gramWeight": 85,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "measureUnit": {
+          "id": 1121,
+          "name": "RACC",
+          "abbreviation": "RACC"
+        }
+      }
+    ]
+  },
+  {
+    "fdcId": 747447,
+    "dataType": "Foundation",
+    "description": "Broccoli, raw",
+    "publicationDate": "12/16/2019",
+    "foodCategory": {
+      "id": 11,
+      "code": "1100",
+      "description": "Vegetables and Vegetable Products"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 31
+      },
+      {
+        "nutrient": {
+          "id": 1062,
+          "unitName": "kJ"
+        },
+        "amount": 132
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 2.57
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 0.34
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 6.27
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 2.4
+      },
+      {
+        "nutrient": {
+          "id": 1063,
+          "unitName": "g"
+        },
+        "amount": 1.4
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 36
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 187633,
+        "dataPoints": 12,
+        "gramWeight": 76,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "modifier": "chopped",
+        "minDateAcquired": "8/5/2001",
+        "measureUnit": {
+          "id": 1000,
+          "name": "cup",
+          "abbreviation": "cup"
+        },
+        "minYearAcquired": 2001
+      },
+      {
+        "id": 312822,
+        "dataPoints": 0,
+        "gramWeight": 85,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "measureUnit": {
+          "id": 1121,
+          "name": "RACC",
+          "abbreviation": "RACC"
+        }
+      }
+    ]
+  },
+  {
+    "fdcId": 790646,
+    "dataType": "Foundation",
+    "description": "Onions, yellow, raw",
+    "publicationDate": "4/1/2020",
+    "foodCategory": {
+      "id": 11,
+      "code": "1100",
+      "description": "Vegetables and Vegetable Products"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 38
+      },
+      {
+        "nutrient": {
+          "id": 1062,
+          "unitName": "kJ"
+        },
+        "amount": 160
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 0.83
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 0.05
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 8.61
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 1.9
+      },
+      {
+        "nutrient": {
+          "id": 1063,
+          "unitName": "g"
+        },
+        "amount": 5.82
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 1
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 234698,
+        "dataPoints": 44,
+        "gramWeight": 143,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "modifier": "Edible",
+        "minDateAcquired": "11/26/2019",
+        "measureUnit": {
+          "id": 1120,
+          "name": "Onion",
+          "abbreviation": "Onion"
+        },
+        "minYearAcquired": 2019
+      },
+      {
+        "id": 312814,
+        "dataPoints": 0,
+        "gramWeight": 85,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "measureUnit": {
+          "id": 1121,
+          "name": "RACC",
+          "abbreviation": "RACC"
+        }
+      }
+    ]
+  },
+  {
+    "fdcId": 2258590,
+    "dataType": "Foundation",
+    "description": "Peppers, bell, red, raw",
+    "publicationDate": "4/28/2022",
+    "foodCategory": {
+      "id": 11,
+      "code": "1100",
+      "description": "Vegetables and Vegetable Products"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 2047,
+          "unitName": "kcal"
+        },
+        "amount": 31.3256
+      },
+      {
+        "nutrient": {
+          "id": 2048,
+          "unitName": "kcal"
+        },
+        "amount": 26.98843175
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 0.895625
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 0.1256
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 6.653175
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 1.158
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 0
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 312795,
+        "dataPoints": 0,
+        "gramWeight": 85,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "measureUnit": {
+          "id": 1121,
+          "name": "RACC",
+          "abbreviation": "RACC"
+        }
+      }
+    ]
+  },
+  {
+    "fdcId": 2258586,
+    "dataType": "Foundation",
+    "description": "Carrots, mature, raw",
+    "publicationDate": "4/28/2022",
+    "foodCategory": {
+      "id": 11,
+      "code": "1100",
+      "description": "Vegetables and Vegetable Products"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 2047,
+          "unitName": "kcal"
+        },
+        "amount": 47.9906
+      },
+      {
+        "nutrient": {
+          "id": 2048,
+          "unitName": "kcal"
+        },
+        "amount": 44.978589
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 0.94125
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 0.3506
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 10.26755
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 3.095
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 86.65
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 312791,
+        "dataPoints": 0,
+        "gramWeight": 85,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "measureUnit": {
+          "id": 1121,
+          "name": "RACC",
+          "abbreviation": "RACC"
+        }
+      }
+    ]
+  },
+  {
+    "fdcId": 326698,
+    "dataType": "Foundation",
+    "description": "Mustard, prepared, yellow",
+    "publicationDate": "4/1/2019",
+    "foodCategory": {
+      "id": 2,
+      "code": "0200",
+      "description": "Spices and Herbs"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 61
+      },
+      {
+        "nutrient": {
+          "id": 1062,
+          "unitName": "kJ"
+        },
+        "amount": 254
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 4.25
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 3.38
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 5.3
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 4.3
+      },
+      {
+        "nutrient": {
+          "id": 1063,
+          "unitName": "g"
+        },
+        "amount": 1.42
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 1100
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 119501,
+        "dataPoints": 34,
+        "gramWeight": 249,
+        "sequenceNumber": 2,
+        "amount": 1,
+        "minDateAcquired": "7/2/2003",
+        "measureUnit": {
+          "id": 1000,
+          "name": "cup",
+          "abbreviation": "cup"
+        },
+        "minYearAcquired": 2003
+      },
+      {
+        "id": 119500,
+        "dataPoints": 34,
+        "gramWeight": 6,
+        "sequenceNumber": 1,
+        "amount": 1,
+        "minDateAcquired": "7/2/2003",
+        "measureUnit": {
+          "id": 1002,
+          "name": "teaspoon",
+          "abbreviation": "tsp"
+        },
+        "minYearAcquired": 2003
+      }
+    ]
+  },
+  {
+    "fdcId": 748608,
+    "dataType": "Foundation",
+    "description": "Oil, olive, extra virgin",
+    "publicationDate": "12/16/2019",
+    "foodCategory": {
+      "id": 4,
+      "code": "0400",
+      "description": "Fats and Oils"
+    },
+    "foodNutrients": [],
+    "foodPortions": [
+      {
+        "id": 192355,
+        "dataPoints": 6,
+        "gramWeight": 90.7,
+        "sequenceNumber": 1,
+        "amount": 100,
+        "modifier": "",
+        "minDateAcquired": "6/20/2019",
+        "measureUnit": {
+          "id": 1004,
+          "name": "milliliter",
+          "abbreviation": "ml"
+        },
+        "minYearAcquired": 2019
+      }
+    ]
+  },
+  {
+    "fdcId": 790508,
+    "dataType": "Foundation",
+    "description": "Butter, stick, salted",
+    "publicationDate": "4/1/2020",
+    "foodCategory": {
+      "id": 1,
+      "code": "0100",
+      "description": "Dairy and Egg Products"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 82.2
+      },
+      {
+        "nutrient": {
+          "id": 1063,
+          "unitName": "g"
+        },
+        "amount": 0.58
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 524
+      }
+    ]
+  },
+  {
+    "fdcId": 2758989,
+    "dataType": "Foundation",
+    "description": "Peanut butter, Creamy",
+    "publicationDate": "4/30/2026",
+    "foodCategory": {
+      "id": 16,
+      "code": "1600",
+      "description": "Legumes and Legume Products"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 5.178
+      }
+    ]
+  },
+  {
+    "fdcId": 2707361,
+    "dataType": "Survey (FNDDS)",
+    "description": "Black beans, from dried, no added fat",
+    "publicationDate": "10/31/2024",
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 8.81
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 0.54
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 23.6
+      },
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 131
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 0.32
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 8.6
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 232
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 297928,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10205",
+        "gramWeight": 180,
+        "portionDescription": "1 cup",
+        "sequenceNumber": 1
+      },
+      {
+        "id": 297930,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "90000",
+        "gramWeight": 90,
+        "portionDescription": "Quantity not specified",
+        "sequenceNumber": 3
+      },
+      {
+        "id": 297929,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "40014",
+        "gramWeight": 70,
+        "portionDescription": "1 oz dry, yield after cooking",
+        "sequenceNumber": 2
+      }
+    ]
+  },
+  {
+    "fdcId": 2707425,
+    "dataType": "Survey (FNDDS)",
+    "description": "Lentils, from dried, no added fat",
+    "publicationDate": "10/31/2024",
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 8.97
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 0.38
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 20
+      },
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 115
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 1.79
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 7.9
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 233
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 298083,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10205",
+        "gramWeight": 180,
+        "portionDescription": "1 cup",
+        "sequenceNumber": 1
+      },
+      {
+        "id": 298085,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "90000",
+        "gramWeight": 90,
+        "portionDescription": "Quantity not specified",
+        "sequenceNumber": 3
+      },
+      {
+        "id": 298084,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "40014",
+        "gramWeight": 70,
+        "portionDescription": "1 oz dry, yield after cooking",
+        "sequenceNumber": 2
+      }
+    ]
+  },
+  {
+    "fdcId": 2710204,
+    "dataType": "Survey (FNDDS)",
+    "description": "Mayonnaise, regular",
+    "publicationDate": "10/31/2024",
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 0.96
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 74.8
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 0.57
+      },
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 680
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 0.57
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 635
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 309661,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "64547",
+        "gramWeight": 28,
+        "portionDescription": "Guideline amount on large sandwich",
+        "sequenceNumber": 10
+      },
+      {
+        "id": 309655,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10205",
+        "gramWeight": 220,
+        "portionDescription": "1 cup",
+        "sequenceNumber": 1
+      },
+      {
+        "id": 309657,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "61573",
+        "gramWeight": 12,
+        "portionDescription": "1 packet",
+        "sequenceNumber": 3
+      },
+      {
+        "id": 309658,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "90000",
+        "gramWeight": 9,
+        "portionDescription": "Quantity not specified",
+        "sequenceNumber": 7
+      },
+      {
+        "id": 309656,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "21000",
+        "gramWeight": 13.8,
+        "portionDescription": "1 tablespoon",
+        "sequenceNumber": 2
+      },
+      {
+        "id": 309662,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "64548",
+        "gramWeight": 28,
+        "portionDescription": "Guideline amount in salad",
+        "sequenceNumber": 11
+      },
+      {
+        "id": 309659,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "64353",
+        "gramWeight": 28,
+        "portionDescription": "1 dipping-size container",
+        "sequenceNumber": 8
+      },
+      {
+        "id": 309660,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "64546",
+        "gramWeight": 14,
+        "portionDescription": "Guideline amount on regular sandwich",
+        "sequenceNumber": 9
+      }
+    ]
+  },
+  {
+    "fdcId": 2706185,
+    "dataType": "Survey (FNDDS)",
+    "description": "Pepperoni, NFS",
+    "publicationDate": "10/31/2024",
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 19.2
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 46.3
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 1.18
+      },
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 504
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 1580
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 294027,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "90000",
+        "gramWeight": 56,
+        "portionDescription": "Quantity not specified",
+        "sequenceNumber": 7
+      },
+      {
+        "id": 294024,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "61870",
+        "gramWeight": 251,
+        "portionDescription": "1 sausage (10-1/4\" long  x 1-3/8\" dia)",
+        "sequenceNumber": 1
+      },
+      {
+        "id": 294026,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "61935",
+        "gramWeight": 2,
+        "portionDescription": "1 slice",
+        "sequenceNumber": 3
+      },
+      {
+        "id": 294025,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10010",
+        "gramWeight": 140,
+        "portionDescription": "1 cup, NFS",
+        "sequenceNumber": 2
+      }
+    ]
+  },
+  {
+    "fdcId": 2706215,
+    "dataType": "Survey (FNDDS)",
+    "description": "Turkey, prepackaged or deli, luncheon meat",
+    "publicationDate": "10/31/2024",
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 14.8
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 3.77
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 2.2
+      },
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 106
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 0.91
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 810
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 294225,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "64546",
+        "gramWeight": 56,
+        "portionDescription": "Guideline amount on regular sandwich",
+        "sequenceNumber": 3
+      },
+      {
+        "id": 294223,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "62008",
+        "gramWeight": 28,
+        "portionDescription": "1 slice, NFS",
+        "sequenceNumber": 1
+      },
+      {
+        "id": 294226,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "64547",
+        "gramWeight": 84,
+        "portionDescription": "Guideline amount on large sandwich",
+        "sequenceNumber": 4
+      },
+      {
+        "id": 294224,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10129",
+        "gramWeight": 140,
+        "portionDescription": "1 cup, pieces",
+        "sequenceNumber": 2
+      },
+      {
+        "id": 294227,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "90000",
+        "gramWeight": 56,
+        "portionDescription": "Quantity not specified",
+        "sequenceNumber": 5
+      }
+    ]
+  },
+  {
+    "fdcId": 2707709,
+    "dataType": "Survey (FNDDS)",
+    "description": "Bread, whole wheat",
+    "publicationDate": "10/31/2024",
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 12.3
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 3.55
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 43.1
+      },
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 254
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 4.41
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 6
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 430
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 299402,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "90000",
+        "gramWeight": 36,
+        "portionDescription": "Quantity not specified",
+        "sequenceNumber": 7
+      },
+      {
+        "id": 299400,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "62014",
+        "gramWeight": 10,
+        "portionDescription": "1 slice, snack-size",
+        "sequenceNumber": 5
+      },
+      {
+        "id": 299398,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "61039",
+        "gramWeight": 43,
+        "portionDescription": "1 large or thick slice",
+        "sequenceNumber": 3
+      },
+      {
+        "id": 299401,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "51000",
+        "gramWeight": 3.2,
+        "portionDescription": "1 cubic inch",
+        "sequenceNumber": 6
+      },
+      {
+        "id": 299397,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "64355",
+        "gramWeight": 36,
+        "portionDescription": "1 medium or regular slice",
+        "sequenceNumber": 2
+      },
+      {
+        "id": 299396,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "64354",
+        "gramWeight": 24,
+        "portionDescription": "1 small or thin/very thin slice",
+        "sequenceNumber": 1
+      },
+      {
+        "id": 299399,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "62011",
+        "gramWeight": 16,
+        "portionDescription": "1 slice, crust not eaten",
+        "sequenceNumber": 4
+      }
+    ]
+  },
+  {
+    "fdcId": 2707823,
+    "dataType": "Survey (FNDDS)",
+    "description": "Tortilla, corn",
+    "publicationDate": "10/31/2024",
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 5.7
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 2.85
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 44.6
+      },
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 218
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 0.88
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 6.3
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 45
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 299967,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "60919",
+        "gramWeight": 44,
+        "portionDescription": "1 large",
+        "sequenceNumber": 14
+      },
+      {
+        "id": 299965,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "62015",
+        "gramWeight": 18,
+        "portionDescription": "1 small",
+        "sequenceNumber": 12
+      },
+      {
+        "id": 299964,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "90000",
+        "gramWeight": 77,
+        "portionDescription": "Quantity not specified",
+        "sequenceNumber": 11
+      },
+      {
+        "id": 299966,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "61238",
+        "gramWeight": 28,
+        "portionDescription": "1 medium",
+        "sequenceNumber": 13
+      },
+      {
+        "id": 299968,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "60749",
+        "gramWeight": 65,
+        "portionDescription": "1 extra large",
+        "sequenceNumber": 15
+      }
+    ]
+  },
+  {
+    "fdcId": 2710186,
+    "dataType": "Survey (FNDDS)",
+    "description": "Olive oil",
+    "publicationDate": "10/31/2024",
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 100
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 900
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 2
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 309585,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10205",
+        "gramWeight": 224,
+        "portionDescription": "1 cup",
+        "sequenceNumber": 1
+      },
+      {
+        "id": 309586,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "21000",
+        "gramWeight": 14,
+        "portionDescription": "1 tablespoon",
+        "sequenceNumber": 2
+      },
+      {
+        "id": 309587,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "90000",
+        "gramWeight": 14,
+        "portionDescription": "Quantity not specified",
+        "sequenceNumber": 3
+      }
+    ]
+  },
+  {
+    "fdcId": 2710155,
+    "dataType": "Survey (FNDDS)",
+    "description": "Butter, stick",
+    "publicationDate": "10/31/2024",
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 0.85
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 82.2
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 0.06
+      },
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 743
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 0.58
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 524
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 309453,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "62239",
+        "gramWeight": 113,
+        "portionDescription": "1 stick",
+        "sequenceNumber": 3
+      },
+      {
+        "id": 309455,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "63484",
+        "gramWeight": 7,
+        "portionDescription": "Guideline amount per slice of bread/roll",
+        "sequenceNumber": 5
+      },
+      {
+        "id": 309458,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "90000",
+        "gramWeight": 14,
+        "portionDescription": "Quantity not specified",
+        "sequenceNumber": 8
+      },
+      {
+        "id": 309456,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "64546",
+        "gramWeight": 14,
+        "portionDescription": "Guideline amount on regular sandwich",
+        "sequenceNumber": 6
+      },
+      {
+        "id": 309457,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "64547",
+        "gramWeight": 28,
+        "portionDescription": "Guideline amount on large sandwich",
+        "sequenceNumber": 7
+      },
+      {
+        "id": 309451,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10205",
+        "gramWeight": 224,
+        "portionDescription": "1 cup",
+        "sequenceNumber": 1
+      },
+      {
+        "id": 309454,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "61631",
+        "gramWeight": 7,
+        "portionDescription": "1 pat",
+        "sequenceNumber": 4
+      },
+      {
+        "id": 309452,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "21000",
+        "gramWeight": 14,
+        "portionDescription": "1 tablespoon",
+        "sequenceNumber": 2
+      }
+    ]
+  },
+  {
+    "fdcId": 2262072,
+    "dataType": "Foundation",
+    "description": "Peanut butter, creamy",
+    "publicationDate": "4/28/2022",
+    "foodCategory": {
+      "id": 16,
+      "code": "1600",
+      "description": "Legumes and Legume Products"
+    },
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 2047,
+          "unitName": "kcal"
+        },
+        "amount": 631.65
+      },
+      {
+        "nutrient": {
+          "id": 2048,
+          "unitName": "kcal"
+        },
+        "amount": 589.383006
+      },
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 23.99124
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 49.43
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 22.70376
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 6.323
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 220.7
+      }
+    ]
+  },
+  {
+    "fdcId": 2705709,
+    "dataType": "Survey (FNDDS)",
+    "description": "Cheese, Cheddar",
+    "publicationDate": "10/31/2024",
+    "foodNutrients": [
+      {
+        "nutrient": {
+          "id": 1003,
+          "unitName": "g"
+        },
+        "amount": 23.3
+      },
+      {
+        "nutrient": {
+          "id": 1004,
+          "unitName": "g"
+        },
+        "amount": 34
+      },
+      {
+        "nutrient": {
+          "id": 1005,
+          "unitName": "g"
+        },
+        "amount": 2.44
+      },
+      {
+        "nutrient": {
+          "id": 1008,
+          "unitName": "kcal"
+        },
+        "amount": 409
+      },
+      {
+        "nutrient": {
+          "id": 1018,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1057,
+          "unitName": "mg"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 2000,
+          "unitName": "g"
+        },
+        "amount": 0.33
+      },
+      {
+        "nutrient": {
+          "id": 1079,
+          "unitName": "g"
+        },
+        "amount": 0
+      },
+      {
+        "nutrient": {
+          "id": 1093,
+          "unitName": "mg"
+        },
+        "amount": 654
+      }
+    ],
+    "foodPortions": [
+      {
+        "id": 291559,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "61935",
+        "gramWeight": 21,
+        "portionDescription": "1 slice",
+        "sequenceNumber": 2
+      },
+      {
+        "id": 291562,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10066",
+        "gramWeight": 132,
+        "portionDescription": "1 cup, diced",
+        "sequenceNumber": 5
+      },
+      {
+        "id": 291561,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10159",
+        "gramWeight": 113,
+        "portionDescription": "1 cup, shredded",
+        "sequenceNumber": 4
+      },
+      {
+        "id": 291564,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10010",
+        "gramWeight": 113,
+        "portionDescription": "1 cup, NFS",
+        "sequenceNumber": 7
+      },
+      {
+        "id": 291563,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10120",
+        "gramWeight": 244,
+        "portionDescription": "1 cup, melted",
+        "sequenceNumber": 6
+      },
+      {
+        "id": 291565,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "10310",
+        "gramWeight": 132,
+        "portionDescription": "1 cup, cubed",
+        "sequenceNumber": 8
+      },
+      {
+        "id": 291558,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "64017",
+        "gramWeight": 9,
+        "portionDescription": "1 cracker-size slice",
+        "sequenceNumber": 1
+      },
+      {
+        "id": 291567,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "90000",
+        "gramWeight": 21,
+        "portionDescription": "Quantity not specified",
+        "sequenceNumber": 10
+      },
+      {
+        "id": 291560,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "62239",
+        "gramWeight": 28.35,
+        "portionDescription": "1 stick",
+        "sequenceNumber": 3
+      },
+      {
+        "id": 291566,
+        "measureUnit": {
+          "id": 9999,
+          "name": "undetermined",
+          "abbreviation": "undetermined"
+        },
+        "modifier": "51000",
+        "gramWeight": 17,
+        "portionDescription": "1 cubic inch",
+        "sequenceNumber": 9
+      }
+    ]
+  }
+]

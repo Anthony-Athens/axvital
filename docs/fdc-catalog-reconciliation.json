@@ -1,0 +1,3019 @@
+{
+  "source": "Local PGlite repository migrations and reviewed USDA snapshot; no production changes",
+  "before": {
+    "foods": 97,
+    "foodsWithMacros": 64,
+    "foodsWithAnyServing": 64,
+    "servingUnits": [
+      "cup",
+      "each",
+      "fl oz",
+      "oz",
+      "scoop",
+      "slice",
+      "tbsp"
+    ],
+    "completeTemplates": 3,
+    "templates": [
+      {
+        "slug": "cereal-with-milk",
+        "total": 2,
+        "canonical": 2,
+        "withMacros": 1,
+        "withServing": 1,
+        "complete": false,
+        "nutrients": null,
+        "components": [
+          {
+            "slug": "milk",
+            "quantity": "1",
+            "unit": "cup",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 149,
+              "protein_grams": 7.7,
+              "carbohydrate_grams": 12,
+              "fat_grams": 8,
+              "fiber_grams": null
+            }
+          },
+          {
+            "slug": "cereal",
+            "quantity": "1",
+            "unit": "cup",
+            "canonical": true,
+            "macros": false,
+            "usable": false,
+            "nutrients": null
+          }
+        ]
+      },
+      {
+        "slug": "cheese-pizza",
+        "total": 3,
+        "canonical": 3,
+        "withMacros": 0,
+        "withServing": 0,
+        "complete": false,
+        "nutrients": null,
+        "components": [
+          {
+            "slug": "pizza-crust",
+            "quantity": null,
+            "unit": null,
+            "canonical": true,
+            "macros": false,
+            "usable": false,
+            "nutrients": null
+          },
+          {
+            "slug": "cheese",
+            "quantity": null,
+            "unit": null,
+            "canonical": true,
+            "macros": false,
+            "usable": false,
+            "nutrients": null
+          },
+          {
+            "slug": "tomato-sauce",
+            "quantity": null,
+            "unit": null,
+            "canonical": true,
+            "macros": false,
+            "usable": false,
+            "nutrients": null
+          }
+        ]
+      },
+      {
+        "slug": "cheeseburger",
+        "total": 3,
+        "canonical": 3,
+        "withMacros": 0,
+        "withServing": 0,
+        "complete": false,
+        "nutrients": null,
+        "components": [
+          {
+            "slug": "cheese",
+            "quantity": "1",
+            "unit": "oz",
+            "canonical": true,
+            "macros": false,
+            "usable": false,
+            "nutrients": null
+          },
+          {
+            "slug": "beef-patty",
+            "quantity": "4",
+            "unit": "oz",
+            "canonical": true,
+            "macros": false,
+            "usable": false,
+            "nutrients": null
+          },
+          {
+            "slug": "burger-bun",
+            "quantity": "1",
+            "unit": "each",
+            "canonical": true,
+            "macros": false,
+            "usable": false,
+            "nutrients": null
+          }
+        ]
+      },
+      {
+        "slug": "chicken-burrito",
+        "total": 3,
+        "canonical": 3,
+        "withMacros": 2,
+        "withServing": 2,
+        "complete": false,
+        "nutrients": null,
+        "components": [
+          {
+            "slug": "chicken-breast-cooked",
+            "quantity": "4",
+            "unit": "oz",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 187,
+              "protein_grams": 35,
+              "carbohydrate_grams": 0,
+              "fat_grams": 4,
+              "fiber_grams": null
+            }
+          },
+          {
+            "slug": "white-rice-cooked",
+            "quantity": "0.5",
+            "unit": "cup",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 102.5,
+              "protein_grams": 2.15,
+              "carbohydrate_grams": 22.25,
+              "fat_grams": 0.2,
+              "fiber_grams": null
+            }
+          },
+          {
+            "slug": "tortilla",
+            "quantity": "1",
+            "unit": "each",
+            "canonical": true,
+            "macros": false,
+            "usable": false,
+            "nutrients": null
+          }
+        ]
+      },
+      {
+        "slug": "chicken-salad",
+        "total": 2,
+        "canonical": 2,
+        "withMacros": 0,
+        "withServing": 0,
+        "complete": false,
+        "nutrients": null,
+        "components": [
+          {
+            "slug": "mayonnaise",
+            "quantity": "1",
+            "unit": "tbsp",
+            "canonical": true,
+            "macros": false,
+            "usable": false,
+            "nutrients": null
+          },
+          {
+            "slug": "chicken",
+            "quantity": "4",
+            "unit": "oz",
+            "canonical": true,
+            "macros": false,
+            "usable": false,
+            "nutrients": null
+          }
+        ]
+      },
+      {
+        "slug": "chicken-tacos",
+        "total": 2,
+        "canonical": 2,
+        "withMacros": 1,
+        "withServing": 1,
+        "complete": false,
+        "nutrients": null,
+        "components": [
+          {
+            "slug": "chicken-breast-cooked",
+            "quantity": "2",
+            "unit": "oz",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 93.5,
+              "protein_grams": 17.5,
+              "carbohydrate_grams": 0,
+              "fat_grams": 2,
+              "fiber_grams": null
+            }
+          },
+          {
+            "slug": "tortilla",
+            "quantity": "1",
+            "unit": "each",
+            "canonical": true,
+            "macros": false,
+            "usable": false,
+            "nutrients": null
+          }
+        ]
+      },
+      {
+        "slug": "eggs-and-toast",
+        "total": 2,
+        "canonical": 2,
+        "withMacros": 2,
+        "withServing": 2,
+        "complete": true,
+        "nutrients": {
+          "calories": 344,
+          "protein_grams": 20.6,
+          "carbohydrate_grams": 38.8,
+          "fat_grams": 12.6,
+          "fiber_grams": null
+        },
+        "components": [
+          {
+            "slug": "egg",
+            "quantity": "2",
+            "unit": "each",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 144,
+              "protein_grams": 12.6,
+              "carbohydrate_grams": 0.8,
+              "fat_grams": 9.6,
+              "fiber_grams": null
+            }
+          },
+          {
+            "slug": "whole-wheat-bread",
+            "quantity": "2",
+            "unit": "slice",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 200,
+              "protein_grams": 8,
+              "carbohydrate_grams": 38,
+              "fat_grams": 3,
+              "fiber_grams": null
+            }
+          }
+        ]
+      },
+      {
+        "slug": "greek-yogurt-with-berries",
+        "total": 2,
+        "canonical": 2,
+        "withMacros": 1,
+        "withServing": 1,
+        "complete": false,
+        "nutrients": null,
+        "components": [
+          {
+            "slug": "greek-yogurt",
+            "quantity": "1",
+            "unit": "cup",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 130,
+              "protein_grams": 23,
+              "carbohydrate_grams": 9,
+              "fat_grams": 0,
+              "fiber_grams": null
+            }
+          },
+          {
+            "slug": "berries",
+            "quantity": "0.5",
+            "unit": "cup",
+            "canonical": true,
+            "macros": false,
+            "usable": false,
+            "nutrients": null
+          }
+        ]
+      },
+      {
+        "slug": "grilled-chicken-with-rice",
+        "total": 2,
+        "canonical": 2,
+        "withMacros": 2,
+        "withServing": 2,
+        "complete": true,
+        "nutrients": {
+          "calories": 392,
+          "protein_grams": 39.3,
+          "carbohydrate_grams": 44.5,
+          "fat_grams": 4.4,
+          "fiber_grams": null
+        },
+        "components": [
+          {
+            "slug": "chicken-breast-cooked",
+            "quantity": "4",
+            "unit": "oz",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 187,
+              "protein_grams": 35,
+              "carbohydrate_grams": 0,
+              "fat_grams": 4,
+              "fiber_grams": null
+            }
+          },
+          {
+            "slug": "white-rice-cooked",
+            "quantity": "1",
+            "unit": "cup",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 205,
+              "protein_grams": 4.3,
+              "carbohydrate_grams": 44.5,
+              "fat_grams": 0.4,
+              "fiber_grams": null
+            }
+          }
+        ]
+      },
+      {
+        "slug": "ham-sandwich",
+        "total": 2,
+        "canonical": 2,
+        "withMacros": 0,
+        "withServing": 0,
+        "complete": false,
+        "nutrients": null,
+        "components": [
+          {
+            "slug": "bread",
+            "quantity": "2",
+            "unit": "slice",
+            "canonical": true,
+            "macros": false,
+            "usable": false,
+            "nutrients": null
+          },
+          {
+            "slug": "ham",
+            "quantity": "3",
+            "unit": "oz",
+            "canonical": true,
+            "macros": false,
+            "usable": false,
+            "nutrients": null
+          }
+        ]
+      },
+      {
+        "slug": "hamburger",
+        "total": 2,
+        "canonical": 2,
+        "withMacros": 1,
+        "withServing": 1,
+        "complete": false,
+        "nutrients": null,
+        "components": [
+          {
+            "slug": "beef-burger-patty-cooked",
+            "quantity": "4",
+            "unit": "oz",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 287,
+              "protein_grams": 28,
+              "carbohydrate_grams": 0,
+              "fat_grams": 20,
+              "fiber_grams": null
+            }
+          },
+          {
+            "slug": "burger-bun",
+            "quantity": "1",
+            "unit": "each",
+            "canonical": true,
+            "macros": false,
+            "usable": false,
+            "nutrients": null
+          }
+        ]
+      },
+      {
+        "slug": "oatmeal-with-fruit",
+        "total": 2,
+        "canonical": 2,
+        "withMacros": 2,
+        "withServing": 2,
+        "complete": true,
+        "nutrients": {
+          "calories": 208,
+          "protein_grams": 6.45,
+          "carbohydrate_grams": 38.8,
+          "fat_grams": 3.85,
+          "fiber_grams": null
+        },
+        "components": [
+          {
+            "slug": "oatmeal",
+            "quantity": "1",
+            "unit": "cup",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 166,
+              "protein_grams": 5.9,
+              "carbohydrate_grams": 28.1,
+              "fat_grams": 3.6,
+              "fiber_grams": null
+            }
+          },
+          {
+            "slug": "blueberries",
+            "quantity": "0.5",
+            "unit": "cup",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 42,
+              "protein_grams": 0.55,
+              "carbohydrate_grams": 10.7,
+              "fat_grams": 0.25,
+              "fiber_grams": null
+            }
+          }
+        ]
+      },
+      {
+        "slug": "peanut-butter-sandwich",
+        "total": 2,
+        "canonical": 2,
+        "withMacros": 1,
+        "withServing": 1,
+        "complete": false,
+        "nutrients": null,
+        "components": [
+          {
+            "slug": "peanut-butter",
+            "quantity": "2",
+            "unit": "tbsp",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 190,
+              "protein_grams": 7,
+              "carbohydrate_grams": 7,
+              "fat_grams": 16,
+              "fiber_grams": null
+            }
+          },
+          {
+            "slug": "bread",
+            "quantity": "2",
+            "unit": "slice",
+            "canonical": true,
+            "macros": false,
+            "usable": false,
+            "nutrients": null
+          }
+        ]
+      },
+      {
+        "slug": "pepperoni-pizza",
+        "total": 4,
+        "canonical": 4,
+        "withMacros": 0,
+        "withServing": 0,
+        "complete": false,
+        "nutrients": null,
+        "components": [
+          {
+            "slug": "pizza-crust",
+            "quantity": null,
+            "unit": null,
+            "canonical": true,
+            "macros": false,
+            "usable": false,
+            "nutrients": null
+          },
+          {
+            "slug": "cheese",
+            "quantity": null,
+            "unit": null,
+            "canonical": true,
+            "macros": false,
+            "usable": false,
+            "nutrients": null
+          },
+          {
+            "slug": "tomato-sauce",
+            "quantity": null,
+            "unit": null,
+            "canonical": true,
+            "macros": false,
+            "usable": false,
+            "nutrients": null
+          },
+          {
+            "slug": "pepperoni",
+            "quantity": null,
+            "unit": null,
+            "canonical": true,
+            "macros": false,
+            "usable": false,
+            "nutrients": null
+          }
+        ]
+      },
+      {
+        "slug": "turkey-sandwich",
+        "total": 2,
+        "canonical": 2,
+        "withMacros": 0,
+        "withServing": 0,
+        "complete": false,
+        "nutrients": null,
+        "components": [
+          {
+            "slug": "bread",
+            "quantity": "2",
+            "unit": "slice",
+            "canonical": true,
+            "macros": false,
+            "usable": false,
+            "nutrients": null
+          },
+          {
+            "slug": "turkey",
+            "quantity": "4",
+            "unit": "oz",
+            "canonical": true,
+            "macros": false,
+            "usable": false,
+            "nutrients": null
+          }
+        ]
+      }
+    ],
+    "missingMacros": [
+      "beef-patty",
+      "berries",
+      "bread",
+      "burger-bun",
+      "cereal",
+      "cereal-with-milk",
+      "cheese",
+      "cheese-pizza",
+      "cheeseburger",
+      "chicken",
+      "chicken-burrito",
+      "chicken-salad",
+      "chicken-tacos",
+      "coca-cola-zero-sugar",
+      "eggs-and-toast",
+      "greek-yogurt-with-berries",
+      "grilled-chicken-with-rice",
+      "ham",
+      "ham-sandwich",
+      "hamburger",
+      "lettuce",
+      "mayonnaise",
+      "oatmeal-with-fruit",
+      "peanut-butter-sandwich",
+      "pepperoni",
+      "pepperoni-pizza",
+      "pizza-crust",
+      "salad-with-chicken",
+      "tacos",
+      "tomato-sauce",
+      "tortilla",
+      "turkey",
+      "turkey-sandwich"
+    ],
+    "missingServings": [
+      "beef-patty",
+      "berries",
+      "bread",
+      "burger-bun",
+      "cereal",
+      "cereal-with-milk",
+      "cheese",
+      "cheese-pizza",
+      "cheeseburger",
+      "chicken",
+      "chicken-burrito",
+      "chicken-salad",
+      "chicken-tacos",
+      "coca-cola-zero-sugar",
+      "eggs-and-toast",
+      "greek-yogurt-with-berries",
+      "grilled-chicken-with-rice",
+      "ham",
+      "ham-sandwich",
+      "hamburger",
+      "lettuce",
+      "mayonnaise",
+      "oatmeal-with-fruit",
+      "peanut-butter-sandwich",
+      "pepperoni",
+      "pepperoni-pizza",
+      "pizza-crust",
+      "salad-with-chicken",
+      "tacos",
+      "tomato-sauce",
+      "tortilla",
+      "turkey",
+      "turkey-sandwich"
+    ],
+    "taxonomyWithoutNutrition": [
+      "beef-patty",
+      "berries",
+      "bread",
+      "burger-bun",
+      "cereal",
+      "cereal-with-milk",
+      "cheese",
+      "cheese-pizza",
+      "cheeseburger",
+      "chicken",
+      "chicken-burrito",
+      "chicken-salad",
+      "chicken-tacos",
+      "coca-cola-zero-sugar",
+      "eggs-and-toast",
+      "greek-yogurt-with-berries",
+      "grilled-chicken-with-rice",
+      "ham",
+      "ham-sandwich",
+      "hamburger",
+      "lettuce",
+      "mayonnaise",
+      "oatmeal-with-fruit",
+      "peanut-butter-sandwich",
+      "pepperoni",
+      "pepperoni-pizza",
+      "pizza-crust",
+      "salad-with-chicken",
+      "tacos",
+      "tomato-sauce",
+      "tortilla",
+      "turkey",
+      "turkey-sandwich"
+    ],
+    "duplicateNames": [
+      {
+        "name": "hamburger",
+        "foods": [
+          "ground-beef-80-lean-cooked",
+          "ground-beef-85-lean-cooked",
+          "ground-beef-90-lean-cooked",
+          "ground-beef-93-lean-cooked",
+          "hamburger"
+        ]
+      },
+      {
+        "name": "minced beef",
+        "foods": [
+          "ground-beef-80-lean-cooked",
+          "ground-beef-85-lean-cooked"
+        ]
+      },
+      {
+        "name": "beef mince",
+        "foods": [
+          "ground-beef-80-lean-cooked",
+          "ground-beef-85-lean-cooked",
+          "ground-beef-90-lean-cooked",
+          "ground-beef-93-lean-cooked"
+        ]
+      },
+      {
+        "name": "lean ground beef",
+        "foods": [
+          "ground-beef-90",
+          "ground-beef-90-lean-cooked",
+          "ground-beef-93-lean-cooked"
+        ]
+      }
+    ],
+    "nearDuplicates": [
+      [
+        "ground-beef-80-lean-cooked",
+        "ground-beef-85-lean-cooked"
+      ],
+      [
+        "ground-beef-80-lean-cooked",
+        "ground-beef-90-lean-cooked"
+      ],
+      [
+        "ground-beef-80-lean-cooked",
+        "ground-beef-93-lean-cooked"
+      ],
+      [
+        "ground-beef-85-lean-cooked",
+        "ground-beef-90-lean-cooked"
+      ],
+      [
+        "ground-beef-85-lean-cooked",
+        "ground-beef-93-lean-cooked"
+      ],
+      [
+        "ground-beef-90",
+        "ground-beef-90-lean-cooked"
+      ],
+      [
+        "ground-beef-90-lean-cooked",
+        "ground-beef-93-lean-cooked"
+      ]
+    ]
+  },
+  "results": [
+    {
+      "slug": "bread",
+      "status": "imported",
+      "food_id": "01070f8f-0744-454e-b42c-dde1cbe5287c",
+      "servings_written": 3
+    },
+    {
+      "slug": "turkey",
+      "status": "imported",
+      "food_id": "325e7671-fd67-4c98-be21-88a75c674e9b",
+      "servings_written": 3
+    },
+    {
+      "slug": "ham",
+      "status": "imported",
+      "food_id": "a71a27b2-600b-4135-accf-0095ed34ded8",
+      "servings_written": 2
+    },
+    {
+      "slug": "cheese",
+      "status": "imported",
+      "food_id": "09547d45-8fc1-4b7d-be05-a2e7e4f53dfe",
+      "servings_written": 4
+    },
+    {
+      "slug": "beef-patty",
+      "status": "imported",
+      "food_id": "b8bf94a5-8584-49aa-9f1a-a0eb38eac096",
+      "servings_written": 3
+    },
+    {
+      "slug": "burger-bun",
+      "status": "imported",
+      "food_id": "52e2e9a3-3607-48db-8cfd-b5f3bb833f1e",
+      "servings_written": 2
+    },
+    {
+      "slug": "tortilla",
+      "status": "imported",
+      "food_id": "6d274a7a-bf38-4036-bed2-f8e6eff19ad6",
+      "servings_written": 2
+    },
+    {
+      "slug": "mayonnaise",
+      "status": "imported",
+      "food_id": "21a18926-a4ba-476c-bef0-f42d6acab0a2",
+      "servings_written": 3
+    },
+    {
+      "slug": "lettuce",
+      "status": "imported",
+      "food_id": "1f6ba0e6-ea09-4fb8-9886-4282517a946e",
+      "servings_written": 1
+    },
+    {
+      "slug": "tomato-sauce",
+      "status": "imported",
+      "food_id": "6fc46d32-0432-49cb-b4ff-7ade442f19fa",
+      "servings_written": 1
+    },
+    {
+      "slug": "pepperoni",
+      "status": "imported",
+      "food_id": "e1ffb759-7444-445c-adc8-fb71210d21e1",
+      "servings_written": 3
+    },
+    {
+      "slug": "chicken",
+      "status": "imported",
+      "food_id": "c14d2056-8125-4aa2-8f7c-43f72cfef10a",
+      "servings_written": 4
+    },
+    {
+      "slug": "cereal",
+      "status": "imported",
+      "food_id": "9ccbfd81-2ac0-496f-b3d9-ea0e305179fe",
+      "servings_written": 2
+    },
+    {
+      "slug": "berries",
+      "status": "imported",
+      "food_id": "c35cfba3-7caf-4017-bc21-c2a1f98bdda1",
+      "servings_written": 2
+    },
+    {
+      "slug": "egg",
+      "status": "provenance_only",
+      "food_id": "7d6c393c-d8a3-46b5-b978-f45728568cd4",
+      "servings_written": 0
+    },
+    {
+      "slug": "chicken-breast-cooked",
+      "status": "provenance_only",
+      "food_id": "f35bcd19-7e4c-4cef-b7b1-c7c6d241d8f8",
+      "servings_written": 0
+    },
+    {
+      "slug": "turkey-breast-roasted",
+      "status": "imported",
+      "food_id": "07ee34e1-4937-4f4a-811d-43d922cffbbe",
+      "servings_written": 2
+    },
+    {
+      "slug": "deli-turkey",
+      "status": "imported",
+      "food_id": "f6b4ce28-5b51-4f9d-9398-77e64d9f50aa",
+      "servings_written": 3
+    },
+    {
+      "slug": "ground-beef-90-lean-cooked",
+      "status": "provenance_only",
+      "food_id": "e3a71f73-3ca5-40df-a47d-17fdc4410537",
+      "servings_written": 0
+    },
+    {
+      "slug": "sirloin-steak-cooked",
+      "status": "provenance_only",
+      "food_id": "757705f6-2eca-4e43-8ee3-c7933282db36",
+      "servings_written": 0
+    },
+    {
+      "slug": "pork-chop-cooked",
+      "status": "provenance_only",
+      "food_id": "84a879b0-066c-403a-a672-55151ecebc2e",
+      "servings_written": 0
+    },
+    {
+      "slug": "bacon-cooked",
+      "status": "imported",
+      "food_id": "f1a872a2-3c25-4edf-b794-49673a49e4c1",
+      "servings_written": 4
+    },
+    {
+      "slug": "salmon",
+      "status": "provenance_only",
+      "food_id": "acad3a82-3380-4461-8070-c76cb93fe960",
+      "servings_written": 0
+    },
+    {
+      "slug": "tuna",
+      "status": "provenance_only",
+      "food_id": "31af7273-fe4e-491c-8b4d-9e76b8266cac",
+      "servings_written": 0
+    },
+    {
+      "slug": "shrimp-cooked",
+      "status": "imported",
+      "food_id": "ee78b399-4a5f-4850-a784-d7847de1b2e1",
+      "servings_written": 2
+    },
+    {
+      "slug": "milk",
+      "status": "provenance_only",
+      "food_id": "b5c62d02-ad18-4681-9712-ef296ae0e524",
+      "servings_written": 0
+    },
+    {
+      "slug": "milk-two-percent",
+      "status": "imported",
+      "food_id": "8bf86aa2-63bd-492b-97e2-3d665742bda3",
+      "servings_written": 2
+    },
+    {
+      "slug": "milk-skim",
+      "status": "imported",
+      "food_id": "98849215-ebac-4dd9-bd1b-be32567c53a7",
+      "servings_written": 2
+    },
+    {
+      "slug": "greek-yogurt",
+      "status": "provenance_only",
+      "food_id": "778a1e2f-733b-42ea-8027-1f1466105cb7",
+      "servings_written": 0
+    },
+    {
+      "slug": "yogurt-plain",
+      "status": "imported",
+      "food_id": "688e029f-e3d5-47f1-8f14-6940b6506715",
+      "servings_written": 1
+    },
+    {
+      "slug": "cheddar-cheese",
+      "status": "imported",
+      "food_id": "194d2e21-10ac-4f9e-9270-49684c51214a",
+      "servings_written": 7
+    },
+    {
+      "slug": "mozzarella-cheese",
+      "status": "imported",
+      "food_id": "e0dbb1bd-2600-4a9e-b4be-26fac323dd75",
+      "servings_written": 4
+    },
+    {
+      "slug": "cottage-cheese",
+      "status": "provenance_only",
+      "food_id": "ec21cd8a-ef2f-46c2-be3c-a00c0b19da7c",
+      "servings_written": 0
+    },
+    {
+      "slug": "whole-wheat-bread",
+      "status": "provenance_only",
+      "food_id": "642fa13d-cac1-4899-999c-08d5e408324f",
+      "servings_written": 0
+    },
+    {
+      "slug": "corn-tortilla",
+      "status": "imported",
+      "food_id": "0bcb5957-01a1-4c01-9fb8-91c313cb2b9b",
+      "servings_written": 2
+    },
+    {
+      "slug": "white-rice-cooked",
+      "status": "provenance_only",
+      "food_id": "315304d6-715c-4b97-8528-d20d79c0148c",
+      "servings_written": 0
+    },
+    {
+      "slug": "brown-rice-cooked",
+      "status": "provenance_only",
+      "food_id": "874e3dfc-7173-41b8-a2b7-10e3b3582932",
+      "servings_written": 0
+    },
+    {
+      "slug": "oatmeal",
+      "status": "provenance_only",
+      "food_id": "4a0534f6-22fd-4eeb-9b6e-36f7edcbcc57",
+      "servings_written": 0
+    },
+    {
+      "slug": "corn-flakes",
+      "status": "imported",
+      "food_id": "de9f6f8d-bc99-4ccf-9409-122c46197911",
+      "servings_written": 2
+    },
+    {
+      "slug": "pasta-cooked",
+      "status": "imported",
+      "food_id": "aba33608-5274-476b-8858-cb38129257de",
+      "servings_written": 10
+    },
+    {
+      "slug": "white-potato",
+      "status": "provenance_only",
+      "food_id": "88141f21-13e5-44dc-984c-ed27f8119bac",
+      "servings_written": 0
+    },
+    {
+      "slug": "sweet-potato",
+      "status": "provenance_only",
+      "food_id": "9fb806b3-ffa2-4f32-85a8-c9e430293a88",
+      "servings_written": 0
+    },
+    {
+      "slug": "banana",
+      "status": "provenance_only",
+      "food_id": "c9383942-fedf-4701-a3c0-857b1f9e5e94",
+      "servings_written": 0
+    },
+    {
+      "slug": "apple",
+      "status": "provenance_only",
+      "food_id": "1eeb558c-3860-4b67-8da8-39b9e1d2bc04",
+      "servings_written": 0
+    },
+    {
+      "slug": "orange",
+      "status": "imported",
+      "food_id": "2591063b-590b-4509-bd60-123b3ef4e8f6",
+      "servings_written": 3
+    },
+    {
+      "slug": "strawberries",
+      "status": "provenance_only",
+      "food_id": "33e67d30-3197-46cd-a5af-314df3706583",
+      "servings_written": 0
+    },
+    {
+      "slug": "blueberries",
+      "status": "provenance_only",
+      "food_id": "d8416dfc-a5ab-417a-a49c-113b658d12c4",
+      "servings_written": 0
+    },
+    {
+      "slug": "grapes",
+      "status": "imported",
+      "food_id": "c191165b-6af9-471e-9674-e34c44ca8165",
+      "servings_written": 2
+    },
+    {
+      "slug": "avocado",
+      "status": "provenance_only",
+      "food_id": "26c81884-a225-4af5-b4ea-fe190c5defc9",
+      "servings_written": 0
+    },
+    {
+      "slug": "tomato",
+      "status": "imported",
+      "food_id": "58ae056c-f39f-4129-8361-b34cf1eec5cb",
+      "servings_written": 3
+    },
+    {
+      "slug": "spinach",
+      "status": "provenance_only",
+      "food_id": "c6df2732-e325-48f8-acdb-80460350cce2",
+      "servings_written": 0
+    },
+    {
+      "slug": "broccoli",
+      "status": "provenance_only",
+      "food_id": "8fa06f24-ea04-40eb-973c-943e7a00258c",
+      "servings_written": 0
+    },
+    {
+      "slug": "onion",
+      "status": "imported",
+      "food_id": "f73390f9-ea0d-4daa-ada4-789c7d3c6418",
+      "servings_written": 1
+    },
+    {
+      "slug": "bell-pepper",
+      "status": "imported",
+      "food_id": "41e066fa-45d5-4b72-90d8-5c5a7e0b54a4",
+      "servings_written": 1
+    },
+    {
+      "slug": "carrots",
+      "status": "provenance_only",
+      "food_id": "d1a58358-493e-4fe9-98f1-fb6078b72104",
+      "servings_written": 0
+    },
+    {
+      "slug": "mustard",
+      "status": "imported",
+      "food_id": "e5a5db73-b17d-4565-b92a-9fec52a8c9a9",
+      "servings_written": 3
+    },
+    {
+      "slug": "olive-oil",
+      "status": "provenance_only",
+      "food_id": "8c82ff97-85e2-412d-87b7-0b34abc5ab38",
+      "servings_written": 0
+    },
+    {
+      "slug": "butter",
+      "status": "provenance_only",
+      "food_id": "e08cdaf6-b94e-4103-83a7-627ced0f39a1",
+      "servings_written": 0
+    },
+    {
+      "slug": "peanut-butter",
+      "status": "provenance_only",
+      "food_id": "5cfd251a-faec-425b-94c2-ad286a54b602",
+      "servings_written": 0
+    },
+    {
+      "slug": "black-beans-cooked",
+      "status": "imported",
+      "food_id": "0fc28a02-f71e-4c9d-b276-d278575e8422",
+      "servings_written": 3
+    },
+    {
+      "slug": "lentils-cooked",
+      "status": "imported",
+      "food_id": "e74851c6-9f25-4412-83e8-bfb896279a64",
+      "servings_written": 3
+    }
+  ],
+  "comparisons": [
+    {
+      "slug": "bread",
+      "fdcId": 2707598,
+      "sourceDescription": "Bread, white",
+      "action": "Add missing USDA servings",
+      "upstreamPer100g": {
+        "calories": 267,
+        "protein_grams": 9.43,
+        "carbohydrate_grams": 49.2,
+        "fat_grams": 3.59,
+        "fiber_grams": 2.3,
+        "sugar_grams": 5.34,
+        "sodium_mg": 450,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "curated": []
+    },
+    {
+      "slug": "turkey",
+      "fdcId": 2706104,
+      "sourceDescription": "Turkey, NFS",
+      "action": "Add missing USDA servings",
+      "upstreamPer100g": {
+        "calories": 139,
+        "protein_grams": 28.8,
+        "carbohydrate_grams": 0,
+        "fat_grams": 2.06,
+        "fiber_grams": 0,
+        "sugar_grams": 0,
+        "sodium_mg": 467,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "curated": []
+    },
+    {
+      "slug": "ham",
+      "fdcId": 332397,
+      "sourceDescription": "Ham, sliced, pre-packaged, deli meat (96%fat free, water added)",
+      "action": "Add missing USDA servings",
+      "upstreamPer100g": {
+        "calories": 106,
+        "protein_grams": 16.7,
+        "carbohydrate_grams": 0.27,
+        "fat_grams": 3.73,
+        "fiber_grams": null,
+        "sugar_grams": null,
+        "sodium_mg": 1040,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "curated": []
+    },
+    {
+      "slug": "cheese",
+      "fdcId": 2705704,
+      "sourceDescription": "Cheese, NFS",
+      "action": "Add missing USDA servings",
+      "upstreamPer100g": {
+        "calories": 381,
+        "protein_grams": 20.7,
+        "carbohydrate_grams": 4.33,
+        "fat_grams": 31.3,
+        "fiber_grams": 0,
+        "sugar_grams": 2.08,
+        "sodium_mg": 964,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "curated": []
+    },
+    {
+      "slug": "beef-patty",
+      "fdcId": 2705855,
+      "sourceDescription": "Beef, ground, patty",
+      "action": "Add missing USDA servings",
+      "upstreamPer100g": {
+        "calories": 272,
+        "protein_grams": 25.4,
+        "carbohydrate_grams": 0,
+        "fat_grams": 18.2,
+        "fiber_grams": 0,
+        "sugar_grams": 0,
+        "sodium_mg": 383,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "curated": []
+    },
+    {
+      "slug": "burger-bun",
+      "fdcId": 2707657,
+      "sourceDescription": "Roll, white, hamburger bun",
+      "action": "Add missing USDA servings",
+      "upstreamPer100g": {
+        "calories": 267,
+        "protein_grams": 9.43,
+        "carbohydrate_grams": 49.2,
+        "fat_grams": 3.59,
+        "fiber_grams": 2.3,
+        "sugar_grams": 5.34,
+        "sodium_mg": 450,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "curated": []
+    },
+    {
+      "slug": "tortilla",
+      "fdcId": 2707822,
+      "sourceDescription": "Tortilla, NFS",
+      "action": "Add missing USDA servings",
+      "upstreamPer100g": {
+        "calories": 262,
+        "protein_grams": 6.95,
+        "carbohydrate_grams": 47,
+        "fat_grams": 5.42,
+        "fiber_grams": 4.9,
+        "sugar_grams": 2.3,
+        "sodium_mg": 372,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "curated": []
+    },
+    {
+      "slug": "mayonnaise",
+      "fdcId": 2710204,
+      "sourceDescription": "Mayonnaise, regular",
+      "action": "Add missing USDA servings",
+      "upstreamPer100g": {
+        "calories": 680,
+        "protein_grams": 0.96,
+        "carbohydrate_grams": 0.57,
+        "fat_grams": 74.8,
+        "fiber_grams": 0,
+        "sugar_grams": 0.57,
+        "sodium_mg": 635,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "curated": []
+    },
+    {
+      "slug": "lettuce",
+      "fdcId": 2346388,
+      "sourceDescription": "Lettuce, iceberg, raw",
+      "action": "Add missing USDA servings",
+      "upstreamPer100g": {
+        "calories": 14.455425,
+        "protein_grams": 0.7425,
+        "carbohydrate_grams": 3.36875,
+        "fat_grams": 0.07375,
+        "fiber_grams": null,
+        "sugar_grams": null,
+        "sodium_mg": 16.11,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "curated": []
+    },
+    {
+      "slug": "tomato-sauce",
+      "fdcId": 2685579,
+      "sourceDescription": "Tomato, sauce, canned, with salt added",
+      "action": "Add missing USDA servings",
+      "upstreamPer100g": {
+        "calories": 29.10400125,
+        "protein_grams": 1.351875,
+        "carbohydrate_grams": 6.331625,
+        "fat_grams": 0.3825,
+        "fiber_grams": 1.636,
+        "sugar_grams": 3.517,
+        "sodium_mg": 416.9,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "curated": []
+    },
+    {
+      "slug": "pepperoni",
+      "fdcId": 2706185,
+      "sourceDescription": "Pepperoni, NFS",
+      "action": "Add missing USDA servings",
+      "upstreamPer100g": {
+        "calories": 504,
+        "protein_grams": 19.2,
+        "carbohydrate_grams": 1.18,
+        "fat_grams": 46.3,
+        "fiber_grams": 0,
+        "sugar_grams": 0,
+        "sodium_mg": 1580,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "curated": []
+    },
+    {
+      "slug": "chicken",
+      "fdcId": 2705931,
+      "sourceDescription": "Chicken, NS as to part and cooking method, skin not eaten",
+      "action": "Add missing USDA servings",
+      "upstreamPer100g": {
+        "calories": 164,
+        "protein_grams": 26.8,
+        "carbohydrate_grams": 0,
+        "fat_grams": 6.36,
+        "fiber_grams": 0,
+        "sugar_grams": 0,
+        "sodium_mg": 345,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "curated": []
+    },
+    {
+      "slug": "cereal",
+      "fdcId": 2708445,
+      "sourceDescription": "Cereal, ready-to-eat, NFS",
+      "action": "Add missing USDA servings",
+      "upstreamPer100g": {
+        "calories": 379,
+        "protein_grams": 7.74,
+        "carbohydrate_grams": 77.7,
+        "fat_grams": 4.01,
+        "fiber_grams": 6.6,
+        "sugar_grams": 25.4,
+        "sodium_mg": 527,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "curated": []
+    },
+    {
+      "slug": "berries",
+      "fdcId": 2709271,
+      "sourceDescription": "Berries, NFS",
+      "action": "Add missing USDA servings",
+      "upstreamPer100g": {
+        "calories": 44,
+        "protein_grams": 0.66,
+        "carbohydrate_grams": 9.94,
+        "fat_grams": 0.25,
+        "fiber_grams": 2,
+        "sugar_grams": 6.21,
+        "sodium_mg": 0,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "curated": []
+    },
+    {
+      "slug": "egg",
+      "fdcId": 748967,
+      "sourceDescription": "Eggs, Grade A, Large, egg whole",
+      "action": "Preserve curated servings; attach provenance only",
+      "upstreamPer100g": {
+        "calories": 148,
+        "protein_grams": 12.4,
+        "carbohydrate_grams": 0.96,
+        "fat_grams": 9.96,
+        "fiber_grams": 0,
+        "sugar_grams": 0.2,
+        "sodium_mg": 129,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "curated": [
+        {
+          "serving": "1 large",
+          "per100g": {
+            "calories": 144,
+            "protein_grams": 12.6,
+            "carbohydrate_grams": 0.8,
+            "fat_grams": 9.6
+          }
+        }
+      ]
+    },
+    {
+      "slug": "chicken-breast-cooked",
+      "fdcId": 171477,
+      "sourceDescription": "Chicken, broilers or fryers, breast, meat only, cooked, roasted",
+      "action": "Preserve curated servings; attach provenance only",
+      "upstreamPer100g": {
+        "calories": 165,
+        "protein_grams": 31.02,
+        "carbohydrate_grams": 0,
+        "fat_grams": 3.57,
+        "fiber_grams": 0,
+        "sugar_grams": 0,
+        "sodium_mg": 74,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "curated": [
+        {
+          "serving": "4 oz",
+          "per100g": {
+            "calories": 165.4867256637168,
+            "protein_grams": 30.97345132743363,
+            "carbohydrate_grams": 0,
+            "fat_grams": 3.5398230088495577
+          }
+        }
+      ]
+    },
+    {
+      "slug": "ground-beef-90-lean-cooked",
+      "fdcId": 171794,
+      "sourceDescription": "Beef, ground, 90% lean meat / 10% fat, crumbles, cooked, pan-browned",
+      "action": "Preserve curated servings; attach provenance only",
+      "upstreamPer100g": {
+        "calories": 230,
+        "protein_grams": 28.45,
+        "carbohydrate_grams": 0,
+        "fat_grams": 12.04,
+        "fiber_grams": 0,
+        "sugar_grams": 0,
+        "sodium_mg": 87,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "curated": [
+        {
+          "serving": "4 oz",
+          "per100g": {
+            "calories": 224.7787610619469,
+            "protein_grams": 25.663716814159294,
+            "carbohydrate_grams": 0,
+            "fat_grams": 13.274336283185841
+          }
+        }
+      ]
+    },
+    {
+      "slug": "sirloin-steak-cooked",
+      "fdcId": 2705832,
+      "sourceDescription": "Beef, steak, sirloin, NS as to fat eaten",
+      "action": "Preserve curated servings; attach provenance only",
+      "upstreamPer100g": {
+        "calories": 239,
+        "protein_grams": 27.1,
+        "carbohydrate_grams": 0,
+        "fat_grams": 14,
+        "fiber_grams": 0,
+        "sugar_grams": 0,
+        "sodium_mg": 361,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "curated": [
+        {
+          "serving": "4 oz",
+          "per100g": {
+            "calories": 206.1946902654867,
+            "protein_grams": 27.43362831858407,
+            "carbohydrate_grams": 0,
+            "fat_grams": 9.734513274336283
+          }
+        }
+      ]
+    },
+    {
+      "slug": "pork-chop-cooked",
+      "fdcId": 167841,
+      "sourceDescription": "Pork, fresh, loin, top loin (chops), boneless, separable lean and fat, cooked, broiled",
+      "action": "Preserve curated servings; attach provenance only",
+      "upstreamPer100g": {
+        "calories": 196,
+        "protein_grams": 26.62,
+        "carbohydrate_grams": 0,
+        "fat_grams": 9.14,
+        "fiber_grams": 0,
+        "sugar_grams": 0,
+        "sodium_mg": 44,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "curated": [
+        {
+          "serving": "4 oz",
+          "per100g": {
+            "calories": 204.42477876106196,
+            "protein_grams": 26.548672566371682,
+            "carbohydrate_grams": 0,
+            "fat_grams": 10.619469026548673
+          }
+        }
+      ]
+    },
+    {
+      "slug": "salmon",
+      "fdcId": 171998,
+      "sourceDescription": "Fish, salmon, Atlantic, wild, cooked, dry heat",
+      "action": "Preserve curated servings; attach provenance only",
+      "upstreamPer100g": {
+        "calories": 182,
+        "protein_grams": 25.44,
+        "carbohydrate_grams": 0,
+        "fat_grams": 8.13,
+        "fiber_grams": 0,
+        "sugar_grams": null,
+        "sodium_mg": 56,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "curated": [
+        {
+          "serving": "4 oz",
+          "per100g": {
+            "calories": 206.1946902654867,
+            "protein_grams": 22.123893805309734,
+            "carbohydrate_grams": 0,
+            "fat_grams": 12.389380530973451
+          }
+        }
+      ]
+    },
+    {
+      "slug": "tuna",
+      "fdcId": 334194,
+      "sourceDescription": "Fish, tuna, light, canned in water, drained solids",
+      "action": "Preserve curated servings; attach provenance only",
+      "upstreamPer100g": {
+        "calories": 90,
+        "protein_grams": 19,
+        "carbohydrate_grams": 0.08,
+        "fat_grams": 0.94,
+        "fiber_grams": null,
+        "sugar_grams": 0,
+        "sodium_mg": 219,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "curated": [
+        {
+          "serving": "3 oz",
+          "per100g": {
+            "calories": 117.6470588235294,
+            "protein_grams": 25.88235294117647,
+            "carbohydrate_grams": 0,
+            "fat_grams": 1.1764705882352942
+          }
+        }
+      ]
+    },
+    {
+      "slug": "milk",
+      "fdcId": 746782,
+      "sourceDescription": "Milk, whole, 3.25% milkfat, with added vitamin D",
+      "action": "Preserve curated servings; attach provenance only",
+      "upstreamPer100g": {
+        "calories": 60,
+        "protein_grams": 3.27,
+        "carbohydrate_grams": 4.63,
+        "fat_grams": 3.2,
+        "fiber_grams": null,
+        "sugar_grams": 4.81,
+        "sodium_mg": 38,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "curated": [
+        {
+          "serving": "1 cup",
+          "per100g": {
+            "calories": 61.0655737704918,
+            "protein_grams": 3.1557377049180326,
+            "carbohydrate_grams": 4.918032786885246,
+            "fat_grams": 3.278688524590164
+          }
+        }
+      ]
+    },
+    {
+      "slug": "greek-yogurt",
+      "fdcId": 330137,
+      "sourceDescription": "Yogurt, Greek, plain, nonfat",
+      "action": "Preserve curated servings; attach provenance only",
+      "upstreamPer100g": {
+        "calories": 61,
+        "protein_grams": 10.3,
+        "carbohydrate_grams": 3.64,
+        "fat_grams": 0.37,
+        "fiber_grams": null,
+        "sugar_grams": 3.27,
+        "sodium_mg": 36,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "curated": [
+        {
+          "serving": "1 cup",
+          "per100g": {
+            "calories": 57.268722466960355,
+            "protein_grams": 10.13215859030837,
+            "carbohydrate_grams": 3.9647577092511015,
+            "fat_grams": 0
+          }
+        }
+      ]
+    },
+    {
+      "slug": "cottage-cheese",
+      "fdcId": 328841,
+      "sourceDescription": "Cheese, cottage, lowfat, 2% milkfat",
+      "action": "Preserve curated servings; attach provenance only",
+      "upstreamPer100g": {
+        "calories": 84,
+        "protein_grams": 11,
+        "carbohydrate_grams": 4.31,
+        "fat_grams": 2.3,
+        "fiber_grams": null,
+        "sugar_grams": 4.1,
+        "sodium_mg": 321,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "curated": [
+        {
+          "serving": "1 cup",
+          "per100g": {
+            "calories": 91.15044247787611,
+            "protein_grams": 12.389380530973451,
+            "carbohydrate_grams": 3.5398230088495577,
+            "fat_grams": 3.982300884955752
+          }
+        }
+      ]
+    },
+    {
+      "slug": "whole-wheat-bread",
+      "fdcId": 2707709,
+      "sourceDescription": "Bread, whole wheat",
+      "action": "Preserve curated servings; attach provenance only",
+      "upstreamPer100g": {
+        "calories": 254,
+        "protein_grams": 12.3,
+        "carbohydrate_grams": 43.1,
+        "fat_grams": 3.55,
+        "fiber_grams": 6,
+        "sugar_grams": 4.41,
+        "sodium_mg": 430,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "curated": [
+        {
+          "serving": "1 slice",
+          "per100g": {
+            "calories": 232.5581395348837,
+            "protein_grams": 9.30232558139535,
+            "carbohydrate_grams": 44.18604651162791,
+            "fat_grams": 3.488372093023256
+          }
+        }
+      ]
+    },
+    {
+      "slug": "white-rice-cooked",
+      "fdcId": 2708408,
+      "sourceDescription": "Rice, white, cooked, no added fat",
+      "action": "Preserve curated servings; attach provenance only",
+      "upstreamPer100g": {
+        "calories": 129,
+        "protein_grams": 2.67,
+        "carbohydrate_grams": 28,
+        "fat_grams": 0.28,
+        "fiber_grams": 0.4,
+        "sugar_grams": 0.05,
+        "sodium_mg": 245,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "curated": [
+        {
+          "serving": "1 cup",
+          "per100g": {
+            "calories": 129.74683544303798,
+            "protein_grams": 2.721518987341772,
+            "carbohydrate_grams": 28.164556962025316,
+            "fat_grams": 0.25316455696202533
+          }
+        }
+      ]
+    },
+    {
+      "slug": "brown-rice-cooked",
+      "fdcId": 2708414,
+      "sourceDescription": "Rice, brown, cooked, no added fat",
+      "action": "Preserve curated servings; attach provenance only",
+      "upstreamPer100g": {
+        "calories": 123,
+        "protein_grams": 2.43,
+        "carbohydrate_grams": 25.8,
+        "fat_grams": 1.11,
+        "fiber_grams": 1,
+        "sugar_grams": 0.22,
+        "sodium_mg": 201,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "curated": [
+        {
+          "serving": "1 cup",
+          "per100g": {
+            "calories": 110.76923076923077,
+            "protein_grams": 2.5641025641025643,
+            "carbohydrate_grams": 22.974358974358974,
+            "fat_grams": 0.9230769230769231
+          }
+        }
+      ]
+    },
+    {
+      "slug": "oatmeal",
+      "fdcId": 173905,
+      "sourceDescription": "Cereals, oats, regular and quick, unenriched, cooked with water (includes boiling and microwaving), without salt",
+      "action": "Preserve curated servings; attach provenance only",
+      "upstreamPer100g": {
+        "calories": 71,
+        "protein_grams": 2.54,
+        "carbohydrate_grams": 12,
+        "fat_grams": 1.52,
+        "fiber_grams": 1.7,
+        "sugar_grams": 0.27,
+        "sodium_mg": 4,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "curated": [
+        {
+          "serving": "1 cup cooked",
+          "per100g": {
+            "calories": 70.94017094017094,
+            "protein_grams": 2.5213675213675213,
+            "carbohydrate_grams": 12.008547008547009,
+            "fat_grams": 1.5384615384615385
+          }
+        }
+      ]
+    },
+    {
+      "slug": "white-potato",
+      "fdcId": 170030,
+      "sourceDescription": "Potatoes, Russet, flesh and skin, baked",
+      "action": "Preserve curated servings; attach provenance only",
+      "upstreamPer100g": {
+        "calories": 95,
+        "protein_grams": 2.63,
+        "carbohydrate_grams": 21.44,
+        "fat_grams": 0.13,
+        "fiber_grams": 2.3,
+        "sugar_grams": 1.08,
+        "sodium_mg": 14,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "curated": [
+        {
+          "serving": "1 medium",
+          "per100g": {
+            "calories": 93.0635838150289,
+            "protein_grams": 2.485549132947977,
+            "carbohydrate_grams": 21.15606936416185,
+            "fat_grams": 0.11560693641618497
+          }
+        }
+      ]
+    },
+    {
+      "slug": "sweet-potato",
+      "fdcId": 2709699,
+      "sourceDescription": "Sweet potato, baked, no added fat",
+      "action": "Preserve curated servings; attach provenance only",
+      "upstreamPer100g": {
+        "calories": 82,
+        "protein_grams": 1.64,
+        "carbohydrate_grams": 18,
+        "fat_grams": 0.39,
+        "fiber_grams": 3.1,
+        "sugar_grams": 6.29,
+        "sodium_mg": 154,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "curated": [
+        {
+          "serving": "1 medium",
+          "per100g": {
+            "calories": 86.15384615384616,
+            "protein_grams": 1.5384615384615385,
+            "carbohydrate_grams": 20,
+            "fat_grams": 0.07692307692307693
+          }
+        }
+      ]
+    },
+    {
+      "slug": "banana",
+      "fdcId": 1105314,
+      "sourceDescription": "Bananas, ripe and slightly ripe, raw",
+      "action": "Preserve curated servings; attach provenance only",
+      "upstreamPer100g": {
+        "calories": 97,
+        "protein_grams": 0.74,
+        "carbohydrate_grams": 23,
+        "fat_grams": 0.29,
+        "fiber_grams": 1.7,
+        "sugar_grams": 15.8,
+        "sodium_mg": 0,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "curated": [
+        {
+          "serving": "1 medium",
+          "per100g": {
+            "calories": 88.98305084745763,
+            "protein_grams": 1.1016949152542372,
+            "carbohydrate_grams": 22.88135593220339,
+            "fat_grams": 0.3389830508474576
+          }
+        }
+      ]
+    },
+    {
+      "slug": "apple",
+      "fdcId": 2709215,
+      "sourceDescription": "Apple, raw",
+      "action": "Preserve curated servings; attach provenance only",
+      "upstreamPer100g": {
+        "calories": 61,
+        "protein_grams": 0.17,
+        "carbohydrate_grams": 14.8,
+        "fat_grams": 0.15,
+        "fiber_grams": 2.1,
+        "sugar_grams": 12.1,
+        "sodium_mg": 0,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "curated": [
+        {
+          "serving": "1 medium",
+          "per100g": {
+            "calories": 52.1978021978022,
+            "protein_grams": 0.27472527472527475,
+            "carbohydrate_grams": 13.736263736263735,
+            "fat_grams": 0.16483516483516483
+          }
+        }
+      ]
+    },
+    {
+      "slug": "strawberries",
+      "fdcId": 2346409,
+      "sourceDescription": "Strawberries, raw",
+      "action": "Preserve curated servings; attach provenance only",
+      "upstreamPer100g": {
+        "calories": 32.66565,
+        "protein_grams": 0.640625,
+        "carbohydrate_grams": 7.964375,
+        "fat_grams": 0.22,
+        "fiber_grams": null,
+        "sugar_grams": 4.862,
+        "sodium_mg": 0,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "curated": [
+        {
+          "serving": "1 cup",
+          "per100g": {
+            "calories": 32.23684210526316,
+            "protein_grams": 0.6578947368421053,
+            "carbohydrate_grams": 7.697368421052632,
+            "fat_grams": 0.32894736842105265
+          }
+        }
+      ]
+    },
+    {
+      "slug": "blueberries",
+      "fdcId": 2346411,
+      "sourceDescription": "Blueberries, raw",
+      "action": "Preserve curated servings; attach provenance only",
+      "upstreamPer100g": {
+        "calories": 57.384621,
+        "protein_grams": 0.703125,
+        "carbohydrate_grams": 14.571775,
+        "fat_grams": 0.3063,
+        "fiber_grams": null,
+        "sugar_grams": 9.356,
+        "sodium_mg": 0,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "curated": [
+        {
+          "serving": "1 cup",
+          "per100g": {
+            "calories": 56.75675675675676,
+            "protein_grams": 0.7432432432432433,
+            "carbohydrate_grams": 14.45945945945946,
+            "fat_grams": 0.33783783783783783
+          }
+        }
+      ]
+    },
+    {
+      "slug": "avocado",
+      "fdcId": 2710824,
+      "sourceDescription": "Avocado, Hass, peeled, raw",
+      "action": "Preserve curated servings; attach provenance only",
+      "upstreamPer100g": {
+        "calories": 206.0493,
+        "protein_grams": 1.8125,
+        "carbohydrate_grams": 8.3235,
+        "fat_grams": 20.31,
+        "fiber_grams": null,
+        "sugar_grams": null,
+        "sodium_mg": 0,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "curated": [
+        {
+          "serving": "1 medium",
+          "per100g": {
+            "calories": 160,
+            "protein_grams": 2,
+            "carbohydrate_grams": 8.533333333333333,
+            "fat_grams": 14.666666666666666
+          }
+        }
+      ]
+    },
+    {
+      "slug": "spinach",
+      "fdcId": 1999633,
+      "sourceDescription": "Spinach, mature",
+      "action": "Preserve curated servings; attach provenance only",
+      "upstreamPer100g": {
+        "calories": 21.5796975,
+        "protein_grams": 2.90625,
+        "carbohydrate_grams": 2.64135,
+        "fat_grams": 0.6044,
+        "fiber_grams": 1.588,
+        "sugar_grams": null,
+        "sodium_mg": 106.6,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "curated": [
+        {
+          "serving": "2 cups",
+          "per100g": {
+            "calories": 23.333333333333332,
+            "protein_grams": 2.8333333333333335,
+            "carbohydrate_grams": 3.666666666666667,
+            "fat_grams": 0.3333333333333333
+          }
+        }
+      ]
+    },
+    {
+      "slug": "broccoli",
+      "fdcId": 747447,
+      "sourceDescription": "Broccoli, raw",
+      "action": "Preserve curated servings; attach provenance only",
+      "upstreamPer100g": {
+        "calories": 31,
+        "protein_grams": 2.57,
+        "carbohydrate_grams": 6.27,
+        "fat_grams": 0.34,
+        "fiber_grams": 2.4,
+        "sugar_grams": 1.4,
+        "sodium_mg": 36,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "curated": [
+        {
+          "serving": "1 cup",
+          "per100g": {
+            "calories": 34.065934065934066,
+            "protein_grams": 2.7472527472527473,
+            "carbohydrate_grams": 6.593406593406593,
+            "fat_grams": 0.32967032967032966
+          }
+        }
+      ]
+    },
+    {
+      "slug": "carrots",
+      "fdcId": 2258586,
+      "sourceDescription": "Carrots, mature, raw",
+      "action": "Preserve curated servings; attach provenance only",
+      "upstreamPer100g": {
+        "calories": 44.978589,
+        "protein_grams": 0.94125,
+        "carbohydrate_grams": 10.26755,
+        "fat_grams": 0.3506,
+        "fiber_grams": 3.095,
+        "sugar_grams": null,
+        "sodium_mg": 86.65,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "curated": [
+        {
+          "serving": "1 cup",
+          "per100g": {
+            "calories": 40.625,
+            "protein_grams": 0.9375,
+            "carbohydrate_grams": 9.609375,
+            "fat_grams": 0.234375
+          }
+        }
+      ]
+    },
+    {
+      "slug": "olive-oil",
+      "fdcId": 2710186,
+      "sourceDescription": "Olive oil",
+      "action": "Preserve curated servings; attach provenance only",
+      "upstreamPer100g": {
+        "calories": 900,
+        "protein_grams": 0,
+        "carbohydrate_grams": 0,
+        "fat_grams": 100,
+        "fiber_grams": 0,
+        "sugar_grams": 0,
+        "sodium_mg": 2,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "curated": [
+        {
+          "serving": "1 tbsp",
+          "per100g": {
+            "calories": 850,
+            "protein_grams": 0,
+            "carbohydrate_grams": 0,
+            "fat_grams": 96.42857142857143
+          }
+        }
+      ]
+    },
+    {
+      "slug": "butter",
+      "fdcId": 2710155,
+      "sourceDescription": "Butter, stick",
+      "action": "Preserve curated servings; attach provenance only",
+      "upstreamPer100g": {
+        "calories": 743,
+        "protein_grams": 0.85,
+        "carbohydrate_grams": 0.06,
+        "fat_grams": 82.2,
+        "fiber_grams": 0,
+        "sugar_grams": 0.58,
+        "sodium_mg": 524,
+        "caffeine_mg": 0,
+        "alcohol_grams": 0
+      },
+      "curated": [
+        {
+          "serving": "1 tbsp",
+          "per100g": {
+            "calories": 728.5714285714286,
+            "protein_grams": 0.7142857142857143,
+            "carbohydrate_grams": 0,
+            "fat_grams": 82.14285714285714
+          }
+        }
+      ]
+    },
+    {
+      "slug": "peanut-butter",
+      "fdcId": 2262072,
+      "sourceDescription": "Peanut butter, creamy",
+      "action": "Preserve curated servings; attach provenance only",
+      "upstreamPer100g": {
+        "calories": 589.383006,
+        "protein_grams": 23.99124,
+        "carbohydrate_grams": 22.70376,
+        "fat_grams": 49.43,
+        "fiber_grams": 6.323,
+        "sugar_grams": null,
+        "sodium_mg": 220.7,
+        "caffeine_mg": null,
+        "alcohol_grams": null
+      },
+      "curated": [
+        {
+          "serving": "2 tbsp",
+          "per100g": {
+            "calories": 593.75,
+            "protein_grams": 21.875,
+            "carbohydrate_grams": 21.875,
+            "fat_grams": 50
+          }
+        }
+      ]
+    }
+  ],
+  "after": {
+    "foods": 117,
+    "foodsWithMacros": 98,
+    "foodsWithAnyServing": 98,
+    "servingUnits": [
+      "cup",
+      "each",
+      "fl oz",
+      "g",
+      "oz",
+      "scoop",
+      "slice",
+      "tbsp",
+      "tsp"
+    ],
+    "completeTemplates": 13,
+    "templates": [
+      {
+        "slug": "cereal-with-milk",
+        "total": 2,
+        "canonical": 2,
+        "withMacros": 2,
+        "withServing": 2,
+        "complete": true,
+        "nutrients": {
+          "calories": 281.65,
+          "protein_grams": 10.409,
+          "carbohydrate_grams": 39.195,
+          "fat_grams": 9.4035,
+          "fiber_grams": null
+        },
+        "components": [
+          {
+            "slug": "milk",
+            "quantity": "1",
+            "unit": "cup",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 149,
+              "protein_grams": 7.7,
+              "carbohydrate_grams": 12,
+              "fat_grams": 8,
+              "fiber_grams": null
+            }
+          },
+          {
+            "slug": "cereal",
+            "quantity": "1",
+            "unit": "cup",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 132.65,
+              "protein_grams": 2.709,
+              "carbohydrate_grams": 27.195,
+              "fat_grams": 1.4034999999999997,
+              "fiber_grams": 2.3099999999999996
+            }
+          }
+        ]
+      },
+      {
+        "slug": "cheese-pizza",
+        "total": 3,
+        "canonical": 3,
+        "withMacros": 2,
+        "withServing": 0,
+        "complete": false,
+        "nutrients": null,
+        "components": [
+          {
+            "slug": "pizza-crust",
+            "quantity": null,
+            "unit": null,
+            "canonical": true,
+            "macros": false,
+            "usable": false,
+            "nutrients": null
+          },
+          {
+            "slug": "cheese",
+            "quantity": null,
+            "unit": null,
+            "canonical": true,
+            "macros": true,
+            "usable": false,
+            "nutrients": null
+          },
+          {
+            "slug": "tomato-sauce",
+            "quantity": null,
+            "unit": null,
+            "canonical": true,
+            "macros": true,
+            "usable": false,
+            "nutrients": null
+          }
+        ]
+      },
+      {
+        "slug": "cheeseburger",
+        "total": 3,
+        "canonical": 3,
+        "withMacros": 3,
+        "withServing": 3,
+        "complete": true,
+        "nutrients": {
+          "calories": 555.29449470625,
+          "protein_grams": 39.575066781875,
+          "carbohydrate_grams": 26.811534351312503,
+          "fat_grams": 31.378653573125003,
+          "fiber_grams": 1.196
+        },
+        "components": [
+          {
+            "slug": "cheese",
+            "quantity": "1",
+            "unit": "oz",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 108.01168310625002,
+              "protein_grams": 5.868351286875001,
+              "carbohydrate_grams": 1.2275343513125,
+              "fat_grams": 8.873400738125001,
+              "fiber_grams": 0
+            }
+          },
+          {
+            "slug": "beef-patty",
+            "quantity": "4",
+            "unit": "oz",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 308.4428116,
+              "protein_grams": 28.803115495000004,
+              "carbohydrate_grams": 0,
+              "fat_grams": 20.638452835000002,
+              "fiber_grams": 0
+            }
+          },
+          {
+            "slug": "burger-bun",
+            "quantity": "1",
+            "unit": "each",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 138.84,
+              "protein_grams": 4.9036,
+              "carbohydrate_grams": 25.584000000000003,
+              "fat_grams": 1.8668,
+              "fiber_grams": 1.196
+            }
+          }
+        ]
+      },
+      {
+        "slug": "chicken-burrito",
+        "total": 3,
+        "canonical": 3,
+        "withMacros": 3,
+        "withServing": 3,
+        "complete": true,
+        "nutrients": {
+          "calories": 362.86,
+          "protein_grams": 39.096,
+          "carbohydrate_grams": 35.410000000000004,
+          "fat_grams": 5.7176,
+          "fiber_grams": null
+        },
+        "components": [
+          {
+            "slug": "chicken-breast-cooked",
+            "quantity": "4",
+            "unit": "oz",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 187,
+              "protein_grams": 35,
+              "carbohydrate_grams": 0,
+              "fat_grams": 4,
+              "fiber_grams": null
+            }
+          },
+          {
+            "slug": "white-rice-cooked",
+            "quantity": "0.5",
+            "unit": "cup",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 102.5,
+              "protein_grams": 2.15,
+              "carbohydrate_grams": 22.25,
+              "fat_grams": 0.2,
+              "fiber_grams": null
+            }
+          },
+          {
+            "slug": "tortilla",
+            "quantity": "1",
+            "unit": "each",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 73.36000000000001,
+              "protein_grams": 1.9460000000000002,
+              "carbohydrate_grams": 13.160000000000002,
+              "fat_grams": 1.5176,
+              "fiber_grams": 1.3720000000000003
+            }
+          }
+        ]
+      },
+      {
+        "slug": "chicken-salad",
+        "total": 2,
+        "canonical": 2,
+        "withMacros": 2,
+        "withServing": 2,
+        "complete": true,
+        "nutrients": {
+          "calories": 279.47287170000004,
+          "protein_grams": 30.522688790000007,
+          "carbohydrate_grams": 0.078375,
+          "fat_grams": 17.497118683,
+          "fiber_grams": 0
+        },
+        "components": [
+          {
+            "slug": "mayonnaise",
+            "quantity": "1",
+            "unit": "tbsp",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 93.50000000000001,
+              "protein_grams": 0.132,
+              "carbohydrate_grams": 0.078375,
+              "fat_grams": 10.285,
+              "fiber_grams": 0
+            }
+          },
+          {
+            "slug": "chicken",
+            "quantity": "4",
+            "unit": "oz",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 185.9728717,
+              "protein_grams": 30.390688790000006,
+              "carbohydrate_grams": 0,
+              "fat_grams": 7.212118683000001,
+              "fiber_grams": 0
+            }
+          }
+        ]
+      },
+      {
+        "slug": "chicken-tacos",
+        "total": 2,
+        "canonical": 2,
+        "withMacros": 2,
+        "withServing": 2,
+        "complete": true,
+        "nutrients": {
+          "calories": 166.86,
+          "protein_grams": 19.446,
+          "carbohydrate_grams": 13.160000000000002,
+          "fat_grams": 3.5176,
+          "fiber_grams": null
+        },
+        "components": [
+          {
+            "slug": "chicken-breast-cooked",
+            "quantity": "2",
+            "unit": "oz",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 93.5,
+              "protein_grams": 17.5,
+              "carbohydrate_grams": 0,
+              "fat_grams": 2,
+              "fiber_grams": null
+            }
+          },
+          {
+            "slug": "tortilla",
+            "quantity": "1",
+            "unit": "each",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 73.36000000000001,
+              "protein_grams": 1.9460000000000002,
+              "carbohydrate_grams": 13.160000000000002,
+              "fat_grams": 1.5176,
+              "fiber_grams": 1.3720000000000003
+            }
+          }
+        ]
+      },
+      {
+        "slug": "eggs-and-toast",
+        "total": 2,
+        "canonical": 2,
+        "withMacros": 2,
+        "withServing": 2,
+        "complete": true,
+        "nutrients": {
+          "calories": 344,
+          "protein_grams": 20.6,
+          "carbohydrate_grams": 38.8,
+          "fat_grams": 12.6,
+          "fiber_grams": null
+        },
+        "components": [
+          {
+            "slug": "egg",
+            "quantity": "2",
+            "unit": "each",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 144,
+              "protein_grams": 12.6,
+              "carbohydrate_grams": 0.8,
+              "fat_grams": 9.6,
+              "fiber_grams": null
+            }
+          },
+          {
+            "slug": "whole-wheat-bread",
+            "quantity": "2",
+            "unit": "slice",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 200,
+              "protein_grams": 8,
+              "carbohydrate_grams": 38,
+              "fat_grams": 3,
+              "fiber_grams": null
+            }
+          }
+        ]
+      },
+      {
+        "slug": "greek-yogurt-with-berries",
+        "total": 2,
+        "canonical": 2,
+        "withMacros": 2,
+        "withServing": 2,
+        "complete": true,
+        "nutrients": {
+          "calories": 163,
+          "protein_grams": 23.495,
+          "carbohydrate_grams": 16.455,
+          "fat_grams": 0.1875,
+          "fiber_grams": null
+        },
+        "components": [
+          {
+            "slug": "greek-yogurt",
+            "quantity": "1",
+            "unit": "cup",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 130,
+              "protein_grams": 23,
+              "carbohydrate_grams": 9,
+              "fat_grams": 0,
+              "fiber_grams": null
+            }
+          },
+          {
+            "slug": "berries",
+            "quantity": "0.5",
+            "unit": "cup",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 33,
+              "protein_grams": 0.495,
+              "carbohydrate_grams": 7.455,
+              "fat_grams": 0.1875,
+              "fiber_grams": 1.5
+            }
+          }
+        ]
+      },
+      {
+        "slug": "grilled-chicken-with-rice",
+        "total": 2,
+        "canonical": 2,
+        "withMacros": 2,
+        "withServing": 2,
+        "complete": true,
+        "nutrients": {
+          "calories": 392,
+          "protein_grams": 39.3,
+          "carbohydrate_grams": 44.5,
+          "fat_grams": 4.4,
+          "fiber_grams": null
+        },
+        "components": [
+          {
+            "slug": "chicken-breast-cooked",
+            "quantity": "4",
+            "unit": "oz",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 187,
+              "protein_grams": 35,
+              "carbohydrate_grams": 0,
+              "fat_grams": 4,
+              "fiber_grams": null
+            }
+          },
+          {
+            "slug": "white-rice-cooked",
+            "quantity": "1",
+            "unit": "cup",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 205,
+              "protein_grams": 4.3,
+              "carbohydrate_grams": 44.5,
+              "fat_grams": 0.4,
+              "fiber_grams": null
+            }
+          }
+        ]
+      },
+      {
+        "slug": "ham-sandwich",
+        "total": 2,
+        "canonical": 2,
+        "withMacros": 2,
+        "withServing": 2,
+        "complete": true,
+        "nutrients": {
+          "calories": 239.67148353750002,
+          "protein_grams": 19.483911085625,
+          "carbohydrate_grams": 27.781631137312502,
+          "fat_grams": 5.1827116376875,
+          "fiber_grams": null
+        },
+        "components": [
+          {
+            "slug": "bread",
+            "quantity": "2",
+            "unit": "slice",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 149.52,
+              "protein_grams": 5.2808,
+              "carbohydrate_grams": 27.552000000000003,
+              "fat_grams": 2.0104,
+              "fiber_grams": 1.288
+            }
+          },
+          {
+            "slug": "ham",
+            "quantity": "3",
+            "unit": "oz",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 90.1514835375,
+              "protein_grams": 14.203111085625,
+              "carbohydrate_grams": 0.22963113731250004,
+              "fat_grams": 3.1723116376875002,
+              "fiber_grams": null
+            }
+          }
+        ]
+      },
+      {
+        "slug": "hamburger",
+        "total": 2,
+        "canonical": 2,
+        "withMacros": 2,
+        "withServing": 2,
+        "complete": true,
+        "nutrients": {
+          "calories": 425.84000000000003,
+          "protein_grams": 32.9036,
+          "carbohydrate_grams": 25.584000000000003,
+          "fat_grams": 21.8668,
+          "fiber_grams": null
+        },
+        "components": [
+          {
+            "slug": "beef-burger-patty-cooked",
+            "quantity": "4",
+            "unit": "oz",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 287,
+              "protein_grams": 28,
+              "carbohydrate_grams": 0,
+              "fat_grams": 20,
+              "fiber_grams": null
+            }
+          },
+          {
+            "slug": "burger-bun",
+            "quantity": "1",
+            "unit": "each",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 138.84,
+              "protein_grams": 4.9036,
+              "carbohydrate_grams": 25.584000000000003,
+              "fat_grams": 1.8668,
+              "fiber_grams": 1.196
+            }
+          }
+        ]
+      },
+      {
+        "slug": "oatmeal-with-fruit",
+        "total": 2,
+        "canonical": 2,
+        "withMacros": 2,
+        "withServing": 2,
+        "complete": true,
+        "nutrients": {
+          "calories": 208,
+          "protein_grams": 6.45,
+          "carbohydrate_grams": 38.8,
+          "fat_grams": 3.85,
+          "fiber_grams": null
+        },
+        "components": [
+          {
+            "slug": "oatmeal",
+            "quantity": "1",
+            "unit": "cup",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 166,
+              "protein_grams": 5.9,
+              "carbohydrate_grams": 28.1,
+              "fat_grams": 3.6,
+              "fiber_grams": null
+            }
+          },
+          {
+            "slug": "blueberries",
+            "quantity": "0.5",
+            "unit": "cup",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 42,
+              "protein_grams": 0.55,
+              "carbohydrate_grams": 10.7,
+              "fat_grams": 0.25,
+              "fiber_grams": null
+            }
+          }
+        ]
+      },
+      {
+        "slug": "peanut-butter-sandwich",
+        "total": 2,
+        "canonical": 2,
+        "withMacros": 2,
+        "withServing": 2,
+        "complete": true,
+        "nutrients": {
+          "calories": 339.52,
+          "protein_grams": 12.2808,
+          "carbohydrate_grams": 34.55200000000001,
+          "fat_grams": 18.0104,
+          "fiber_grams": null
+        },
+        "components": [
+          {
+            "slug": "peanut-butter",
+            "quantity": "2",
+            "unit": "tbsp",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 190,
+              "protein_grams": 7,
+              "carbohydrate_grams": 7,
+              "fat_grams": 16,
+              "fiber_grams": null
+            }
+          },
+          {
+            "slug": "bread",
+            "quantity": "2",
+            "unit": "slice",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 149.52,
+              "protein_grams": 5.2808,
+              "carbohydrate_grams": 27.552000000000003,
+              "fat_grams": 2.0104,
+              "fiber_grams": 1.288
+            }
+          }
+        ]
+      },
+      {
+        "slug": "pepperoni-pizza",
+        "total": 4,
+        "canonical": 4,
+        "withMacros": 3,
+        "withServing": 0,
+        "complete": false,
+        "nutrients": null,
+        "components": [
+          {
+            "slug": "pizza-crust",
+            "quantity": null,
+            "unit": null,
+            "canonical": true,
+            "macros": false,
+            "usable": false,
+            "nutrients": null
+          },
+          {
+            "slug": "cheese",
+            "quantity": null,
+            "unit": null,
+            "canonical": true,
+            "macros": true,
+            "usable": false,
+            "nutrients": null
+          },
+          {
+            "slug": "tomato-sauce",
+            "quantity": null,
+            "unit": null,
+            "canonical": true,
+            "macros": true,
+            "usable": false,
+            "nutrients": null
+          },
+          {
+            "slug": "pepperoni",
+            "quantity": null,
+            "unit": null,
+            "canonical": true,
+            "macros": true,
+            "usable": false,
+            "nutrients": null
+          }
+        ]
+      },
+      {
+        "slug": "turkey-sandwich",
+        "total": 2,
+        "canonical": 2,
+        "withMacros": 2,
+        "withServing": 2,
+        "complete": true,
+        "nutrients": {
+          "calories": 307.143348575,
+          "protein_grams": 37.939450640000004,
+          "carbohydrate_grams": 27.552000000000003,
+          "fat_grams": 4.346400705500001,
+          "fiber_grams": 1.288
+        },
+        "components": [
+          {
+            "slug": "bread",
+            "quantity": "2",
+            "unit": "slice",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 149.52,
+              "protein_grams": 5.2808,
+              "carbohydrate_grams": 27.552000000000003,
+              "fat_grams": 2.0104,
+              "fiber_grams": 1.288
+            }
+          },
+          {
+            "slug": "turkey",
+            "quantity": "4",
+            "unit": "oz",
+            "canonical": true,
+            "macros": true,
+            "usable": true,
+            "nutrients": {
+              "calories": 157.62334857500002,
+              "protein_grams": 32.658650640000005,
+              "carbohydrate_grams": 0,
+              "fat_grams": 2.3360007055000005,
+              "fiber_grams": 0
+            }
+          }
+        ]
+      }
+    ],
+    "missingMacros": [
+      "cereal-with-milk",
+      "cheese-pizza",
+      "cheeseburger",
+      "chicken-burrito",
+      "chicken-salad",
+      "chicken-tacos",
+      "coca-cola-zero-sugar",
+      "eggs-and-toast",
+      "greek-yogurt-with-berries",
+      "grilled-chicken-with-rice",
+      "ham-sandwich",
+      "hamburger",
+      "oatmeal-with-fruit",
+      "peanut-butter-sandwich",
+      "pepperoni-pizza",
+      "pizza-crust",
+      "salad-with-chicken",
+      "tacos",
+      "turkey-sandwich"
+    ],
+    "missingServings": [
+      "cereal-with-milk",
+      "cheese-pizza",
+      "cheeseburger",
+      "chicken-burrito",
+      "chicken-salad",
+      "chicken-tacos",
+      "coca-cola-zero-sugar",
+      "eggs-and-toast",
+      "greek-yogurt-with-berries",
+      "grilled-chicken-with-rice",
+      "ham-sandwich",
+      "hamburger",
+      "oatmeal-with-fruit",
+      "peanut-butter-sandwich",
+      "pepperoni-pizza",
+      "pizza-crust",
+      "salad-with-chicken",
+      "tacos",
+      "turkey-sandwich"
+    ],
+    "taxonomyWithoutNutrition": [
+      "cereal-with-milk",
+      "cheese-pizza",
+      "cheeseburger",
+      "chicken-burrito",
+      "chicken-salad",
+      "chicken-tacos",
+      "coca-cola-zero-sugar",
+      "eggs-and-toast",
+      "greek-yogurt-with-berries",
+      "grilled-chicken-with-rice",
+      "ham-sandwich",
+      "hamburger",
+      "oatmeal-with-fruit",
+      "peanut-butter-sandwich",
+      "pepperoni-pizza",
+      "pizza-crust",
+      "salad-with-chicken",
+      "tacos",
+      "turkey-sandwich"
+    ],
+    "duplicateNames": [
+      {
+        "name": "hamburger",
+        "foods": [
+          "ground-beef-80-lean-cooked",
+          "ground-beef-85-lean-cooked",
+          "ground-beef-90-lean-cooked",
+          "ground-beef-93-lean-cooked",
+          "hamburger"
+        ]
+      },
+      {
+        "name": "minced beef",
+        "foods": [
+          "ground-beef-80-lean-cooked",
+          "ground-beef-85-lean-cooked"
+        ]
+      },
+      {
+        "name": "beef mince",
+        "foods": [
+          "ground-beef-80-lean-cooked",
+          "ground-beef-85-lean-cooked",
+          "ground-beef-90-lean-cooked",
+          "ground-beef-93-lean-cooked"
+        ]
+      },
+      {
+        "name": "lean ground beef",
+        "foods": [
+          "ground-beef-90",
+          "ground-beef-90-lean-cooked",
+          "ground-beef-93-lean-cooked"
+        ]
+      }
+    ],
+    "nearDuplicates": [
+      [
+        "ground-beef-80-lean-cooked",
+        "ground-beef-85-lean-cooked"
+      ],
+      [
+        "ground-beef-80-lean-cooked",
+        "ground-beef-90-lean-cooked"
+      ],
+      [
+        "ground-beef-80-lean-cooked",
+        "ground-beef-93-lean-cooked"
+      ],
+      [
+        "ground-beef-85-lean-cooked",
+        "ground-beef-90-lean-cooked"
+      ],
+      [
+        "ground-beef-85-lean-cooked",
+        "ground-beef-93-lean-cooked"
+      ],
+      [
+        "ground-beef-90",
+        "ground-beef-90-lean-cooked"
+      ],
+      [
+        "ground-beef-90-lean-cooked",
+        "ground-beef-93-lean-cooked"
+      ]
+    ]
+  }
+}
