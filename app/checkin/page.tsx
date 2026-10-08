@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { reportActivation } from "@/lib/telemetry/activation";
 import { ingestHealthEvent } from "@/lib/health-events/ingestion";
 import { VoiceLogDialog } from "@/components/checkin/VoiceLogDialog";
@@ -582,6 +583,7 @@ function CheckInForm({ date, historical }: { date: string; historical: boolean }
   return (
     <div className="mx-auto max-w-6xl px-4 py-5 md:px-6 md:py-10">
       <header className="border-b border-slate-200 pb-5">
+        <Link className="mb-3 inline-block text-sm text-blue-700 underline" href="/experiments">Record an experiment observation</Link>
         <h1 className="text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl">{historical ? "Historical Check-In" : "Today"}</h1>
         <p className="mt-1 text-sm font-medium text-slate-500">{new Intl.DateTimeFormat(undefined, { weekday: "long", month: "long", day: "numeric" }).format(new Date(`${date}T12:00:00`))}</p>
         <div className="mt-4 flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3"><div className="min-w-0 flex-1"><div className="flex justify-between gap-3 text-sm"><span className="font-medium text-slate-700">Daily Check-In</span><span className="tabular-nums text-slate-500">{questions.filter((question) => answers[question.id]).length} of {questions.length} complete</span></div><div className="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-100" role="progressbar" aria-label="Daily check-in progress" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100}><div className="h-full rounded-full bg-blue-600 transition-all motion-reduce:transition-none" style={{ width: `${progress}%` }}/></div></div></div>
