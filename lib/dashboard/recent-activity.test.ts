@@ -70,7 +70,7 @@ test("recent results are bounded and one source failure does not erase other act
     return query;
   } } as unknown as SupabaseClient;
   const result = await loadRecentActivity(client, { start: at, end: "2026-09-04T00:00:00Z", startDate: "2026-09-03", endDate: "2026-09-03" });
-  assert.equal(tables.length, 12);
+  assert.equal(tables.length, 13);
   assert.ok(limits.every(n => n === 40));
   assert.deepEqual(result.failedSources, ["health_event"]);
   assert.equal(result.items[0].category, "Nutrition");

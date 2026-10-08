@@ -23,6 +23,11 @@ export default function LearnPage() {
         <h2 id="learn-deeper-heading" className="mt-1 text-xl font-semibold text-slate-900">What changed, and what is AXVital noticing?</h2>
       </div>
       <div className="mt-3 grid min-w-0 gap-4 md:grid-cols-2">
+        <Surface compact className="min-w-0">
+          <h3 className="font-semibold text-slate-900">Cognitive Training History</h3>
+          <p className="mt-1 text-sm leading-6 text-slate-600">Review arithmetic practice results, personal bests, and trends across equivalent tests.</p>
+          <ButtonLink href="/cognitive-training/history" variant="tertiary" className="mt-2 -ml-4">View Performance History</ButtonLink>
+        </Surface>
         <Surface className="flex min-w-0 flex-col items-start">
           <p className="text-sm font-semibold text-slate-500">Patterns & Insights</p>
           <h3 className="mt-1 text-xl font-semibold text-slate-900">Insights</h3>

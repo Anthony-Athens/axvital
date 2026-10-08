@@ -77,6 +77,12 @@ export function recentActivityFromRow(source: string, row: Row): RecentActivity[
     item.detail = number(row.severity) !== null ? `Severity ${row.severity}` : null;
     item.occurredAt = activityTimestamp(row.started_at, row.created_at);
     item.href = "/health/symptoms/history";
+  } else if (source === "cognitive_session") {
+    item.category = "Cognitive Training";
+    item.title = "Completed Cognitive Training";
+    item.occurredAt = activityTimestamp(row.ended_at);
+    item.detail = number(row.elapsed_ms) !== null ? `${(Number(row.elapsed_ms) / 60000).toFixed(1)} min` : null;
+    item.href = `/cognitive-training/results/${id}`;
   } else if (source === "workout_session") {
     item.category = "Workout";
     const status = text(row.status);
@@ -131,6 +137,7 @@ export async function loadRecentActivity(client: SupabaseClient, range: { start:
   const workoutSelect = "id,name,status,started_at,ended_at,created_at,duration_seconds,planned_activity_occurrence_id";
   const episodeSelect = "id,title,started_at,ended_at,created_at,overall_severity,user_condition:user_conditions(custom_condition_name,condition:conditions(name,preferred_episode_label))";
   const sources = [
+    { name: "cognitive_session", query: timed("cognitive_sessions", "id,ended_at,elapsed_ms", "ended_at") },
     { name: "health_event", query: dated("health_events", "id,event_date,event_time,event_type,title,description,notes,amount,dose,supplement_name,dose_amount,dose_unit,exercise_type,duration_minutes,severity,created_at", "event_date").order("event_time", { ascending: false, nullsFirst: false }) },
     { name: "nutrition_entry", query: timed("nutrition_entries", "id,title,meal_type,consumed_at,created_at,items:nutrition_entry_items(source_name)", "consumed_at").is("deleted_at", null) },
     { name: "symptom_event", query: timed("user_symptom_events", "id,started_at,created_at,severity,custom_symptom_name,symptom:symptoms(name)", "started_at").is("deleted_at", null) },

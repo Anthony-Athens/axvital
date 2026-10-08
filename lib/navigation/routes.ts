@@ -18,8 +18,8 @@ function isConditionAnalysisRoute(pathname: string) { return /^\/health\/conditi
 export function activeNavigationId(pathname: string): PrimaryNavigationId | null {
   if (matchesRoute(pathname, ["/today", "/checkin"])) return "today";
   if (matchesRoute(pathname, ["/experiments"])) return "experiments";
-  if (matchesRoute(pathname, ["/learn", "/dashboard", "/insights", "/weekly-recap", "/workouts/progress"]) || isConditionAnalysisRoute(pathname)) return "learn";
-  if (matchesRoute(pathname, ["/track", "/weekly-overview", "/workouts", "/habits", "/protocols", "/health/nutrition", "/health/symptoms", "/health/episodes", "/health/timeline"])) return "track";
+  if (matchesRoute(pathname, ["/learn", "/dashboard", "/insights", "/weekly-recap", "/workouts/progress", "/cognitive-training/history"]) || isConditionAnalysisRoute(pathname)) return "learn";
+  if (matchesRoute(pathname, ["/track", "/weekly-overview", "/workouts", "/habits", "/protocols", "/health/nutrition", "/health/symptoms", "/health/episodes", "/health/timeline", "/cognitive-training"])) return "track";
   if (matchesRoute(pathname, ["/me", "/profile", "/settings", "/my-health"]) || pathname === "/health" || matchesRoute(pathname, ["/health/conditions"])) return "me";
   return null;
 }
