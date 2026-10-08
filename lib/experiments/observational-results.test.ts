@@ -1,0 +1,39 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {calculateResults,spearman,pairEligibility,type OutcomeDefinition,type OutcomeRecord} from './observational-results.ts';
+import {evidenceBase,type Evidence,type LinkedResponse} from './linked-evidence.ts';
+import {shiftDate} from '../measurements/time-window.ts';
+import type {Study} from './observational.ts';
+const d:OutcomeDefinition={id:'metric',version:1,name:'Synthetic intensity',kind:'numeric',unit:'units',min:null,max:null,anchors:{},direction:'neither'};
+const study={id:'study',start_date:'2026-01-01',end_date:'2026-01-30',timezone:'America/New_York',factors:[]} as unknown as Study;
+function fixture(n=12){const outcomes=new Map<string,OutcomeRecord>();const history:LinkedResponse['history']=[];for(let i=0;i<n;i++){const date=shiftDate('2026-01-01',i);outcomes.set(date,{status:'recorded',value:i<6?10:2,metric_id:d.id,coverage:'most'});const base=evidenceBase({source:'alcohol',offset:-1},date,'v1',study.timezone);history.push({date,factors:[{...base,status:i<6?'present':'absent',value:i<6?'present':'absent',complete:i>=6}]});}return {outcomes,linked:{study,history,versions:[],daily:[]} as LinkedResponse};}
+test('binary comparisons use known presence and complete absence, numeric/ordinal/boolean definitions and thresholds',()=>{
+ const f=fixture();let r=calculateResults(f.linked,f.outcomes,d),s=r.segments.find(s=>s.measurement==='status')!;assert.equal(s.groups[0].summary.mean,10);assert.equal(s.groups[1].summary.median,2);assert.equal(s.difference,8);assert.match(s.sentence,/higher/);assert.equal(s.pairs[0].source_date,'2025-12-31');assert.ok(s.timing);
+ r=calculateResults(f.linked,f.outcomes,{...d,kind:'rating',min:0,max:10,anchors:{2:'Synthetic low'}});s=r.segments.find(s=>s.measurement==='status')!;assert.equal(s.groups[0].summary.mean,null);assert.equal(s.groups[0].summary.median,10);assert.deepEqual(s.groups[1].summary.distribution,[{value:2,count:6}]);assert.match(s.sentence,/median rating/);
+ for(const [date,o] of f.outcomes)f.outcomes.set(date,{...o,value:date<'2026-01-07'?1:0});r=calculateResults(f.linked,f.outcomes,{...d,kind:'boolean'});s=r.segments.find(s=>s.measurement==='status')!;assert.equal(s.groups[0].summary.yes,6);assert.equal(s.groups[1].summary.proportion,0);assert.equal(s.difference,100);
+ const small=fixture(5);s=calculateResults(small.linked,small.outcomes,d).segments[0];assert.match(s.sentence,/five per group/);assert.equal(s.groups[1].summary.n,0);
+});
+test('unknown, stale, errors, invalid scales, missing outcomes and incompatible units never become usable zeros',()=>{
+ const f=fixture();const statuses=['unknown','not_applicable','error','missing'];statuses.forEach((status,i)=>f.linked.history[i].factors[0].status=status);f.linked.history[4].factors[0].freshness='error';f.outcomes.set('2026-01-06',{status:'not_observed',value:null});f.outcomes.delete('2026-01-07');f.outcomes.set('2026-01-08',{status:'recorded',value:Infinity});const r=calculateResults(f.linked,f.outcomes,d),s=r.segments[0];assert.equal(s.pairs.length,4);assert.equal(r.counts.notObserved,1);assert.equal(r.counts.missing,1);assert.equal(r.counts.invalid,1);assert.match(s.sentence,/No relationship summary/);
+ const e={...evidenceBase({source:'body_weight',offset:0},'2026-01-01','v1','UTC'),status:'recorded',value:160,unit:'lb'};assert.equal(pairEligibility(e,{status:'recorded',value:0},d,e.outcome_date).usable,false);e.unit='kg';assert.equal(pairEligibility(e,{status:'recorded',value:0},d,e.outcome_date).usable,true);assert.equal(pairEligibility(e,{status:'recorded',value:2},{...d,kind:'boolean'},e.outcome_date).usable,false);
+});
+test('diet exceptions, rule/configuration segmentation, quantity-unit segmentation and unknown quantity',()=>{
+ const f=fixture();for(let i=0;i<12;i++){const e=f.linked.history[i].factors[0];e.factor={source:'diet',ref:'enrollment',offset:-1};e.factor_id='diet:enrollment';e.status=i%3===0?'planned_exception':i%3===1?'adherent':'nonadherent';e.diet={rule_version_id:i<6?'rules1':'rules2'} as Evidence['diet'];}
+ let r=calculateResults(f.linked,f.outcomes,d);assert.equal(r.segments.length,2);assert.equal(r.segments[0].groups[2].summary.n,2);assert.equal(r.segments[0].groups[0].summary.n,2);
+ for(let i=0;i<12;i++){const e=f.linked.history[i].factors[0];e.factor={source:'supplement',ref:'exact-product',offset:-1};e.factor_id='supplement:exact-product';delete e.diet;e.status='present';e.complete=true;e.amount=i<4?500:i<8?1:null;e.amount_unit=i<4?'mg':i<8?'capsule':null;e.configuration_version=i<10?'v1':'v2';}
+ r=calculateResults(f.linked,f.outcomes,d);assert.equal(r.segments.filter(s=>s.measurement==='status').length,2);assert.equal(r.segments.filter(s=>s.measurement==='amount'&&s.pairs.length).length,2);assert.equal(r.segments.find(s=>s.measurement==='amount'&&s.unit==='mg')!.pairs.length,4);assert.ok(r.segments.some(s=>s.measurement==='amount'&&s.excluded['Total amount/dose unknown or unsupported']));
+});
+test('Spearman uses average ranks for ties, ten-pair boundary, constant suppression and both signs',()=>{
+ const x=Array.from({length:10},(_,i)=>i);assert.equal(spearman(x,x).value,1);assert.equal(spearman(x,x.map(v=>-v)).value,-1);assert.equal(spearman(x.slice(0,9),x.slice(0,9)).value,null);assert.equal(spearman(x,x.map(()=>1)).value,null);const tied=[1,1,2,2,3,3,4,4,5,5];assert.equal(spearman(tied,tied).value,1);assert.ok(Math.abs(spearman(x,tied).value!-.9847319278346618)<1e-12);
+});
+test('overlap counts exclude unknown and outcomes, keep configurations separate and disclose scarcity',()=>{
+ const f=fixture(8);const expected=[[1,1],[1,0],[0,1],[0,0],[1,1],[1,0],[0,0],[0,0]];
+ f.linked.history.forEach((row,i)=>{row.factors[0].status=expected[i][0]?'present':'absent';row.factors[0].complete=true;row.factors.push({...row.factors[0],factor:{source:'ingredient',ref:'dairy',offset:0},factor_id:'ingredient:dairy',status:expected[i][1]?'present':'absent'});});f.linked.history[6].factors[1].status='unknown';f.outcomes.delete('2026-01-08');const r=calculateResults(f.linked,f.outcomes,d);assert.deepEqual(r.overlaps[0].counts,{both:2,firstOnly:2,secondOnly:1,neither:1});assert.equal(r.overlaps[0].excluded,2);assert.match(r.overlaps[0].warning!,/3 discordant/);
+ const together=fixture(60);together.linked.history.forEach((row,i)=>{row.factors[0].status='present';row.factors[0].complete=true;row.factors.push({...row.factors[0],factor:{source:'ingredient',ref:'dairy',offset:0},factor_id:'ingredient:dairy',status:i<55?'present':'absent'});});assert.match(calculateResults(together.linked,together.outcomes,d).overlaps[0].warning!,/55\/60/);
+});
+test('five-per-group boundary, outcome definition mismatch and yes/no continuous distributions',()=>{
+ const f=fixture(10);f.linked.history.forEach((row,i)=>{row.factors[0].status=i<5?'present':'absent';row.factors[0].complete=true;});let r=calculateResults(f.linked,f.outcomes,d);assert.match(r.segments[0].sentence,/was higher/);f.outcomes.delete('2026-01-10');r=calculateResults(f.linked,f.outcomes,d);assert.match(r.segments[0].sentence,/five per group/);
+ const e=f.linked.history[0].factors[0];assert.equal(pairEligibility(e,{status:'recorded',value:1,metric_id:'other-scale'},d,e.outcome_date).usable,false);assert.equal(pairEligibility(e,{status:'recorded',value:1},{...d,version:2},e.outcome_date).usable,false);
+ for(let i=0;i<10;i++){const row=f.linked.history[i];row.factors=[{...row.factors[0],factor:{source:'body_weight',offset:0},factor_id:'body_weight:',status:'recorded',value:70+i,unit:'kg'}];f.outcomes.set(row.date,{status:'recorded',value:i<5?1:0});}
+ r=calculateResults(f.linked,f.outcomes,{...d,kind:'boolean'});assert.equal(r.segments[0].correlation.value,null);assert.equal(r.segments[0].groups[0].summary.mean,72);assert.equal(r.segments[0].groups[1].summary.median,77);
+});

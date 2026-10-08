@@ -41,7 +41,7 @@ export async function validateApiRequest(request: Request, route: string) {
     const origin = request.headers.get("origin");
     if (((route.startsWith("http/nutrition/") || route.startsWith("account/") || route.startsWith("http/experiments/")) && origin !== url.origin) || (origin && origin !== url.origin)) throw new ApiError(403, "INVALID_ORIGIN");
   }
-  const allowed: Record<string, string[]> = { "http/nutrition/intake": ["date","timezone"], "http/experiments/linked": ["id","date","start","end"], "http/nutrition/supplements": ["date","timezone"], "http/nutrition/diets": ["id","date","start","end"], "http/experiments/observational": ["id"],
+  const allowed: Record<string, string[]> = { "http/nutrition/intake": ["date","timezone"], "http/experiments/observational-results": ["id","start","end"], "http/experiments/linked": ["id","date","start","end"], "http/nutrition/supplements": ["date","timezone"], "http/nutrition/diets": ["id","date","start","end"], "http/experiments/observational": ["id"],
     "http/nutrition/goals": request.method === "GET" || request.method === "HEAD" ? ["kind","status","after"] : [],
     "http/experiments/results": request.method === "GET" || request.method === "HEAD" ? ["id","revision"] : [],
     "http/experiments/result-revisions": ["id","before"],

@@ -1,0 +1,490 @@
+[
+  {
+    "slug": "bread",
+    "result": {
+      "status": "imported",
+      "food_id": "e6cabbdb-11e8-4d45-8181-a64e143c14ee",
+      "servings_written": 3
+    }
+  },
+  {
+    "slug": "turkey",
+    "result": {
+      "status": "imported",
+      "food_id": "4d0664a8-e5a7-46a5-8e62-9f02a8bd9f18",
+      "servings_written": 3
+    }
+  },
+  {
+    "slug": "ham",
+    "result": {
+      "status": "imported",
+      "food_id": "94f8e656-d386-4cc7-8767-9a543f624f6f",
+      "servings_written": 2
+    }
+  },
+  {
+    "slug": "cheese",
+    "result": {
+      "status": "imported",
+      "food_id": "40bf1af5-bb96-443a-a14f-92b6a4c00f08",
+      "servings_written": 4
+    }
+  },
+  {
+    "slug": "beef-patty",
+    "result": {
+      "status": "imported",
+      "food_id": "ca61a5d7-eca4-4a33-a317-ac63d479ff14",
+      "servings_written": 3
+    }
+  },
+  {
+    "slug": "burger-bun",
+    "result": {
+      "status": "imported",
+      "food_id": "81388c1e-9cc3-477b-a1da-11c1ea673fb7",
+      "servings_written": 2
+    }
+  },
+  {
+    "slug": "tortilla",
+    "result": {
+      "status": "imported",
+      "food_id": "6c4ed906-63fe-4e68-b511-e4a696ab9073",
+      "servings_written": 2
+    }
+  },
+  {
+    "slug": "mayonnaise",
+    "result": {
+      "status": "imported",
+      "food_id": "e208825b-cb07-4f7d-bf2b-d799e198d9c9",
+      "servings_written": 3
+    }
+  },
+  {
+    "slug": "lettuce",
+    "result": {
+      "status": "imported",
+      "food_id": "0abcf66d-5d18-4a79-8e78-3f5a0769ee79",
+      "servings_written": 1
+    }
+  },
+  {
+    "slug": "tomato-sauce",
+    "result": {
+      "status": "imported",
+      "food_id": "e4344dbe-c1fa-4b67-9c20-baaad7c27720",
+      "servings_written": 1
+    }
+  },
+  {
+    "slug": "pepperoni",
+    "result": {
+      "status": "imported",
+      "food_id": "fac6e48e-3287-4414-85b0-c97117378651",
+      "servings_written": 3
+    }
+  },
+  {
+    "slug": "chicken",
+    "result": {
+      "status": "imported",
+      "food_id": "c753b9ee-e328-4a3a-8dc9-905d5d050e03",
+      "servings_written": 4
+    }
+  },
+  {
+    "slug": "cereal",
+    "result": {
+      "status": "imported",
+      "food_id": "45854445-6cec-4fba-9708-77a76078cb52",
+      "servings_written": 2
+    }
+  },
+  {
+    "slug": "berries",
+    "result": {
+      "status": "imported",
+      "food_id": "168f9052-322f-433a-96e0-dc6ef53dcf9f",
+      "servings_written": 2
+    }
+  },
+  {
+    "slug": "egg",
+    "result": {
+      "status": "provenance_only",
+      "food_id": "c71a64fc-5992-483d-b8d0-945f03a63121",
+      "servings_written": 0
+    }
+  },
+  {
+    "slug": "chicken-breast-cooked",
+    "result": {
+      "status": "provenance_only",
+      "food_id": "62fb9efc-7166-41b6-974f-b5d996fe2b5a",
+      "servings_written": 0
+    }
+  },
+  {
+    "slug": "turkey-breast-roasted",
+    "result": {
+      "status": "imported",
+      "food_id": "9e880a39-4906-4ee5-98e5-3439665585af",
+      "servings_written": 2
+    }
+  },
+  {
+    "slug": "deli-turkey",
+    "result": {
+      "status": "imported",
+      "food_id": "394544aa-da56-46e2-8b44-d183e5ac9f00",
+      "servings_written": 3
+    }
+  },
+  {
+    "slug": "ground-beef-90-lean-cooked",
+    "result": {
+      "status": "provenance_only",
+      "food_id": "e37a06bb-c16b-4566-bbf8-298ef610ccb4",
+      "servings_written": 0
+    }
+  },
+  {
+    "slug": "sirloin-steak-cooked",
+    "result": {
+      "status": "provenance_only",
+      "food_id": "4f2ce30f-a8ab-443e-a47a-70bde1a40ae4",
+      "servings_written": 0
+    }
+  },
+  {
+    "slug": "pork-chop-cooked",
+    "result": {
+      "status": "provenance_only",
+      "food_id": "5cfb32f0-9222-4965-81f9-9baab01a07e5",
+      "servings_written": 0
+    }
+  },
+  {
+    "slug": "bacon-cooked",
+    "result": {
+      "status": "imported",
+      "food_id": "9ac1063e-7eff-4499-a091-0480f5031fa9",
+      "servings_written": 4
+    }
+  },
+  {
+    "slug": "salmon",
+    "result": {
+      "status": "provenance_only",
+      "food_id": "b9bfa8b4-b8ea-404d-bf41-36448c768192",
+      "servings_written": 0
+    }
+  },
+  {
+    "slug": "tuna",
+    "result": {
+      "status": "provenance_only",
+      "food_id": "9f63afb0-7253-4bb9-a8de-ac9c0486c7b3",
+      "servings_written": 0
+    }
+  },
+  {
+    "slug": "shrimp-cooked",
+    "result": {
+      "status": "imported",
+      "food_id": "24808f08-96c1-4e30-a347-bd4aaef3b4cd",
+      "servings_written": 2
+    }
+  },
+  {
+    "slug": "milk",
+    "result": {
+      "status": "provenance_only",
+      "food_id": "c5fd3e57-9024-47d2-af3b-04d7f0032626",
+      "servings_written": 0
+    }
+  },
+  {
+    "slug": "milk-two-percent",
+    "result": {
+      "status": "imported",
+      "food_id": "87bbe2f1-7df2-4842-a2d0-f7cda11d660c",
+      "servings_written": 2
+    }
+  },
+  {
+    "slug": "milk-skim",
+    "result": {
+      "status": "imported",
+      "food_id": "15ed985e-d7b4-4397-91cd-e5883f44b397",
+      "servings_written": 2
+    }
+  },
+  {
+    "slug": "greek-yogurt",
+    "result": {
+      "status": "provenance_only",
+      "food_id": "0867ca4c-627a-4ebf-93f7-70b645da13b3",
+      "servings_written": 0
+    }
+  },
+  {
+    "slug": "yogurt-plain",
+    "result": {
+      "status": "imported",
+      "food_id": "cfa21f39-b668-4124-abd1-22250963682d",
+      "servings_written": 1
+    }
+  },
+  {
+    "slug": "cheddar-cheese",
+    "result": {
+      "status": "imported",
+      "food_id": "f402de07-544c-4f61-8a08-6d66ca2755fa",
+      "servings_written": 7
+    }
+  },
+  {
+    "slug": "mozzarella-cheese",
+    "result": {
+      "status": "imported",
+      "food_id": "f02d3611-452b-4980-8811-e1dd6c382da6",
+      "servings_written": 4
+    }
+  },
+  {
+    "slug": "cottage-cheese",
+    "result": {
+      "status": "provenance_only",
+      "food_id": "b614dfbe-39c4-41fa-a16b-5a6694f51c11",
+      "servings_written": 0
+    }
+  },
+  {
+    "slug": "whole-wheat-bread",
+    "result": {
+      "status": "provenance_only",
+      "food_id": "e6dc1fa4-d331-41f0-b697-b9106369d4cf",
+      "servings_written": 0
+    }
+  },
+  {
+    "slug": "corn-tortilla",
+    "result": {
+      "status": "imported",
+      "food_id": "3f3b9853-c17c-436b-b488-55c589060eea",
+      "servings_written": 2
+    }
+  },
+  {
+    "slug": "white-rice-cooked",
+    "result": {
+      "status": "provenance_only",
+      "food_id": "16758601-b901-45ea-952f-d243b0e0a7c9",
+      "servings_written": 0
+    }
+  },
+  {
+    "slug": "brown-rice-cooked",
+    "result": {
+      "status": "provenance_only",
+      "food_id": "07a5d10c-5db0-4003-90da-240b2139f654",
+      "servings_written": 0
+    }
+  },
+  {
+    "slug": "oatmeal",
+    "result": {
+      "status": "provenance_only",
+      "food_id": "baedc221-7925-46f9-a458-6317ab030734",
+      "servings_written": 0
+    }
+  },
+  {
+    "slug": "corn-flakes",
+    "result": {
+      "status": "imported",
+      "food_id": "1829c37e-7709-4777-b724-70896dd4268b",
+      "servings_written": 2
+    }
+  },
+  {
+    "slug": "pasta-cooked",
+    "result": {
+      "status": "imported",
+      "food_id": "23f46017-9279-4fcf-928c-6e1881865f5a",
+      "servings_written": 10
+    }
+  },
+  {
+    "slug": "white-potato",
+    "result": {
+      "status": "provenance_only",
+      "food_id": "a679e878-54d2-4015-96ad-ffc1d469d4f8",
+      "servings_written": 0
+    }
+  },
+  {
+    "slug": "sweet-potato",
+    "result": {
+      "status": "provenance_only",
+      "food_id": "15c940b7-a592-4941-ad06-1e8eb24a4bd0",
+      "servings_written": 0
+    }
+  },
+  {
+    "slug": "banana",
+    "result": {
+      "status": "provenance_only",
+      "food_id": "e54e8088-bd3d-4d7b-9cd2-1ea4bbc1ed09",
+      "servings_written": 0
+    }
+  },
+  {
+    "slug": "apple",
+    "result": {
+      "status": "provenance_only",
+      "food_id": "de254e42-f1f9-435d-ad16-4cdec6e9e0f6",
+      "servings_written": 0
+    }
+  },
+  {
+    "slug": "orange",
+    "result": {
+      "status": "imported",
+      "food_id": "5131700a-26e9-4f44-a188-4e3086fbb744",
+      "servings_written": 3
+    }
+  },
+  {
+    "slug": "strawberries",
+    "result": {
+      "status": "provenance_only",
+      "food_id": "9aab3cd8-a9fe-4603-91d4-52ed32239de9",
+      "servings_written": 0
+    }
+  },
+  {
+    "slug": "blueberries",
+    "result": {
+      "status": "provenance_only",
+      "food_id": "c5c06f06-2795-4007-aa0e-78aed0198e97",
+      "servings_written": 0
+    }
+  },
+  {
+    "slug": "grapes",
+    "result": {
+      "status": "imported",
+      "food_id": "64bbe2b7-f440-487f-a329-03a8bf9f524e",
+      "servings_written": 2
+    }
+  },
+  {
+    "slug": "avocado",
+    "result": {
+      "status": "provenance_only",
+      "food_id": "8f29cc9f-b07f-467d-9482-f20d70eb9a73",
+      "servings_written": 0
+    }
+  },
+  {
+    "slug": "tomato",
+    "result": {
+      "status": "imported",
+      "food_id": "e802138d-ce12-4095-8f03-29bd803b391f",
+      "servings_written": 3
+    }
+  },
+  {
+    "slug": "spinach",
+    "result": {
+      "status": "provenance_only",
+      "food_id": "3039ee18-00c4-49dc-9b88-9e86ac3cd4b0",
+      "servings_written": 0
+    }
+  },
+  {
+    "slug": "broccoli",
+    "result": {
+      "status": "provenance_only",
+      "food_id": "3b2c5e81-c8b1-4958-8d22-9ab37357a37f",
+      "servings_written": 0
+    }
+  },
+  {
+    "slug": "onion",
+    "result": {
+      "status": "imported",
+      "food_id": "23370ff5-7f44-4c0e-b635-751e3c6eb7a5",
+      "servings_written": 1
+    }
+  },
+  {
+    "slug": "bell-pepper",
+    "result": {
+      "status": "imported",
+      "food_id": "3153ab85-731c-4329-a50a-479b1d6a1562",
+      "servings_written": 1
+    }
+  },
+  {
+    "slug": "carrots",
+    "result": {
+      "status": "provenance_only",
+      "food_id": "2d02938a-8c06-4bae-ae25-d12a8f1bdbaf",
+      "servings_written": 0
+    }
+  },
+  {
+    "slug": "mustard",
+    "result": {
+      "status": "imported",
+      "food_id": "2ca9baef-9ae0-4878-8efa-e4a734a2d504",
+      "servings_written": 3
+    }
+  },
+  {
+    "slug": "olive-oil",
+    "result": {
+      "status": "provenance_only",
+      "food_id": "b4c7b64e-84e2-4142-94ef-8d3f803ec4a8",
+      "servings_written": 0
+    }
+  },
+  {
+    "slug": "butter",
+    "result": {
+      "status": "provenance_only",
+      "food_id": "21c2bba4-6006-4cb3-99e7-2ed6231f7190",
+      "servings_written": 0
+    }
+  },
+  {
+    "slug": "peanut-butter",
+    "result": {
+      "status": "provenance_only",
+      "food_id": "840575b6-b33f-4378-aef1-988e3b7626f0",
+      "servings_written": 0
+    }
+  },
+  {
+    "slug": "black-beans-cooked",
+    "result": {
+      "status": "imported",
+      "food_id": "b983d100-13f0-494a-a1cf-1d1297605cef",
+      "servings_written": 3
+    }
+  },
+  {
+    "slug": "lentils-cooked",
+    "result": {
+      "status": "imported",
+      "food_id": "0a3b85ac-9175-4bbd-8915-795649dbccdc",
+      "servings_written": 3
+    }
+  }
+]
