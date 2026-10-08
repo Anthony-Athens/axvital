@@ -52,15 +52,21 @@ export function exerciseMatchesSearch(exercise: Exercise, search: string) {
 
 export async function searchExercises(client: SupabaseClient, search = "", filters: ExerciseFilters = {}) {
   const userId = await requireUserId(client);
-  let query = client.from("exercises").select("*").or(`user_id.eq.${userId},user_id.is.null`).eq("is_archived", false).order("name").limit(300);
-  if (filters.category) query = query.eq("category", filters.category);
-  if (filters.equipment) query = query.eq("equipment", filters.equipment);
-  if (filters.movement_pattern) query = query.eq("movement_pattern", filters.movement_pattern);
-  if (filters.primary_muscle_group) query = query.eq("primary_muscle_group", normalizeMetadataValue(filters.primary_muscle_group));
-  if (filters.default_tracking_type) query = query.eq("default_tracking_type", filters.default_tracking_type);
-  const { data, error } = await query;
-  if (error) { logDatabaseError("search", error); throw new Error("We couldn’t load the exercise library."); }
-  return ((data ?? []) as Exercise[]).filter((exercise) => exerciseMatchesSearch(exercise, search));
+  const results: Exercise[] = [];
+  const pageSize = 300;
+  for (let offset = 0; ; offset += pageSize) {
+    let query = client.from("exercises").select("*").or(`user_id.eq.${userId},user_id.is.null`).eq("is_archived", false).order("name").order("id").range(offset, offset + pageSize - 1);
+    if (filters.category) query = query.eq("category", filters.category);
+    if (filters.equipment) query = query.eq("equipment", filters.equipment);
+    if (filters.movement_pattern) query = query.eq("movement_pattern", filters.movement_pattern);
+    if (filters.primary_muscle_group) query = query.eq("primary_muscle_group", normalizeMetadataValue(filters.primary_muscle_group));
+    if (filters.default_tracking_type) query = query.eq("default_tracking_type", filters.default_tracking_type);
+    const { data, error } = await query;
+    if (error) { logDatabaseError("search", error); throw new Error("We couldn’t load the exercise library."); }
+    const page = (data ?? []) as Exercise[];
+    results.push(...page.filter((exercise) => exerciseMatchesSearch(exercise, search)));
+    if (page.length < pageSize) return results;
+  }
 }
 
 export async function findSimilarExercises(client: SupabaseClient, name: string) {
@@ -75,7 +81,7 @@ export async function findSimilarExercises(client: SupabaseClient, name: string)
 export async function createExercise(client: SupabaseClient, input: CreateExerciseInput) {
   const userId = await requireUserId(client);
   const payload = normalizeCreateExerciseInput(input);
-  const duplicate = (await searchExercises(client)).find((exercise) => exercise.normalized_name === payload.normalized_name || normalizeExerciseName(exercise.name) === payload.normalized_name);
+  const duplicate = (await searchExercises(client)).find((exercise) => [exercise.name, ...exercise.aliases].some((name) => normalizeExerciseName(name) === payload.normalized_name));
   if (duplicate) throw new ExerciseDuplicateError(duplicate);
   const { data, error } = await client.from("exercises").insert({ ...payload, user_id: userId }).select("*").single();
   if (error) { logDatabaseError("create", error); throw new Error("We couldn’t save this exercise."); }
