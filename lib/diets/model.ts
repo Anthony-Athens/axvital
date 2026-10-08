@@ -12,6 +12,7 @@ export type Item={id:string;nutrition_entry_id:string;food_id:string|null;user_f
 export type Anchor={id:string;nutrition_entry_id:string|null;health_event_id:string|null;food_id:string|null;label:string;method:string;confirmed:boolean};
 export type Component={id:string;event_food_id:string;food_id:string|null;label:string;source:string;included:boolean;confirmed:boolean};
 export type Bundle={enrollment:Enrollment;version:Version;date:string;fingerprint:string;coverage:{coverage_status:string;diet_intake_fingerprint:string|null;diet_no_intake:boolean;confirmed_at:string|null}|null;entries:{id:string;title:string|null;consumed_at:string}[];events:{id:string;title:string|null;event_date:string;event_type:string}[];items:Item[];anchors:Anchor[];components:Component[];userFoods:{id:string;name:string;reviewed_canonical_food_id:string|null;review_provenance:string|null}[];catalog:Catalog;shared:Evidence[];private:Evidence[]};
+export type IntakeBundle=Omit<Bundle,'enrollment'|'version'>;
 export type Leaf={source:{domain:'nutrition'|'health';id:string;item_id?:string;component_id?:string;event_food_id?:string;user_food_id?:string};label:string;food_id:string|null;trusted:boolean;categories:string[];evidence:Partial<Record<typeof ingredientKeys[number],{state:Evidence['state'];provenance:string;id:string}>>};
 export type Reason={kind:'violation'|'review'|'allowed';message:string;rule:Rule|null;source:Leaf['source'];evidence_id?:string;provenance?:string};
 export type Assessment={contract_version:1;calculation_version:'diet-v1';freshness:'current';enrollment_id:string;rule_version_id:string;local_date:string;timezone:string;calculated_status:'adherent'|'nonadherent'|'needs_review'|'incomplete'|'planned_exception';logging_complete:boolean;no_intake_confirmed:boolean;confirmation_invalidated:boolean;exception:boolean;fingerprint:string;reasons:Reason[];items:Leaf[]};
@@ -29,7 +30,7 @@ export function enrollmentDates(e:Enrollment,start:string,end:string,now=new Dat
  if(e.cancelled)return [];if(!isLogicalDate(start)||!isLogicalDate(end)||!isTimeZone(e.timezone))throw Error('INVALID_DATE');const today=dateInZone(now,e.timezone),last=[end,today,...(e.end_date?[e.end_date]:[])].sort()[0],first=[start,e.start_date].sort().at(-1)!;const dates:string[]=[];for(let d=first;d<=last;d=shiftDate(d,1)){if(dates.length>=366)throw Error('WINDOW_TOO_LARGE');dates.push(d);}return dates;
 }
 export function applicableVersion(versions:Version[],date:string){return versions.filter(v=>v.effective_from<=date).sort((a,b)=>b.effective_from.localeCompare(a.effective_from)||b.revision-a.revision)[0]??null;}
-export function intakeLeaves(b:Bundle):Leaf[]{
+export function intakeLeaves(b:IntakeBundle):Leaf[]{
  const leaves:Leaf[]=[];
  function emit(label:string,foodId:string|null,trusted:boolean,source:Leaf['source'],trail:string[]=[]){
   const mappedUser=b.userFoods.find(f=>f.id===source.user_food_id);foodId=foodId??mappedUser?.reviewed_canonical_food_id??null;

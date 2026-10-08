@@ -1,5 +1,6 @@
+import type {FactorVersion} from './factor-config.ts';
 import type { Metric, Study, Observation, Checkin } from './observational.ts';
-export type StudyData = { studies?:Study[]; study?:Study; metrics:Metric[]; observations?:Observation[]|null; checkins?:Checkin[]|null; observationError?:boolean;sourceError?:boolean };
+export type StudyData = { studies?:Study[]; study?:Study; metrics:Metric[]; observations?:Observation[]|null; checkins?:Checkin[]|null; observationError?:boolean;sourceError?:boolean;factorVersions?:FactorVersion[]|null };
 export async function observationRequest<T>(id?:string,action?:string,payload?:unknown):Promise<T>{
  if(action==='study'){
   const s=payload as Study;

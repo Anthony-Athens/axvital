@@ -5,6 +5,7 @@ import {JSDOM} from 'jsdom';
 import {MessageChannel} from 'node:worker_threads';
 import type * as Harness from './testing/observational-harness.tsx';
 import type {Study,Metric,Observation} from './observational.ts';
+import {evidenceBase,checkinEvidence} from './linked-evidence.ts';
 const code=(await build({entryPoints:['lib/experiments/testing/observational-harness.tsx'],bundle:true,write:false,format:'iife',globalName:'Harness',platform:'browser',define:{'process.env.NODE_ENV':'"development"','process.env':'{}'}})).outputFiles[0].text;
 async function setup(){
  const dom=new JSDOM('<div id="observation-root"></div>',{url:'http://localhost/',pretendToBeVisual:true,runScripts:'outside-only'}),channels:MessageChannel[]=[];
@@ -14,6 +15,14 @@ async function setup(){
  const metrics:Metric[]=[],studies:Study[]=[],observations:Observation[]=[];let fail=false;let weight:number|null=100;
  dom.window.fetch=(async(url:string,options:RequestInit={})=>{
   const json=(x:unknown,status=200)=>new Response(JSON.stringify(x),{status});
+  if(url.startsWith('/api/experiments/linked')&&!options.method){
+   const q=new URL(url,'http://localhost').searchParams;
+   if(!q.has('id'))return json({catalog:{foods:[],categories:[],maps:[],library:[]},enrollments:[],diets:[],products:[]});
+   const s=studies.find(s=>s.id===q.get('id'))!,date=q.get('date')!;
+   const row=weight===null?undefined:{checkin_date:s.start_date,weight_source_value:weight,weight_source_unit:'lb' as const,weight_provenance_version:1,weight_kg:weight*0.45359237};
+   const daily=s.factors.map(f=>{const base=evidenceBase(f,date,'initial',s.timezone);return checkinEvidence(base,base.source_date===row?.checkin_date?row:undefined);});
+   return json({study:s,versions:[],daily,history:[{date,factors:daily}]});
+  }
   if(options.method==='POST'){
    if(fail){fail=false;return json({error:'Synthetic save failed'},503);}
    const {action,payload:p}=JSON.parse(String(options.body));
@@ -36,15 +45,17 @@ test('UI: three-month custom outcome, anchors, factors, draft, start, zero, not 
  await t.field('Title','Synthetic three-month study');await t.field('Question','What changes alongside the outcome?');await t.field('First observed date','2026-01-01');await t.field('Last observed date','2026-03-31');await t.field('New entries describe','-1');
  await t.click('Create reusable metric');await t.field('Metric name','Synthetic intensity');await t.field('Rating 0 description (optional)','None');await t.field('Rating 4 description (optional)','High');await t.click('Save reusable metric');
  assert.equal(t.metrics[0].anchors['0'],'None');
- const checkbox=[...t.doc.querySelectorAll('label')].find(l=>l.textContent?.includes('Body weight · kg'))!.querySelector('input')!;await t.h.act(async()=>checkbox.click());await t.h.settle();await t.field('Body weight date alignment','-1');
+ await t.field('Factor type','body_weight');await t.field('New factor timing','-1');await t.click('Add linked factor');
  await t.submit();assert.equal(t.studies[0].start_date,'2026-01-01');assert.equal(t.studies[0].end_date,'2026-03-31');assert.equal(t.studies[0].factors[0].offset,-1);
  await t.click('Save and start');assert.match(t.doc.body.textContent!,/Daily observation/);assert.match(t.doc.body.textContent!,/2026-03-31/);
- await t.field('Observed date / night (not submission date)','2026-01-02');assert.match(t.doc.body.textContent!,/2026-01-01: 45.36 kg/);
+ await t.field('Observed date / night (not submission date)','2026-01-02');assert.match(t.doc.body.textContent!,/Body weight · recorded · 45.36 kg/);
  await t.field('Synthetic intensity','0');await t.field('Observer label','Synthetic observer');await t.field('Observation coverage','most');await t.field('Note','Synthetic note');t.fail();await t.submit();
  assert.match(t.doc.body.textContent!,/Synthetic save failed/);assert.equal((t.doc.querySelector('select[required]') as HTMLSelectElement).value,'0');assert.equal(t.observations.length,0);
  await t.submit();assert.equal(t.observations[0].value,0);assert.equal(t.observations[0].observer,'Synthetic observer');assert.equal(t.observations[0].coverage,'most');
  await t.field('Observed date / night (not submission date)','2026-01-03');await t.field('Observation status','not_observed');await t.submit();assert.equal(t.observations[1].value,null);assert.match(t.doc.body.textContent!,/1 valid · 1 not observed · 88 missing/);
- await t.field('Observed date / night (not submission date)','2026-01-02');assert.equal((t.doc.querySelector('select[required]') as HTMLSelectElement).value,'0');await t.field('Synthetic intensity','2');await t.submit();assert.equal(t.observations.length,2);assert.equal(t.observations[0].value,2);t.setWeight(110);await t.click('Refresh tracking data');assert.match(t.doc.body.textContent!,/2026-01-01: 49.90 kg/);t.setWeight(null);await t.click('Refresh tracking data');assert.match(t.doc.body.textContent!,/2026-01-01: Missing/);assert.equal(t.observations[0].value,2);
+ await t.field('Observed date / night (not submission date)','2026-01-02');assert.equal((t.doc.querySelector('select[required]') as HTMLSelectElement).value,'0');await t.field('Synthetic intensity','2');await t.submit();assert.equal(t.observations.length,2);assert.equal(t.observations[0].value,2);t.setWeight(110);await t.click('Refresh linked evidence');assert.match(t.doc.body.textContent!,/Body weight · recorded · 49.90 kg/);t.setWeight(null);await t.click('Refresh linked evidence');assert.match(t.doc.body.textContent!,/Body weight · missing/);assert.equal(t.observations[0].value,2);
+ await t.field('Synthetic intensity','3');await t.field('Note','Synthetic unsaved return note');await t.h.act(async()=>t.dom.window.dispatchEvent(new t.dom.window.Event('focus')));await t.h.settle();await t.h.settle();
+ assert.equal((t.doc.querySelector('select[required]') as HTMLSelectElement).value,'3');assert.equal([...t.doc.querySelectorAll('label')].find(l=>l.childNodes[0]?.textContent==='Note')!.querySelector('textarea')!.value,'Synthetic unsaved return note');assert.equal(t.observations[0].value,2);
  await t.h.act(async()=>t.h.unmount());t.dom.window.history.replaceState(null,'','/');await t.h.act(async()=>t.h.mount());await t.h.settle();await t.h.settle();
  await t.field('Choose a measurement',`custom:${t.metrics[0].id}`);await t.field('Title','Reuse synthetic metric');await t.submit();assert.equal(t.studies[1].metric_id,t.metrics[0].id);assert.equal(t.metrics.length,1);
  }finally{await t.close();}

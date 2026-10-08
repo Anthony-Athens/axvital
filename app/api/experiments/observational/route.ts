@@ -13,11 +13,12 @@ export const GET = guardWithClient('http/experiments/observational', async(reque
   const {data:study,error}=await client.from('observational_studies').select('*').eq('id',id).eq('user_id',userId).single();
   if(error||!study)throw new ApiError(404,'Study not found.');
   const s=study as Study;
-  const [observations,checkins]=await Promise.all([
+  const [observations,checkins,factorVersions]=await Promise.all([
     s.metric_id?client.from('metric_observations').select('*').eq('user_id',userId).eq('metric_id',s.metric_id).gte('observed_date',s.start_date).lte('observed_date',s.end_date).limit(367):Promise.resolve({data:[],error:null}),
     client.from('daily_checkins').select('checkin_date,energy_score,mood_score,sleep_quality,weight_source_value,weight_source_unit,weight_provenance_version,weight_kg').eq('user_id',userId).gte('checkin_date',shiftDate(s.start_date,-7)).lte('checkin_date',s.end_date).limit(375),
+    client.from('observational_factor_versions').select('*').eq('user_id',userId).eq('study_id',s.id).limit(501),
   ]);
-  return Response.json({study:s,metrics:metrics.data,observations:observations.error?null:observations.data,checkins:checkins.error?null:checkins.data,observationError:!!observations.error,sourceError:!!checkins.error});
+  return Response.json({study:s,metrics:metrics.data,observations:observations.error?null:observations.data,checkins:checkins.error?null:checkins.data,observationError:!!observations.error,sourceError:!!checkins.error||!!factorVersions.error||factorVersions.data?.length===501,factorVersions:factorVersions.error?null:factorVersions.data});
 },createClient,{budgetRoute:'http/experiments/draft'});
 export const POST = guardWithClient('http/experiments/observational',async(request,{client,userId})=>{
   const body=await request.json();

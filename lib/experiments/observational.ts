@@ -1,3 +1,5 @@
+import {validateFactors,type Factor} from './factor-config.ts';
+export type {Factor} from './factor-config.ts';
 import { dateInZone, isLogicalDate, isTimeZone, shiftDate, calendarDays } from '../measurements/time-window.ts';
 import { normalizeBodyWeight, type WeightRecord } from '../measurements/body-weight.ts';
 export const sources = [
@@ -8,7 +10,7 @@ export const sources = [
 ] as const;
 export type SourceKey = typeof sources[number]['key'];
 export type Metric = { id: string; name: string; description: string; kind: 'numeric'|'rating'|'boolean'; unit: string; min: number|null; max: number|null; anchors: Record<string,string>; direction: 'higher'|'lower'|'neither'; instructions: string; version: 1 };
-export type Factor = { source: SourceKey; offset: 0|-1 };
+
 export type Study = { id: string; title: string; question: string; start_date: string; end_date: string; timezone: string; entry_offset?: 0|-1; finished_on?: string|null; metric_id: string|null; outcome_source: SourceKey|null; factors: Factor[]; status: 'draft'|'active'|'paused'|'completed'|'ended_early'|'abandoned'; revision: number };
 export type Observation = { metric_id: string; observed_date: string; status: 'recorded'|'not_observed'; value: number|null; observer: string; coverage: 'brief'|'partial'|'most'|'unknown'; note: string; submitted_at: string; updated_at: string };
 export type Checkin = WeightRecord & { checkin_date: string; energy_score?: number|null; mood_score?: number|null; sleep_quality?: string|null };
@@ -25,7 +27,8 @@ export function validateMetric(m: Omit<Metric,'id'|'version'>) {
   if (!m.anchors || Array.isArray(m.anchors) || typeof m.anchors !== 'object' || Object.entries(m.anchors).some(([k,v])=>m.kind !== 'rating' || !Number.isInteger(Number(k)) || String(Number(k)) !== k || Number(k)<m.min! || Number(k)>m.max! || typeof v !== 'string' || v.length > 120)) throw new Error('INVALID_ANCHORS');
 }
 export function validateStudy(s: Study) {
-  if (typeof s.title !== 'string' || s.title.trim().length < 2 || s.title.length > 120 || typeof s.question !== 'string' || s.question.length > 500 || !isLogicalDate(s.start_date) || !isLogicalDate(s.end_date) || s.end_date < s.start_date || calendarDays(s.start_date, s.end_date)>366 || !isTimeZone(s.timezone) || ![0,-1].includes(s.entry_offset??0) || Boolean(s.metric_id) === Boolean(s.outcome_source) || (s.outcome_source && !sources.some(x=>x.key===s.outcome_source)) || !Array.isArray(s.factors) || s.factors.length>4 || new Set(s.factors.map(x=>x.source)).size!==s.factors.length || s.factors.some(x=>!sources.some(v=>v.key===x.source) || ![0,-1].includes(x.offset))) throw new Error('INVALID_STUDY');
+  if (typeof s.title !== 'string' || s.title.trim().length < 2 || s.title.length > 120 || typeof s.question !== 'string' || s.question.length > 500 || !isLogicalDate(s.start_date) || !isLogicalDate(s.end_date) || s.end_date < s.start_date || calendarDays(s.start_date, s.end_date)>366 || !isTimeZone(s.timezone) || ![0,-1].includes(s.entry_offset??0) || Boolean(s.metric_id) === Boolean(s.outcome_source) || (s.outcome_source && !sources.some(x=>x.key===s.outcome_source))) throw new Error('INVALID_STUDY');
+ validateFactors(s.factors);
 }
 export function validateObservation(o: Observation, m: Metric, today: string) {
   if (!isLogicalDate(o.observed_date) || o.observed_date>today || !['recorded','not_observed'].includes(o.status) || !['brief','partial','most','unknown'].includes(o.coverage) || typeof o.observer!=='string' || o.observer.length>120 || typeof o.note!=='string' || o.note.length>2000) throw new Error('INVALID_OBSERVATION');

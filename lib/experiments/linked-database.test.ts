@@ -1,0 +1,47 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {linkedDatabase,databaseClient,A,B} from './testing/linked-database.ts';
+import {readLinkedEvidence} from './linked-service.ts';
+import {blankPlan,type Diet,type Enrollment,type Bundle} from '../diets/model.ts';
+import type {Study,Metric} from './observational.ts';
+import type {SupplementProduct,SupplementDay} from './linked-evidence.ts';
+test('real database linked factors: ownership, timing, versions, source freshness, supplement completeness and deletion',async()=>{
+ const db=await linkedDatabase();const as=async(uid:string,role='authenticated')=>db.exec(`reset role;select set_config('request.jwt.claim.sub','${uid}',false);set role ${role};`);
+ const rpc=async<T>(name:string,args:unknown[])=>{const result=await db.query<{r:T}>(`select public.${name}(${args.map((_,i)=>'$'+(i+1)).join(',')}) r`,args.map(v=>typeof v==='object'?JSON.stringify(v):v));return result.rows[0].r;};
+ try{
+ await db.exec(`insert into public.subscriptions(user_id,plan,status) values('${A}','premium','active'),('${B}','premium','active')`);await as(A);
+ const product=await rpc<SupplementProduct>('save_supplement_review_v1',['product',{name:'Synthetic exact product',formulation:'Synthetic formulation A'}]);
+ const definition=await rpc<Diet>('save_diet_v1',['definition',{id:crypto.randomUUID(),revision:0,draft:{...blankPlan(),name:'Synthetic diet',rules:[{kind:'ingredient',ref:'dairy',action:'exclude'}],weekly_exceptions:[1]},archived:false}]);
+ const enrollment=await rpc<Enrollment>('save_diet_v1',['enroll',{id:crypto.randomUUID(),diet_id:definition.id,definition_revision:definition.revision,start_date:'2026-01-05',end_date:'2026-01-10',timezone:'America/New_York'}]);
+ const metric=await rpc<Metric>('save_observational_v1',['metric',{name:'Synthetic outcome',description:'',kind:'rating',unit:'rating',min:0,max:4,anchors:{},direction:'neither',instructions:''}]);
+ const config:Study={id:crypto.randomUUID(),title:'Synthetic linked study',question:'Describe co-recorded evidence',start_date:'2026-01-01',end_date:'2026-01-20',timezone:'America/New_York',entry_offset:0,metric_id:metric.id,outcome_source:null,factors:[{source:'body_weight',offset:-1},{source:'diet',ref:enrollment.id,offset:-1},{source:'ingredient',ref:'dairy',offset:-1},{source:'ingredient',ref:'gluten',offset:-1},{source:'alcohol',offset:-1},{source:'supplement',ref:product.id,offset:-1}],status:'draft',revision:0};
+ let study=await rpc<Study>('save_observational_v1',['study',config]);study=await rpc<Study>('save_observational_v1',['study',{...config,revision:study.revision,status:'active'}]);
+ const event=crypto.randomUUID();await db.query("insert into public.health_events(id,user_id,title,event_date,event_time,event_type,dose_amount,dose_unit) values($1,$2,'Synthetic supplement','2026-01-05','20:00:00','supplement',500,'mg')",[event,A]);
+ await db.query("insert into public.daily_checkins(user_id,checkin_date,weight_source_value,weight_source_unit,weight_provenance_version) values($1,'2026-01-05',75,'kg',1)",[A]);
+ await rpc('save_supplement_review_v1',['identity',{event_id:event,product_id:product.id}]);
+ const client=databaseClient(db),read=()=>readLinkedEvidence(client,A,study,'2026-01-06','2026-01-01','2026-01-06');let evidence=await read();
+ assert.equal(evidence.daily.find(e=>e.factor.source==='supplement')!.status,'present');assert.equal(evidence.daily.find(e=>e.factor.source==='supplement')!.amount,null);assert.equal(evidence.daily.find(e=>e.factor.source==='diet')!.status,'planned_exception');assert.equal(evidence.history[0].factors.find(e=>e.factor.source==='diet')!.status,'not_applicable');assert.ok(evidence.daily.every(e=>e.source_date==='2026-01-05'));
+ assert.equal(evidence.daily.find(e=>e.factor.source==='body_weight')!.value,75);
+ const intake=await rpc<Bundle>('read_intake_day_v1',['2026-01-05',study.timezone]);await assert.rejects(rpc('confirm_intake_day_v1',[{date:intake.date,timezone:study.timezone,fingerprint:intake.fingerprint,no_intake:false}]),/CONFIRM_NO_INTAKE/);
+ await rpc('confirm_intake_day_v1',[{date:intake.date,timezone:study.timezone,fingerprint:intake.fingerprint,no_intake:true}]);assert.equal((await read()).daily.find(e=>e.factor.source==='ingredient')!.status,'absent');
+ const drink=crypto.randomUUID();await db.query("insert into public.health_events(id,user_id,title,event_date,event_type) values($1,$2,'Synthetic drink','2026-01-05','fluid')",[drink,A]);assert.equal((await read()).daily.find(e=>e.factor.source==='ingredient')!.status,'unknown');
+ await rpc('save_diet_v1',['classification',{subject:'health_event_id',id:drink,key:'alcohol',state:'present',provenance:'Synthetic reviewed drink identity',historical_ack:true}]);assert.equal((await read()).daily.find(e=>e.factor.source==='alcohol')!.status,'present');
+ let day=await rpc<SupplementDay>('read_supplement_day_v1',['2026-01-05',study.timezone]);await rpc('save_supplement_review_v1',['confirm',{date:day.date,timezone:study.timezone,fingerprint:day.fingerprint}]);evidence=await read();assert.equal(evidence.daily.find(e=>e.factor.source==='supplement')!.amount,500);
+ await db.query("update public.health_events set event_date='2026-01-06',dose_amount=700 where id=$1",[event]);assert.equal((await read()).daily.find(e=>e.factor.source==='supplement')!.status,'unknown');assert.equal((await rpc<SupplementDay>('read_supplement_day_v1',['2026-01-05',study.timezone])).coverage?.complete,false);
+ day=await rpc<SupplementDay>('read_supplement_day_v1',['2026-01-05',study.timezone]);await assert.rejects(rpc('save_supplement_review_v1',['confirm',{date:day.date,timezone:study.timezone,fingerprint:'stale'}]),/INTAKE_CHANGED/);await rpc('save_supplement_review_v1',['confirm',{date:day.date,timezone:study.timezone,fingerprint:day.fingerprint}]);assert.equal((await read()).daily.find(e=>e.factor.source==='supplement')!.status,'absent');
+ await db.query('delete from public.health_events where id=$1',[event]);assert.equal((await rpc<SupplementDay>('read_supplement_day_v1',['2026-01-06',study.timezone])).events.length,0);
+ const failed=await readLinkedEvidence(databaseClient(db,'read_intake_day_v1'),A,study,'2026-01-06','2026-01-06','2026-01-06');assert.equal(failed.daily.find(e=>e.factor.source==='alcohol')!.status,'error');assert.equal(failed.daily.find(e=>e.factor.source==='ingredient')!.freshness,'error');
+ await assert.rejects(rpc('save_factor_version_v1',[{study_id:study.id,revision:study.revision,effective_from:'2026-01-06',factors:[],historical_ack:false}]),/HISTORICAL_SCOPE_REQUIRED/);
+ study=await rpc<Study>('save_factor_version_v1',[{study_id:study.id,revision:study.revision,effective_from:'2026-01-01',factors:[{source:'diet',ref:enrollment.id,offset:0}],historical_ack:true}]);
+ study=await rpc<Study>('save_factor_version_v1',[{study_id:study.id,revision:study.revision,effective_from:'2026-01-06',factors:[{source:'diet',ref:enrollment.id,offset:-1}],historical_ack:true}]);
+ const aligned=await read();assert.equal(aligned.history.find(d=>d.date==='2026-01-05')!.factors[0].factor.offset,0);assert.equal(aligned.daily[0].factor.offset,-1);assert.equal(aligned.daily[0].source_date,'2026-01-05');assert.equal(aligned.daily[0].status,'planned_exception');
+ study=await rpc<Study>('save_factor_version_v1',[{study_id:study.id,revision:study.revision,effective_from:'2026-01-06',factors:[{source:'alcohol',offset:0}],historical_ack:true}]);evidence=await read();assert.equal(evidence.daily.length,1);assert.equal(evidence.daily[0].source_date,'2026-01-06');assert.equal(evidence.history.find(d=>d.date==='2026-01-05')!.factors.length,1);
+ await assert.rejects(db.exec('update public.observational_factor_versions set revision=99'),/permission denied/);
+ await as(B);assert.equal((await db.query('select * from public.supplement_products')).rows.length,0);await assert.rejects(rpc('save_observational_v1',['study',{...config,id:crypto.randomUUID(),metric_id:null,outcome_source:'energy_score'}]),/NOT_FOUND/);await assert.rejects(rpc('save_supplement_review_v1',['identity',{event_id:event,product_id:product.id}]),/NOT_FOUND/);
+ const other=await rpc<SupplementProduct>('save_supplement_review_v1',['product',{name:'Another synthetic product',formulation:'B'}]);await assert.rejects(rpc('save_supplement_review_v1',['identity',{event_id:drink,product_id:other.id}]),/NOT_FOUND/);
+ await as('','anon');await assert.rejects(rpc('read_intake_day_v1',['2026-01-05','UTC']),/permission denied/);
+ await as(A);const exported=await rpc<Record<string,unknown>>('axvital_export_account',[]);assert.ok(JSON.stringify(exported).includes('observational_factor_versions'));assert.ok(JSON.stringify(exported).includes('supplement_log_days'));
+ await db.query("insert into public.health_events(user_id,title,event_date,event_type,supplement_product_id) values($1,'Synthetic retained log','2026-01-07','supplement',$2)",[A,product.id]);
+ await db.exec(`reset role;insert into public.account_deletions(user_id,billing_closed) values('${A}',true);delete from auth.users where id='${A}'`);assert.equal((await db.query('select * from public.supplement_products where user_id=$1',[A])).rows.length,0);assert.equal((await db.query('select * from public.observational_factor_versions')).rows.length,0);
+ }finally{await db.close();}
+});
