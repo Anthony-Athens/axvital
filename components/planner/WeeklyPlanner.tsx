@@ -1,6 +1,7 @@
 "use client";
+import { useScheduleRefresh } from "@/lib/planner/use-schedule-refresh";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ActivityForm } from "./ActivityForm";
 import { OccurrenceCard } from "./OccurrenceCard";
@@ -23,21 +24,24 @@ export function WeeklyPlanner() {
   const weekEnd = addCalendarDays(weekStart, 6); const days = useMemo(() => Array.from({ length: 7 }, (_, i) => addCalendarDays(weekStart, i)), [weekStart]);
   const [occurrences, setOccurrences] = useState<PlannedActivityOccurrence[]>([]); const [loading, setLoading] = useState(true); const [error, setError] = useState(""); const [success, setSuccess] = useState(""); const [busyId, setBusyId] = useState<string | null>(null); const [formOpen, setFormOpen] = useState(false); const [editing, setEditing] = useState<PlannedActivity | null>(null); const [progressItem, setProgressItem] = useState<PlannedActivityOccurrence | null>(null); const [filter, setFilter] = useState<"all" | "protocols" | "habits" | "other">("all");
   const load = useCallback(async () => { setLoading(true); setError(""); try { setOccurrences(await getOccurrencesForRange(supabase, weekStart, weekEnd)); } catch (value) { logDevError("Failed to load weekly plan", value); setError("We couldn’t load your weekly plan."); } finally { setLoading(false); } }, [weekEnd, weekStart]);
-  useEffect(() => { const timer = window.setTimeout(() => void load(), 0); return () => window.clearTimeout(timer); }, [load]);
+  useScheduleRefresh(load);
   async function save(input: CreatePlannedActivityInput) {
     if (busyId) return;
-    setBusyId("save"); setError("");
+    setBusyId("save"); setError(""); setSuccess("");
     try {
       if (editing) await updatePlannedActivity(supabase, editing.id, input, localDate());
       else await createPlannedActivity(supabase, input);
     } catch (value) {
       logDevError("Failed to save activity", value);
       setBusyId(null);
-      throw new Error("We couldn’t save this activity.");
+      const message = value instanceof Error ? value.message : "We couldn’t save this activity. The original date is unchanged.";
+      setError(message);
+      throw new Error(message);
     }
     // Persistence succeeded. A later refresh failure must not invite another create.
     setSuccess(editing ? "Activity updated." : "Activity added to your plan.");
     setFormOpen(false); setEditing(null);
+    router.refresh();
     try { await ensureOccurrencesForRange(supabase, weekStart, weekEnd); await load(); }
     catch (value) { logDevError("Failed to refresh plan", value); setError("Your activity was saved, but the plan could not refresh. Reload the page to see it."); }
     finally { setBusyId(null); }

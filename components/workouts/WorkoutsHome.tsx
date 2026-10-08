@@ -1,4 +1,5 @@
 "use client";
+import { useScheduleRefresh } from "@/lib/planner/use-schedule-refresh";
 import { SheetDialog } from "@/components/ui/SheetDialog";
 import Link from "next/link";
 import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
@@ -22,7 +23,7 @@ export function WorkoutsHome() {
   const [exercises, setExercises] = useState<Exercise[]>([]); const [templates, setTemplates] = useState<WorkoutTemplate[]>([]); const [archivedTemplates, setArchivedTemplates] = useState<WorkoutTemplate[]>([]); const [showArchived,setShowArchived]=useState(false); const [planned, setPlanned] = useState<PlannedWorkout[]>([]); const [sessions, setSessions] = useState<WorkoutSession[]>([]);
   const [error, setError] = useState(""); const [busy, setBusy] = useState(false); const [showExercise, setShowExercise] = useState(false); const [showSchedule, setShowSchedule] = useState<WorkoutTemplate | null>(null); const [confirm,setConfirm]=useState<{template:WorkoutTemplate;action:"archive"|"delete"}|null>(null);
   const load = useCallback(async () => { try { const date = today(); const [exerciseRows, templateRows, archivedRows, plannedRows, sessionRows] = await Promise.all([searchExercises(supabase), getWorkoutTemplates(supabase), getWorkoutTemplates(supabase,true), getPlannedWorkouts(supabase, date, endOfMonth(date)), getWorkoutSessions(supabase, "2025-01-01", date)]); setExercises(exerciseRows); setTemplates(templateRows); setArchivedTemplates(archivedRows); setPlanned(plannedRows); setSessions(sessionRows); setError(""); } catch { setError("We couldn’t load your workouts."); } }, []);
-  useEffect(() => { const timer = setTimeout(() => void load(), 0); return () => clearTimeout(timer); }, [load]);
+  useScheduleRefresh(load);
   useEffect(() => { const showLibrary = () => { if (window.location.hash === "#exercise-library") setTab("exercises"); }; showLibrary(); window.addEventListener("hashchange", showLibrary); return () => window.removeEventListener("hashchange", showLibrary); }, []);
   async function schedule(event: FormEvent<HTMLFormElement>) { event.preventDefault(); if (!showSchedule) return; setBusy(true); const data = new FormData(event.currentTarget); try { await scheduleWorkout(supabase, showSchedule.id, String(data.get("date")), String(data.get("time")) || null); setShowSchedule(null); setTab("planned"); await load(); } catch { throw new Error("We couldn’t schedule this workout."); } finally { setBusy(false); } }
   async function start(workout: PlannedWorkout) { setBusy(true); try { const session = await startWorkoutSession(supabase, workout.id, today()); router.push(`/workouts/sessions/${session.id}`); } catch { setError("We couldn’t start the workout."); setBusy(false); } }

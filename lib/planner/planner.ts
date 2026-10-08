@@ -1,5 +1,6 @@
 import type { SupabaseClient, User } from "@supabase/supabase-js";
 import { buildOccurrenceRows } from "./recurrence";
+import { notifyScheduleChanged } from "./schedule-events.ts";
 import type { CreatePlannedActivityInput, OccurrenceStatus, PlannedActivity, PlannedActivityOccurrence, UpdatePlannedActivityInput } from "./types";
 
 async function requireUser(client: SupabaseClient): Promise<User> {
@@ -32,7 +33,7 @@ export async function getOccurrencesForRange(client: SupabaseClient, start: stri
   const user = await requireUser(client);
   await ensureOccurrencesForRange(client, start, end);
   const { data, error } = await client.from("planned_activity_occurrences")
-    .select("*,planned_activity:planned_activities(*,user_protocol:user_protocols(id,name,start_date),protocol_links:user_protocol_activities(is_required))").eq("user_id", user.id)
+    .select("*,planned_workouts(id),planned_activity:planned_activities(*,user_protocol:user_protocols(id,name,start_date),protocol_links:user_protocol_activities(is_required))").eq("user_id", user.id)
     .gte("scheduled_date", start).lte("scheduled_date", end)
     .order("scheduled_date").order("scheduled_time", { nullsFirst: false }).order("created_at");
   if (error) throw error;
@@ -51,12 +52,15 @@ export async function createPlannedActivity(client: SupabaseClient, input: Creat
 }
 
 export async function updatePlannedActivity(client: SupabaseClient, id: string, input: UpdatePlannedActivityInput, futureFrom: string) {
-  const user = await requireUser(client);
-  const { data, error } = await client.from("planned_activities").update(input).eq("id", id).eq("user_id", user.id).select("*").single();
-  if (error) throw error;
-  const { error: cleanupError } = await client.from("planned_activity_occurrences").delete()
-    .eq("planned_activity_id", id).eq("user_id", user.id).eq("status", "planned").gte("scheduled_date", futureFrom);
-  if (cleanupError) throw cleanupError;
+  await requireUser(client);
+  const { data, error } = await client.rpc("update_planned_activity", { target_id: id, input, future_from: futureFrom });
+  if (error || !data) {
+    if (error?.message.includes("WORKOUT_SCHEDULE_NEEDS_REVIEW")) throw new Error("This workout’s saved dates or planner link need review before it can be moved.");
+    if (error?.message.includes("WORKOUT_ALREADY_STARTED")) throw new Error("A workout that has started or been completed cannot be rescheduled.");
+    if (error?.message.includes("WORKOUT_MUST_REMAIN_SINGLE_INSTANCE")) throw new Error("Scheduled workouts must remain one-time workout activities.");
+    throw error ?? new Error("ACTIVITY_UPDATE_FAILED");
+  }
+  notifyScheduleChanged();
   return data as PlannedActivity;
 }
 
@@ -73,7 +77,7 @@ export async function updateOccurrenceStatus(client: SupabaseClient, id: string,
   if (readError) throw readError;
   const timestamps = status === "completed" ? { completed_at: now, first_completed_at: existing.first_completed_at ?? now, skipped_at: null, completion_percentage: 100, last_updated_at: now } : status === "skipped" ? { completed_at: null, skipped_at: now, last_updated_at: now } : { completed_at: null, skipped_at: null, completion_percentage: null, last_updated_at: now };
   const { data, error } = await client.from("planned_activity_occurrences").update({ status, ...timestamps })
-    .eq("id", id).eq("user_id", user.id).select("*,planned_activity:planned_activities(*,user_protocol:user_protocols(id,name,start_date),protocol_links:user_protocol_activities(is_required))").single();
+    .eq("id", id).eq("user_id", user.id).select("*,planned_workouts(id),planned_activity:planned_activities(*,user_protocol:user_protocols(id,name,start_date),protocol_links:user_protocol_activities(is_required))").single();
   if (error) throw error;
   return data as PlannedActivityOccurrence;
 }

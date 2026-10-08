@@ -1,7 +1,8 @@
 "use client";
+import { useScheduleRefresh } from "@/lib/planner/use-schedule-refresh";
 
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { OccurrenceCard } from "./OccurrenceCard";
 import { getOccurrencesForDate, updateOccurrenceStatus } from "@/lib/planner/planner";
 import type { OccurrenceStatus, PlannedActivityOccurrence } from "@/lib/planner/types";
@@ -15,8 +16,8 @@ function todayString() { const date = new Date(); return `${date.getFullYear()}-
 
 export function TodayPlan() {
   const [items, setItems] = useState<PlannedActivityOccurrence[]>([]); const [loading, setLoading] = useState(true); const [error, setError] = useState(""); const [busy, setBusy] = useState<string | null>(null); const [progressItem, setProgressItem] = useState<PlannedActivityOccurrence | null>(null);
-  const load = useCallback(async () => { try { setItems(await getOccurrencesForDate(supabase, todayString())); } catch (value) { logDevError("Failed to load today's plan", value); setError("We couldn’t load today’s plan."); } finally { setLoading(false); } }, []);
-  useEffect(() => { const timer = window.setTimeout(() => void load(), 0); return () => window.clearTimeout(timer); }, [load]);
+  const load = useCallback(async () => { try { setItems(await getOccurrencesForDate(supabase, todayString())); setError(""); } catch (value) { logDevError("Failed to load today's plan", value); setError("We couldn’t load today’s plan."); } finally { setLoading(false); } }, []);
+  useScheduleRefresh(load);
   async function change(item: PlannedActivityOccurrence, status: OccurrenceStatus) { setBusy(item.id); setError(""); try { const trackable = item.planned_activity?.activity_type === "habit" || Boolean(item.planned_activity?.user_protocol_id); const updated = trackable ? status === "completed" ? await completeHabitOccurrence(supabase, item.id, item.actual_value, item.completion_note) : status === "skipped" ? await skipHabitOccurrence(supabase, item.id) : await reopenHabitOccurrence(supabase, item.id) : await updateOccurrenceStatus(supabase, item.id, status); setItems((values) => values.map((value) => value.id === item.id ? updated : value)); } catch (value) { logDevError("Failed to change activity status", value); setError("We couldn’t change the activity status."); } finally { setBusy(null); } }
   async function saveProgress(value: number | null, note: string, complete: boolean) { if (!progressItem) return; setBusy(progressItem.id); try { const updated = await updateHabitProgress(supabase, progressItem.id, value, note || null, complete); setItems((rows) => rows.map((row) => row.id === updated.id ? updated : row)); setProgressItem(null); } catch (reason) { logDevError("Failed to update progress", reason); setError("We couldn’t update your progress."); throw new Error("We couldn’t update your progress."); } finally { setBusy(null); } }
   return <section className="rounded-xl border border-slate-200 bg-white p-4 sm:p-5" aria-labelledby="today-plan-heading"><div className="flex items-center justify-between gap-4"><div><h2 id="today-plan-heading" className="text-lg font-semibold tracking-tight text-slate-900">Today’s Plan</h2><p className="mt-1 text-sm text-slate-500">{items.length ? `${items.filter((item) => item.status === "completed").length} of ${items.length} completed` : "What you have planned today"}</p></div><Link href="/weekly-overview" className="min-h-11 rounded-lg border border-slate-200 bg-white px-3 py-3 text-xs font-semibold text-slate-700 hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-blue-600">View full week</Link></div>

@@ -61,6 +61,7 @@ export type PlannedActivityOccurrence = {
   created_at: string;
   updated_at: string;
   planned_activity?: PlannedActivity;
+  planned_workouts?: { id: string }[];
 };
 
 export type CreatePlannedActivityInput = {
