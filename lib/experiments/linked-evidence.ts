@@ -1,4 +1,4 @@
-import {intakeLeaves,type IntakeBundle,type Leaf,type Assessment} from '../diets/model.ts';
+import {intakeLeaves,ingredientState,type IntakeBundle,type Leaf,type Assessment} from '../diets/model.ts';
 import {sourceValue,type Checkin,type Study} from './observational.ts';
 import {factorIdentity,type Factor,type FactorVersion,checkinKeys} from './factor-config.ts';
 import {shiftDate,localDateBoundary} from '../measurements/time-window.ts';
@@ -9,9 +9,7 @@ export type Evidence={contract_version:1;calculation_version:'linked-v1';factor_
 export function evidenceBase(f:Factor,date:string,version:string,tz:string):Evidence{return {contract_version:1,calculation_version:'linked-v1',factor_id:factorIdentity(f),factor:f,configuration_version:version,outcome_date:date,source_date:shiftDate(date,f.offset),timezone:tz,status:'unknown',value:null,unit:null,amount:null,amount_unit:null,complete:false,explanation:'Logging or relevant identity/ingredients are unresolved.',references:[],freshness:'current',fingerprint:null,last_time:null};}
 export function intakeComplete(b:IntakeBundle){return b.coverage?.coverage_status==='complete'&&b.coverage.diet_intake_fingerprint===b.fingerprint&&(b.entries.length+b.events.length>0||b.coverage.diet_no_intake);}
 function matches(leaf:Leaf,f:Factor,b:IntakeBundle):'present'|'absent'|'unknown'{
- if(f.source==='ingredient'||f.source==='alcohol'){const e=leaf.evidence[f.source==='alcohol'?'alcohol':f.ref as keyof Leaf['evidence']];
-  const directReview=e&&b.private.some(a=>a.id===e.id&&!!(a.component_id||a.nutrition_entry_item_id||a.event_food_id||a.health_event_id||a.user_food_id));
-  if(!leaf.trusted&&!directReview)return 'unknown';return e?.state==='present'?'present':e?.state==='absent'?'absent':'unknown';}
+ if(f.source==='ingredient'||f.source==='alcohol')return ingredientState(leaf,f.source==='alcohol'?'alcohol':f.ref as keyof Leaf['evidence'],b);
  if(!leaf.trusted)return 'unknown';
  if(f.source==='food')return leaf.food_id===f.ref?'present':'absent';
  return leaf.categories.includes(f.ref!)?'present':leaf.categories.length?'absent':'unknown';

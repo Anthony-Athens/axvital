@@ -50,6 +50,12 @@ export function intakeLeaves(b:IntakeBundle):Leaf[]{
  }
  for(const e of b.entries)entry('nutrition',e.id,e.title??'Food log');for(const e of b.events)entry('health',e.id,e.title??'Food or drink log');return leaves;
 }
+/** Catalog facts describe a guessed food only after identity confirmation.
+ * A scoped review of the actual serving/component can establish ingredients independently. */
+export function ingredientState(item:Leaf,key:typeof ingredientKeys[number],b:IntakeBundle){
+ const e=item.evidence[key],directReview=e&&b.private.some(a=>a.id===e.id&&!!(a.component_id||a.nutrition_entry_item_id||a.event_food_id||a.health_event_id||a.user_food_id));
+ return !item.trusted&&!directReview?'unknown':e?.state??'unknown';
+}
 export function assessDiet(b:Bundle):Assessment{
  const items=intakeLeaves(b),plan=b.version.plan;const exception=plan.weekly_exceptions.includes(new Date(`${b.date}T12:00:00Z`).getUTCDay())||plan.dated_exceptions.includes(b.date);
  const loggingComplete=b.coverage?.coverage_status==='complete'&&b.coverage.diet_intake_fingerprint===b.fingerprint&&(items.length>0||b.coverage.diet_no_intake);
@@ -64,7 +70,7 @@ export function assessDiet(b:Bundle):Assessment{
   else if(plan.mode==='exhaustive')reason(item.categories.length?'violation':'review',`${item.label} ${item.categories.length?'is not on the exhaustive allowed list':'has unresolved category information'}.`,null);
   else if(plan.rules.some(r=>r.kind==='category'&&r.action==='exclude')&&!item.categories.length)reason('review',`${item.label}: category information is unknown.`,null);
   }
-  for(const r of plan.rules.filter(r=>r.kind==='ingredient')){const e=item.evidence[r.ref as typeof ingredientKeys[number]];if(e?.state==='present')reason('violation',`${item.label} contains ${r.ref}, which the diet excludes.`,r,e);else if(!e||e.state==='unknown')reason('review',`${item.label}: ${r.ref} ingredients are unknown.`,r,e);else reason('allowed',`${item.label}: ${r.ref} is recorded absent.`,r,e);}
+  for(const r of plan.rules.filter(r=>r.kind==='ingredient')){const key=r.ref as typeof ingredientKeys[number],e=item.evidence[key],state=ingredientState(item,key,b);if(state==='present')reason('violation',`${item.label} contains ${r.ref}, which the diet excludes.`,r,e);else if(state==='unknown')reason('review',`${item.label}: ${r.ref} ingredients are unknown or depend on an unconfirmed food identity.`,r,e);else reason('allowed',`${item.label}: ${r.ref} is recorded absent.`,r,e);}
  }
  const calculated_status=exception?'planned_exception':reasons.some(r=>r.kind==='violation')?'nonadherent':reasons.some(r=>r.kind==='review')?'needs_review':loggingComplete?'adherent':'incomplete';
  return {contract_version:1,calculation_version:'diet-v1',freshness:'current',enrollment_id:b.enrollment.id,rule_version_id:b.version.id,local_date:b.date,timezone:b.enrollment.timezone,calculated_status,logging_complete:!!loggingComplete,no_intake_confirmed:!!loggingComplete&&!items.length,confirmation_invalidated:!!b.coverage?.diet_intake_fingerprint&&!loggingComplete,exception,fingerprint:b.fingerprint,reasons,items};

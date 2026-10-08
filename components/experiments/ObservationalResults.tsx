@@ -1,8 +1,8 @@
 'use client';
 import {useCallback,useEffect,useRef,useState} from 'react';
 import {Button,Surface,InlineNotice,controlClass} from '@/components/ui/design-system';
-import {dateInZone,shiftDate} from '@/lib/measurements/time-window';
-import type {Study} from '@/lib/experiments/observational';
+import {shiftDate} from '@/lib/measurements/time-window';
+import {scheduledEndDate,type Study} from '@/lib/experiments/observational';
 import type {ObservationalResultsResponse} from '@/lib/experiments/observational-results-service';
 import type {Summary,OutcomeDefinition} from '@/lib/experiments/observational-results';
 import {validOutcome} from '@/lib/experiments/observational-results';
@@ -18,7 +18,7 @@ export function ResultPlot({points,xLabel,yLabel}:{points:{x:number;y:number;dat
  return <figure className="min-w-0"><figcaption className="break-words text-sm">{yLabel} versus {xLabel}</figcaption><svg className="w-full" viewBox="0 0 500 180" role="img" aria-label={`${points.length} observations. Horizontal: ${xLabel}, ${number(x0)} to ${number(x1)}. Vertical: ${yLabel}, ${number(y0)} to ${number(y1)}. Exact dates and values appear in the following table.`}><path d="M45 15 V140 H480" fill="none" stroke="#64748b"/><text x="3" y="20" fontSize="11">{number(y1)}</text><text x="3" y="140" fontSize="11">{number(y0)}</text><text x="45" y="160" fontSize="11">{xLabel==='Outcome date'?points[0].date:number(x0)}</text><text x="480" y="160" textAnchor="end" fontSize="11">{xLabel==='Outcome date'?points.at(-1)?.date:number(x1)}</text>{points.map((p,i)=><circle key={i} cx={45+(p.x-x0)*420/(x1-x0||1)} cy={135-(p.y-y0)*115/(y1-y0||1)} r="3" fill="#475569"><title>{p.date}: {xLabel} {p.x}, {yLabel} {p.y}</title></circle>)}</svg><p className="text-xs">Recorded points only; gaps are not interpolated or carried forward.</p></figure>;
 }
 export function ObservationalResults({study,refreshToken}:{study:Study;refreshToken:string}){
- const last=[study.start_date,[study.end_date,dateInZone(new Date(),study.timezone),...(study.finished_on?[study.finished_on]:[])].sort()[0]].sort().at(-1)!;
+ const last=[study.start_date,scheduledEndDate(study)].sort().at(-1)!;
  const [start,setStart]=useState([study.start_date,shiftDate(last,-30)].sort().at(-1)!),[end,setEnd]=useState(last),[range,setRange]=useState({start:[study.start_date,shiftDate(last,-30)].sort().at(-1)!,end:last}),[data,setData]=useState<ObservationalResultsResponse|null>(null),[pending,setPending]=useState(false),[error,setError]=useState('');const generation=useRef(0);
  const refresh=useCallback(async()=>{void refreshToken;void study.revision;const g=++generation.current;setData(null);setError('');setPending(true);try{const response=await fetch('/api/experiments/observational-results?'+new URLSearchParams({id:study.id,...range}),{cache:'no-store'});if(response.status===403)throw Error('PREMIUM_REQUIRED');if(!response.ok)throw Error();const d=await response.json() as ObservationalResultsResponse;if(g===generation.current)setData(d);}catch(e){if(g===generation.current)setError(e instanceof Error&&e.message==='PREMIUM_REQUIRED'?'Premium is required for observational comparisons. Existing recorded observations remain available below.':'Results could not be recalculated. Previous evidence is unavailable. Retry after resolving source errors.');}finally{if(g===generation.current)setPending(false);}},[study.id,study.revision,range,refreshToken]);
  useEffect(()=>{const t=setTimeout(()=>void refresh(),0),g=generation;const focus=()=>void refresh();window.addEventListener('focus',focus);return()=>{clearTimeout(t);g.current++;window.removeEventListener('focus',focus);};},[refresh]);

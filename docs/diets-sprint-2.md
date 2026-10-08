@@ -38,3 +38,5 @@ First apply against a disposable local or staging database with the existing AXV
 - Browser testing isolates the component from authenticated Next/Supabase transport. Deployed Supabase integration, physical devices and screen-reader software were not tested. Ingredient evidence depends on reviewed data; this feature does not certify allergens. Quantity-limited rule evaluation is explicitly deferred. Catalog/metadata/day/window limits fail closed rather than truncate data or claim adherence.
 
 Checks: `npm test`, `npm run typecheck`, `npm run lint`, `npm run build`.
+
+Release audit: ingredient violations derived from a guessed AI identity now require identity confirmation or a scoped review of the actual logged serving/component. Otherwise they remain Needs review. Diet rules do not enforce quantity-limited beverage or serving exceptions. See [observational-release-verification.md](observational-release-verification.md) for the audit, environment ledger and release steps.

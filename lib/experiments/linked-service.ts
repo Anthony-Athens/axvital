@@ -31,7 +31,8 @@ export async function readLinkedEvidence(client:SupabaseClient,userId:string,stu
   }catch{return {...base,status:'error',freshness:'error' as const,explanation:'Source evidence could not be recalculated. Refresh after resolving the source; this is not absence.'};}}));
  }
  const history:LinkedResponse['history']=[];const last=[end,study.end_date,dateInZone(new Date(),study.timezone),...(study.finished_on?[study.finished_on]:[])].sort()[0];const first=[start,study.start_date].sort().at(-1)!;
- // Sequential dates bound database pressure; source-date promises are reused within this request only.
- for(let d=first;d<=last;d=shiftDate(d,1))history.push({date:d,factors:await day(d)});
+ // Four dates at a time bound database pressure while overlapping network waits.
+ // Source-day promises remain shared within this request; Promise.all retains date order.
+ for(let d=first;d<=last;d=shiftDate(d,4)){const batch:string[]=[];for(let i=0;i<4&&shiftDate(d,i)<=last;i++)batch.push(shiftDate(d,i));history.push(...await Promise.all(batch.map(async date=>({date,factors:await day(date)}))));}
  return {study,versions:versions as FactorVersion[],daily:history.find(d=>d.date===date)?.factors??await day(date),history};
 }

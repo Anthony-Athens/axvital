@@ -62,3 +62,5 @@ Validation:
 - TypeScript, lint and production build pass. Original observational custom metric/draft/start/zero/not-observed/backdate/correction/reuse UI regression and existing intervention tests remain in the suite.
 
 No Docker executable or local Supabase project configuration was present, and no staging target was provided; deployed Supabase/staging validation was not performed; physical devices and screen-reader software were not tested. Original pre-migration baseline table definitions are absent from this repository, so the database harness explicitly supplies those synthetic definitions. Ingredient certainty depends on reviewed evidence; arbitrary food quantities, legacy alcohol volumes/ABV, automatic supplement product matching and sleep-start timestamps are unsupported.
+
+Release audit: Diets and exposure now share ingredient certainty checks. Source-day promises remain request-local; history reads process at most four dates together, preserving order. The [release verification record](observational-release-verification.md) documents measured latency, request counts and unverified deployed checks.

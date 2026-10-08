@@ -34,7 +34,8 @@ export function validateObservation(o: Observation, m: Metric, today: string) {
   if (!isLogicalDate(o.observed_date) || o.observed_date>today || !['recorded','not_observed'].includes(o.status) || !['brief','partial','most','unknown'].includes(o.coverage) || typeof o.observer!=='string' || o.observer.length>120 || typeof o.note!=='string' || o.note.length>2000) throw new Error('INVALID_OBSERVATION');
   if (o.status==='not_observed' ? o.value!==null : typeof o.value!=='number' || !Number.isFinite(o.value) || (m.kind==='boolean' && ![0,1].includes(o.value)) || (m.kind==='rating' && (!Number.isInteger(o.value) || o.value<m.min! || o.value>m.max!))) throw new Error('INVALID_VALUE');
 }
-export function scheduledDates(s: Study, now=new Date()) { const dates:string[]=[]; const end = [s.end_date,shiftDate(dateInZone(now,s.timezone),s.entry_offset??0),...(s.finished_on?[s.finished_on]:[])].sort()[0]; for(let d=s.start_date; d<=end; d=shiftDate(d,1)) dates.push(d); return dates; }
+export function scheduledEndDate(s:Study,now=new Date()){return [s.end_date,shiftDate(dateInZone(now,s.timezone),s.entry_offset??0),...(s.finished_on?[s.finished_on]:[])].sort()[0];}
+export function scheduledDates(s: Study, now=new Date()) { const dates:string[]=[]; const end=scheduledEndDate(s,now); for(let d=s.start_date; d<=end; d=shiftDate(d,1)) dates.push(d); return dates; }
 export function completeness(s: Study, values: Map<string, {status:string;value:number|null}>, now=new Date()) {
   const dates=scheduledDates(s,now); let valid=0,notObserved=0; for(const date of dates) {const o=values.get(date);if(o?.status==='not_observed')notObserved++;else if(o?.value!=null)valid++;} return {valid,notObserved,missing:dates.length-valid-notObserved,expected:dates.length};
 }
