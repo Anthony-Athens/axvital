@@ -17,6 +17,7 @@ export function ContactForm() {
     const data = new FormData(event.currentTarget);
     try {
       const response = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(Object.fromEntries(data)) });
+      if (response.status === 429) { setMessage("You’ve sent several messages recently. Your entries are still here; please try again in a few minutes."); return; }
       if (!response.ok) throw new Error();
       formRef.current?.reset();
       setSuccess(true); setMessage("Thanks — your message has been sent to AXVital Support.");

@@ -1,7 +1,15 @@
+import type { Metadata } from "next";
+import { socialMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { TrustPage } from "@/components/account/TrustPage";
 
 // TODO(legal): Replace "AXVital" with the formal legal entity name and add its business contact details after owner/legal approval.
+export const metadata: Metadata = socialMetadata(
+  "Privacy Policy | AXVital",
+  "How AXVital collects, uses, and protects the health information you choose to track.",
+  "/privacy",
+);
+
 export default function PrivacyPage(){return <TrustPage title="Privacy Policy">
   <p className="text-sm text-slate-500">Effective September 24, 2026</p>
   <section><h2 className="text-xl font-semibold">Overview</h2><p>This policy explains how AXVital collects, uses, discloses, and retains information when you use its direct-to-consumer health and wellness tracking service. AXVital is not a healthcare provider or HIPAA-covered entity, and this policy does not claim HIPAA compliance.</p></section>

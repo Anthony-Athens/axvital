@@ -22,12 +22,25 @@ test("contact failure logs exclude the message, email, API key and provider body
     process:{env:{RESEND_API_KEY:"secret-key",AXVITAL_CONTACT_EMAIL:"support@example.com",AXVITAL_EMAIL_FROM:"sender@example.com"}},
     console:{error:(...args:unknown[])=>logs.push(args)},
     fetch:async()=>new Response("private provider error",{status:503}),
-  });
+  },{"@/lib/contact-rate-limit":"export const consumeContactBudget=async()=>true;"});
   const response=await POST(new Request("https://example.com/api/contact",{method:"POST",headers:{Origin:"https://example.com","Content-Type":"application/json"},body:JSON.stringify({name:"Test",email:"private@example.com",topic:"Other",message:"Private contact text",website:""})}));
   assert.equal(response.status,503);
   assert.equal(logs.length,1);
   const log=JSON.stringify(logs);assert.match(log,/provider_rejected/);assert.doesNotMatch(log,/secret-key|private@example|Private contact|private provider/);
   assert.deepEqual(await response.json(),{error:"DELIVERY_FAILED"});
+});
+
+test("contact rate limit returns 429 before contacting the email provider",async()=>{
+  let sent=0;
+  const POST=await route("app/api/contact/route.ts",{
+    process:{env:{RESEND_API_KEY:"secret-key",AXVITAL_CONTACT_EMAIL:"support@example.com",AXVITAL_EMAIL_FROM:"sender@example.com"}},
+    console:{error:()=>{}},
+    fetch:async()=>{sent++;return new Response(null,{status:200});},
+  },{"@/lib/contact-rate-limit":"export const consumeContactBudget=async()=>false;"});
+  const response=await POST(new Request("https://example.com/api/contact",{method:"POST",headers:{Origin:"https://example.com","Content-Type":"application/json"},body:JSON.stringify({name:"Test",email:"private@example.com",topic:"Other",message:"Hello there",website:""})}));
+  assert.equal(response.status,429);
+  assert.equal(response.headers.get("Retry-After"),"600");
+  assert.equal(sent,0);
 });
 
 test("handled Stripe webhook 500 is observable without logging event or error contents",async()=>{

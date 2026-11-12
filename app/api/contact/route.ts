@@ -1,5 +1,6 @@
 import { boundedText } from "@/lib/api/validation";
 import { contactEmailText, validateContactSubmission } from "@/lib/contact";
+import { consumeContactBudget } from "@/lib/contact-rate-limit";
 
 export const runtime = "nodejs";
 
@@ -10,6 +11,7 @@ export async function POST(request: Request) {
     const raw = await boundedText(request, 6144);
     const submission = validateContactSubmission(JSON.parse(raw));
     if (!submission) return Response.json({ error: "INVALID_REQUEST" }, { status: 400 });
+    if (!(await consumeContactBudget(request))) return Response.json({ error: "RATE_LIMITED" }, { status: 429, headers: { "Retry-After": "600", "Cache-Control": "no-store" } });
 
     const apiKey = process.env.RESEND_API_KEY?.trim();
     const to = (process.env.AXVITAL_CONTACT_EMAIL ?? process.env.AXVITAL_SUPPORT_EMAIL)?.trim();

@@ -1,6 +1,14 @@
+import type { Metadata } from "next";
+import { socialMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { ContactForm } from "@/components/contact/ContactForm";
 import { TrustPage } from "@/components/account/TrustPage";
+
+export const metadata: Metadata = socialMetadata(
+  "Contact | AXVital",
+  "Get help with your AXVital account, billing, or privacy questions.",
+  "/contact",
+);
 
 export default function ContactPage(){return <TrustPage title="Contact AXVital">
   <section><h2 className="text-xl font-semibold">How can we help?</h2><p>Questions, feedback, account issues, or need help? Send us a message.</p><ContactForm/></section>

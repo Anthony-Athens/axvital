@@ -1,4 +1,4 @@
-import { publicUrl } from "@/lib/seo";
+import { publicUrl, socialImage } from "@/lib/seo";
 import { conditionIntelligenceDemos, type DemoConditionKey } from "@/lib/campaigns/condition-intelligence-demo";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -17,7 +17,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: content.title,
     description: content.description,
-    openGraph: { title: content.title, description: content.description, type: "website", siteName: "AXVital", url: publicUrl(`/conditions/${slug}`) },
+    openGraph: { title: content.title, description: content.description, type: "website", siteName: "AXVital", url: publicUrl(`/conditions/${slug}`), images: [socialImage] },
+    twitter: { card: "summary_large_image", title: content.title, description: content.description, images: [socialImage] },
     alternates: { canonical: publicUrl(`/conditions/${slug}`) },
     robots: { index: true, follow: true },
     referrer: "no-referrer",

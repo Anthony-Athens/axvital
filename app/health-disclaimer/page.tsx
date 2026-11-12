@@ -1,5 +1,13 @@
+import type { Metadata } from "next";
+import { socialMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { TrustPage } from "@/components/account/TrustPage";
+
+export const metadata: Metadata = socialMetadata(
+  "Health Disclaimer | AXVital",
+  "AXVital organizes information you track. It does not provide medical diagnosis or treatment.",
+  "/health-disclaimer",
+);
 
 export default function HealthDisclaimerPage(){return <TrustPage title="Health Disclaimer">
   <p className="text-sm text-slate-500">Effective September 3, 2026</p>

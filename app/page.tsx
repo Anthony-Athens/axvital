@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
+import { socialMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { Footer } from "@/components/Footer";
 
-export const metadata: Metadata = {
-  title: "AXVital | Track, learn, and test what works",
-  description: "Track the health information that matters to you, learn from patterns in your history, and test deliberate changes with personal experiments.",
-};
+export const metadata: Metadata = socialMetadata(
+  "AXVital | Track, learn, and test what works",
+  "Track the health information that matters to you, learn from patterns in your history, and test deliberate changes with personal experiments.",
+  "/",
+);
 
 const steps = [
   ["Track", "Record the health information relevant to your goals."],

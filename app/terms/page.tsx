@@ -1,7 +1,15 @@
+import type { Metadata } from "next";
+import { socialMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { TrustPage } from "@/components/account/TrustPage";
 
 // TODO(legal): Add the formal legal entity, governing law, venue, and any approved dispute terms after owner/legal review.
+export const metadata: Metadata = socialMetadata(
+  "Terms of Service | AXVital",
+  "The terms that govern your use of AXVital.",
+  "/terms",
+);
+
 export default function TermsPage(){return <TrustPage title="Terms of Service">
   <p className="text-sm text-slate-500">Effective September 3, 2026</p>
   <section><h2 className="text-xl font-semibold">Acceptance and eligibility</h2><p>By creating an account or using AXVital, you agree to these Terms and the <Link className="text-blue-700 underline" href="/privacy">Privacy Policy</Link>. You must be at least 13 and legally able to enter this agreement. If you use AXVital for an organization, you represent that you have authority to bind it.</p></section>

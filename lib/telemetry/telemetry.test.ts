@@ -52,6 +52,7 @@ test("root layout includes application-wide Analytics with URL sanitization", as
     "react/jsx-runtime": 'export const jsx = (type, props) => typeof type === "function" ? type(props) : ({type,props}); export const jsxs = jsx; export const Fragment = "fragment";',
     "@vercel/analytics/next": 'export const Analytics = props => ({analytics:true,props});',
     "./globals.css": 'export {};',
+    "next/font/google": 'export const Inter = () => ({ variable: "font-inter", className: "font-inter" });',
   });
   const root = f.exports.default as unknown as (props: { children: string }) => { props: { children: { props: { children: { analytics?: boolean; props: { beforeSend?: (event: {type:string;url:string}) => {url:string} } }[] } } } };
   const body = root({ children: "page content" }).props.children;

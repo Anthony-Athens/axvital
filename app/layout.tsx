@@ -1,13 +1,24 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import { Navbar } from "@/components/Navbar";
 import { ProductAnalytics } from "@/components/ProductAnalytics";
 import { GoogleAdsTag } from "@/components/GoogleAdsTag";
+import { productionOrigin } from "@/lib/seo";
 import "./globals.css";
 
+// Self-hosted at build time; no browser requests go to Google Fonts.
+const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-inter" });
+
+const description =
+  "Track what matters, discover what works, and improve your health with personalized insights.";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(productionOrigin),
   title: "AXVital | Health Operating System",
-  description:
-    "Track what matters, discover what works, and improve your health with personalized insights.",
+  description,
+  applicationName: "AXVital",
+  openGraph: { type: "website", siteName: "AXVital", title: "AXVital | Health Operating System", description, locale: "en_US" },
+  twitter: { card: "summary_large_image", title: "AXVital | Health Operating System", description },
 };
 
 export default function RootLayout({
@@ -16,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full antialiased" data-scroll-behavior="smooth">
+    <html lang="en" className={`${inter.variable} h-full antialiased`} data-scroll-behavior="smooth">
       <body className="min-h-full bg-slate-50 text-slate-950">
         <ProductAnalytics />
         <GoogleAdsTag />

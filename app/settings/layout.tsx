@@ -1,6 +1,8 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+export const metadata: Metadata = { title: "Settings | AXVital", robots: { index: false, follow: false } };
 export default async function AccountLayout({children}:{children:React.ReactNode}) {
   const {data,error}=await (await createClient()).auth.getUser();
   if(error || !data.user) redirect("/login");
