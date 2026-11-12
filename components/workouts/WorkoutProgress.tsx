@@ -44,24 +44,24 @@ export function WorkoutProgress() {
   const completed = sessions.filter((s) => s.status === "completed").length;
   return (
     <div className="mx-auto max-w-6xl px-4 py-6">
-      <Link href="/workouts" className="font-black text-emerald-700">
+      <Link href="/workouts" className="font-semibold text-accent-fg">
         ← Workouts
       </Link>
-      <section className="mt-4 rounded-3xl bg-slate-950 p-6 text-white">
-        <p className="text-sm font-black uppercase text-emerald-300">Reporting MVP</p>
-        <h1 className="mt-2 text-4xl font-black">Workout Progress</h1>
+      <section className="mt-4 rounded-2xl bg-slate-950 p-6 text-white">
+        <p className="text-sm font-semibold uppercase text-emerald-300">Reporting MVP</p>
+        <h1 className="mt-2 text-4xl font-semibold">Workout Progress</h1>
         <label className="mt-5 block font-bold">
           Start date
           <input
             type="date"
             value={start}
             onChange={(e) => setStart(e.target.value)}
-            className="ml-3 min-h-11 rounded-xl bg-white px-3 text-slate-950"
+            className="ml-3 min-h-11 rounded-xl bg-surface px-3 text-fg"
           />
         </label>
       </section>
       {error ? (
-        <p className="mt-4 rounded-2xl bg-rose-50 p-4 font-bold text-rose-700">{error}</p>
+        <p className="mt-4 rounded-2xl bg-rose-500/10 p-4 font-bold text-rose-300">{error}</p>
       ) : null}
       <div className="mt-5 grid grid-cols-2 gap-3 md:grid-cols-4">
         {[
@@ -80,18 +80,18 @@ export function WorkoutProgress() {
           ],
           ["Set completion", `${comparison.setCompletionPercentage}%`],
         ].map(([l, v]) => (
-          <div key={l} className="rounded-2xl bg-white p-4 shadow-sm">
-            <p className="text-xs font-black uppercase text-slate-400">{l}</p>
-            <p className="mt-2 text-2xl font-black">{v}</p>
+          <div key={l} className="rounded-2xl bg-surface p-4 shadow-sm">
+            <p className="text-xs font-semibold uppercase text-fg-3">{l}</p>
+            <p className="mt-2 text-2xl font-semibold">{v}</p>
           </div>
         ))}
       </div>
-      <section className="mt-5 rounded-3xl bg-white p-5">
-        <h2 className="text-2xl font-black">Recent exercise performance</h2>
+      <section className="mt-5 rounded-2xl bg-surface p-5">
+        <h2 className="text-2xl font-semibold">Recent exercise performance</h2>
         <div className="mt-4 overflow-x-auto">
           <table className="w-full min-w-[560px] text-left">
             <thead>
-              <tr className="text-xs uppercase text-slate-400">
+              <tr className="text-xs uppercase text-fg-3">
                 <th className="p-2">Date</th>
                 <th>Exercise</th>
                 <th>Sets</th>

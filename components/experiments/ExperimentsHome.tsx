@@ -40,7 +40,7 @@ export function ExperimentsHome() {
         description="Choose a goal, a measurement and one change. Compare your own tracked observations."
         actions={<ButtonLink href="/experiments/new">Create experiment</ButtonLink>}
       />
-      <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-600">
+      <p className="mt-4 max-w-2xl text-sm leading-6 text-fg-2">
         Explore Experiments 2.0 for free. Premium unlocks baseline checks, saving and starting. Your
         existing experiments remain accessible. Comparisons do not establish causation or provide
         medical advice.
@@ -73,16 +73,16 @@ export function ExperimentsHome() {
                     ? `/experiments/${x.id}/edit`
                     : `/experiments/${x.id}`
                 }
-                className="rounded-xl border border-slate-200 bg-white p-4 outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+                className="rounded-xl border border-line bg-surface p-4 outline-none focus-visible:ring-2 focus-visible:ring-accent-fg"
               >
                 <div className="flex justify-between gap-3">
                   <h3 className="font-semibold">{x.name}</h3>
-                  <span className="text-sm capitalize text-blue-700">
+                  <span className="text-sm capitalize text-blue-300">
                     {x.status.replaceAll("_", " ")}
                   </span>
                 </div>
-                <p className="mt-2 line-clamp-2 text-sm text-slate-600">{x.hypothesis}</p>
-                <p className="mt-3 text-xs font-semibold uppercase text-slate-500">
+                <p className="mt-2 line-clamp-2 text-sm text-fg-2">{x.hypothesis}</p>
+                <p className="mt-3 text-xs font-semibold uppercase text-fg-3">
                   {x.model_version === 2 ? "Experiments 2.0" : "Legacy experiment"} · Phase:{" "}
                   {x.current_phase}
                 </p>

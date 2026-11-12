@@ -135,25 +135,25 @@ export function ProtocolBuilder({ editing = false }: { editing?: boolean }) {
     }
   }
   const input =
-    "mt-2 min-h-12 w-full rounded-2xl border border-slate-200 bg-white px-4 font-semibold outline-none focus:border-emerald-500";
+    "mt-2 min-h-12 w-full rounded-2xl border border-line bg-surface px-4 font-semibold outline-none focus:border-emerald-500";
   if (loading)
-    return <div className="mx-auto max-w-4xl p-6 font-black">Loading protocol builder…</div>;
+    return <div className="mx-auto max-w-4xl p-6 font-semibold">Loading protocol builder…</div>;
   return (
     <form onSubmit={submit} className="mx-auto max-w-4xl px-4 py-6 md:px-6 md:py-10">
-      <section className="rounded-3xl bg-slate-950 p-6 text-white">
-        <p className="text-sm font-black uppercase tracking-widest text-emerald-300">
+      <section className="rounded-2xl bg-slate-950 p-6 text-white">
+        <p className="text-sm font-semibold uppercase tracking-widest text-emerald-300">
           Protocol template
         </p>
-        <h1 className="mt-2 text-4xl font-black">
+        <h1 className="mt-2 text-4xl font-semibold">
           {editing ? "Edit protocol" : "Create a protocol"}
         </h1>
       </section>
       {error ? (
-        <p role="alert" className="mt-4 rounded-2xl bg-rose-50 p-4 font-bold text-rose-700">
+        <p role="alert" className="mt-4 rounded-2xl bg-rose-500/10 p-4 font-bold text-rose-300">
           {error}
         </p>
       ) : null}
-      <section className="mt-5 grid gap-5 rounded-3xl bg-white p-5 shadow-sm sm:grid-cols-2">
+      <section className="mt-5 grid gap-5 rounded-2xl bg-surface p-5 shadow-sm sm:grid-cols-2">
         <label className="font-bold sm:col-span-2">
           Protocol name
           <input
@@ -231,7 +231,7 @@ export function ProtocolBuilder({ editing = false }: { editing?: boolean }) {
         </label>
       </section>
       <div className="mt-5 flex items-center justify-between">
-        <h2 className="text-2xl font-black">Protocol activities</h2>
+        <h2 className="text-2xl font-semibold">Protocol activities</h2>
         <button
           type="button"
           onClick={() =>
@@ -240,13 +240,13 @@ export function ProtocolBuilder({ editing = false }: { editing?: boolean }) {
               activities: [...v.activities, emptyActivity(v.activities.length)],
             }))
           }
-          className="min-h-11 rounded-full bg-emerald-500 px-5 font-black text-white"
+          className="min-h-11 rounded-xl bg-accent hover:bg-accent-hover px-5 font-semibold text-white"
         >
           Add Activity
         </button>
       </div>
       {!form.activities.length ? (
-        <p className="mt-4 rounded-3xl border border-dashed border-slate-300 bg-white p-6 text-center font-semibold text-slate-500">
+        <p className="mt-4 rounded-2xl border border-dashed border-line-strong bg-surface p-6 text-center font-semibold text-fg-3">
           This protocol does not have any activities yet. You can save it as an incomplete template.
         </p>
       ) : null}
@@ -254,9 +254,9 @@ export function ProtocolBuilder({ editing = false }: { editing?: boolean }) {
         {form.activities.map((a, i) => (
           <fieldset
             key={i}
-            className="grid gap-4 rounded-3xl border border-slate-200 bg-white p-5 sm:grid-cols-2"
+            className="grid gap-4 rounded-2xl border border-line bg-surface p-5 sm:grid-cols-2"
           >
-            <legend className="px-2 font-black">Activity {i + 1}</legend>
+            <legend className="px-2 font-semibold">Activity {i + 1}</legend>
             <label className="font-bold sm:col-span-2">
               Title
               <input
@@ -402,7 +402,7 @@ export function ProtocolBuilder({ editing = false }: { editing?: boolean }) {
                                   : [...(a.days_of_week ?? []), day],
                           })
                         }
-                        className={`min-h-11 min-w-12 rounded-xl font-black ${selected ? "bg-emerald-500 text-white" : "bg-slate-100"}`}
+                        className={`min-h-11 min-w-12 rounded-xl font-semibold ${selected ? "bg-accent hover:bg-accent-hover text-white" : "bg-raised"}`}
                       >
                         {d}
                       </button>
@@ -449,7 +449,7 @@ export function ProtocolBuilder({ editing = false }: { editing?: boolean }) {
                 aria-label={`Move ${a.title || `activity ${i + 1}`} up`}
                 disabled={i === 0}
                 onClick={() => move(i, -1)}
-                className="min-h-11 rounded-full bg-slate-100 px-4 font-black disabled:opacity-40"
+                className="min-h-11 rounded-xl bg-raised px-4 font-semibold disabled:opacity-40"
               >
                 Move up
               </button>
@@ -458,7 +458,7 @@ export function ProtocolBuilder({ editing = false }: { editing?: boolean }) {
                 aria-label={`Move ${a.title || `activity ${i + 1}`} down`}
                 disabled={i === form.activities.length - 1}
                 onClick={() => move(i, 1)}
-                className="min-h-11 rounded-full bg-slate-100 px-4 font-black disabled:opacity-40"
+                className="min-h-11 rounded-xl bg-raised px-4 font-semibold disabled:opacity-40"
               >
                 Move down
               </button>
@@ -467,7 +467,7 @@ export function ProtocolBuilder({ editing = false }: { editing?: boolean }) {
                 onClick={() =>
                   setForm((v) => ({ ...v, activities: v.activities.filter((_, x) => x !== i) }))
                 }
-                className="min-h-11 rounded-full px-4 font-black text-rose-600"
+                className="min-h-11 rounded-xl px-4 font-semibold text-rose-400"
               >
                 Remove
               </button>
@@ -477,7 +477,7 @@ export function ProtocolBuilder({ editing = false }: { editing?: boolean }) {
       </div>
       <button
         disabled={saving}
-        className="mt-6 min-h-14 w-full rounded-full bg-slate-950 text-lg font-black text-white disabled:opacity-50"
+        className="mt-6 min-h-14 w-full rounded-xl bg-accent hover:bg-accent-hover text-lg font-semibold text-white disabled:opacity-50"
       >
         {saving ? "Saving…" : editing ? "Save protocol template" : "Create protocol template"}
       </button>

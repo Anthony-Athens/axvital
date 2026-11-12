@@ -9,7 +9,7 @@ export default function Error({ reset }: { reset: () => void }) {
       <button className="min-h-11 rounded-lg bg-blue-700 px-4 text-white" onClick={reset}>
         Try again
       </button>
-      <a href="/my-health" className="ml-4 text-blue-700">
+      <a href="/my-health" className="ml-4 text-blue-300">
         My Health
       </a>
     </div>

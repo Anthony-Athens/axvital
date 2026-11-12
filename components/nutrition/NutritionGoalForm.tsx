@@ -80,7 +80,7 @@ export function NutritionGoalForm({
         recommendation.
       </p>
       {error ? (
-        <p id="nutrition-goal-error" role="alert" className="text-sm text-red-700">
+        <p id="nutrition-goal-error" role="alert" className="text-sm text-red-300">
           {error}
         </p>
       ) : null}

@@ -23,7 +23,7 @@ export default async function Page({
       <Surface className="mt-6">
         <EpisodeForm conditionId={condition} />
       </Surface>
-      <p className="mt-5 text-sm leading-6 text-slate-500">
+      <p className="mt-5 text-sm leading-6 text-fg-3">
         Symptoms remain separate health records. Logging symptoms does not confirm or diagnose an
         episode.
       </p>

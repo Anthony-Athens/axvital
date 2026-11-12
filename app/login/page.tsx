@@ -72,46 +72,46 @@ export default function LoginPage() {
 
   return (
     <div className="mx-auto flex min-h-[calc(100dvh-10rem)] max-w-md items-center px-4 py-8">
-      <section className="w-full rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-        <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-600">Login</p>
-        <h1 className="mt-3 text-4xl font-black tracking-tight">Welcome back</h1>
-        <p className="mt-3 leading-7 text-slate-600">
+      <section className="w-full rounded-2xl border border-line bg-surface p-6 shadow-sm">
+        <p className="text-sm font-bold uppercase tracking-[0.18em] text-accent-fg">Login</p>
+        <h1 className="mt-3 text-4xl font-semibold tracking-tight">Welcome back</h1>
+        <p className="mt-3 leading-7 text-fg-2">
           Sign in to save check-ins, log events, and view your AXVital profile.
         </p>
 
         <form onSubmit={handleLogin} className="mt-6 space-y-4">
           <label className="block">
-            <span className="text-sm font-black text-slate-700">Email</span>
+            <span className="text-sm font-semibold text-fg-2">Email</span>
             <input
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               type="email"
               autoComplete="email"
               required
-              className="mt-2 min-h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+              className="mt-2 min-h-14 w-full rounded-lg border border-line bg-raised px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/30"
             />
           </label>
           <label className="block">
-            <span className="text-sm font-black text-slate-700">Password</span>
+            <span className="text-sm font-semibold text-fg-2">Password</span>
             <input
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               type="password"
               autoComplete="current-password"
               required
-              className="mt-2 min-h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+              className="mt-2 min-h-14 w-full rounded-lg border border-line bg-raised px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/30"
             />
           </label>
 
           <Link
             href="/forgot-password"
-            className="inline-flex min-h-11 items-center rounded-lg text-sm font-semibold text-blue-700 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-600"
+            className="inline-flex min-h-11 items-center rounded-lg text-sm font-semibold text-blue-300 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-accent-fg"
           >
             Forgot password?
           </Link>
 
           {message ? (
-            <p className="rounded-2xl bg-amber-50 p-4 text-sm font-black text-amber-900">
+            <p className="rounded-2xl bg-amber-500/10 p-4 text-sm font-semibold text-amber-100">
               {message}
             </p>
           ) : null}
@@ -119,7 +119,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="flex min-h-14 w-full items-center justify-center rounded-2xl bg-emerald-500 px-6 text-base font-black text-white disabled:cursor-not-allowed disabled:bg-slate-400"
+            className="flex min-h-14 w-full items-center justify-center rounded-xl bg-accent hover:bg-accent-hover px-6 text-base font-semibold text-white disabled:cursor-not-allowed disabled:bg-slate-600"
           >
             {loading ? "Signing in..." : "Login"}
           </button>
@@ -127,7 +127,7 @@ export default function LoginPage() {
 
         <Link
           href="/signup"
-          className="mt-3 flex min-h-14 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 px-6 text-base font-black text-slate-900"
+          className="mt-3 flex min-h-14 items-center justify-center rounded-xl border border-line bg-raised px-6 text-base font-semibold text-fg"
         >
           Create account
         </Link>

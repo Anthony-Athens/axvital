@@ -28,23 +28,23 @@ export function PlannedWorkoutDetail({ template = false }: { template?: boolean 
   useScheduleRefresh(load);
   if (template) return <TemplateWorkoutDetail />;
   if (!value)
-    return <div className="mx-auto max-w-4xl p-6 font-black">{error || "Loading workout…"}</div>;
+    return <div className="mx-auto max-w-4xl p-6 font-semibold">{error || "Loading workout…"}</div>;
   return (
     <div className="mx-auto max-w-4xl px-4 py-6">
-      <Link href="/workouts" className="font-black text-emerald-700">
+      <Link href="/workouts" className="font-semibold text-accent-fg">
         ← Workouts
       </Link>
-      <section className="mt-4 rounded-3xl bg-slate-950 p-6 text-white">
-        <p className="text-sm font-black uppercase text-emerald-300">
+      <section className="mt-4 rounded-2xl bg-slate-950 p-6 text-white">
+        <p className="text-sm font-semibold uppercase text-emerald-300">
           {value.scheduled_date} · {value.status}
         </p>
-        <h1 className="mt-2 text-4xl font-black">{value.name}</h1>
+        <h1 className="mt-2 text-4xl font-semibold">{value.name}</h1>
         <button
           onClick={async () => {
             const s = await startWorkoutSession(supabase, value.id, today());
             router.push(`/workouts/sessions/${s.id}`);
           }}
-          className="mt-5 rounded-full bg-emerald-500 px-5 py-3 font-black"
+          className="mt-5 rounded-xl bg-accent hover:bg-accent-hover px-5 py-3 font-semibold"
         >
           {value.status === "in_progress" ? "Resume Workout" : "Start Workout"}
         </button>
@@ -61,17 +61,17 @@ function ExercisePlan({ exercises }: { exercises: PlannedWorkoutExercise[] }) {
       {exercises
         .sort((a, b) => a.group_order - b.group_order || a.exercise_order - b.exercise_order)
         .map((e) => (
-          <article key={e.id} className="rounded-3xl bg-white p-5 shadow-sm">
-            <p className="text-xs font-black uppercase text-violet-700">
+          <article key={e.id} className="rounded-2xl bg-surface p-5 shadow-sm">
+            <p className="text-xs font-semibold uppercase text-violet-300">
               {e.display_label} · {e.group_type}
             </p>
-            <h2 className="mt-1 text-xl font-black">{e.exercise_name}</h2>
+            <h2 className="mt-1 text-xl font-semibold">{e.exercise_name}</h2>
             <div className="mt-3 space-y-2">
               {e.sets?.map((s) => (
-                <p key={s.id} className="rounded-xl bg-slate-50 p-3 font-bold">
+                <p key={s.id} className="rounded-xl bg-raised p-3 font-bold">
                   Set {s.set_number}: {s.target_weight ?? "—"} ×{" "}
                   {s.target_reps ?? s.target_reps_min ?? "—"}{" "}
-                  <span className="capitalize text-slate-400">· {s.set_type}</span>
+                  <span className="capitalize text-fg-3">· {s.set_type}</span>
                 </p>
               ))}
             </div>
@@ -87,22 +87,22 @@ function TemplateWorkoutDetail() {
     const timer = setTimeout(() => void getWorkoutTemplateById(supabase, id).then(setT), 0);
     return () => clearTimeout(timer);
   }, [id]);
-  if (!t) return <div className="p-6 font-black">Loading template…</div>;
+  if (!t) return <div className="p-6 font-semibold">Loading template…</div>;
   return (
     <div className="mx-auto max-w-4xl px-4 py-6">
-      <Link href="/workouts" className="font-black text-emerald-700">
+      <Link href="/workouts" className="font-semibold text-accent-fg">
         ← Workouts
       </Link>
-      <section className="mt-4 rounded-3xl bg-slate-950 p-6 text-white">
-        <p className="text-sm font-black uppercase text-emerald-300">
+      <section className="mt-4 rounded-2xl bg-slate-950 p-6 text-white">
+        <p className="text-sm font-semibold uppercase text-emerald-300">
           Workout template · {t.is_archived ? "Archived" : "Active"}
         </p>
         <div className="mt-2 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <h1 className="text-4xl font-black">{t.name}</h1>
+          <h1 className="text-4xl font-semibold">{t.name}</h1>
           <Link
             href={`/workouts/templates/${t.id}/edit`}
             aria-label={`Edit ${t.name}`}
-            className="inline-flex min-h-11 items-center justify-center rounded-full bg-white px-5 font-black text-slate-950"
+            className="inline-flex min-h-11 items-center justify-center rounded-xl bg-surface px-5 font-semibold text-fg"
           >
             Edit template
           </Link>
@@ -110,16 +110,16 @@ function TemplateWorkoutDetail() {
       </section>
       <div className="mt-5 space-y-4">
         {t.groups?.map((g) => (
-          <section key={g.id} className="rounded-3xl bg-white p-5">
-            <h2 className="text-xl font-black">
+          <section key={g.id} className="rounded-2xl bg-surface p-5">
+            <h2 className="text-xl font-semibold">
               Group {g.group_label} · <span className="capitalize">{g.group_type}</span>
             </h2>
             {g.exercises?.map((e) => (
-              <article key={e.id} className="mt-3 rounded-2xl bg-slate-50 p-4">
-                <p className="font-black">
+              <article key={e.id} className="mt-3 rounded-2xl bg-raised p-4">
+                <p className="font-semibold">
                   {e.display_label} {e.exercise?.name}
                 </p>
-                <p className="mt-1 text-sm text-slate-500">{e.sets?.length ?? 0} prescribed sets</p>
+                <p className="mt-1 text-sm text-fg-3">{e.sets?.length ?? 0} prescribed sets</p>
               </article>
             ))}
           </section>

@@ -39,6 +39,7 @@ const code = (
             ["episodes/ActiveEpisodes", "ActiveEpisodes"],
             ["checkin/GettingStarted", "GettingStarted"],
             ["timeline/Timeline", "Timeline"],
+            ["today/TodaySummary", "TodaySummary"],
           ])
             mocks[`@/components/${path}`] = `export const ${name}=()=>null;`;
           b.onResolve({ filter: /^(next\/navigation|@\/)/ }, (args) =>

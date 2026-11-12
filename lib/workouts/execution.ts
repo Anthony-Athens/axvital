@@ -1,10 +1,10 @@
 import type { ExerciseTrackingType } from "./exercise-metadata";
 import type { SessionSet } from "./types";
 
-export const WORKOUT_STATUS_HEADER_CLASS = "rounded-xl border border-slate-200 bg-white p-4";
+export const WORKOUT_STATUS_HEADER_CLASS = "rounded-xl border border-line bg-surface p-4";
 
 export const WORKOUT_FINAL_ACTIONS_CLASS =
-  "safe-bottom mt-6 rounded-xl border border-slate-200 bg-white p-4";
+  "safe-bottom mt-6 rounded-xl border border-line bg-surface p-4";
 
 export function orderedSessionSets(sets: SessionSet[] = []) {
   return [...sets].sort((a, b) => a.set_number - b.set_number);
@@ -107,4 +107,37 @@ export function validateActualSetInput(
     },
     errors,
   };
+}
+
+export type SetField = "weight" | "reps" | "duration" | "distance";
+
+/** Inputs to show for a set: what the tracking type needs, plus any field already holding a value. */
+export function visibleSetFields(
+  trackingType: ExerciseTrackingType,
+  existing: Partial<Record<SetField, number | null>> = {},
+): SetField[] {
+  const all: SetField[] = ["weight", "reps", "duration", "distance"];
+  if (trackingType === "custom") return all;
+  const needed: Record<ExerciseTrackingType, SetField[]> = {
+    weight_reps: ["weight", "reps"],
+    bodyweight_reps: ["reps"],
+    repetitions: ["reps"],
+    duration: ["duration"],
+    calories_duration: ["duration"],
+    distance_duration: ["distance", "duration"],
+    completion: [],
+    custom: all,
+  };
+  return all.filter((field) => needed[trackingType].includes(field) || existing[field] != null);
+}
+
+/** Seconds since the most recent completed set, or null when nothing is completed yet. */
+export function secondsSinceLastSet(sets: SessionSet[], now: number) {
+  const latest = sets
+    .map((set) =>
+      set.status === "completed" && set.completed_at ? Date.parse(set.completed_at) : NaN,
+    )
+    .filter((time) => Number.isFinite(time))
+    .sort((a, b) => b - a)[0];
+  return latest === undefined ? null : Math.max(0, Math.floor((now - latest) / 1000));
 }

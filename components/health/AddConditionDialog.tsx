@@ -119,17 +119,17 @@ function AddConditionForm({ categories, catalog, onClose, onAdded }: AddConditio
         aria-labelledby="add-condition-title"
         tabIndex={-1}
         aria-describedby="add-condition-description"
-        className="relative flex h-[calc(var(--sheet-vh,100dvh)-1rem)] box-border min-w-0 w-full max-w-full flex-col overflow-clip rounded-t-2xl bg-white shadow-2xl sm:overflow-hidden sm:h-auto sm:max-h-[calc(var(--sheet-vh,100dvh)-3rem)] sm:max-w-[44rem] sm:rounded-2xl"
+        className="relative flex h-[calc(var(--sheet-vh,100dvh)-1rem)] box-border min-w-0 w-full max-w-full flex-col overflow-clip rounded-t-2xl bg-surface shadow-2xl sm:overflow-hidden sm:h-auto sm:max-h-[calc(var(--sheet-vh,100dvh)-3rem)] sm:max-w-[44rem] sm:rounded-2xl"
       >
         <header
           data-condition-header
-          className="flex shrink-0 items-start justify-between gap-4 border-b border-slate-200 px-5 py-4 sm:px-6"
+          className="flex shrink-0 items-start justify-between gap-4 border-b border-line px-5 py-4 sm:px-6"
         >
           <div>
-            <h2 id="add-condition-title" className="text-xl font-semibold text-slate-900">
+            <h2 id="add-condition-title" className="text-xl font-semibold text-fg">
               Add a condition
             </h2>
-            <p id="add-condition-description" className="mt-1 text-sm text-slate-600">
+            <p id="add-condition-description" className="mt-1 text-sm text-fg-2">
               Choose a catalog condition or add your own.
             </p>
           </div>
@@ -139,7 +139,7 @@ function AddConditionForm({ categories, catalog, onClose, onAdded }: AddConditio
             disabled={saving}
             onClick={close}
             aria-label="Close add condition"
-            className="grid min-h-11 min-w-11 place-items-center rounded-lg bg-slate-100 text-xl focus-visible:ring-2 focus-visible:ring-blue-600"
+            className="grid min-h-11 min-w-11 place-items-center rounded-lg bg-raised text-xl focus-visible:ring-2 focus-visible:ring-accent-fg"
           >
             ×
           </button>
@@ -157,7 +157,7 @@ function AddConditionForm({ categories, catalog, onClose, onAdded }: AddConditio
             <div className="grid min-w-0 max-w-full grid-cols-1 gap-5 [overflow-wrap:anywhere]">
               {!selected && !customMode ? (
                 <>
-                  <label className="grid gap-1.5 text-sm font-semibold text-slate-700">
+                  <label className="grid gap-1.5 text-sm font-semibold text-fg-2">
                     Search conditions
                     <input
                       ref={searchRef}
@@ -169,7 +169,7 @@ function AddConditionForm({ categories, catalog, onClose, onAdded }: AddConditio
                     />
                   </label>
                   <div className="min-w-0 max-w-full">
-                    <p className="text-sm font-semibold text-slate-700">Filter by category</p>
+                    <p className="text-sm font-semibold text-fg-2">Filter by category</p>
                     <div
                       className="mt-2 w-full min-w-0 max-w-full overflow-x-auto overflow-y-hidden overscroll-x-contain pb-2 [-webkit-overflow-scrolling:touch]"
                       aria-label="Condition categories"
@@ -179,7 +179,7 @@ function AddConditionForm({ categories, catalog, onClose, onAdded }: AddConditio
                           type="button"
                           onClick={() => setCategory("")}
                           aria-pressed={!category}
-                          className={`min-h-11 shrink-0 rounded-full px-4 text-sm font-semibold ${!category ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-700"}`}
+                          className={`min-h-11 shrink-0 rounded-xl px-4 text-sm font-semibold ${!category ? "bg-blue-600 text-white" : "bg-raised text-fg-2"}`}
                         >
                           All
                         </button>
@@ -189,7 +189,7 @@ function AddConditionForm({ categories, catalog, onClose, onAdded }: AddConditio
                             type="button"
                             onClick={() => setCategory(item.id)}
                             aria-pressed={category === item.id}
-                            className={`min-h-11 shrink-0 rounded-full px-4 text-sm font-semibold ${category === item.id ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-700"}`}
+                            className={`min-h-11 shrink-0 rounded-xl px-4 text-sm font-semibold ${category === item.id ? "bg-blue-600 text-white" : "bg-raised text-fg-2"}`}
                           >
                             {item.name}
                           </button>
@@ -200,7 +200,7 @@ function AddConditionForm({ categories, catalog, onClose, onAdded }: AddConditio
                   <div aria-live="polite" className="sr-only">
                     {results.length} matching conditions
                   </div>
-                  <div className="rounded-xl border border-slate-200">
+                  <div className="rounded-xl border border-line">
                     {results.length ? (
                       results.map((item) => (
                         <button
@@ -210,24 +210,22 @@ function AddConditionForm({ categories, catalog, onClose, onAdded }: AddConditio
                             setError("");
                             setSelected(item);
                           }}
-                          className="flex min-h-14 w-full items-center justify-between border-b border-slate-100 px-4 py-3 text-left last:border-0 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-600"
+                          className="flex min-h-14 w-full items-center justify-between border-b border-line px-4 py-3 text-left last:border-0 hover:bg-raised focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent-fg"
                         >
                           <span>
-                            <span className="block font-semibold text-slate-900">
+                            <span className="block font-semibold text-fg">
                               {item.name}
                               {item.short_name ? ` (${item.short_name})` : ""}
                             </span>
-                            <span className="block text-sm text-slate-500">
-                              {item.category?.name}
-                            </span>
+                            <span className="block text-sm text-fg-3">{item.category?.name}</span>
                           </span>
                           <span aria-hidden="true">→</span>
                         </button>
                       ))
                     ) : (
                       <div className="p-6 text-center">
-                        <p className="font-semibold text-slate-900">No matching conditions found</p>
-                        <p className="mt-1 text-sm text-slate-600">
+                        <p className="font-semibold text-fg">No matching conditions found</p>
+                        <p className="mt-1 text-sm text-fg-2">
                           Try another search or add a custom condition.
                         </p>
                       </div>
@@ -239,7 +237,7 @@ function AddConditionForm({ categories, catalog, onClose, onAdded }: AddConditio
                       setError("");
                       setCustomMode(true);
                     }}
-                    className="min-h-11 text-left text-sm font-semibold text-blue-700"
+                    className="min-h-11 text-left text-sm font-semibold text-blue-300"
                   >
                     Condition not listed? Add a custom condition
                   </button>
@@ -249,13 +247,13 @@ function AddConditionForm({ categories, catalog, onClose, onAdded }: AddConditio
                   <div
                     ref={selectedRef}
                     tabIndex={-1}
-                    className="rounded-xl border border-blue-200 bg-blue-50 p-4"
+                    className="rounded-xl border border-blue-400/25 bg-blue-500/10 p-4"
                   >
-                    <p className="text-xs font-semibold uppercase tracking-wide text-blue-700">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-blue-300">
                       {customMode ? "Custom condition" : "Selected condition"}
                     </p>
                     {customMode ? (
-                      <label className="mt-2 grid gap-1.5 text-sm font-semibold text-slate-700">
+                      <label className="mt-2 grid gap-1.5 text-sm font-semibold text-fg-2">
                         Condition name
                         <input
                           ref={customRef}
@@ -266,7 +264,7 @@ function AddConditionForm({ categories, catalog, onClose, onAdded }: AddConditio
                         />
                       </label>
                     ) : (
-                      <p className="mt-1 font-semibold text-slate-900">{selected?.name}</p>
+                      <p className="mt-1 font-semibold text-fg">{selected?.name}</p>
                     )}
                     <button
                       type="button"
@@ -275,7 +273,7 @@ function AddConditionForm({ categories, catalog, onClose, onAdded }: AddConditio
                         setSelected(null);
                         setCustomMode(false);
                       }}
-                      className="mt-2 min-h-11 text-sm font-semibold text-blue-700"
+                      className="mt-2 min-h-11 text-sm font-semibold text-blue-300"
                     >
                       Choose a different condition
                     </button>
@@ -292,7 +290,7 @@ function AddConditionForm({ categories, catalog, onClose, onAdded }: AddConditio
           </div>
           <footer
             data-condition-footer
-            className={`safe-bottom flex shrink-0 gap-2 border-t border-slate-200 bg-white px-5 pb-3 pt-3 sm:justify-end sm:px-6 ${stage === "search" ? "sm:hidden" : ""}`}
+            className={`safe-bottom flex shrink-0 gap-2 border-t border-line bg-surface px-5 pb-3 pt-3 sm:justify-end sm:px-6 ${stage === "search" ? "sm:hidden" : ""}`}
           >
             <Button type="button" variant="secondary" disabled={saving} onClick={close}>
               Cancel

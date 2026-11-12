@@ -53,7 +53,7 @@ export default function ResetPasswordPage() {
         <PasswordForm recoveryMode />
       ) : (
         <div className="mt-4 space-y-4">
-          <p role="alert" className="text-sm leading-6 text-slate-600">
+          <p role="alert" className="text-sm leading-6 text-fg-2">
             {INVALID_RECOVERY}
           </p>
           <ButtonLink href="/forgot-password" className="w-full">

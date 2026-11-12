@@ -47,7 +47,7 @@ export function WorkoutTemplateBuilder({ templateId }: { templateId?: string }) 
     [loading, setLoading] = useState(Boolean(templateId)),
     [saving, setSaving] = useState(false),
     [error, setError] = useState("");
-  const input = "mt-1 min-h-11 w-full rounded-xl border border-slate-300 px-3 text-base";
+  const input = "mt-1 min-h-11 w-full rounded-xl border border-line-strong px-3 text-base";
   useEffect(() => {
     if (!templateId) return;
     void getWorkoutTemplateById(supabase, templateId)
@@ -134,20 +134,20 @@ export function WorkoutTemplateBuilder({ templateId }: { templateId?: string }) 
         <p className="text-sm font-bold uppercase tracking-widest text-emerald-300">
           Workout template
         </p>
-        <h1 className="mt-1 text-3xl font-black">
+        <h1 className="mt-1 text-3xl font-semibold">
           {templateId ? "Edit Workout" : "Build a Workout"}
         </h1>
-        <p className="mt-2 text-sm text-slate-300">
+        <p className="mt-2 text-sm text-fg-2">
           Changes apply to workouts scheduled in the future. Existing plans and history stay
           unchanged.
         </p>
       </header>
       {error ? (
-        <p role="alert" className="mt-4 rounded-xl bg-rose-50 p-4 font-semibold text-rose-700">
+        <p role="alert" className="mt-4 rounded-xl bg-rose-500/10 p-4 font-semibold text-rose-300">
           {error}
         </p>
       ) : null}
-      <section className="mt-5 grid gap-4 rounded-2xl bg-white p-4 sm:grid-cols-2">
+      <section className="mt-5 grid gap-4 rounded-2xl bg-surface p-4 sm:grid-cols-2">
         <label className="font-semibold sm:col-span-2">
           Name
           <input
@@ -202,19 +202,19 @@ export function WorkoutTemplateBuilder({ templateId }: { templateId?: string }) 
         </label>
       </section>
       <div className="mt-5 flex items-center justify-between gap-3">
-        <h2 className="text-2xl font-black">Exercise groups</h2>
+        <h2 className="text-2xl font-semibold">Exercise groups</h2>
         <button
           type="button"
           onClick={() => setForm({ ...form, groups: [...form.groups, blankGroup()] })}
-          className="min-h-11 rounded-full bg-emerald-600 px-4 font-bold text-white"
+          className="min-h-11 rounded-xl bg-accent hover:bg-accent-hover px-4 font-bold text-white"
         >
           Add group
         </button>
       </div>
       <div className="mt-4 space-y-4">
         {form.groups.map((g, gi) => (
-          <fieldset key={gi} className="min-w-0 rounded-2xl bg-white p-4 shadow-sm">
-            <legend className="px-2 text-xl font-black">
+          <fieldset key={gi} className="min-w-0 rounded-2xl bg-surface p-4 shadow-sm">
+            <legend className="px-2 text-xl font-semibold">
               Group {String.fromCharCode(65 + gi)}
             </legend>
             <div className="grid gap-3 sm:grid-cols-3">
@@ -283,7 +283,7 @@ export function WorkoutTemplateBuilder({ templateId }: { templateId?: string }) 
               <button
                 type="button"
                 onClick={() => setForm({ ...form, groups: form.groups.filter((_, i) => i !== gi) })}
-                className="min-h-11 rounded-lg px-3 font-semibold text-amber-800"
+                className="min-h-11 rounded-lg px-3 font-semibold text-amber-200"
               >
                 Remove group
               </button>
@@ -296,10 +296,10 @@ export function WorkoutTemplateBuilder({ templateId }: { templateId?: string }) 
               {g.exercises.map((item, ei) => (
                 <article
                   key={`${item.exercise.id}-${ei}`}
-                  className="min-w-0 rounded-xl bg-slate-50 p-3"
+                  className="min-w-0 rounded-xl bg-raised p-3"
                 >
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <h3 className="font-black">
+                    <h3 className="font-semibold">
                       {String.fromCharCode(65 + gi)}
                       {ei + 1} {item.exercise.name}
                     </h3>
@@ -332,7 +332,7 @@ export function WorkoutTemplateBuilder({ templateId }: { templateId?: string }) 
                         onClick={() =>
                           updateGroup(gi, { exercises: g.exercises.filter((_, i) => i !== ei) })
                         }
-                        className="min-h-11 rounded-lg px-2 font-semibold text-amber-800"
+                        className="min-h-11 rounded-lg px-2 font-semibold text-amber-200"
                       >
                         Remove
                       </button>
@@ -475,7 +475,7 @@ export function WorkoutTemplateBuilder({ templateId }: { templateId?: string }) 
                                     sets: x.sets.filter((_, i) => i !== si),
                                   }))
                                 }
-                                className="min-h-11 text-amber-800"
+                                className="min-h-11 text-amber-200"
                               >
                                 Remove
                               </button>
@@ -505,7 +505,7 @@ export function WorkoutTemplateBuilder({ templateId }: { templateId?: string }) 
       </div>
       <button
         disabled={saving}
-        className="mt-6 min-h-14 w-full rounded-full bg-slate-950 text-lg font-black text-white disabled:opacity-60"
+        className="mt-6 min-h-14 w-full rounded-xl bg-accent hover:bg-accent-hover text-lg font-semibold text-white disabled:opacity-60"
       >
         {saving ? "Saving…" : templateId ? "Save Template Changes" : "Save Workout Template"}
       </button>

@@ -317,7 +317,7 @@ export function ObservationalWorkspace() {
       <div className="mt-4" aria-live="polite">
         {error ? <InlineNotice>{error}</InlineNotice> : null}
         {notice ? (
-          <p role="status" className="text-sm text-green-800">
+          <p role="status" className="text-sm text-green-200">
             {notice}
           </p>
         ) : null}

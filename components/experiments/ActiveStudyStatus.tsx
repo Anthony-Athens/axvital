@@ -56,7 +56,7 @@ export function StudyStatusView({ data: d }: { data: StudyStatus }) {
       <Surface className="mt-4">
         <h2 className="text-lg font-semibold">Study Health: {d.health}</h2>
         <p className="mt-2 text-sm">{studyHealthExplanation}</p>
-        <p className="mt-2 text-xs text-slate-500">
+        <p className="mt-2 text-xs text-fg-3">
           Checked {d.checkedAt}. Current-record preview, not a frozen analytical result.
         </p>
       </Surface>

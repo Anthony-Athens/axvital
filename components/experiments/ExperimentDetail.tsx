@@ -109,11 +109,11 @@ export function ExperimentDetail({ id }: { id: string }) {
         <h2 className="font-semibold">Study plan</h2>
         <dl className="mt-3 grid gap-3 sm:grid-cols-2">
           <div>
-            <dt className="text-sm text-slate-500">Status</dt>
+            <dt className="text-sm text-fg-3">Status</dt>
             <dd className="font-semibold capitalize">{x.status.replaceAll("_", " ")}</dd>
           </div>
           <div>
-            <dt className="text-sm text-slate-500">Design</dt>
+            <dt className="text-sm text-fg-3">Design</dt>
             <dd className="font-semibold">
               {x.study_design === "baseline_intervention"
                 ? "Baseline then intervention"
@@ -121,11 +121,11 @@ export function ExperimentDetail({ id }: { id: string }) {
             </dd>
           </div>
           <div>
-            <dt className="text-sm text-slate-500">Intervention</dt>
+            <dt className="text-sm text-fg-3">Intervention</dt>
             <dd className="font-semibold">{x.interventions?.[0]?.name ?? "Not configured"}</dd>
           </div>
           <div>
-            <dt className="text-sm text-slate-500">Primary outcome</dt>
+            <dt className="text-sm text-fg-3">Primary outcome</dt>
             <dd className="font-semibold">
               {x.outcomes?.find((o) => o.outcome_role === "primary")?.name ?? "Not configured"}
             </dd>
@@ -157,11 +157,11 @@ export function ExperimentDetail({ id }: { id: string }) {
           {x.phase_events
             ?.sort((a, b) => b.occurred_at.localeCompare(a.occurred_at))
             .map((e) => (
-              <li key={e.id} className="border-l-2 border-blue-200 pl-3">
+              <li key={e.id} className="border-l-2 border-blue-400/25 pl-3">
                 <p className="text-sm font-semibold capitalize">
                   {e.event_type.replaceAll("_", " ")}
                 </p>
-                <p className="text-xs text-slate-500">{new Date(e.occurred_at).toLocaleString()}</p>
+                <p className="text-xs text-fg-3">{new Date(e.occurred_at).toLocaleString()}</p>
               </li>
             ))}
         </ol>

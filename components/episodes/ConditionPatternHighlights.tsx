@@ -60,17 +60,17 @@ export function ConditionPatternHighlights({ recap = false }: { recap?: boolean 
       <div className="mt-3 grid gap-3 sm:grid-cols-2">
         {patterns.map((x) => (
           <article key={x.id} className="rounded-xl border p-4">
-            <p className="text-sm font-semibold text-blue-700">
+            <p className="text-sm font-semibold text-blue-300">
               {x.conditionLabel} · <span className="capitalize">{x.evidenceStrength}</span>
             </p>
             <h3 className="mt-1 font-semibold">{x.exposureLabel}</h3>
-            <p className="mt-2 text-sm leading-6 text-slate-600">{x.summary}</p>
-            <p className="mt-2 text-xs text-slate-500">
+            <p className="mt-2 text-sm leading-6 text-fg-2">{x.summary}</p>
+            <p className="mt-2 text-xs text-fg-3">
               Possible association; this does not establish causation.
             </p>
             <Link
               href={`/health/conditions/${x.userConditionId}/patterns`}
-              className="mt-2 inline-flex min-h-11 items-center font-semibold text-blue-700"
+              className="mt-2 inline-flex min-h-11 items-center font-semibold text-blue-300"
             >
               Review patterns
             </Link>

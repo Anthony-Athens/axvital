@@ -145,7 +145,7 @@ export function ActivityForm({
     }
   }
   const inputClass =
-    "mt-2 min-h-12 w-full rounded-2xl border border-slate-200 bg-white px-4 text-base font-semibold outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100";
+    "mt-2 min-h-12 w-full rounded-2xl border border-line bg-surface px-4 text-base font-semibold outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30";
   return (
     <SheetDialog
       wide
@@ -160,13 +160,13 @@ export function ActivityForm({
             type="button"
             disabled={saving}
             onClick={onCancel}
-            className="min-h-12 flex-1 rounded-full border border-slate-300 font-black"
+            className="min-h-12 flex-1 rounded-xl border border-line-strong font-semibold"
           >
             Cancel
           </button>
           <button
             disabled={saving}
-            className="min-h-12 flex-1 rounded-full bg-emerald-500 font-black text-white disabled:opacity-60"
+            className="min-h-12 flex-1 rounded-xl bg-accent hover:bg-accent-hover font-semibold text-white disabled:opacity-60"
           >
             {saving ? "Saving…" : activity ? "Save changes" : "Add activity"}
           </button>
@@ -184,7 +184,7 @@ export function ActivityForm({
           />
         </label>
         <label className="font-bold sm:col-span-2">
-          Description <span className="text-slate-400">(optional)</span>
+          Description <span className="text-fg-3">(optional)</span>
           <textarea
             value={form.description ?? ""}
             onChange={(e) => set("description", e.target.value)}
@@ -237,7 +237,7 @@ export function ActivityForm({
           />
         </label>
         <label className="font-bold">
-          Scheduled time <span className="text-slate-400">(optional)</span>
+          Scheduled time <span className="text-fg-3">(optional)</span>
           <input
             type="time"
             value={form.scheduled_time ?? ""}
@@ -246,7 +246,7 @@ export function ActivityForm({
           />
         </label>
         <label className="font-bold">
-          End date <span className="text-slate-400">(optional)</span>
+          End date <span className="text-fg-3">(optional)</span>
           <input
             type="date"
             min={form.start_date}
@@ -256,8 +256,8 @@ export function ActivityForm({
           />
         </label>
         {form.activity_type === "habit" ? (
-          <fieldset className="grid gap-5 rounded-2xl border border-emerald-100 bg-emerald-50/60 p-4 sm:col-span-2 sm:grid-cols-2">
-            <legend className="px-2 font-black text-emerald-800">Habit tracking</legend>
+          <fieldset className="grid gap-5 rounded-2xl border border-emerald-400/25 bg-emerald-500/10 p-4 sm:col-span-2 sm:grid-cols-2">
+            <legend className="px-2 font-semibold text-emerald-200">Habit tracking</legend>
             <label className="font-bold">
               Tracking method
               <select
@@ -306,7 +306,7 @@ export function ActivityForm({
                   </datalist>
                 </label>
                 <label className="font-bold">
-                  Minimum acceptable <span className="text-slate-400">(optional)</span>
+                  Minimum acceptable <span className="text-fg-3">(optional)</span>
                   <input
                     type="number"
                     min="0"
@@ -323,14 +323,14 @@ export function ActivityForm({
                     type="checkbox"
                     checked={form.allow_partial_completion ?? false}
                     onChange={(e) => set("allow_partial_completion", e.target.checked)}
-                    className="h-5 w-5 accent-emerald-500"
+                    className="h-5 w-5 accent-blue-500"
                   />{" "}
                   Allow partial progress
                 </label>
               </>
             ) : null}
             <label className="font-bold">
-              Icon <span className="text-slate-400">(optional)</span>
+              Icon <span className="text-fg-3">(optional)</span>
               <input
                 maxLength={12}
                 value={form.habit_icon ?? ""}
@@ -340,7 +340,7 @@ export function ActivityForm({
               />
             </label>
             <label className="font-bold">
-              Color <span className="text-slate-400">(optional)</span>
+              Color <span className="text-fg-3">(optional)</span>
               <input
                 type="color"
                 value={form.habit_color ?? "#10b981"}
@@ -381,7 +381,7 @@ export function ActivityForm({
                           : [...(form.days_of_week ?? []), day],
                       )
                     }
-                    className={`min-h-11 rounded-xl text-sm font-black ${selected ? "bg-emerald-500 text-white" : "bg-slate-200 text-slate-700"}`}
+                    className={`min-h-11 rounded-xl text-sm font-semibold ${selected ? "bg-accent hover:bg-accent-hover text-white" : "bg-line text-fg-2"}`}
                   >
                     {label}
                   </button>
@@ -396,14 +396,14 @@ export function ActivityForm({
               type="checkbox"
               checked={form.is_active}
               onChange={(e) => set("is_active", e.target.checked)}
-              className="h-5 w-5 accent-emerald-500"
+              className="h-5 w-5 accent-blue-500"
             />{" "}
             Activity is active
           </label>
         ) : null}
       </div>
       {error ? (
-        <p role="alert" className="mt-4 rounded-2xl bg-rose-50 p-3 font-bold text-rose-700">
+        <p role="alert" className="mt-4 rounded-2xl bg-rose-500/10 p-3 font-bold text-rose-300">
           {error}
         </p>
       ) : null}

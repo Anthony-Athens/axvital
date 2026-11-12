@@ -18,22 +18,18 @@ function Detail({ event }: { event: TimelineEvent }) {
     ([, v]) => v !== null && v !== "" && (!Array.isArray(v) || v.length),
   );
   return (
-    <div className="mt-3 border-t border-slate-200 pt-3">
+    <div className="mt-3 border-t border-line pt-3">
       <dl className="grid gap-2 text-sm sm:grid-cols-2">
         {values.slice(0, 8).map(([key, value]) => (
           <div key={key}>
-            <dt className="font-semibold capitalize text-slate-500">
+            <dt className="font-semibold capitalize text-fg-3">
               {key.replaceAll(/([A-Z])/g, " $1")}
             </dt>
-            <dd className="text-slate-900">
-              {Array.isArray(value) ? value.join(", ") : String(value)}
-            </dd>
+            <dd className="text-fg">{Array.isArray(value) ? value.join(", ") : String(value)}</dd>
           </div>
         ))}
       </dl>
-      {event.description ? (
-        <p className="mt-3 text-sm text-slate-700">{event.description}</p>
-      ) : null}
+      {event.description ? <p className="mt-3 text-sm text-fg-2">{event.description}</p> : null}
       <div className="mt-3 flex flex-wrap gap-2">
         {event.detailHref ? (
           <Link
@@ -59,11 +55,8 @@ function Detail({ event }: { event: TimelineEvent }) {
 function Row({ event }: { event: TimelineEvent }) {
   const [open, setOpen] = useState(false);
   return (
-    <li className="grid grid-cols-[4.25rem_minmax(0,1fr)] gap-2 border-b border-slate-100 py-3 last:border-0 sm:grid-cols-[5.5rem_minmax(0,1fr)]">
-      <time
-        dateTime={event.occurredAt}
-        className="pt-3 text-xs font-medium tabular-nums text-slate-500"
-      >
+    <li className="grid grid-cols-[4.25rem_minmax(0,1fr)] gap-2 border-b border-line py-3 last:border-0 sm:grid-cols-[5.5rem_minmax(0,1fr)]">
+      <time dateTime={event.occurredAt} className="pt-3 text-xs font-medium tabular-nums text-fg-3">
         {event.logicalDate ? "Daily" : formatTimelineTime(event.occurredAt)}
       </time>
       <div className="relative min-w-0 pl-5 before:absolute before:left-0 before:top-4 before:h-2 before:w-2 before:rounded-full before:bg-blue-600">
@@ -71,14 +64,14 @@ function Row({ event }: { event: TimelineEvent }) {
           type="button"
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
-          className="min-h-11 w-full rounded-lg text-left outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+          className="min-h-11 w-full rounded-lg text-left outline-none focus-visible:ring-2 focus-visible:ring-accent-fg"
         >
-          <span className="block font-semibold text-slate-900">{event.title}</span>
+          <span className="block font-semibold text-fg">{event.title}</span>
           {event.subtitle ? (
-            <span className="mt-0.5 block text-sm text-slate-600">{event.subtitle}</span>
+            <span className="mt-0.5 block text-sm text-fg-2">{event.subtitle}</span>
           ) : null}
           {event.status ? (
-            <span className="mt-1 block text-xs font-semibold capitalize text-slate-500">
+            <span className="mt-1 block text-xs font-semibold capitalize text-fg-3">
               Status: {event.status.replaceAll("_", " ")}
             </span>
           ) : null}
@@ -147,24 +140,24 @@ export function Timeline({
   return (
     <section
       aria-labelledby="timeline-heading"
-      className="rounded-xl border border-slate-200 bg-white p-4 sm:p-5"
+      className="rounded-xl border border-line bg-surface p-4 sm:p-5"
     >
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 id="timeline-heading" className="text-lg font-semibold text-slate-900">
+          <h2 id="timeline-heading" className="text-lg font-semibold text-fg">
             {title ?? (history ? "Health Timeline" : "Today’s Timeline")}
           </h2>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-sm text-fg-3">
             Health, activity, nutrition, symptoms, and routines together.
           </p>
         </div>
-        <label className="text-sm font-semibold text-slate-700">
+        <label className="text-sm font-semibold text-fg-2">
           Event category
           <select
             aria-label="Filter timeline by event category"
             value={filter}
             onChange={(e) => setFilter(e.target.value as TimelineFilter)}
-            className="ml-2 min-h-11 rounded-lg border border-slate-300 bg-white px-3"
+            className="ml-2 min-h-11 rounded-lg border border-line-strong bg-surface px-3"
           >
             {Object.entries(labels).map(([value, label]) => (
               <option key={value} value={value}>
@@ -177,7 +170,7 @@ export function Timeline({
       {failed.length ? (
         <div
           role="status"
-          className="mt-3 flex items-center justify-between gap-3 rounded-lg bg-amber-50 p-3 text-sm text-amber-900"
+          className="mt-3 flex items-center justify-between gap-3 rounded-lg bg-amber-500/10 p-3 text-sm text-amber-100"
         >
           <span>Some timeline data could not be loaded.</span>
           <button onClick={() => void load()} className="min-h-11 font-semibold">
@@ -186,7 +179,7 @@ export function Timeline({
         </div>
       ) : null}
       {error ? (
-        <div role="alert" className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-800">
+        <div role="alert" className="mt-4 rounded-lg bg-red-500/10 p-3 text-sm text-red-200">
           {error}{" "}
           <button onClick={() => void load()} className="min-h-11 font-semibold underline">
             Retry
@@ -195,15 +188,15 @@ export function Timeline({
       ) : null}
       {loading ? (
         <div aria-busy="true" className="mt-4 space-y-3">
-          <div className="h-14 animate-pulse rounded-lg bg-slate-100" />
-          <div className="h-14 animate-pulse rounded-lg bg-slate-100" />
+          <div className="h-14 animate-pulse rounded-lg bg-raised" />
+          <div className="h-14 animate-pulse rounded-lg bg-raised" />
           <span className="sr-only">Loading timeline</span>
         </div>
       ) : null}
       {!loading && !error && !visible.length ? (
         <p
           role="status"
-          className="mt-5 rounded-lg border border-dashed p-5 text-center text-sm text-slate-600"
+          className="mt-5 rounded-lg border border-dashed p-5 text-center text-sm text-fg-2"
         >
           {events.length
             ? "No matching events. Try another event category or date."
@@ -215,7 +208,7 @@ export function Timeline({
       {!loading
         ? groups.map(([date, items]) => (
             <section key={date} className="mt-5" aria-labelledby={`timeline-${date}`}>
-              <h3 id={`timeline-${date}`} className="text-sm font-semibold text-slate-700">
+              <h3 id={`timeline-${date}`} className="text-sm font-semibold text-fg-2">
                 {date === "unknown"
                   ? "Unknown date"
                   : new Intl.DateTimeFormat(undefined, {

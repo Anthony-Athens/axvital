@@ -45,19 +45,19 @@ export function ContactForm() {
   }
 
   const control =
-    "mt-2 min-h-12 w-full rounded-lg border border-slate-300 bg-white px-4 text-base outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100";
+    "mt-2 min-h-12 w-full rounded-lg border border-line-strong bg-surface px-4 text-base outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-500/30";
   return (
     <form
       ref={formRef}
       onSubmit={submit}
-      className="mt-5 space-y-4 rounded-xl border border-slate-200 bg-slate-50 p-4 sm:p-5"
+      className="mt-5 space-y-4 rounded-xl border border-line bg-raised p-4 sm:p-5"
     >
       <div className="grid gap-4 sm:grid-cols-2">
-        <label className="text-sm font-semibold text-slate-700">
+        <label className="text-sm font-semibold text-fg-2">
           Name
           <input name="name" autoComplete="name" required maxLength={120} className={control} />
         </label>
-        <label className="text-sm font-semibold text-slate-700">
+        <label className="text-sm font-semibold text-fg-2">
           Email
           <input
             name="email"
@@ -69,7 +69,7 @@ export function ContactForm() {
           />
         </label>
       </div>
-      <label className="block text-sm font-semibold text-slate-700">
+      <label className="block text-sm font-semibold text-fg-2">
         Topic
         <select name="topic" required defaultValue="" className={control}>
           <option value="" disabled>
@@ -80,7 +80,7 @@ export function ContactForm() {
           ))}
         </select>
       </label>
-      <label className="block text-sm font-semibold text-slate-700">
+      <label className="block text-sm font-semibold text-fg-2">
         Message
         <textarea
           name="message"
@@ -95,13 +95,13 @@ export function ContactForm() {
         Website
         <input name="website" tabIndex={-1} autoComplete="off" />
       </label>
-      <p className="text-sm text-slate-600">
+      <p className="text-sm text-fg-2">
         Please do not include sensitive medical information in your message.
       </p>
       {message ? (
         <p
           role={success ? "status" : "alert"}
-          className={`rounded-lg p-3 text-sm font-semibold ${success ? "bg-emerald-50 text-emerald-800" : "bg-amber-50 text-amber-900"}`}
+          className={`rounded-lg p-3 text-sm font-semibold ${success ? "bg-emerald-500/10 text-emerald-200" : "bg-amber-500/10 text-amber-100"}`}
         >
           {message}
         </p>
@@ -109,7 +109,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={pending}
-        className="min-h-12 w-full rounded-lg bg-blue-600 px-5 font-semibold text-white hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 disabled:bg-slate-400"
+        className="min-h-12 w-full rounded-lg bg-blue-600 px-5 font-semibold text-white hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-accent-fg focus-visible:ring-offset-2 disabled:bg-slate-600"
       >
         {pending ? "Sending…" : "Send message"}
       </button>

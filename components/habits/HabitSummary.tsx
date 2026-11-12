@@ -48,23 +48,23 @@ export function HabitSummary() {
     return () => clearTimeout(timer);
   }, []);
   return (
-    <section className="mt-5 rounded-3xl border border-emerald-100 bg-emerald-50 p-5 shadow-sm md:p-6">
+    <section className="mt-5 rounded-2xl border border-emerald-400/25 bg-emerald-500/10 p-5 shadow-sm md:p-6">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-sm font-black uppercase tracking-widest text-emerald-700">Habits</p>
-          <h2 className="mt-2 text-2xl font-black">
+          <p className="text-sm font-semibold uppercase tracking-widest text-emerald-300">Habits</p>
+          <h2 className="mt-2 text-2xl font-semibold">
             {data ? `${data.done} of ${data.total} completed today` : "Loading habit summary…"}
           </h2>
         </div>
         <Link
           href="/habits"
-          className="rounded-full bg-slate-950 px-4 py-3 text-xs font-black text-white"
+          className="rounded-xl bg-accent hover:bg-accent-hover px-4 py-3 text-xs font-semibold text-white"
         >
           View Habits
         </Link>
       </div>
       {data ? (
-        <div className="mt-4 flex gap-4 font-bold text-slate-600">
+        <div className="mt-4 flex gap-4 font-bold text-fg-2">
           <span>{data.rate}% adherence this week</span>
           <span>Longest streak: {data.streak} days</span>
         </div>

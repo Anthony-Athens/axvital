@@ -83,7 +83,7 @@ export function PasswordForm({ recoveryMode = false }: { recoveryMode?: boolean 
           ref={feedback}
           tabIndex={-1}
           role="status"
-          className="rounded-lg bg-emerald-50 p-4 text-sm text-emerald-800"
+          className="rounded-lg bg-emerald-500/10 p-4 text-sm text-emerald-200"
         >
           {message ||
             (recoveryMode
@@ -122,7 +122,7 @@ export function PasswordForm({ recoveryMode = false }: { recoveryMode?: boolean 
 
   return (
     <form onSubmit={update} className="mt-6 space-y-4" aria-busy={loading}>
-      <p id="password-help" className="text-sm text-slate-600">
+      <p id="password-help" className="text-sm text-fg-2">
         {PASSWORD_HELP}
       </p>
       {(
@@ -168,7 +168,7 @@ export function PasswordForm({ recoveryMode = false }: { recoveryMode?: boolean 
           ref={feedback}
           tabIndex={-1}
           role="alert"
-          className="rounded-lg bg-amber-50 p-4 text-sm leading-6 text-amber-900"
+          className="rounded-lg bg-amber-500/10 p-4 text-sm leading-6 text-amber-100"
         >
           {message}
         </p>

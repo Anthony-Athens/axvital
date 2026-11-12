@@ -51,18 +51,20 @@ export function TemplateDetail() {
     }
   }
   if (!value)
-    return <div className="mx-auto max-w-4xl p-6 font-black">{error || "Loading protocol…"}</div>;
+    return (
+      <div className="mx-auto max-w-4xl p-6 font-semibold">{error || "Loading protocol…"}</div>
+    );
   return (
     <div className="mx-auto max-w-4xl px-4 py-6 md:px-6 md:py-10">
-      <Link href="/protocols" className="font-black text-emerald-700">
+      <Link href="/protocols" className="font-semibold text-accent-fg">
         ← Protocols
       </Link>
-      <section className="mt-4 rounded-3xl bg-slate-950 p-6 text-white md:p-8">
-        <p className="text-sm font-black uppercase tracking-widest text-emerald-300">
+      <section className="mt-4 rounded-2xl bg-slate-950 p-6 text-white md:p-8">
+        <p className="text-sm font-semibold uppercase tracking-widest text-emerald-300">
           {value.category} · {value.difficulty ?? "Custom"}
         </p>
-        <h1 className="mt-2 text-4xl font-black">{value.name}</h1>
-        <p className="mt-3 text-slate-300">{value.goal || value.description || "No goal added."}</p>
+        <h1 className="mt-2 text-4xl font-semibold">{value.name}</h1>
+        <p className="mt-3 text-fg-2">{value.goal || value.description || "No goal added."}</p>
         <p className="mt-4 font-bold">
           {value.duration_days ? `${value.duration_days} days` : "Flexible duration"} ·{" "}
           {value.activities?.length ?? 0} activities
@@ -71,7 +73,7 @@ export function TemplateDetail() {
           {!value.is_archived ? (
             <button
               onClick={() => setStart(true)}
-              className="rounded-full bg-emerald-500 px-5 py-3 font-black"
+              className="rounded-xl bg-accent hover:bg-accent-hover px-5 py-3 font-semibold"
             >
               Start Protocol
             </button>
@@ -79,39 +81,39 @@ export function TemplateDetail() {
           <button
             disabled={busy}
             onClick={() => void duplicate()}
-            className="rounded-full bg-white/10 px-5 py-3 font-black"
+            className="rounded-xl bg-white/10 px-5 py-3 font-semibold"
           >
             Duplicate
           </button>
           <Link
             href={`/protocols/templates/${value.id}/edit`}
-            className="rounded-full bg-white/10 px-5 py-3 font-black"
+            className="rounded-xl bg-white/10 px-5 py-3 font-semibold"
           >
             Edit
           </Link>
         </div>
       </section>
-      <section className="mt-5 rounded-3xl bg-white p-5 shadow-sm">
-        <h2 className="text-2xl font-black">Schedule</h2>
+      <section className="mt-5 rounded-2xl bg-surface p-5 shadow-sm">
+        <h2 className="text-2xl font-semibold">Schedule</h2>
         <div className="mt-4 space-y-3">
           {value.activities?.map((a, i) => (
-            <article key={a.id} className="rounded-2xl bg-slate-50 p-4">
+            <article key={a.id} className="rounded-2xl bg-raised p-4">
               <div className="flex justify-between">
-                <h3 className="font-black">
+                <h3 className="font-semibold">
                   {i + 1}. {a.title}
                 </h3>
-                <span className="text-xs font-black uppercase text-slate-500">
+                <span className="text-xs font-semibold uppercase text-fg-3">
                   {a.is_required ? "Required" : "Optional"}
                 </span>
               </div>
-              <p className="mt-1 text-sm font-semibold capitalize text-slate-500">
+              <p className="mt-1 text-sm font-semibold capitalize text-fg-3">
                 {a.schedule_type.replace("_", " ")} · {a.tracking_type}
                 {a.target_value ? ` · ${a.target_value} ${a.target_unit}` : ""}
               </p>
             </article>
           ))}
           {!value.activities?.length ? (
-            <p className="rounded-2xl bg-slate-50 p-5 text-slate-500">
+            <p className="rounded-2xl bg-raised p-5 text-fg-3">
               This protocol does not have any activities yet.
             </p>
           ) : null}

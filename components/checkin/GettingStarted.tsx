@@ -90,17 +90,15 @@ export function GettingStarted({ checkinComplete }: { checkinComplete: boolean }
   return (
     <section
       aria-labelledby="getting-started-title"
-      className="mt-5 rounded-xl border border-blue-200 bg-blue-50/70 p-4 sm:p-5"
+      className="rounded-2xl border border-line bg-surface p-4 sm:p-5"
     >
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wide text-blue-700">
-            Track → Learn → Test
-          </p>
-          <h2 id="getting-started-title" className="mt-1 text-lg font-semibold text-slate-950">
+          <p className="text-[13px] font-medium text-accent-fg">Track → Learn → Test</p>
+          <h2 id="getting-started-title" className="mt-1 text-lg font-semibold text-fg">
             Getting Started
           </h2>
-          <p className="mt-1 text-sm text-slate-600">
+          <p className="mt-1 text-sm text-fg-2">
             Start with one check-in and one meaningful log. Patterns become more useful as your
             history grows.
           </p>
@@ -111,16 +109,16 @@ export function GettingStarted({ checkinComplete }: { checkinComplete: boolean }
             localStorage.setItem(DISMISSED_KEY, "true");
             setDismissed(true);
           }}
-          className="min-h-11 shrink-0 rounded-lg px-2 text-sm font-semibold text-slate-600 hover:bg-white focus-visible:ring-2 focus-visible:ring-blue-600"
+          className="min-h-11 shrink-0 rounded-lg px-2 text-sm font-semibold text-fg-2 hover:bg-raised focus-visible:ring-2 focus-visible:ring-accent-fg"
           aria-label="Dismiss Getting Started"
         >
           Dismiss
         </button>
       </div>
-      <p className="mt-3 text-sm font-semibold text-slate-700" role="status">
+      <p className="mt-3 text-sm font-semibold text-fg-2" role="status">
         {completed} of {items.length} complete
       </p>
-      <ul className="mt-2 grid gap-2 sm:grid-cols-2">
+      <ul className="mt-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((item) => (
           <li key={item.label}>
             <Link
@@ -134,17 +132,12 @@ export function GettingStarted({ checkinComplete }: { checkinComplete: boolean }
                   }));
                 }
               }}
-              className="flex min-h-11 items-center gap-3 rounded-lg bg-white px-3 py-2 text-sm font-semibold text-slate-800 outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+              className="flex min-h-11 items-center gap-3 rounded-xl bg-raised px-3 py-2 text-sm font-semibold text-fg hover:bg-line outline-none focus-visible:ring-2 focus-visible:ring-accent-fg"
             >
-              <span
-                aria-hidden="true"
-                className={item.done ? "text-emerald-700" : "text-slate-400"}
-              >
+              <span aria-hidden="true" className={item.done ? "text-emerald-300" : "text-fg-3"}>
                 {item.done ? "✓" : "○"}
               </span>
-              <span className={item.done ? "line-through decoration-slate-400" : ""}>
-                {item.label}
-              </span>
+              <span className={item.done ? "text-fg-3 line-through" : ""}>{item.label}</span>
               <span className="sr-only">{item.done ? "Completed" : "Not completed"}</span>
             </Link>
           </li>

@@ -11,7 +11,7 @@ export default function DeletedPage() {
         title="Account closure"
         description="If you reached this page after a confirmed deletion, your AXVital sign-in and active application records have been removed."
       />
-      <p className="mt-5 text-slate-600">
+      <p className="mt-5 text-fg-2">
         This page alone is not proof of deletion. If the operation reported an error or lost
         connection, check with Support. Previously downloaded files and provider-retained records
         are not erased from this page.

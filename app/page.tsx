@@ -96,15 +96,15 @@ export default function Home() {
               <br />
               <span className="text-blue-400">Your answers.</span>
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300 sm:text-xl">
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-fg-2 sm:text-xl">
               Bring your daily health information together, understand patterns in your history, and
               deliberately test the changes that matter to you.
             </p>
             <p className="mt-7 max-w-2xl text-base font-semibold leading-7 sm:text-lg">
               <span className="text-blue-300">Track what matters</span>
-              <span className="mx-2 text-slate-600">→</span>
+              <span className="mx-2 text-fg-2">→</span>
               <span className="text-blue-300">Learn what affects you</span>
-              <span className="mx-2 text-slate-600">→</span>
+              <span className="mx-2 text-fg-2">→</span>
               <span className="text-blue-300">Test what works</span>
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -124,10 +124,10 @@ export default function Home() {
           </div>
           <div className="relative mx-auto w-full max-w-xl lg:mx-0">
             <div className="absolute -inset-8 -z-10 rounded-full bg-blue-600/10 blur-3xl" />
-            <div className="overflow-hidden rounded-[1.75rem] border border-white/10 bg-slate-900/90 p-3 shadow-2xl shadow-black/40">
-              <div className="rounded-[1.25rem] bg-slate-50 p-5 text-slate-950 sm:p-6">
-                <div className="border-b border-slate-200 pb-5">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+            <div className="overflow-hidden rounded-[1.75rem] border border-line bg-slate-900/90 p-3 shadow-2xl shadow-black/40">
+              <div className="rounded-[1.25rem] bg-raised p-5 text-fg sm:p-6">
+                <div className="border-b border-line pb-5">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-fg-3">
                     Today
                   </p>
                   <p className="mt-1 text-2xl font-semibold tracking-tight">Your day at a glance</p>
@@ -138,8 +138,8 @@ export default function Home() {
                     ["Energy", "8 / 10"],
                     ["Protein", "142g"],
                   ].map(([label, value]) => (
-                    <div key={label} className="rounded-xl border border-slate-200 bg-white p-4">
-                      <p className="text-sm font-medium text-slate-500">{label}</p>
+                    <div key={label} className="rounded-xl border border-line bg-surface p-4">
+                      <p className="text-sm font-medium text-fg-3">{label}</p>
                       <p className="mt-1 text-lg font-semibold">{value}</p>
                     </div>
                   ))}
@@ -159,28 +159,28 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="how-it-works" className="bg-white px-4 py-16 sm:px-6 lg:py-24">
+      <section id="how-it-works" className="bg-surface px-4 py-16 sm:px-6 lg:py-24">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-700">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-300">
                 How AXVital works
               </p>
               <h2 className="mt-4 max-w-xl text-4xl font-semibold leading-tight tracking-[-0.04em] sm:text-5xl">
                 Turn daily tracking into useful personal questions.
               </h2>
             </div>
-            <p className="max-w-2xl text-lg leading-8 text-slate-600 lg:justify-self-end">
+            <p className="max-w-2xl text-lg leading-8 text-fg-2 lg:justify-self-end">
               Tracking creates the history. Learning surfaces patterns. Experiments help you test a
               deliberate change and decide what appears worth keeping.
             </p>
           </div>
-          <ol className="mt-10 grid gap-px overflow-hidden rounded-2xl border border-slate-200 bg-slate-200 sm:grid-cols-2 lg:grid-cols-4">
+          <ol className="mt-10 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
             {steps.map(([title, body], index) => (
-              <li key={title} className="bg-white p-6">
-                <p className="text-sm font-semibold text-blue-700">0{index + 1}</p>
+              <li key={title} className="bg-surface p-6">
+                <p className="text-sm font-semibold text-blue-300">0{index + 1}</p>
                 <h3 className="mt-6 text-2xl font-semibold tracking-tight">{title}</h3>
-                <p className="mt-3 text-sm leading-6 text-slate-600">{body}</p>
+                <p className="mt-3 text-sm leading-6 text-fg-2">{body}</p>
               </li>
             ))}
           </ol>
@@ -201,7 +201,7 @@ export default function Home() {
               <h2 className="mt-4 text-4xl font-semibold tracking-[-0.04em] sm:text-5xl">
                 Health advice tells you what might work. Test what appears to work for you.
               </h2>
-              <p className="mt-6 text-lg leading-8 text-slate-300">
+              <p className="mt-6 text-lg leading-8 text-fg-2">
                 You bring the question. AXVital helps structure the test—without requiring you to be
                 a statistician.
               </p>
@@ -210,13 +210,13 @@ export default function Home() {
               </p>
               <ol className="mt-7 space-y-3">
                 {experimentProcess.map((step, index) => (
-                  <li key={step} className="flex gap-3 text-sm leading-6 text-slate-300">
+                  <li key={step} className="flex gap-3 text-sm leading-6 text-fg-2">
                     <span className="font-semibold text-blue-300">{index + 1}.</span>
                     {step}
                   </li>
                 ))}
               </ol>
-              <p className="mt-7 text-sm leading-6 text-slate-400">
+              <p className="mt-7 text-sm leading-6 text-fg-3">
                 Results can inform your personal decisions without proving universal cause and
                 effect.
               </p>
@@ -236,7 +236,7 @@ export default function Home() {
           <div className="mt-12 flex flex-col items-center justify-between gap-5 rounded-2xl border border-slate-700 bg-slate-900 p-6 text-center sm:flex-row sm:text-left">
             <div>
               <p className="text-xl font-semibold">Ready to test a question of your own?</p>
-              <p className="mt-1 text-sm text-slate-400">
+              <p className="mt-1 text-sm text-fg-3">
                 Start with the health information that matters to you.
               </p>
             </div>
@@ -258,27 +258,27 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="product-experience" className="bg-slate-50 px-4 py-16 sm:px-6 lg:py-24">
+      <section id="product-experience" className="bg-raised px-4 py-16 sm:px-6 lg:py-24">
         <div className="mx-auto max-w-7xl">
           <div className="max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-700">
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-300">
               How you use AXVital
             </p>
             <h2 className="mt-4 text-4xl font-semibold tracking-[-0.04em] sm:text-5xl">
               Build the context behind better questions.
             </h2>
-            <p className="mt-5 text-lg leading-8 text-slate-600">
+            <p className="mt-5 text-lg leading-8 text-fg-2">
               Your goals and health context help AXVital organize what you track, what you learn
               from, and what you may want to test.
             </p>
           </div>
           <div className="mt-10 grid gap-4 lg:grid-cols-3">
             {experience.map(([title, body, detail], index) => (
-              <article key={title} className="rounded-2xl border border-slate-200 bg-white p-6">
-                <p className="text-sm font-semibold text-blue-700">0{index + 1}</p>
+              <article key={title} className="rounded-2xl border border-line bg-surface p-6">
+                <p className="text-sm font-semibold text-blue-300">0{index + 1}</p>
                 <h3 className="mt-6 text-2xl font-semibold tracking-tight">{title}</h3>
-                <p className="mt-3 leading-7 text-slate-600">{body}</p>
-                <p className="mt-6 border-t border-slate-100 pt-4 text-sm font-medium text-slate-500">
+                <p className="mt-3 leading-7 text-fg-2">{body}</p>
+                <p className="mt-6 border-t border-line pt-4 text-sm font-medium text-fg-3">
                   {detail}
                 </p>
               </article>
@@ -287,10 +287,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-white px-4 py-16 sm:px-6 lg:py-24">
+      <section className="bg-surface px-4 py-16 sm:px-6 lg:py-24">
         <div className="mx-auto max-w-7xl">
           <div className="max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-700">
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-300">
               Built around your goal
             </p>
             <h2 className="mt-4 text-4xl font-semibold tracking-[-0.04em] sm:text-5xl">
@@ -301,18 +301,18 @@ export default function Home() {
             {useCases.map(([title, track, learn, test], index) => (
               <article
                 key={title}
-                className={`rounded-2xl border p-6 ${index === useCases.length - 1 ? "border-blue-200 bg-blue-50 lg:col-span-2" : "border-slate-200 bg-white"}`}
+                className={`rounded-2xl border p-6 ${index === useCases.length - 1 ? "border-blue-400/25 bg-blue-500/10 lg:col-span-2" : "border-line bg-surface"}`}
               >
                 <h3 className="text-xl font-semibold">{title}</h3>
-                <div className="mt-5 space-y-3 text-sm leading-6 text-slate-600">
+                <div className="mt-5 space-y-3 text-sm leading-6 text-fg-2">
                   <p>
-                    <strong className="text-slate-900">Track:</strong> Track {track}.
+                    <strong className="text-fg">Track:</strong> Track {track}.
                   </p>
                   <p>
-                    <strong className="text-slate-900">Learn:</strong> Learn {learn}.
+                    <strong className="text-fg">Learn:</strong> Learn {learn}.
                   </p>
                   <p>
-                    <strong className="text-slate-900">Test:</strong> Test {test}.
+                    <strong className="text-fg">Test:</strong> Test {test}.
                   </p>
                 </div>
               </article>
@@ -327,16 +327,16 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-slate-50 px-4 py-16 sm:px-6 lg:py-20">
-        <div className="mx-auto grid max-w-7xl gap-8 rounded-3xl border border-slate-200 bg-white p-7 sm:p-10 lg:grid-cols-[1fr_auto] lg:items-center lg:p-12">
+      <section className="bg-raised px-4 py-16 sm:px-6 lg:py-20">
+        <div className="mx-auto grid max-w-7xl gap-8 rounded-2xl border border-line bg-surface p-7 sm:p-10 lg:grid-cols-[1fr_auto] lg:items-center lg:p-12">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-700">
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-300">
               Privacy & trust
             </p>
             <h2 className="mt-4 text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">
               Clear controls for personal health information.
             </h2>
-            <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-600">
+            <p className="mt-5 max-w-3xl text-lg leading-8 text-fg-2">
               AXVital provides account-level access controls, data export, account deletion, and
               public information about how personal data is handled.
             </p>
@@ -344,13 +344,13 @@ export default function Home() {
           <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
             <Link
               href="/privacy"
-              className="flex min-h-12 items-center justify-center rounded-xl bg-slate-950 px-6 font-semibold text-white"
+              className="flex min-h-12 items-center justify-center rounded-xl bg-accent hover:bg-accent-hover px-6 font-semibold text-white"
             >
               Privacy
             </Link>
             <Link
               href="/terms"
-              className="flex min-h-12 items-center justify-center rounded-xl border border-slate-300 bg-white px-6 font-semibold text-slate-900"
+              className="flex min-h-12 items-center justify-center rounded-xl border border-line-strong bg-surface px-6 font-semibold text-fg"
             >
               Terms
             </Link>
@@ -363,7 +363,7 @@ export default function Home() {
           <h2 className="text-4xl font-semibold tracking-[-0.045em] sm:text-6xl">
             Start learning from your health.
           </h2>
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300">
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-fg-2">
             Track what matters. Learn what affects you. Test what works.
           </p>
           <Link

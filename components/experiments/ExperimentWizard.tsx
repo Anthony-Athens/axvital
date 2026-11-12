@@ -443,7 +443,7 @@ export function ExperimentWizard({ draftId }: { draftId?: string }) {
           <li
             key={s}
             aria-current={step === i ? "step" : undefined}
-            className={`rounded-full px-3 py-2 ${step === i ? "bg-blue-600 font-semibold text-white" : "bg-slate-100 text-slate-600"}`}
+            className={`rounded-full px-3 py-2 ${step === i ? "bg-blue-600 font-semibold text-white" : "bg-raised text-fg-2"}`}
           >
             {i + 1}. {s}
           </li>
@@ -489,7 +489,7 @@ export function ExperimentWizard({ draftId }: { draftId?: string }) {
       {notice ? <InlineNotice tone="success">{notice}</InlineNotice> : null}
       <Surface className="mt-4">
         {stepNotice ? (
-          <p id="wizard-step-error" role="alert" className="mb-3 text-sm text-red-700">
+          <p id="wizard-step-error" role="alert" className="mb-3 text-sm text-red-300">
             {stepNotice}
           </p>
         ) : null}
@@ -514,7 +514,7 @@ export function ExperimentWizard({ draftId }: { draftId?: string }) {
               {discovery.goalGroups.map((g) => (
                 <label
                   key={g}
-                  className="flex min-h-14 cursor-pointer items-center gap-3 rounded-xl border p-4 has-[:checked]:border-blue-600 has-[:checked]:bg-blue-50"
+                  className="flex min-h-14 cursor-pointer items-center gap-3 rounded-xl border p-4 has-[:checked]:border-blue-600 has-[:checked]:bg-blue-500/10"
                 >
                   <input
                     type="radio"
@@ -536,14 +536,14 @@ export function ExperimentWizard({ draftId }: { draftId?: string }) {
           ) : null}
           {step === 1 ? (
             <>
-              <p className="text-sm text-slate-600">
+              <p className="text-sm text-fg-2">
                 This is the result AXVital will compare before and during your experiment.
               </p>
               {outcomeChoices(discovery, goal).length ? (
                 outcomeChoices(discovery, goal).map((o) => (
                   <label
                     key={o.registryKey}
-                    className={`block rounded-xl border p-4 ${o.enabled ? "cursor-pointer" : "bg-slate-50 text-slate-500"}`}
+                    className={`block rounded-xl border p-4 ${o.enabled ? "cursor-pointer" : "bg-raised text-fg-3"}`}
                   >
                     <span className="flex min-h-11 items-center gap-3">
                       <input
@@ -641,7 +641,7 @@ export function ExperimentWizard({ draftId }: { draftId?: string }) {
           ) : null}
           {step === 2 ? (
             <>
-              <p className="text-sm text-slate-600">
+              <p className="text-sm text-fg-2">
                 Choose one thing to try. AXVital will track it using the saved item you select.
               </p>
               <label className="grid gap-1 text-sm font-semibold">
@@ -738,7 +738,7 @@ export function ExperimentWizard({ draftId }: { draftId?: string }) {
               <ButtonLink href={change.href} variant="secondary">
                 Manage saved {change.label.toLowerCase()}s
               </ButtonLink>
-              <p className="text-sm text-slate-600">
+              <p className="text-sm text-fg-2">
                 For supplements, lifestyle or other behavior changes, use a saved habit or protocol.
                 Freeform changes are not supported in this flow. Discuss supplement safety with a
                 qualified professional; do not use this flow to change prescribed treatment.
@@ -747,11 +747,11 @@ export function ExperimentWizard({ draftId }: { draftId?: string }) {
           ) : null}
           {step === 3 ? (
             <>
-              <p className="text-sm text-slate-600">
+              <p className="text-sm text-fg-2">
                 AXVital recommends a {duration}-day experiment for this measurement. This is a
                 product-policy default, not a statistically optimized duration.
               </p>
-              <div className="rounded-xl bg-blue-50 p-4">
+              <div className="rounded-xl bg-blue-500/10 p-4">
                 <p className="font-semibold">Recommended plan</p>
                 <p className="text-sm">
                   Use your recent tracked data as the starting point, begin today, and track for{" "}
@@ -884,7 +884,7 @@ export function ExperimentWizard({ draftId }: { draftId?: string }) {
                       ))}
                     </select>
                   </label>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-fg-3">
                     For a custom duration, edit the end date. Start must be today when you begin.
                   </p>
                   {choice?.recommendedWindowDays ? (
@@ -959,7 +959,7 @@ export function ExperimentWizard({ draftId }: { draftId?: string }) {
                   ["Question", question],
                 ].map(([label, value]) => (
                   <div key={label}>
-                    <dt className="text-slate-500">{label}</dt>
+                    <dt className="text-fg-3">{label}</dt>
                     <dd className="mt-1 break-words font-semibold">{value}</dd>
                   </div>
                 ))}
@@ -978,7 +978,7 @@ export function ExperimentWizard({ draftId }: { draftId?: string }) {
                   {input.outcomes!.length - 1} saved secondary measurement(s) will be preserved.
                 </p>
               ) : null}
-              <p className="text-sm text-slate-600">
+              <p className="text-sm text-fg-2">
                 AXVital will compare what you observed before and during the experiment. Results can
                 identify patterns and differences, but they may not prove that the change caused the
                 outcome.
@@ -1024,7 +1024,7 @@ export function ExperimentWizard({ draftId }: { draftId?: string }) {
           )
         ) : null}
       </Surface>
-      <div className="sticky bottom-[calc(4.5rem+env(safe-area-inset-bottom))] lg:bottom-0 z-10 mt-5 flex flex-wrap gap-3 border-t border-slate-200 bg-white/95 py-4 backdrop-blur">
+      <div className="sticky bottom-[calc(4.5rem+env(safe-area-inset-bottom))] lg:bottom-0 z-10 mt-5 flex flex-wrap gap-3 border-t border-line bg-ground/95 py-4 backdrop-blur">
         <Button
           variant="secondary"
           disabled={step === 0 || busy || creatingGoal}
@@ -1086,12 +1086,12 @@ export function ExperimentWizard({ draftId }: { draftId?: string }) {
         )}
       </div>
       {step === 4 && !saved ? (
-        <p className="text-sm text-slate-600">
+        <p className="text-sm text-fg-2">
           Save this version before starting. Saving does not start the experiment.
         </p>
       ) : null}
       {step === 4 && technicalBlock ? (
-        <p className="text-sm text-slate-600">
+        <p className="text-sm text-fg-2">
           Check your existing data again before starting. Limited or insufficient history does not
           prevent starting.
         </p>

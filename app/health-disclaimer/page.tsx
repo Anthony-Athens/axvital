@@ -12,7 +12,7 @@ export const metadata: Metadata = socialMetadata(
 export default function HealthDisclaimerPage() {
   return (
     <TrustPage title="Health Disclaimer">
-      <p className="text-sm text-slate-500">Effective September 3, 2026</p>
+      <p className="text-sm text-fg-3">Effective September 3, 2026</p>
       <section>
         <h2 className="text-xl font-semibold">Informational use only</h2>
         <p>
@@ -40,9 +40,9 @@ export default function HealthDisclaimerPage() {
           advice or delay seeking care because of information provided by AXVital.
         </p>
       </section>
-      <section className="rounded-xl border border-red-200 bg-red-50 p-5">
-        <h2 className="text-xl font-semibold text-red-900">Medical emergencies</h2>
-        <p className="mt-2 text-red-900">
+      <section className="rounded-xl border border-red-400/25 bg-red-500/10 p-5">
+        <h2 className="text-xl font-semibold text-red-100">Medical emergencies</h2>
+        <p className="mt-2 text-red-100">
           If you believe you are experiencing a medical emergency, call 911 or your local emergency
           services immediately. AXVital does not monitor entries or support messages for
           emergencies.
@@ -50,7 +50,7 @@ export default function HealthDisclaimerPage() {
       </section>
       <p>
         Questions about this disclaimer may be submitted through{" "}
-        <Link className="text-blue-700 underline" href="/contact">
+        <Link className="text-blue-300 underline" href="/contact">
           Contact AXVital
         </Link>
         .

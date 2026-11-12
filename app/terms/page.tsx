@@ -13,12 +13,12 @@ export const metadata: Metadata = socialMetadata(
 export default function TermsPage() {
   return (
     <TrustPage title="Terms of Service">
-      <p className="text-sm text-slate-500">Effective September 3, 2026</p>
+      <p className="text-sm text-fg-3">Effective September 3, 2026</p>
       <section>
         <h2 className="text-xl font-semibold">Acceptance and eligibility</h2>
         <p>
           By creating an account or using AXVital, you agree to these Terms and the{" "}
-          <Link className="text-blue-700 underline" href="/privacy">
+          <Link className="text-blue-300 underline" href="/privacy">
             Privacy Policy
           </Link>
           . You must be at least 13 and legally able to enter this agreement. If you use AXVital for
@@ -66,7 +66,7 @@ export default function TermsPage() {
           Premium subscriptions may be offered monthly or annually at the price shown before
           purchase. Stripe processes payment information and recurring charges. Unless canceled, a
           subscription may renew at the selected interval. Manage cancellation through{" "}
-          <Link className="text-blue-700 underline" href="/settings/billing">
+          <Link className="text-blue-300 underline" href="/settings/billing">
             Billing
           </Link>
           ; cancellation ordinarily prevents future renewal while access may continue through the
@@ -92,7 +92,7 @@ export default function TermsPage() {
           not establish cause and effect or guarantee outcomes. You remain responsible for health
           decisions and should consult a qualified professional before changing medication,
           treatment, diet, supplements, or exercise. Review the full{" "}
-          <Link className="text-blue-700 underline" href="/health-disclaimer">
+          <Link className="text-blue-300 underline" href="/health-disclaimer">
             Health Disclaimer
           </Link>
           .
@@ -148,7 +148,7 @@ export default function TermsPage() {
           AXVital may revise these Terms and will identify updates by their effective date, with
           additional notice when appropriate. Continued use after an effective update constitutes
           acceptance where permitted by law. Questions may be submitted through{" "}
-          <Link className="text-blue-700 underline" href="/contact">
+          <Link className="text-blue-300 underline" href="/contact">
             Contact AXVital
           </Link>
           .

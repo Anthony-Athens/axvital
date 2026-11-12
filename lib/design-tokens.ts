@@ -1,19 +1,24 @@
+// Mirrors the color roles defined in app/globals.css (dark theme).
 export const colors = {
-  blue: { 50: "#EFF6FF", 100: "#DBEAFE", 500: "#3B82F6", 600: "#2563EB", 700: "#1D4ED8" },
-  slate: {
-    50: "#F8FAFC",
-    100: "#F1F5F9",
-    200: "#E2E8F0",
-    300: "#CBD5E1",
-    400: "#94A3B8",
-    500: "#64748B",
-    600: "#475569",
-    700: "#334155",
-    800: "#1E293B",
-    900: "#0F172A",
-    950: "#020617",
+  surface: {
+    ground: "#070C1A",
+    surface: "#0E1528",
+    raised: "#141D35",
+    line: "#1F2A44",
+    lineStrong: "#2A3756",
   },
-  semantic: { success: "#059669", warning: "#D97706", error: "#DC2626", info: "#2563EB" },
+  text: { primary: "#EEF2F8", secondary: "#AAB6CB", muted: "#8391AA" },
+  accent: { action: "#2563EB", hover: "#1D4ED8", onDark: "#60A5FA" },
+  category: {
+    food: "#F5B454",
+    fluid: "#38BDF8",
+    supplement: "#A78BFA",
+    workout: "#34D399",
+    symptom: "#FB7185",
+    habit: "#E879F9",
+    checkin: "#60A5FA",
+  },
+  semantic: { success: "#34D399", warning: "#F5B454", error: "#FB7185", info: "#60A5FA" },
 } as const;
 
 export const todaySectionOrder = [

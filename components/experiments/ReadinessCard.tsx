@@ -44,12 +44,12 @@ export function ReadinessCard({
               <li key={f}>{f}</li>
             ))}
           </ul>
-          <ul className="mt-3 space-y-2 text-sm text-slate-600">
+          <ul className="mt-3 space-y-2 text-sm text-fg-2">
             {display.warnings.map((w) => (
               <li key={w}>{w}</li>
             ))}
           </ul>
-          <p className="mt-3 text-xs text-slate-500">
+          <p className="mt-3 text-xs text-fg-3">
             Preview checked {new Date(result!.evaluatedAt).toLocaleString()}
           </p>
         </>

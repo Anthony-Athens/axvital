@@ -10,7 +10,7 @@ import {
 import { foodIdentity } from "@/lib/nutrition/food-quantity";
 import type { NutritionDraft } from "@/lib/nutrition/voice-nutrition";
 
-const control = "min-h-11 rounded-lg border border-slate-300 bg-white px-3 py-2 text-base";
+const control = "min-h-11 rounded-lg border border-line-strong bg-surface px-3 py-2 text-base";
 const sources = {
   library: "Typical library component — verify",
   explicit: "Stated in your description",
@@ -154,7 +154,7 @@ export function FoodReview({
   }
   const categories = foodCategories(current);
   return (
-    <details className="rounded-lg bg-slate-50 p-3">
+    <details className="rounded-lg bg-raised p-3">
       <summary className="min-h-11 cursor-pointer py-2 text-sm font-medium">
         Food details{current.canonical_name ? ` · ${current.canonical_name}` : " · unmatched"}
       </summary>
@@ -201,7 +201,7 @@ export function FoodReview({
           </p>
         )}
         {current.components.map((component, index) => (
-          <div className="space-y-1 border-t border-slate-200 pt-2" key={index}>
+          <div className="space-y-1 border-t border-line pt-2" key={index}>
             <label className="flex min-h-11 items-center gap-2">
               <input
                 type="checkbox"
@@ -218,7 +218,7 @@ export function FoodReview({
               {component.label}
               {!component.included && " (excluded)"}
             </label>
-            <p className="text-slate-600">
+            <p className="text-fg-2">
               {sources[component.source]}
               {component.confirmed ? " · confirmed by you" : " · not individually confirmed"}
             </p>

@@ -13,13 +13,13 @@ function Logo({ href }: { href: string }) {
   return (
     <Link
       href={href}
-      className="flex items-center gap-2 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
+      className="flex items-center gap-2 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-accent-fg focus-visible:ring-offset-2"
       aria-label={href === "/" ? "AXVital home" : "AXVital Today"}
     >
-      <span className="grid h-9 w-9 place-items-center rounded-xl bg-blue-600 text-sm font-black text-white">
+      <span className="grid h-9 w-9 place-items-center rounded-xl bg-blue-600 text-sm font-semibold text-white">
         AX
       </span>
-      <span className="text-lg font-semibold tracking-tight text-slate-900">AXVital</span>
+      <span className="text-lg font-semibold tracking-tight text-fg">AXVital</span>
     </Link>
   );
 }
@@ -68,7 +68,7 @@ function ProductNavbar() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur-xl ${focusedWorkout ? "hidden lg:block" : ""}`}
+        className={`fixed inset-x-0 top-0 z-40 border-b border-raised bg-ground/90 backdrop-blur-xl ${focusedWorkout ? "hidden lg:block" : ""}`}
       >
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 lg:h-20 lg:px-6">
           <Logo href={authenticated ? "/today" : "/"} />
@@ -78,7 +78,7 @@ function ProductNavbar() {
               <button
                 type="button"
                 onClick={handleLogout}
-                className="hidden h-11 rounded-xl bg-slate-900 px-5 text-sm font-semibold text-white transition hover:bg-slate-800 lg:block"
+                className="hidden h-11 rounded-xl border border-line-strong bg-raised px-5 text-sm font-semibold text-fg transition hover:bg-line lg:block"
               >
                 Logout
               </button>
@@ -86,13 +86,13 @@ function ProductNavbar() {
               <>
                 <Link
                   href="/login"
-                  className="flex h-11 items-center rounded-xl px-4 text-sm font-semibold text-slate-700"
+                  className="flex h-11 items-center rounded-xl px-4 text-sm font-semibold text-fg-2"
                 >
                   Login
                 </Link>
                 <Link
                   href="/signup"
-                  className="flex h-11 items-center rounded-xl bg-blue-600 px-4 text-sm font-semibold text-white hover:bg-blue-700"
+                  className="flex h-11 items-center rounded-xl bg-accent px-4 text-sm font-semibold text-white hover:bg-accent-hover"
                 >
                   Get Started
                 </Link>

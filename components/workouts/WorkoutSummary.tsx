@@ -23,18 +23,18 @@ export function WorkoutSummary() {
     [s],
   );
   if (!s || !m || !comparison)
-    return <div className="p-6 font-black">Loading workout summary…</div>;
+    return <div className="p-6 font-semibold">Loading workout summary…</div>;
   return (
     <div className="mx-auto max-w-5xl px-4 py-6">
-      <Link href="/workouts" className="font-black text-emerald-700">
+      <Link href="/workouts" className="font-semibold text-accent-fg">
         ← Workouts
       </Link>
-      <section className="mt-4 rounded-3xl bg-slate-950 p-6 text-white">
-        <p className="text-sm font-black uppercase text-emerald-300">
+      <section className="mt-4 rounded-2xl bg-slate-950 p-6 text-white">
+        <p className="text-sm font-semibold uppercase text-emerald-300">
           Workout summary · {s.status}
         </p>
-        <h1 className="mt-2 text-4xl font-black">{s.name}</h1>
-        <p className="mt-3 text-slate-300">
+        <h1 className="mt-2 text-4xl font-semibold">{s.name}</h1>
+        <p className="mt-3 text-fg-2">
           Scheduled {s.planned_workout?.scheduled_date ?? "—"} · Performed {s.session_date}
         </p>
       </section>
@@ -45,32 +45,32 @@ export function WorkoutSummary() {
           ["Total reps", m.totalRepetitions],
           ["Logged volume", m.totalExternalLoadVolume.toLocaleString()],
         ].map(([l, v]) => (
-          <div key={l} className="rounded-2xl bg-white p-4">
-            <p className="text-xs font-black uppercase text-slate-400">{l}</p>
-            <p className="mt-2 text-2xl font-black">{v}</p>
+          <div key={l} className="rounded-2xl bg-surface p-4">
+            <p className="text-xs font-semibold uppercase text-fg-3">{l}</p>
+            <p className="mt-2 text-2xl font-semibold">{v}</p>
           </div>
         ))}
       </div>
-      <section className="mt-5 rounded-3xl bg-white p-5">
-        <h2 className="text-2xl font-black">Planned versus actual</h2>
+      <section className="mt-5 rounded-2xl bg-surface p-5">
+        <h2 className="text-2xl font-semibold">Planned versus actual</h2>
         <div className="mt-4 grid gap-3 sm:grid-cols-3">
-          <p className="rounded-2xl bg-slate-50 p-4 font-bold">
+          <p className="rounded-2xl bg-raised p-4 font-bold">
             Sets
             <br />
             {comparison.plannedSets} planned / {comparison.completedSets} completed
           </p>
-          <p className="rounded-2xl bg-slate-50 p-4 font-bold">
+          <p className="rounded-2xl bg-raised p-4 font-bold">
             Reps
             <br />
             {comparison.plannedReps} planned / {comparison.actualReps} actual
           </p>
-          <p className="rounded-2xl bg-slate-50 p-4 font-bold">
+          <p className="rounded-2xl bg-raised p-4 font-bold">
             Volume
             <br />
             {comparison.plannedVolume} planned / {comparison.actualVolume} actual
           </p>
         </div>
-        <p className="mt-4 text-sm font-semibold text-slate-500">
+        <p className="mt-4 text-sm font-semibold text-fg-3">
           Variance is descriptive and does not imply that higher or lower volume is better.
         </p>
       </section>

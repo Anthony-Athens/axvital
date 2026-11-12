@@ -22,50 +22,50 @@ export function PricingPlans() {
     <>
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <header className="mx-auto max-w-3xl text-center">
-          <p className="font-semibold text-blue-700">Simple pricing</p>
+          <p className="font-semibold text-blue-300">Simple pricing</p>
           <h1 className="mt-2 text-4xl font-semibold tracking-tight">
             Choose how deeply you want to understand your health
           </h1>
-          <p className="mt-3 text-slate-600">
+          <p className="mt-3 text-fg-2">
             Track for free. Upgrade when you’re ready for deeper personalized intelligence.
           </p>
         </header>
         <div
           role="group"
           aria-label="Premium billing interval"
-          className="mx-auto mt-6 flex w-fit rounded-xl border bg-white p-1"
+          className="mx-auto mt-6 flex w-fit rounded-xl border bg-surface p-1"
         >
           {[false, true].map((value) => (
             <button
               key={String(value)}
               onClick={() => setAnnual(value)}
               aria-pressed={annual === value}
-              className={`min-h-11 rounded-lg px-4 font-semibold ${annual === value ? "bg-blue-600 text-white" : "text-slate-700"}`}
+              className={`min-h-11 rounded-lg px-4 font-semibold ${annual === value ? "bg-blue-600 text-white" : "text-fg-2"}`}
             >
               {value ? "Annual" : "Monthly"}
             </button>
           ))}
         </div>
         <div className="mt-8 grid gap-5 md:grid-cols-2">
-          <article className="rounded-2xl border bg-white p-6">
+          <article className="rounded-2xl border bg-surface p-6">
             <h2 className="text-2xl font-semibold">Free</h2>
-            <p className="mt-2 text-slate-600">Build your health history.</p>
+            <p className="mt-2 text-fg-2">Build your health history.</p>
             <p className="mt-5 text-4xl font-semibold">$0</p>
             <Link
               href="/signup"
-              className="mt-6 inline-flex min-h-12 items-center rounded-xl border border-slate-300 px-5 font-semibold"
+              className="mt-6 inline-flex min-h-12 items-center rounded-xl border border-line-strong px-5 font-semibold"
             >
               Create Free Account
             </Link>
           </article>
-          <article className="rounded-2xl border-2 border-blue-600 bg-white p-6">
-            <p className="text-sm font-semibold text-blue-700">Premium</p>
+          <article className="rounded-2xl border-2 border-blue-600 bg-surface p-6">
+            <p className="text-sm font-semibold text-blue-300">Premium</p>
             <h2 className="mt-1 text-2xl font-semibold">
               Turn history into personalized intelligence.
             </h2>
             <p className="mt-5 text-4xl font-semibold">{annual ? "$79.99/year" : "$9.99/month"}</p>
             {annual ? (
-              <p className="mt-1 text-sm text-slate-600">
+              <p className="mt-1 text-sm text-fg-2">
                 Save $39.89 compared with 12 monthly payments.
               </p>
             ) : null}
@@ -74,7 +74,7 @@ export function PricingPlans() {
                 Upgrade to Premium
               </CheckoutButton>
             </div>
-            <p className="mt-4 text-sm text-slate-600">
+            <p className="mt-4 text-sm text-fg-2">
               Understand your patterns. Test your hypotheses. Learn from your history.
             </p>
           </article>
@@ -85,22 +85,22 @@ export function PricingPlans() {
             {rows.map(([feature, free, premium]) => (
               <article
                 key={feature}
-                className="grid gap-2 rounded-xl border bg-white p-4 sm:grid-cols-[1fr_10rem_10rem]"
+                className="grid gap-2 rounded-xl border bg-surface p-4 sm:grid-cols-[1fr_10rem_10rem]"
               >
                 <h3 className="font-semibold">{feature}</h3>
                 <p>
-                  <span className="text-slate-500 sm:hidden">Free: </span>
+                  <span className="text-fg-3 sm:hidden">Free: </span>
                   {free}
                 </p>
                 <p>
-                  <span className="text-slate-500 sm:hidden">Premium: </span>
+                  <span className="text-fg-3 sm:hidden">Premium: </span>
                   {premium}
                 </p>
               </article>
             ))}
           </div>
         </section>
-        <p className="mt-8 text-center text-sm text-slate-600">
+        <p className="mt-8 text-center text-sm text-fg-2">
           AXVital organizes information you choose to track. It does not provide medical diagnosis
           or treatment.
         </p>

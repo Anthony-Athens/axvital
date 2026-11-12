@@ -49,23 +49,23 @@ export function ProtocolSummary() {
     return () => clearTimeout(timer);
   }, []);
   return (
-    <section className="mt-5 rounded-3xl border border-violet-100 bg-violet-50 p-5 shadow-sm md:p-6">
+    <section className="mt-5 rounded-2xl border border-violet-400/25 bg-violet-500/10 p-5 shadow-sm md:p-6">
       <div className="flex justify-between gap-4">
         <div>
-          <p className="text-sm font-black uppercase tracking-widest text-violet-700">
+          <p className="text-sm font-semibold uppercase tracking-widest text-violet-300">
             Protocols · {data?.count ?? 0} active
           </p>
-          <h2 className="mt-2 text-2xl font-black">{data?.name ?? "Loading protocols…"}</h2>
+          <h2 className="mt-2 text-2xl font-semibold">{data?.name ?? "Loading protocols…"}</h2>
         </div>
         <Link
           href="/protocols"
-          className="h-fit rounded-full bg-slate-950 px-4 py-3 text-xs font-black text-white"
+          className="h-fit rounded-xl bg-accent hover:bg-accent-hover px-4 py-3 text-xs font-semibold text-white"
         >
           View Protocols
         </Link>
       </div>
       {data && data.count ? (
-        <p className="mt-3 font-bold text-violet-800">
+        <p className="mt-3 font-bold text-violet-200">
           {data.done} of {data.total} activities completed today · {data.rate}% adherence
         </p>
       ) : null}

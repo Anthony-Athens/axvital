@@ -29,7 +29,7 @@ export default function AccountPage() {
         ].map(([title, description, href]) => (
           <Surface key={href}>
             <h2 className="text-lg font-semibold">{title}</h2>
-            <p className="mt-2 text-sm text-slate-600">{description}</p>
+            <p className="mt-2 text-sm text-fg-2">{description}</p>
             <ButtonLink href={href} variant="secondary" className="mt-4">
               {title}
             </ButtonLink>

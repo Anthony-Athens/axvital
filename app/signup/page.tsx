@@ -79,10 +79,10 @@ export default function SignupPage() {
 
   return (
     <div className="mx-auto flex min-h-[calc(100dvh-10rem)] max-w-md items-center px-4 py-8">
-      <section className="w-full rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-        <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-600">Sign Up</p>
-        <h1 className="mt-3 text-4xl font-black tracking-tight">Create your baseline</h1>
-        <p className="mt-3 leading-7 text-slate-600">
+      <section className="w-full rounded-2xl border border-line bg-surface p-6 shadow-sm">
+        <p className="text-sm font-bold uppercase tracking-[0.18em] text-accent-fg">Sign Up</p>
+        <h1 className="mt-3 text-4xl font-semibold tracking-tight">Create your baseline</h1>
+        <p className="mt-3 leading-7 text-fg-2">
           Start with simple tracking and add more detail when it helps.
         </p>
 
@@ -95,7 +95,7 @@ export default function SignupPage() {
             ["Primary goal", primaryGoal, setPrimaryGoal, "text", "off", false],
           ].map(([label, value, setter, type, autocomplete, required]) => (
             <label key={label as string} className="block">
-              <span className="text-sm font-black text-slate-700">{label as string}</span>
+              <span className="text-sm font-semibold text-fg-2">{label as string}</span>
               <input
                 value={value as string}
                 onChange={(event) => (setter as (next: string) => void)(event.target.value)}
@@ -105,10 +105,10 @@ export default function SignupPage() {
                 minLength={type === "password" ? PASSWORD_MIN : undefined}
                 maxLength={type === "password" ? PASSWORD_MAX : undefined}
                 aria-describedby={type === "password" ? "signup-password-help" : undefined}
-                className="mt-2 min-h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+                className="mt-2 min-h-14 w-full rounded-lg border border-line bg-raised px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/30"
               />
               {type === "password" ? (
-                <span id="signup-password-help" className="mt-2 block text-sm text-slate-600">
+                <span id="signup-password-help" className="mt-2 block text-sm text-fg-2">
                   {PASSWORD_HELP}
                 </span>
               ) : null}
@@ -118,19 +118,19 @@ export default function SignupPage() {
           {message ? (
             <p
               role="alert"
-              className="rounded-2xl bg-amber-50 p-4 text-sm font-black text-amber-900"
+              className="rounded-2xl bg-amber-500/10 p-4 text-sm font-semibold text-amber-100"
             >
               {message}
             </p>
           ) : null}
 
-          <p className="text-center text-sm leading-6 text-slate-600">
+          <p className="text-center text-sm leading-6 text-fg-2">
             By creating an account, you agree to AXVital&apos;s{" "}
             <Link
               href="/terms"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-semibold text-blue-700 underline"
+              className="font-semibold text-blue-300 underline"
             >
               Terms of Service<span className="sr-only"> (opens in a new tab)</span>
             </Link>{" "}
@@ -139,7 +139,7 @@ export default function SignupPage() {
               href="/privacy"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-semibold text-blue-700 underline"
+              className="font-semibold text-blue-300 underline"
             >
               Privacy Policy<span className="sr-only"> (opens in a new tab)</span>
             </Link>
@@ -149,7 +149,7 @@ export default function SignupPage() {
           <button
             type="submit"
             disabled={loading || submitted}
-            className="flex min-h-14 w-full items-center justify-center rounded-2xl bg-slate-950 px-6 text-base font-black text-white disabled:cursor-not-allowed disabled:bg-slate-400"
+            className="flex min-h-14 w-full items-center justify-center rounded-xl bg-accent hover:bg-accent-hover px-6 text-base font-semibold text-white disabled:cursor-not-allowed disabled:bg-slate-600"
           >
             {loading ? "Creating account..." : "Sign Up"}
           </button>
@@ -157,7 +157,7 @@ export default function SignupPage() {
 
         <Link
           href="/login"
-          className="mt-3 flex min-h-14 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 px-6 text-base font-black text-slate-900"
+          className="mt-3 flex min-h-14 items-center justify-center rounded-xl border border-line bg-raised px-6 text-base font-semibold text-fg"
         >
           Already have an account?
         </Link>

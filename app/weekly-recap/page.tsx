@@ -21,10 +21,10 @@ function Section({
         {items.map((item) => (
           <article
             key={`${item.title}-${item.description}`}
-            className="rounded-xl border bg-white p-4"
+            className="rounded-xl border bg-surface p-4"
           >
             <h3 className="font-semibold">{item.title}</h3>
-            <p className="mt-1 text-sm leading-6 text-slate-600">{item.description}</p>
+            <p className="mt-1 text-sm leading-6 text-fg-2">{item.description}</p>
           </article>
         ))}
       </div>
@@ -90,9 +90,9 @@ export default function Page() {
     <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6">
       <header className="flex flex-col gap-4 border-b pb-5 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-sm font-semibold text-blue-700">Personal briefing</p>
+          <p className="text-sm font-semibold text-blue-300">Personal briefing</p>
           <h1 className="mt-1 text-3xl font-semibold">Weekly Recap</h1>
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-fg-2">
             A concise, non-causal summary of your recent structured data.
           </p>
         </div>
@@ -105,15 +105,15 @@ export default function Page() {
         </button>
       </header>
       {message ? (
-        <p role="status" className="mt-5 rounded-lg bg-amber-50 p-4 text-amber-900">
+        <p role="status" className="mt-5 rounded-lg bg-amber-500/10 p-4 text-amber-100">
           {message}
         </p>
       ) : null}
-      {loading ? <div className="mt-6 h-28 animate-pulse rounded-xl bg-slate-100" /> : null}
+      {loading ? <div className="mt-6 h-28 animate-pulse rounded-xl bg-raised" /> : null}
       {!loading && !recap ? (
         <section className="mt-6 rounded-xl border border-dashed p-6">
           <h2 className="text-xl font-semibold">Build your first weekly briefing</h2>
-          <p className="mt-2 text-slate-600">
+          <p className="mt-2 text-fg-2">
             A recap becomes more useful after a few days of check-ins, nutrition, activity, or
             routines.
           </p>
@@ -127,7 +127,7 @@ export default function Page() {
       ) : null}
       {recap ? (
         <>
-          <p className="mt-5 text-sm text-slate-500">
+          <p className="mt-5 text-sm text-fg-3">
             {recap.weekStart} to {recap.weekEnd}
             {recap.generatedAt
               ? ` · Generated ${new Date(recap.generatedAt).toLocaleString()}`
@@ -139,11 +139,9 @@ export default function Page() {
               <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {summaryMetrics.map((metric) => (
                   <article key={metric.label} className="rounded-xl border p-4">
-                    <h3 className="text-sm font-semibold text-slate-600">{metric.label}</h3>
+                    <h3 className="text-sm font-semibold text-fg-2">{metric.label}</h3>
                     <p className="mt-1 text-2xl font-semibold">{metric.value}</p>
-                    {metric.basedOn ? (
-                      <p className="text-xs text-slate-500">{metric.basedOn}</p>
-                    ) : null}
+                    {metric.basedOn ? <p className="text-xs text-fg-3">{metric.basedOn}</p> : null}
                   </article>
                 ))}
               </div>
@@ -176,17 +174,17 @@ export default function Page() {
             }))}
           />
           {nextWeekFocus ? (
-            <section className="mt-7 rounded-xl border border-blue-200 bg-blue-50 p-5">
-              <p className="text-sm font-semibold text-blue-700">Next Week Focus</p>
+            <section className="mt-7 rounded-xl border border-blue-400/25 bg-blue-500/10 p-5">
+              <p className="text-sm font-semibold text-blue-300">Next Week Focus</p>
               <h2 className="mt-1 text-xl font-semibold">{nextWeekFocus.title}</h2>
-              <p className="mt-2 text-sm leading-6 text-slate-700">{nextWeekFocus.description}</p>
+              <p className="mt-2 text-sm leading-6 text-fg-2">{nextWeekFocus.description}</p>
             </section>
           ) : null}
         </>
       ) : null}
       <Link
         href="/insights"
-        className="mt-5 inline-flex min-h-11 items-center font-semibold text-blue-700"
+        className="mt-5 inline-flex min-h-11 items-center font-semibold text-blue-300"
       >
         View Insights
       </Link>

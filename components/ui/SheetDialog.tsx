@@ -60,7 +60,7 @@ export function SheetDialog({
         {failure || error ? (
           <p
             role="alert"
-            className="mt-4 rounded-xl bg-rose-50 p-3 text-sm font-semibold text-rose-800"
+            className="mt-4 rounded-xl bg-rose-500/10 p-3 text-sm font-semibold text-rose-200"
           >
             {failure || error}
           </p>
@@ -69,7 +69,7 @@ export function SheetDialog({
       {footer ? (
         <fieldset
           disabled={busy}
-          className="safe-bottom [overflow-wrap:anywhere] m-0 min-w-0 shrink-0 border-0 border-t border-solid border-slate-200 bg-white px-5 pt-3 sm:px-6 [&_button]:min-h-11 [&_button]:focus-visible:outline-2 [&_button]:focus-visible:outline-blue-600"
+          className="safe-bottom [overflow-wrap:anywhere] m-0 min-w-0 shrink-0 border-0 border-t border-solid border-line bg-surface px-5 pt-3 sm:px-6 [&_button]:min-h-11 [&_button]:focus-visible:outline-2 [&_button]:focus-visible:outline-accent-fg"
         >
           {footer}
         </fieldset>
@@ -79,7 +79,7 @@ export function SheetDialog({
   return (
     <div
       ref={overlayRef}
-      className="fixed inset-x-0 top-[var(--sheet-top,0px)] z-[80] flex h-[var(--sheet-vh,100dvh)] items-end justify-center bg-slate-950/50 sm:items-center sm:p-6"
+      className="fixed inset-x-0 top-[var(--sheet-top,0px)] z-[80] flex h-[var(--sheet-vh,100dvh)] items-end justify-center bg-black/60 backdrop-blur-sm sm:items-center sm:p-6"
       onMouseDown={(event) => {
         if (backdropClose && event.target === event.currentTarget) close();
       }}
@@ -90,9 +90,9 @@ export function SheetDialog({
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className={`relative flex h-[calc(var(--sheet-vh,100dvh)-1rem)] min-w-0 w-full flex-col overflow-hidden rounded-t-2xl bg-white shadow-2xl sm:h-auto sm:max-h-[calc(var(--sheet-vh,100dvh)-3rem)] sm:rounded-2xl ${wide ? "sm:max-w-2xl" : "sm:max-w-md"}`}
+        className={`relative flex h-[calc(var(--sheet-vh,100dvh)-1rem)] min-w-0 w-full flex-col overflow-hidden rounded-t-2xl border border-line bg-surface shadow-2xl shadow-black/50 sm:h-auto sm:max-h-[calc(var(--sheet-vh,100dvh)-3rem)] sm:rounded-2xl ${wide ? "sm:max-w-2xl" : "sm:max-w-md"}`}
       >
-        <header className="flex shrink-0 items-start justify-between gap-3 border-b border-slate-200 px-5 py-4 sm:px-6">
+        <header className="flex shrink-0 items-start justify-between gap-3 border-b border-line px-5 py-4 sm:px-6">
           <h2
             id={titleId}
             className="min-w-0 break-words text-xl font-semibold [overflow-wrap:anywhere]"
@@ -105,7 +105,7 @@ export function SheetDialog({
             disabled={busy}
             onClick={close}
             aria-label={`Close ${title}`}
-            className="grid min-h-11 min-w-11 shrink-0 place-items-center rounded-lg bg-slate-100 text-xl focus-visible:outline-2 focus-visible:outline-blue-600 disabled:opacity-50"
+            className="grid min-h-11 min-w-11 shrink-0 place-items-center rounded-lg bg-raised text-xl focus-visible:outline-2 focus-visible:outline-accent-fg disabled:opacity-50"
           >
             ×
           </button>

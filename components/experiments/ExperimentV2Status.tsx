@@ -44,7 +44,7 @@ export function ExperimentV2Status({
             ],
           ].map(([label, value]) => (
             <div key={label}>
-              <dt className="text-slate-500">{label}</dt>
+              <dt className="text-fg-3">{label}</dt>
               <dd className="mt-1 break-words font-semibold">{value}</dd>
             </div>
           ))}
@@ -55,7 +55,7 @@ export function ExperimentV2Status({
           Review draft
         </ButtonLink>
       ) : (
-        <p className="mt-4 text-sm text-slate-600">
+        <p className="mt-4 text-sm text-fg-2">
           The configuration captured at start is authoritative. Your earlier readiness check was a
           preview, not a frozen record. Lifecycle controls and new results analysis are not
           available in this flow yet.

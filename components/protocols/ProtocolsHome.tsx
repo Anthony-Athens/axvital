@@ -122,16 +122,17 @@ export function ProtocolsHome() {
   const shown = protocols.filter((p) => p.status === tab);
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 md:px-6 md:py-10">
-      <section className="rounded-3xl bg-slate-950 p-6 text-white md:p-8">
-        <p className="text-sm font-black uppercase tracking-widest text-emerald-300">Programs</p>
+      <section className="rounded-2xl bg-slate-950 p-6 text-white md:p-8">
+        <p className="text-sm font-semibold uppercase tracking-widest text-emerald-300">Programs</p>
         <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h1 className="text-4xl font-black">Protocols</h1>
-            <p className="mt-2 text-slate-300">
-              Coordinate activities around a focused health goal.
-            </p>
+            <h1 className="text-4xl font-semibold">Protocols</h1>
+            <p className="mt-2 text-fg-2">Coordinate activities around a focused health goal.</p>
           </div>
-          <Link href="/protocols/new" className="rounded-full bg-emerald-500 px-5 py-3 font-black">
+          <Link
+            href="/protocols/new"
+            className="rounded-xl bg-accent hover:bg-accent-hover px-5 py-3 font-semibold"
+          >
             Create Protocol
           </Link>
         </div>
@@ -142,44 +143,44 @@ export function ProtocolsHome() {
             key={v}
             onClick={() => setTab(v)}
             aria-pressed={tab === v}
-            className={`min-h-11 shrink-0 rounded-full px-5 font-black capitalize ${tab === v ? "bg-slate-950 text-white" : "bg-white"}`}
+            className={`min-h-11 shrink-0 rounded-xl px-5 font-semibold capitalize ${tab === v ? "bg-accent hover:bg-accent-hover text-white" : "bg-surface"}`}
           >
             {v}
           </button>
         ))}
       </div>
       {error ? (
-        <p className="mt-4 rounded-2xl bg-rose-50 p-4 font-bold text-rose-700">{error}</p>
+        <p className="mt-4 rounded-2xl bg-rose-500/10 p-4 font-bold text-rose-300">{error}</p>
       ) : null}
       {loading ? (
         <div className="mt-5 grid gap-4 md:grid-cols-2">
           {[1, 2].map((x) => (
-            <div key={x} className="h-56 animate-pulse rounded-3xl bg-slate-200" />
+            <div key={x} className="h-56 animate-pulse rounded-2xl bg-line" />
           ))}
         </div>
       ) : null}
       {!loading && ["active", "paused", "completed"].includes(tab) ? (
         <div className="mt-5 grid gap-4 md:grid-cols-2">
           {shown.map((p) => (
-            <article key={p.id} className="rounded-3xl border bg-white p-5 shadow-sm">
-              <p className="text-xs font-black uppercase text-emerald-600">
+            <article key={p.id} className="rounded-2xl border bg-surface p-5 shadow-sm">
+              <p className="text-xs font-semibold uppercase text-accent-fg">
                 {p.category} · {p.status}
               </p>
-              <h2 className="mt-2 text-2xl font-black">{p.name}</h2>
-              <p className="mt-2 font-semibold text-slate-500">
+              <h2 className="mt-2 text-2xl font-semibold">{p.name}</h2>
+              <p className="mt-2 font-semibold text-fg-3">
                 {p.start_date} – {p.end_date ?? "Ongoing"}
               </p>
-              <p className="mt-4 text-xl font-black">{adherence[p.id] ?? 0}% adherence</p>
+              <p className="mt-4 text-xl font-semibold">{adherence[p.id] ?? 0}% adherence</p>
               <Link
                 href={`/protocols/${p.id}`}
-                className="mt-4 inline-block rounded-full bg-slate-950 px-4 py-3 text-sm font-black text-white"
+                className="mt-4 inline-block rounded-xl bg-accent hover:bg-accent-hover px-4 py-3 text-sm font-semibold text-white"
               >
                 View Protocol
               </Link>
             </article>
           ))}
           {!shown.length ? (
-            <p className="rounded-3xl border border-dashed bg-white p-8 text-center font-semibold text-slate-500 md:col-span-2">
+            <p className="rounded-2xl border border-dashed bg-surface p-8 text-center font-semibold text-fg-3 md:col-span-2">
               You do not have a {tab} protocol. Start one from your saved templates.
             </p>
           ) : null}
@@ -188,16 +189,16 @@ export function ProtocolsHome() {
       {!loading && ["templates", "archived"].includes(tab) ? (
         <div className="mt-5 grid gap-4 md:grid-cols-2">
           {templates.map((t) => (
-            <article key={t.id} className="rounded-3xl border bg-white p-5 shadow-sm">
-              <p className="text-xs font-black uppercase text-emerald-600">
+            <article key={t.id} className="rounded-2xl border bg-surface p-5 shadow-sm">
+              <p className="text-xs font-semibold uppercase text-accent-fg">
                 {t.category} · {t.duration_days ? `${t.duration_days} days` : "Flexible"}
               </p>
-              <h2 className="mt-2 text-2xl font-black">{t.name}</h2>
-              <p className="mt-2 text-slate-500">{t.activities?.length ?? 0} activities</p>
+              <h2 className="mt-2 text-2xl font-semibold">{t.name}</h2>
+              <p className="mt-2 text-fg-3">{t.activities?.length ?? 0} activities</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 <Link
                   href={`/protocols/templates/${t.id}`}
-                  className="min-h-11 rounded-full bg-slate-950 px-4 py-3 text-sm font-black text-white"
+                  className="min-h-11 rounded-xl bg-accent hover:bg-accent-hover px-4 py-3 text-sm font-semibold text-white"
                 >
                   View
                 </Link>
@@ -205,7 +206,7 @@ export function ProtocolsHome() {
                   <button
                     disabled={busy === t.id}
                     onClick={() => setStarting(t)}
-                    className="min-h-11 rounded-full bg-emerald-100 px-4 font-black text-emerald-800"
+                    className="min-h-11 rounded-xl bg-blue-500/15 px-4 font-semibold text-accent-fg"
                   >
                     Start
                   </button>
@@ -213,21 +214,21 @@ export function ProtocolsHome() {
                 <button
                   disabled={busy === t.id}
                   onClick={() => void duplicate(t)}
-                  className="min-h-11 rounded-full px-3 font-black"
+                  className="min-h-11 rounded-xl px-3 font-semibold"
                 >
                   Duplicate
                 </button>
                 <button
                   disabled={busy === t.id}
                   onClick={() => void archive(t, !t.is_archived)}
-                  className="min-h-11 rounded-full px-3 font-black text-amber-700"
+                  className="min-h-11 rounded-xl px-3 font-semibold text-amber-300"
                 >
                   {t.is_archived ? "Restore" : "Archive"}
                 </button>
                 <button
                   disabled={busy === t.id}
                   onClick={() => void remove(t)}
-                  className="min-h-11 rounded-full px-3 font-black text-rose-600"
+                  className="min-h-11 rounded-xl px-3 font-semibold text-rose-400"
                 >
                   Delete
                 </button>
@@ -235,7 +236,7 @@ export function ProtocolsHome() {
             </article>
           ))}
           {!templates.length ? (
-            <p className="rounded-3xl border border-dashed bg-white p-8 text-center font-semibold text-slate-500 md:col-span-2">
+            <p className="rounded-2xl border border-dashed bg-surface p-8 text-center font-semibold text-fg-3 md:col-span-2">
               Create a protocol to organize habits and activities around a specific goal.
             </p>
           ) : null}

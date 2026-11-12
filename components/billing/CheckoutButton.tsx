@@ -49,7 +49,7 @@ export function CheckoutButton({
         {loading ? "Opening secure checkout…" : children}
       </button>
       {error ? (
-        <p role="alert" className="mt-2 text-sm text-rose-700">
+        <p role="alert" className="mt-2 text-sm text-rose-300">
           {error}
         </p>
       ) : null}

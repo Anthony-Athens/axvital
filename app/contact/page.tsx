@@ -22,22 +22,22 @@ export default function ContactPage() {
         <h2 className="text-xl font-semibold">Self-service account tools</h2>
         <ul className="list-disc space-y-2 pl-5">
           <li>
-            <Link className="text-blue-700 underline" href="/settings/data">
+            <Link className="text-blue-300 underline" href="/settings/data">
               Download your data
             </Link>
           </li>
           <li>
-            <Link className="text-blue-700 underline" href="/settings/delete">
+            <Link className="text-blue-300 underline" href="/settings/delete">
               Delete your account
             </Link>
           </li>
           <li>
-            <Link className="text-blue-700 underline" href="/settings/billing">
+            <Link className="text-blue-300 underline" href="/settings/billing">
               Manage billing
             </Link>
           </li>
           <li>
-            <Link className="text-blue-700 underline" href="/forgot-password">
+            <Link className="text-blue-300 underline" href="/forgot-password">
               Recover your password
             </Link>
           </li>

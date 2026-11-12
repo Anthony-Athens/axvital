@@ -40,7 +40,7 @@ export default function ForgotPasswordPage() {
 
   return (
     <AuthCard title={message === RESET_SENT ? "Check your email" : "Reset your password"}>
-      <p className="mt-3 text-sm leading-6 text-slate-600">
+      <p className="mt-3 text-sm leading-6 text-fg-2">
         Enter the email address associated with your AXVital account. Open the reset link in this
         same browser.
       </p>
@@ -70,7 +70,7 @@ export default function ForgotPasswordPage() {
           ref={feedback}
           tabIndex={-1}
           role="status"
-          className="mt-4 rounded-lg bg-slate-100 p-4 text-sm leading-6"
+          className="mt-4 rounded-lg bg-raised p-4 text-sm leading-6"
         >
           {message}
         </p>

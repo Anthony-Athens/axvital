@@ -26,14 +26,14 @@ export function EpisodeContext({
       id="selected-episode-context"
       ref={region}
       tabIndex={-1}
-      className="mt-4 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+      className="mt-4 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-accent-fg"
       role="region"
       aria-label="Selected episode details"
     >
       <Surface>
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <p className="text-xs font-semibold text-blue-700">
+            <p className="text-xs font-semibold text-blue-300">
               Selected episode · {episode.end === null ? "Ongoing" : "Completed"}
             </p>
             <h2 className="mt-1 text-lg font-semibold">{formatCalendarDay(context.startDay)}</h2>
@@ -68,7 +68,7 @@ export function EpisodeContext({
               ? "No usable tracking data was recorded in the 7 days before this episode."
               : `Usable check-in coverage: ${context.usableDays} / 7 days`}
         </p>
-        <p className="mt-1 text-xs text-slate-500">
+        <p className="mt-1 text-xs text-fg-3">
           A usable day has at least one valid answer for the four existing factors. Coverage
           describes tracking, not daily activity requirements.
         </p>
@@ -83,7 +83,7 @@ export function EpisodeContext({
           {partial ? "Available " : ""}health-event records: {context.eventCount}
           {partial ? " (some sources unavailable)" : ""}
         </p>
-        <ul className="mt-2 flex flex-wrap gap-3 text-sm text-slate-600">
+        <ul className="mt-2 flex flex-wrap gap-3 text-sm text-fg-2">
           {context.categories.map(([category, count]) => (
             <li key={category}>
               {category}: {count}

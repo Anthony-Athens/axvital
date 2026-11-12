@@ -144,12 +144,14 @@ export function HabitsDashboard() {
   }
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 md:px-6 md:py-10">
-      <section className="rounded-3xl bg-slate-950 p-6 text-white md:p-8">
-        <p className="text-sm font-black uppercase tracking-widest text-emerald-300">Consistency</p>
+      <section className="rounded-2xl bg-slate-950 p-6 text-white md:p-8">
+        <p className="text-sm font-semibold uppercase tracking-widest text-emerald-300">
+          Consistency
+        </p>
         <div className="mt-3 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h1 className="text-4xl font-black">Habits</h1>
-            <p className="mt-2 font-semibold text-slate-300">
+            <h1 className="text-4xl font-semibold">Habits</h1>
+            <p className="mt-2 font-semibold text-fg-2">
               Track a recurring action you want to complete consistently.
             </p>
           </div>
@@ -158,21 +160,21 @@ export function HabitsDashboard() {
               setEditing(null);
               setFormOpen(true);
             }}
-            className="min-h-12 rounded-full bg-emerald-500 px-6 font-black"
+            className="min-h-12 rounded-xl bg-accent hover:bg-accent-hover px-6 font-semibold"
           >
             Create Habit
           </button>
         </div>
       </section>
       <div className="mt-5 grid gap-3 sm:grid-cols-2">
-        <fieldset className="flex rounded-2xl bg-white p-1 shadow-sm">
+        <fieldset className="flex rounded-2xl bg-surface p-1 shadow-sm">
           <legend className="sr-only">Filter habits</legend>
           {(["active", "paused", "all"] as const).map((value) => (
             <button
               key={value}
               aria-pressed={filter === value}
               onClick={() => setFilter(value)}
-              className={`min-h-11 flex-1 rounded-xl text-sm font-black capitalize ${filter === value ? "bg-slate-950 text-white" : "text-slate-500"}`}
+              className={`min-h-11 flex-1 rounded-xl text-sm font-semibold capitalize ${filter === value ? "bg-accent hover:bg-accent-hover text-white" : "text-fg-3"}`}
             >
               {value}
             </button>
@@ -185,7 +187,7 @@ export function HabitsDashboard() {
           id="habit-sort"
           value={sort}
           onChange={(e) => setSort(e.target.value)}
-          className="min-h-12 rounded-2xl border border-slate-200 bg-white px-4 font-bold"
+          className="min-h-12 rounded-lg border border-line bg-surface px-4 font-bold"
         >
           <option value="custom">Custom order</option>
           <option value="time">Scheduled time</option>
@@ -195,28 +197,31 @@ export function HabitsDashboard() {
         </select>
       </div>
       {error ? (
-        <p role="alert" className="mt-4 rounded-2xl bg-rose-50 p-4 font-bold text-rose-700">
+        <p role="alert" className="mt-4 rounded-2xl bg-rose-500/10 p-4 font-bold text-rose-300">
           {error}
         </p>
       ) : null}
       {message ? (
-        <p role="status" className="mt-4 rounded-2xl bg-emerald-50 p-4 font-bold text-emerald-800">
+        <p
+          role="status"
+          className="mt-4 rounded-2xl bg-emerald-500/10 p-4 font-bold text-emerald-200"
+        >
           {message}
         </p>
       ) : null}
       {loading ? (
         <div className="mt-5 grid gap-4 md:grid-cols-2">
           {[1, 2, 3, 4].map((n) => (
-            <div key={n} className="h-64 animate-pulse rounded-3xl bg-slate-200" />
+            <div key={n} className="h-64 animate-pulse rounded-2xl bg-line" />
           ))}
         </div>
       ) : null}
       {!loading && !sorted.length ? (
-        <div className="mt-5 rounded-3xl border border-dashed border-slate-300 bg-white p-8 text-center">
-          <h2 className="text-2xl font-black">
+        <div className="mt-5 rounded-2xl border border-dashed border-line-strong bg-surface p-8 text-center">
+          <h2 className="text-2xl font-semibold">
             {filter === "active" ? "No habits yet" : `No ${filter} habits`}
           </h2>
-          <p className="mt-2 font-semibold text-slate-500">
+          <p className="mt-2 font-semibold text-fg-3">
             {filter === "active"
               ? "Habits are recurring actions you want to complete consistently."
               : "Try another filter or create a new habit."}
@@ -226,7 +231,7 @@ export function HabitsDashboard() {
               setEditing(null);
               setFormOpen(true);
             }}
-            className="mt-4 min-h-11 rounded-full bg-slate-950 px-5 font-black text-white"
+            className="mt-4 min-h-11 rounded-xl bg-accent hover:bg-accent-hover px-5 font-semibold text-white"
           >
             Create Habit
           </button>
@@ -238,15 +243,15 @@ export function HabitsDashboard() {
           return (
             <article
               key={habit.id}
-              className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm"
+              className="rounded-2xl border border-line bg-surface p-5 shadow-sm"
             >
               <div className="flex justify-between gap-3">
                 <div>
-                  <p className="text-xs font-black uppercase tracking-widest text-emerald-600">
+                  <p className="text-xs font-semibold uppercase tracking-widest text-accent-fg">
                     {habit.is_active ? "Active" : "Paused"}
                   </p>
-                  <h2 className="mt-1 text-2xl font-black">{habit.title}</h2>
-                  <p className="mt-1 font-semibold text-slate-500">
+                  <h2 className="mt-1 text-2xl font-semibold">{habit.title}</h2>
+                  <p className="mt-1 font-semibold text-fg-3">
                     {habit.tracking_type === "binary"
                       ? "Yes / No"
                       : `${habit.target_value} ${habit.target_unit}`}
@@ -263,19 +268,19 @@ export function HabitsDashboard() {
                   ["Week", `${data.week}%`],
                   ["Month", `${data.month}%`],
                 ].map(([label, value]) => (
-                  <div key={label} className="rounded-2xl bg-slate-50 p-3">
-                    <p className="text-xs font-black text-slate-400">{label}</p>
-                    <p className="mt-1 font-black">{value}</p>
+                  <div key={label} className="rounded-2xl bg-raised p-3">
+                    <p className="text-xs font-semibold text-fg-3">{label}</p>
+                    <p className="mt-1 font-semibold">{value}</p>
                   </div>
                 ))}
               </div>
-              <p className="mt-4 text-sm font-bold capitalize text-slate-600">
+              <p className="mt-4 text-sm font-bold capitalize text-fg-2">
                 Today: {data.today?.status ?? "Not scheduled"}
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
                 <Link
                   href={`/habits/${habit.id}`}
-                  className="min-h-11 rounded-full bg-slate-950 px-4 py-3 text-sm font-black text-white"
+                  className="min-h-11 rounded-xl bg-accent hover:bg-accent-hover px-4 py-3 text-sm font-semibold text-white"
                 >
                   View details
                 </Link>
@@ -285,21 +290,21 @@ export function HabitsDashboard() {
                     setEditing(habit);
                     setFormOpen(true);
                   }}
-                  className="min-h-11 rounded-full px-4 text-sm font-black"
+                  className="min-h-11 rounded-xl px-4 text-sm font-semibold"
                 >
                   Edit
                 </button>
                 <button
                   disabled={busy === habit.id}
                   onClick={() => void toggle(habit)}
-                  className="min-h-11 rounded-full px-4 text-sm font-black text-amber-700"
+                  className="min-h-11 rounded-xl px-4 text-sm font-semibold text-amber-300"
                 >
                   {habit.is_active ? "Pause" : "Reactivate"}
                 </button>
                 <button
                   disabled={busy === habit.id}
                   onClick={() => void remove(habit)}
-                  className="min-h-11 rounded-full px-4 text-sm font-black text-rose-600"
+                  className="min-h-11 rounded-xl px-4 text-sm font-semibold text-rose-400"
                 >
                   Delete
                 </button>

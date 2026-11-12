@@ -1,7 +1,7 @@
 import Link from "next/link";
 export function Footer() {
   return (
-    <footer className="border-t border-slate-200 bg-white px-4 py-8 text-center text-sm text-slate-500">
+    <footer className="border-t border-line bg-surface px-4 py-8 text-center text-sm text-fg-3">
       <nav aria-label="Footer" className="mb-3 flex flex-wrap justify-center gap-x-5 gap-y-2">
         <Link href="/pricing">Pricing</Link>
         <Link href="/privacy">Privacy</Link>

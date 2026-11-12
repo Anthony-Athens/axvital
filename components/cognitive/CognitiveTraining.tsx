@@ -125,13 +125,13 @@ export function CognitiveHome() {
             </select>
           </label>
         </div>
-        <p className="mt-4 text-sm leading-6 text-slate-600">
+        <p className="mt-4 text-sm leading-6 text-fg-2">
           Answers are nonnegative whole numbers, up to {difficulties[config.difficulty].cap}.
           Multiplication’s first factor and division’s divisor are up to{" "}
           {difficulties[config.difficulty].factor}; other operands can be larger. Standard preserves
           the original question rules.
         </p>
-        <p className="mt-2 text-sm text-slate-600">
+        <p className="mt-2 text-sm text-fg-2">
           The clock starts with the first question and continues if you switch tabs. Exiting
           discards an unfinished test.
         </p>
@@ -158,7 +158,7 @@ export function ResultSummary({
   return (
     <>
       <Surface className="mt-5">
-        <p className="text-sm text-slate-600">{configurationLabel(result.config)}</p>
+        <p className="text-sm text-fg-2">{configurationLabel(result.config)}</p>
         <h2 className="mt-2 text-xl font-semibold">Performance score: {number(result.score)}</h2>
         <dl className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
           {[
@@ -168,12 +168,12 @@ export function ResultSummary({
             ["Questions per minute", number(result.qpm)],
           ].map(([label, value]) => (
             <div key={label}>
-              <dt className="text-sm text-slate-600">{label}</dt>
+              <dt className="text-sm text-fg-2">{label}</dt>
               <dd className="mt-1 text-lg font-semibold">{value}</dd>
             </div>
           ))}
         </dl>
-        <p className="mt-4 text-xs leading-5 text-slate-500">
+        <p className="mt-4 text-xs leading-5 text-fg-3">
           Score = accuracy percentage × questions per minute, preserving Mental Mathletics scoring.
           Version: {result.scoringVersion}. This is personal arithmetic performance tracking.
         </p>
@@ -186,12 +186,12 @@ export function ResultSummary({
             aria-label="Answered questions"
           >
             {result.answers.map((a, i) => (
-              <li key={i} className="rounded-lg bg-slate-50 p-3 text-sm">
+              <li key={i} className="rounded-lg bg-raised p-3 text-sm">
                 <span className="font-semibold">
                   {i + 1}. {a.a} {a.operator === "*" ? "×" : a.operator === "/" ? "÷" : a.operator}{" "}
                   {a.b} = {expected(a)}
                 </span>
-                <p className="mt-1 text-slate-600">
+                <p className="mt-1 text-fg-2">
                   Your answer: {a.answer} · {a.answer === expected(a) ? "Correct" : "Incorrect"} ·{" "}
                   {number((a.atMs - (result.answers[i - 1]?.atMs ?? 0)) / 1000)} s
                 </p>
@@ -199,7 +199,7 @@ export function ResultSummary({
             ))}
           </ol>
         ) : (
-          <p className="mt-2 text-sm text-slate-600">No answers were submitted.</p>
+          <p className="mt-2 text-sm text-fg-2">No answers were submitted.</p>
         )}
       </Surface>
       <div className="mt-5 flex flex-wrap gap-2">
@@ -390,13 +390,13 @@ function CognitiveAttempt({ config, onRepeat }: { config: Config | null; onRepea
         <LoadingSkeleton className="mt-5 h-60" />
       ) : (
         <Surface className="mt-5">
-          <p className="text-sm font-semibold text-blue-700" role="timer">
+          <p className="text-sm font-semibold text-blue-300" role="timer">
             {config.mode === "time"
               ? `Time remaining: ${Math.max(0, Math.ceil((config.value * 60000 - elapsed) / 1000))} s`
               : `Answered ${view.answered} of ${config.value}`}
           </p>
-          <p className="mt-1 text-sm text-slate-600">Elapsed: {(elapsed / 1000).toFixed(1)} s</p>
-          <p className="mt-6 text-center text-sm text-slate-500">Question {view.answered + 1}</p>
+          <p className="mt-1 text-sm text-fg-2">Elapsed: {(elapsed / 1000).toFixed(1)} s</p>
+          <p className="mt-6 text-center text-sm text-fg-3">Question {view.answered + 1}</p>
           <p className="mt-2 break-words text-center text-4xl font-semibold" aria-live="polite">
             {view.question.a}{" "}
             {view.question.operator === "*"
@@ -424,7 +424,7 @@ function CognitiveAttempt({ config, onRepeat }: { config: Config | null; onRepea
               }}
               disabled={exit}
             />
-            <p className="mt-2 text-sm text-slate-500">Press Enter or use Submit answer.</p>
+            <p className="mt-2 text-sm text-fg-3">Press Enter or use Submit answer.</p>
             <Button type="submit" className="mt-4 w-full" disabled={exit}>
               Submit answer
             </Button>
@@ -435,7 +435,7 @@ function CognitiveAttempt({ config, onRepeat }: { config: Config | null; onRepea
             </div>
           ) : null}
           {exit ? (
-            <div className="mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4">
+            <div className="mt-5 rounded-xl border border-amber-400/25 bg-amber-500/10 p-4">
               <p className="font-semibold">Discard this unfinished test?</p>
               <p className="mt-1 text-sm">
                 It won’t appear in completed results. The clock is still running.
@@ -592,7 +592,7 @@ export function HistoryList({ recent = false }: { recent?: boolean }) {
       {!recent && rows.length ? (
         <div className="mt-5">
           <h3 className="font-semibold">Personal bests and trends</h3>
-          <p className="mt-1 text-sm text-slate-600">
+          <p className="mt-1 text-sm text-fg-2">
             {more
               ? "Based on loaded results; load older results to include more history."
               : "Based on the results matching these filters."}{" "}
@@ -604,7 +604,7 @@ export function HistoryList({ recent = false }: { recent?: boolean }) {
             {comparisonGroups(rows).map((g) => (
               <Surface key={g.key} compact>
                 <h4 className="font-semibold">{configurationLabel(g.rows[0].config)}</h4>
-                <p className="mt-1 text-xs text-slate-500">
+                <p className="mt-1 text-xs text-fg-3">
                   {g.rows[0].scoringVersion} · {g.rows[0].generatorVersion}
                 </p>
                 <p className="mt-2 text-sm">
@@ -645,10 +645,10 @@ export function HistoryList({ recent = false }: { recent?: boolean }) {
           <li key={s.id}>
             <Link
               href={`/cognitive-training/results/${s.id}`}
-              className="block rounded-xl border border-slate-200 bg-white p-4 outline-none hover:border-blue-400 focus-visible:ring-2 focus-visible:ring-blue-600"
+              className="block rounded-xl border border-line bg-surface p-4 outline-none hover:border-blue-400 focus-visible:ring-2 focus-visible:ring-accent-fg"
             >
-              <p className="font-semibold text-blue-700">{new Date(s.endedAt).toLocaleString()}</p>
-              <p className="mt-1 text-sm text-slate-600">{configurationLabel(s.config)}</p>
+              <p className="font-semibold text-blue-300">{new Date(s.endedAt).toLocaleString()}</p>
+              <p className="mt-1 text-sm text-fg-2">{configurationLabel(s.config)}</p>
               <p className="mt-2 text-sm">
                 Score {number(s.score)} · {number(s.accuracy)}% accuracy · {number(s.qpm)} QPM ·{" "}
                 {s.correct}/{s.answered} correct
@@ -668,7 +668,7 @@ export function HistoryList({ recent = false }: { recent?: boolean }) {
         </Button>
       ) : null}
       {!recent ? (
-        <p className="mt-5 text-sm leading-6 text-slate-500">
+        <p className="mt-5 text-sm leading-6 text-fg-3">
           Population percentiles require a valid, comparable benchmark dataset. Only your own
           results are shown here.
         </p>

@@ -415,45 +415,43 @@ export default function ProfilePage() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-6 md:px-6 md:py-10">
-      <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm md:p-8">
+      <section className="rounded-2xl border border-line bg-surface p-5 shadow-sm md:p-8">
         <div className="flex items-center gap-4">
-          <div className="grid h-20 w-20 place-items-center rounded-3xl bg-emerald-500 text-2xl font-black text-white">
+          <div className="grid h-20 w-20 place-items-center rounded-2xl bg-emerald-500 text-2xl font-semibold text-white">
             {initials || "AX"}
           </div>
           <div>
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-600">
-              Profile
-            </p>
-            <h1 className="mt-1 text-3xl font-black tracking-tight">
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-accent-fg">Profile</p>
+            <h1 className="mt-1 text-3xl font-semibold tracking-tight">
               {loading ? "Loading..." : displayName}
             </h1>
-            <p className="mt-1 text-sm font-semibold text-slate-500">{profile?.email ?? ""}</p>
+            <p className="mt-1 text-sm font-semibold text-fg-3">{profile?.email ?? ""}</p>
           </div>
         </div>
 
         <form onSubmit={handleSave} className="mt-6 space-y-4">
           <label className="block">
-            <span className="text-sm font-black text-slate-700">Full name</span>
+            <span className="text-sm font-semibold text-fg-2">Full name</span>
             <input
               value={fullName}
               onChange={(event) => setFullName(event.target.value)}
-              className="mt-2 min-h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+              className="mt-2 min-h-14 w-full rounded-lg border border-line bg-raised px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/30"
             />
           </label>
           <label className="block">
-            <span className="text-sm font-black text-slate-700">Preferred name</span>
+            <span className="text-sm font-semibold text-fg-2">Preferred name</span>
             <input
               value={preferredName}
               onChange={(event) => setPreferredName(event.target.value)}
-              className="mt-2 min-h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+              className="mt-2 min-h-14 w-full rounded-lg border border-line bg-raised px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/30"
             />
           </label>
           <label className="block">
-            <span className="text-sm font-black text-slate-700">Primary goal</span>
+            <span className="text-sm font-semibold text-fg-2">Primary goal</span>
             <select
               value={primaryGoal}
               onChange={(event) => setPrimaryGoal(event.target.value)}
-              className="mt-2 min-h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+              className="mt-2 min-h-14 w-full rounded-lg border border-line bg-raised px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/30"
             >
               <option value="">Choose a focus</option>
               {goalOptions.map((goal) => (
@@ -463,19 +461,19 @@ export default function ProfilePage() {
               ))}
             </select>
           </label>
-          <section className="rounded-3xl border border-slate-100 bg-slate-50 p-4">
-            <h2 className="text-lg font-black tracking-tight">Personalization context</h2>
-            <p className="mt-1 text-sm font-semibold leading-6 text-slate-500">
+          <section className="rounded-2xl border border-line bg-raised p-4">
+            <h2 className="text-lg font-semibold tracking-tight">Personalization context</h2>
+            <p className="mt-1 text-sm font-semibold leading-6 text-fg-3">
               Optional details AXVital can use later to personalize your baseline.
             </p>
 
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
               <label className="block">
-                <span className="text-sm font-black text-slate-700">Birth month</span>
+                <span className="text-sm font-semibold text-fg-2">Birth month</span>
                 <select
                   value={birthMonth}
                   onChange={(event) => setBirthMonth(event.target.value)}
-                  className="mt-2 min-h-14 w-full rounded-2xl border border-slate-200 bg-white px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+                  className="mt-2 min-h-14 w-full rounded-lg border border-line bg-surface px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/30"
                 >
                   {monthOptions.map(([value, label]) => (
                     <option key={label} value={value}>
@@ -485,59 +483,59 @@ export default function ProfilePage() {
                 </select>
               </label>
               <label className="block">
-                <span className="text-sm font-black text-slate-700">Birth year</span>
+                <span className="text-sm font-semibold text-fg-2">Birth year</span>
                 <input
                   value={birthYear}
                   onChange={(event) => setBirthYear(event.target.value)}
                   inputMode="numeric"
-                  className="mt-2 min-h-14 w-full rounded-2xl border border-slate-200 bg-white px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+                  className="mt-2 min-h-14 w-full rounded-lg border border-line bg-surface px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/30"
                 />
               </label>
             </div>
 
             <div className="mt-4 grid gap-4 sm:grid-cols-3">
               <label className="block">
-                <span className="text-sm font-black text-slate-700">Current weight</span>
+                <span className="text-sm font-semibold text-fg-2">Current weight</span>
                 <input
                   value={currentWeight}
                   onChange={(event) => setCurrentWeight(event.target.value)}
                   inputMode="decimal"
-                  className="mt-2 min-h-14 w-full rounded-2xl border border-slate-200 bg-white px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+                  className="mt-2 min-h-14 w-full rounded-lg border border-line bg-surface px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/30"
                 />
               </label>
               <label className="block">
-                <span className="text-sm font-black text-slate-700">Goal weight</span>
+                <span className="text-sm font-semibold text-fg-2">Goal weight</span>
                 <input
                   value={goalWeight}
                   onChange={(event) => setGoalWeight(event.target.value)}
                   inputMode="decimal"
-                  className="mt-2 min-h-14 w-full rounded-2xl border border-slate-200 bg-white px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+                  className="mt-2 min-h-14 w-full rounded-lg border border-line bg-surface px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/30"
                 />
               </label>
               <label className="block">
-                <span className="text-sm font-black text-slate-700">Typical sleep hours</span>
+                <span className="text-sm font-semibold text-fg-2">Typical sleep hours</span>
                 <input
                   value={typicalSleepHours}
                   onChange={(event) => setTypicalSleepHours(event.target.value)}
                   inputMode="decimal"
-                  className="mt-2 min-h-14 w-full rounded-2xl border border-slate-200 bg-white px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+                  className="mt-2 min-h-14 w-full rounded-lg border border-line bg-surface px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/30"
                 />
               </label>
             </div>
 
             <label className="mt-4 block">
-              <span className="text-sm font-black text-slate-700">Main health focus note</span>
+              <span className="text-sm font-semibold text-fg-2">Main health focus note</span>
               <textarea
                 value={healthFocusNote}
                 onChange={(event) => setHealthFocusNote(event.target.value)}
                 rows={4}
-                className="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+                className="mt-2 w-full rounded-lg border border-line bg-surface px-4 py-3 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/30"
               />
             </label>
           </section>
 
           {message ? (
-            <p className="rounded-2xl bg-emerald-50 p-4 text-sm font-black text-emerald-700">
+            <p className="rounded-2xl bg-emerald-500/10 p-4 text-sm font-semibold text-emerald-300">
               {message}
             </p>
           ) : null}
@@ -545,7 +543,7 @@ export default function ProfilePage() {
           <button
             type="submit"
             disabled={loading || saving || !profile}
-            className="flex min-h-14 w-full items-center justify-center rounded-2xl bg-slate-950 px-6 text-base font-black text-white disabled:cursor-not-allowed disabled:bg-slate-400"
+            className="flex min-h-14 w-full items-center justify-center rounded-xl bg-accent hover:bg-accent-hover px-6 text-base font-semibold text-white disabled:cursor-not-allowed disabled:bg-slate-600"
           >
             {saving ? "Saving..." : "Save Profile"}
           </button>
@@ -553,18 +551,18 @@ export default function ProfilePage() {
       </section>
 
       {isDevelopment ? (
-        <section className="mt-5 rounded-3xl border border-amber-200 bg-amber-50 p-5 shadow-sm md:p-8">
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-700">
+        <section className="mt-5 rounded-2xl border border-amber-400/25 bg-amber-500/10 p-5 shadow-sm md:p-8">
+          <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-300">
             Development Only
           </p>
-          <h2 className="mt-2 text-2xl font-black tracking-tight">Demo data tools</h2>
-          <p className="mt-2 leading-7 text-amber-900">
+          <h2 className="mt-2 text-2xl font-semibold tracking-tight">Demo data tools</h2>
+          <p className="mt-2 leading-7 text-amber-100">
             Generate or remove tagged development/test data for Dashboard and Insights testing. This
             section is hidden in production.
           </p>
 
           {demoMessage ? (
-            <p className="mt-4 rounded-2xl bg-white p-4 text-sm font-black text-amber-900">
+            <p className="mt-4 rounded-2xl bg-surface p-4 text-sm font-semibold text-amber-100">
               {demoMessage}
             </p>
           ) : null}
@@ -574,7 +572,7 @@ export default function ProfilePage() {
               type="button"
               onClick={generateDemoData}
               disabled={demoWorking}
-              className="flex min-h-14 items-center justify-center rounded-2xl bg-slate-950 px-6 text-base font-black text-white disabled:cursor-not-allowed disabled:bg-slate-400"
+              className="flex min-h-14 items-center justify-center rounded-xl bg-accent hover:bg-accent-hover px-6 text-base font-semibold text-white disabled:cursor-not-allowed disabled:bg-slate-600"
             >
               {demoWorking ? "Working..." : "Generate Demo Data"}
             </button>
@@ -582,7 +580,7 @@ export default function ProfilePage() {
               type="button"
               onClick={deleteDemoData}
               disabled={demoWorking}
-              className="flex min-h-14 items-center justify-center rounded-2xl border border-amber-300 bg-white px-6 text-base font-black text-amber-900 disabled:cursor-not-allowed disabled:text-slate-400"
+              className="flex min-h-14 items-center justify-center rounded-xl border border-amber-400/40 bg-surface px-6 text-base font-semibold text-amber-100 disabled:cursor-not-allowed disabled:text-fg-3"
             >
               Delete Demo Data
             </button>
@@ -591,9 +589,9 @@ export default function ProfilePage() {
       ) : null}
 
       <HealthProfileSummary />
-      <section className="rounded-2xl border border-slate-200 bg-white p-5">
+      <section className="rounded-2xl border border-line bg-surface p-5">
         <h2 className="text-lg font-semibold">Account controls</h2>
-        <p className="mt-2 text-sm text-slate-600">
+        <p className="mt-2 text-sm text-fg-2">
           Manage security, billing, data export, account deletion, and support in Account Settings.
         </p>
         <ButtonLink href="/settings" variant="secondary" className="mt-3">

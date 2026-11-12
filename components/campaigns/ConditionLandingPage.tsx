@@ -35,7 +35,7 @@ export function ConditionLandingPage({
             <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl lg:text-6xl">
               {content.headline}
             </h1>
-            <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-300">{content.intro}</p>
+            <p className="mt-5 max-w-2xl text-lg leading-8 text-fg-2">{content.intro}</p>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <CampaignSignup condition={conditionKey} />
               <a
@@ -45,12 +45,12 @@ export function ConditionLandingPage({
                 See how it works
               </a>
             </div>
-            <div className="text-slate-300">
+            <div className="text-fg-2">
               <PrivacyNote />
             </div>
           </div>
           <aside
-            className="rounded-3xl border border-slate-700 bg-slate-900 p-6 sm:p-8"
+            className="rounded-2xl border border-slate-700 bg-slate-900 p-6 sm:p-8"
             aria-label="Example tracking question"
           >
             <p className="text-sm font-semibold text-blue-300">A question, not a conclusion</p>
@@ -63,13 +63,13 @@ export function ConditionLandingPage({
                 "Keep everyday context together",
                 "Review your own history",
               ].map((text, i) => (
-                <p key={text} className="flex gap-3 text-slate-300">
+                <p key={text} className="flex gap-3 text-fg-2">
                   <span className="font-semibold text-blue-300">0{i + 1}</span>
                   {text}
                 </p>
               ))}
             </div>
-            <p className="mt-6 text-sm leading-6 text-slate-400">
+            <p className="mt-6 text-sm leading-6 text-fg-3">
               Illustrative question—not a finding or a promise of results.
             </p>
           </aside>
@@ -88,7 +88,7 @@ export function ConditionLandingPage({
           <h2 className="text-3xl font-semibold tracking-tight">
             There’s more to remember than a symptom score.
           </h2>
-          <p className="mt-4 text-lg leading-8 text-slate-600">
+          <p className="mt-4 text-lg leading-8 text-fg-2">
             When symptoms change, it can be hard to remember the days around them. Sleep, stress,
             routines, and other circumstances are context you may want to record—not proof of a
             cause or a trigger.
@@ -101,13 +101,13 @@ export function ConditionLandingPage({
           ].map(([heading, items]) => (
             <article
               key={heading as string}
-              className="rounded-2xl border border-slate-200 bg-white p-6"
+              className="rounded-2xl border border-line bg-surface p-6"
             >
               <h3 className="text-xl font-semibold">{heading}</h3>
-              <ul className="mt-4 space-y-2 text-slate-600">
+              <ul className="mt-4 space-y-2 text-fg-2">
                 {(items as string[]).map((item) => (
                   <li key={item} className="flex gap-3 leading-7">
-                    <span aria-hidden="true" className="text-blue-600">
+                    <span aria-hidden="true" className="text-blue-400">
                       •
                     </span>
                     {item}
@@ -117,15 +117,15 @@ export function ConditionLandingPage({
             </article>
           ))}
         </div>
-        <p className="mt-4 text-sm leading-6 text-slate-500">
+        <p className="mt-4 text-sm leading-6 text-fg-3">
           Use available logs and notes for the information relevant to you. You do not need to track
           everything.
         </p>
       </section>
 
-      <section id="how-it-works" className="scroll-mt-24 bg-white px-4 py-12 sm:px-6 sm:py-16">
+      <section id="how-it-works" className="scroll-mt-24 bg-surface px-4 py-12 sm:px-6 sm:py-16">
         <div className="mx-auto max-w-6xl">
-          <p className="text-sm font-semibold text-blue-700">
+          <p className="text-sm font-semibold text-blue-300">
             Track what matters → Learn what affects you → Test what works
           </p>
           <h2 className="mt-3 text-3xl font-semibold tracking-tight">
@@ -146,12 +146,12 @@ export function ConditionLandingPage({
                 "Use Experiments to structure a personal question and compare tracked outcomes around one deliberate change. Review adherence and results without treating an association as medical causation.",
               ],
             ].map(([title, body], i) => (
-              <li key={title} className="rounded-2xl border border-slate-200 p-6">
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 font-semibold text-blue-700">
+              <li key={title} className="rounded-2xl border border-line p-6">
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-blue-500/10 font-semibold text-blue-300">
                   {i + 1}
                 </span>
                 <h3 className="mt-5 text-2xl font-semibold">{title}</h3>
-                <p className="mt-3 leading-7 text-slate-600">{body}</p>
+                <p className="mt-3 leading-7 text-fg-2">{body}</p>
               </li>
             ))}
           </ol>
@@ -163,11 +163,11 @@ export function ConditionLandingPage({
           <div>
             <p className="text-sm font-semibold text-blue-300">AXVital Experiments</p>
             <h2 className="mt-3 text-4xl font-semibold tracking-tight">Don’t just track. Test.</h2>
-            <p className="mt-5 text-lg leading-8 text-slate-300">
+            <p className="mt-5 text-lg leading-8 text-fg-2">
               Form a question. Choose an outcome. Intentionally change one thing, track adherence,
               and review what happened.
             </p>
-            <p className="mt-4 leading-7 text-slate-300">
+            <p className="mt-4 leading-7 text-fg-2">
               Experiments organize your observations; they do not establish medical causes. Results
               may be limited or inconclusive. Available outcomes and readiness depend on what you
               track.
@@ -182,12 +182,12 @@ export function ConditionLandingPage({
               Hypothetical personal tracking question
             </p>
             <blockquote className="mt-4 text-2xl leading-snug">“{content.experiment}”</blockquote>
-            <p className="mt-6 leading-7 text-slate-300">
+            <p className="mt-6 leading-7 text-fg-2">
               This is an example, not medical advice or a recommended intervention. Do not stop or
               change medication or treatment for an experiment without guidance from your healthcare
               professional.
             </p>
-            <p className="mt-4 text-sm leading-6 text-slate-400">
+            <p className="mt-4 text-sm leading-6 text-fg-3">
               Exploration is available before starting. Saving and starting Experiments requires
               Premium.
             </p>
@@ -201,7 +201,7 @@ export function ConditionLandingPage({
             <h2 className="text-3xl font-semibold tracking-tight">
               Patterns worth exploring. Not automatic answers.
             </h2>
-            <p className="mt-4 text-lg leading-8 text-slate-600">
+            <p className="mt-4 text-lg leading-8 text-fg-2">
               Use trends, summaries, and experiment results to explore your own questions. Missing
               observations and limited data can leave a question unanswered.
             </p>
@@ -210,7 +210,7 @@ export function ConditionLandingPage({
             {content.questions.map((question) => (
               <li
                 key={question}
-                className="rounded-xl border border-blue-100 bg-blue-50 p-5 leading-7 text-slate-700"
+                className="rounded-xl border border-blue-400/25 bg-blue-500/10 p-5 leading-7 text-fg-2"
               >
                 {question}
               </li>
@@ -219,17 +219,17 @@ export function ConditionLandingPage({
         </div>
       </section>
 
-      <section className="bg-white px-4 py-12 sm:px-6 sm:py-16">
-        <div className="mx-auto max-w-6xl rounded-3xl border border-slate-200 p-6 sm:p-10">
+      <section className="bg-surface px-4 py-12 sm:px-6 sm:py-16">
+        <div className="mx-auto max-w-6xl rounded-2xl border border-line p-6 sm:p-10">
           <h2 className="text-3xl font-semibold tracking-tight">
             Bring better context to your next appointment.
           </h2>
-          <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-600">
+          <p className="mt-4 max-w-3xl text-lg leading-8 text-fg-2">
             An organized history can help you remember when symptoms changed, what you were
             tracking, the routines you followed, and how recorded outcomes changed over time. Use
             that context for a conversation—not a diagnosis.
           </p>
-          <p className="mt-4 max-w-3xl leading-7 text-slate-600">{content.caution}</p>
+          <p className="mt-4 max-w-3xl leading-7 text-fg-2">{content.caution}</p>
         </div>
       </section>
 
@@ -237,7 +237,7 @@ export function ConditionLandingPage({
         <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
           Start with what matters to you.
         </h2>
-        <p className="mt-4 text-lg leading-8 text-slate-600">
+        <p className="mt-4 text-lg leading-8 text-fg-2">
           AXVital doesn’t tell you what should work. It helps you track what is happening, explore
           your own patterns, and test questions for yourself.
         </p>
@@ -247,10 +247,10 @@ export function ConditionLandingPage({
         </div>
       </section>
       <aside
-        className="border-y border-slate-200 bg-white px-4 py-6 sm:px-6"
+        className="border-y border-line bg-surface px-4 py-6 sm:px-6"
         aria-label="Health disclaimer"
       >
-        <p className="mx-auto max-w-6xl text-sm leading-7 text-slate-600">
+        <p className="mx-auto max-w-6xl text-sm leading-7 text-fg-2">
           AXVital is a personal health tracking and wellness information platform. It does not
           provide medical advice, diagnosis, or treatment. It is not a medical device or a
           replacement for healthcare professionals.{" "}
@@ -260,8 +260,8 @@ export function ConditionLandingPage({
           .
         </p>
       </aside>
-      <footer className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-6 text-sm text-slate-600 sm:px-6">
-        <span className="font-semibold text-slate-900">AXVital</span>
+      <footer className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-6 text-sm text-fg-2 sm:px-6">
+        <span className="font-semibold text-fg">AXVital</span>
         <nav aria-label="Campaign legal links" className="flex flex-wrap gap-x-6">
           <a href="/privacy" rel="noreferrer" className={linkStyle}>
             Privacy

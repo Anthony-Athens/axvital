@@ -2,7 +2,7 @@
 import { recipePreview } from "@/lib/nutrition/recipes";
 import type { FoodResolution } from "@/lib/nutrition/food-resolution";
 import { nutritionPreview, type NutritionDraft } from "@/lib/nutrition/voice-nutrition";
-const control = "min-h-11 rounded-lg border border-slate-300 bg-white px-3 py-2 text-base";
+const control = "min-h-11 rounded-lg border border-line-strong bg-surface px-3 py-2 text-base";
 const display = (value: number | null | undefined) =>
   value == null ? "unavailable" : String(Math.round(value * 10) / 10);
 export function VoiceNutritionReview({
@@ -20,7 +20,7 @@ export function VoiceNutritionReview({
   );
   return (
     <div
-      className="space-y-3 rounded-lg border border-blue-100 bg-blue-50 p-3"
+      className="space-y-3 rounded-lg border border-blue-400/25 bg-blue-500/10 p-3"
       aria-label="Nutrition review"
     >
       <p className="font-semibold">Nutrition Tracker</p>

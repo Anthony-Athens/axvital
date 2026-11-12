@@ -7,20 +7,20 @@ import type { AnalyticsSnapshot, BaselineWindow, PatternInsight } from "@/lib/an
 function Pattern({ item }: { item: PatternInsight }) {
   const [open, setOpen] = useState(false);
   return (
-    <article className="rounded-xl border bg-white p-4">
+    <article className="rounded-xl border bg-surface p-4">
       <h3 className="font-semibold">{item.title}</h3>
-      <span className="mt-2 inline-block rounded-full bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-700">
+      <span className="mt-2 inline-block rounded-full bg-blue-500/10 px-2 py-1 text-xs font-semibold text-blue-300">
         {item.dataQuality === "strong"
           ? "Strong personal evidence"
           : item.dataQuality === "moderate"
             ? "Moderate data"
             : "Limited data"}
       </span>
-      <p className="mt-2 text-sm leading-6 text-slate-600">{item.description}</p>
+      <p className="mt-2 text-sm leading-6 text-fg-2">{item.description}</p>
       <button
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="mt-2 min-h-11 font-semibold text-blue-700"
+        className="mt-2 min-h-11 font-semibold text-blue-300"
       >
         {open ? "Hide comparison" : "View comparison"}
       </button>
@@ -32,7 +32,7 @@ function Pattern({ item }: { item: PatternInsight }) {
           <p>
             {item.groupBLabel}: {item.groupBValue ?? "—"} ({item.groupBObservationCount})
           </p>
-          <ul className="text-sm text-slate-600 sm:col-span-2">
+          <ul className="text-sm text-fg-2 sm:col-span-2">
             {item.limitations.map((x) => (
               <li key={x}>{x}</li>
             ))}
@@ -78,11 +78,9 @@ export default function Page() {
     <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6">
       <header className="flex flex-col gap-4 border-b pb-5 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-sm font-semibold text-blue-700">Personal intelligence</p>
+          <p className="text-sm font-semibold text-blue-300">Personal intelligence</p>
           <h1 className="mt-1 text-3xl font-semibold">Insights</h1>
-          <p className="text-sm text-slate-600">
-            Descriptive comparisons against your own recent data.
-          </p>
+          <p className="text-sm text-fg-2">Descriptive comparisons against your own recent data.</p>
         </div>
         <button
           onClick={() => void load()}
@@ -93,12 +91,12 @@ export default function Page() {
         </button>
       </header>
       {error ? (
-        <p role="alert" className="mt-5 rounded-lg bg-red-50 p-4 text-red-800">
+        <p role="alert" className="mt-5 rounded-lg bg-red-500/10 p-4 text-red-200">
           {error}
         </p>
       ) : null}
       {data?.failedSources.length ? (
-        <p role="status" className="mt-5 rounded-lg bg-amber-50 p-4 text-amber-900">
+        <p role="status" className="mt-5 rounded-lg bg-amber-500/10 p-4 text-amber-100">
           Some insights could not be calculated.
         </p>
       ) : null}
@@ -122,11 +120,11 @@ export default function Page() {
           <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {data.baselines.map((x) => (
               <article key={x.metricKey} className="rounded-xl border p-4">
-                <h3 className="text-sm font-semibold text-slate-600">{x.label}</h3>
+                <h3 className="text-sm font-semibold text-fg-2">{x.label}</h3>
                 <p className="text-2xl font-semibold">
                   {x.average} <span className="text-sm">{x.unit}</span>
                 </p>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-fg-3">
                   Based on {x.observationCount} days · {x.completenessPercentage}% complete
                 </p>
               </article>
@@ -146,7 +144,7 @@ export default function Page() {
               <article key={x.metricKey} className="rounded-xl border p-4">
                 <h3 className="font-semibold">{x.label}</h3>
                 <p className="mt-2 text-sm">{x.description}</p>
-                <p className="mt-2 text-xs text-slate-500">
+                <p className="mt-2 text-xs text-fg-3">
                   {x.currentCount} current · {x.baselineCount} baseline observations
                 </p>
               </article>
@@ -180,9 +178,7 @@ export default function Page() {
                   {x.averageSeverity?.toFixed(1) ?? "—"}
                 </p>
                 {x.conditions.length ? (
-                  <p className="text-xs text-slate-500">
-                    Condition context: {x.conditions.join(", ")}
-                  </p>
+                  <p className="text-xs text-fg-3">Condition context: {x.conditions.join(", ")}</p>
                 ) : null}
               </article>
             ))}
@@ -210,7 +206,7 @@ export default function Page() {
               )}
               <Link
                 href={x.detailHref}
-                className="inline-flex min-h-11 items-center font-semibold text-blue-700"
+                className="inline-flex min-h-11 items-center font-semibold text-blue-300"
               >
                 View experiment
               </Link>

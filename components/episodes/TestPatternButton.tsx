@@ -46,7 +46,7 @@ export function TestPatternButton({
       <Button onClick={() => void create()} disabled={saving} className="mt-3">
         {saving ? "Creating draft…" : "Test This Pattern"}
       </Button>
-      <p className="mt-2 text-xs text-slate-500">
+      <p className="mt-2 text-xs text-fg-3">
         Creates a reviewable draft only. It will not activate automatically.
       </p>
     </div>

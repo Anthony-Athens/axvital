@@ -104,7 +104,7 @@ export function EpisodeDetail({ id }: { id: string }) {
         title={episode.title || `${conditionName} ${label}`}
         description="Track how this self-reported episode changes over time."
         actions={
-          <span className="rounded-full bg-slate-100 px-3 py-1.5 text-sm font-semibold capitalize">
+          <span className="rounded-full bg-raised px-3 py-1.5 text-sm font-semibold capitalize">
             {episode.status}
           </span>
         }
@@ -116,11 +116,11 @@ export function EpisodeDetail({ id }: { id: string }) {
       ) : null}
       <div className="mt-6 grid gap-3 sm:grid-cols-2">
         <Surface compact>
-          <p className="text-sm text-slate-500">Started</p>
+          <p className="text-sm text-fg-3">Started</p>
           <p className="mt-1 font-semibold">{new Date(episode.started_at).toLocaleString()}</p>
         </Surface>
         <Surface compact>
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-fg-3">
             {episode.status === "ongoing" ? "Duration so far" : "Duration"}
           </p>
           <p className="mt-1 font-semibold">
@@ -128,11 +128,11 @@ export function EpisodeDetail({ id }: { id: string }) {
           </p>
         </Surface>
         <Surface compact>
-          <p className="text-sm text-slate-500">Peak overall severity</p>
+          <p className="text-sm text-fg-3">Peak overall severity</p>
           <p className="mt-1 font-semibold">{peak ? `${peak} / 10` : "Not recorded"}</p>
         </Surface>
         <Surface compact>
-          <p className="text-sm text-slate-500">Current impact</p>
+          <p className="text-sm text-fg-3">Current impact</p>
           <p className="mt-1 font-semibold capitalize">
             {episode.functional_impact ?? "Not recorded"}
           </p>
@@ -155,7 +155,7 @@ export function EpisodeDetail({ id }: { id: string }) {
             })}
           </ul>
         ) : (
-          <p className="mt-2 text-sm text-slate-500">No symptom events linked.</p>
+          <p className="mt-2 text-sm text-fg-3">No symptom events linked.</p>
         )}
       </Surface>
       {episode.status === "ongoing" ? (
@@ -173,7 +173,7 @@ export function EpisodeDetail({ id }: { id: string }) {
               />
             </label>
             <label className="grid gap-1 text-sm font-semibold">
-              Overall severity <span className="font-normal text-slate-500">Optional</span>
+              Overall severity <span className="font-normal text-fg-3">Optional</span>
               <input
                 type="number"
                 min="1"
@@ -213,7 +213,7 @@ export function EpisodeDetail({ id }: { id: string }) {
               </select>
             </label>
             <label className="grid gap-1 text-sm font-semibold">
-              Notes <span className="font-normal text-slate-500">Optional</span>
+              Notes <span className="font-normal text-fg-3">Optional</span>
               <textarea
                 maxLength={2000}
                 rows={3}
@@ -236,20 +236,18 @@ export function EpisodeDetail({ id }: { id: string }) {
         <h2 id="episode-history" className="text-lg font-semibold">
           Episode Timeline
         </h2>
-        <ol className="mt-3 border-l-2 border-slate-200 pl-5">
+        <ol className="mt-3 border-l-2 border-line pl-5">
           <li className="pb-5">
-            <time className="text-xs text-slate-500">
+            <time className="text-xs text-fg-3">
               {new Date(episode.started_at).toLocaleString()}
             </time>
             <p className="font-semibold">{label} started</p>
           </li>
           {updates.map((x) => (
             <li key={x.id} className="pb-5">
-              <time className="text-xs text-slate-500">
-                {new Date(x.recorded_at).toLocaleString()}
-              </time>
+              <time className="text-xs text-fg-3">{new Date(x.recorded_at).toLocaleString()}</time>
               <p className="font-semibold capitalize">{x.status ?? "Episode update"}</p>
-              <p className="text-sm text-slate-600">
+              <p className="text-sm text-fg-2">
                 {[
                   x.overall_severity ? `Severity ${x.overall_severity}` : null,
                   x.functional_impact ? `${x.functional_impact} impact` : null,

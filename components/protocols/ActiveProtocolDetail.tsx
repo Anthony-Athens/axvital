@@ -90,21 +90,21 @@ export function ActiveProtocolDetail() {
     }
   }
   if (loading)
-    return <div className="mx-auto max-w-5xl p-6 font-black">Loading protocol progress…</div>;
-  if (!p) return <div className="mx-auto max-w-5xl p-6 font-black">Protocol not found.</div>;
+    return <div className="mx-auto max-w-5xl p-6 font-semibold">Loading protocol progress…</div>;
+  if (!p) return <div className="mx-auto max-w-5xl p-6 font-semibold">Protocol not found.</div>;
   const todayRows = rows.filter((r) => r.scheduled_date === date);
   const summary = summarizeCompletion(rows, date);
   return (
     <div className="mx-auto max-w-5xl px-4 py-6 md:px-6 md:py-10">
-      <Link href="/protocols" className="font-black text-emerald-700">
+      <Link href="/protocols" className="font-semibold text-accent-fg">
         ← Protocols
       </Link>
-      <section className="mt-4 rounded-3xl bg-slate-950 p-6 text-white md:p-8">
-        <p className="text-sm font-black uppercase tracking-widest text-emerald-300">
+      <section className="mt-4 rounded-2xl bg-slate-950 p-6 text-white md:p-8">
+        <p className="text-sm font-semibold uppercase tracking-widest text-emerald-300">
           {p.category} · {p.status}
         </p>
-        <h1 className="mt-2 text-4xl font-black">{p.name}</h1>
-        <p className="mt-3 text-slate-300">{p.goal || p.description}</p>
+        <h1 className="mt-2 text-4xl font-semibold">{p.name}</h1>
+        <p className="mt-3 text-fg-2">{p.goal || p.description}</p>
         <div className="mt-5 flex flex-wrap gap-2">
           <span className="rounded-full bg-white/10 px-4 py-2 font-bold">
             Protocol Day {protocolDay(p.start_date, date)}
@@ -123,7 +123,7 @@ export function ActiveProtocolDetail() {
             <button
               disabled={busy}
               onClick={() => void status("pause")}
-              className="rounded-full bg-amber-400 px-4 py-3 font-black text-slate-950"
+              className="rounded-xl bg-amber-400 px-4 py-3 font-semibold text-fg"
             >
               Pause
             </button>
@@ -132,7 +132,7 @@ export function ActiveProtocolDetail() {
             <button
               disabled={busy}
               onClick={() => void status("resume")}
-              className="rounded-full bg-emerald-500 px-4 py-3 font-black"
+              className="rounded-xl bg-accent hover:bg-accent-hover px-4 py-3 font-semibold"
             >
               Resume
             </button>
@@ -142,14 +142,14 @@ export function ActiveProtocolDetail() {
               <button
                 disabled={busy}
                 onClick={() => void status("complete")}
-                className="rounded-full bg-white/10 px-4 py-3 font-black"
+                className="rounded-xl bg-white/10 px-4 py-3 font-semibold"
               >
                 Mark completed
               </button>
               <button
                 disabled={busy}
                 onClick={() => void status("cancel")}
-                className="rounded-full bg-white/10 px-4 py-3 font-black"
+                className="rounded-xl bg-white/10 px-4 py-3 font-semibold"
               >
                 Cancel
               </button>
@@ -158,20 +158,22 @@ export function ActiveProtocolDetail() {
           <button
             disabled={busy}
             onClick={() => void saveTemplate()}
-            className="rounded-full bg-white/10 px-4 py-3 font-black"
+            className="rounded-xl bg-white/10 px-4 py-3 font-semibold"
           >
             Duplicate as template
           </button>
-          <Link href="/weekly-overview" className="rounded-full bg-white/10 px-4 py-3 font-black">
+          <Link href="/weekly-overview" className="rounded-xl bg-white/10 px-4 py-3 font-semibold">
             Weekly Overview
           </Link>
         </div>
       </section>
       {error ? (
-        <p className="mt-4 rounded-2xl bg-rose-50 p-4 font-bold text-rose-700">{error}</p>
+        <p className="mt-4 rounded-2xl bg-rose-500/10 p-4 font-bold text-rose-300">{error}</p>
       ) : null}
       {message ? (
-        <p className="mt-4 rounded-2xl bg-emerald-50 p-4 font-bold text-emerald-800">{message}</p>
+        <p className="mt-4 rounded-2xl bg-emerald-500/10 p-4 font-bold text-emerald-200">
+          {message}
+        </p>
       ) : null}
       <section className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
         {[
@@ -183,41 +185,41 @@ export function ActiveProtocolDetail() {
             `${todayRows.filter((r) => r.status === "completed").length}/${todayRows.length}`,
           ],
         ].map(([l, v]) => (
-          <div key={l} className="rounded-2xl bg-white p-4 shadow-sm">
-            <p className="text-xs font-black uppercase text-slate-400">{l}</p>
-            <p className="mt-2 text-2xl font-black">{typeof v === "number" ? `${v}%` : v}</p>
+          <div key={l} className="rounded-2xl bg-surface p-4 shadow-sm">
+            <p className="text-xs font-semibold uppercase text-fg-3">{l}</p>
+            <p className="mt-2 text-2xl font-semibold">{typeof v === "number" ? `${v}%` : v}</p>
           </div>
         ))}
       </section>
-      <section className="mt-5 rounded-3xl bg-white p-5 shadow-sm">
-        <h2 className="text-2xl font-black">Today’s protocol activities</h2>
+      <section className="mt-5 rounded-2xl bg-surface p-5 shadow-sm">
+        <h2 className="text-2xl font-semibold">Today’s protocol activities</h2>
         <div className="mt-4 space-y-2">
           {todayRows.map((r) => {
             const link = p.activities?.find((a) => a.planned_activity_id === r.planned_activity_id);
             return (
-              <div key={r.id} className="flex justify-between rounded-2xl bg-slate-50 p-4">
+              <div key={r.id} className="flex justify-between rounded-2xl bg-raised p-4">
                 <span>
                   <strong className="block">{r.planned_activity?.title}</strong>
-                  <span className="text-sm text-slate-500">
+                  <span className="text-sm text-fg-3">
                     {link?.is_required ? "Required" : "Optional"}
                   </span>
                 </span>
-                <span className="font-black capitalize">{derivedOccurrenceStatus(r, date)}</span>
+                <span className="font-semibold capitalize">{derivedOccurrenceStatus(r, date)}</span>
               </div>
             );
           })}
           {!todayRows.length ? (
-            <p className="text-slate-500">No protocol activities scheduled today.</p>
+            <p className="text-fg-3">No protocol activities scheduled today.</p>
           ) : null}
         </div>
       </section>
-      <section className="mt-5 rounded-3xl bg-white p-5 shadow-sm">
-        <h2 className="text-2xl font-black">Progress summary</h2>
+      <section className="mt-5 rounded-2xl bg-surface p-5 shadow-sm">
+        <h2 className="text-2xl font-semibold">Progress summary</h2>
         <p className="mt-3 text-lg font-bold">
           You completed {stats?.required.percentage ?? 0}% of required activities across this
           protocol.
         </p>
-        <div className="mt-4 flex gap-4 text-sm font-bold text-slate-500">
+        <div className="mt-4 flex gap-4 text-sm font-bold text-fg-3">
           <span>{summary.completed} completed</span>
           <span>{summary.skipped} skipped</span>
           <span>{summary.missed} missed</span>

@@ -38,12 +38,12 @@ export default function RootLayout({
       className={`${inter.variable} h-full antialiased`}
       data-scroll-behavior="smooth"
     >
-      <body className="min-h-full bg-slate-50 text-slate-950">
+      <body className="min-h-full bg-ground text-fg">
         <ProductAnalytics />
         <GoogleAdsTag />
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-2 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-4 focus:py-3 focus:text-blue-700 focus:ring-2 focus:ring-blue-600"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-2 focus:z-[100] focus:rounded-lg focus:bg-surface focus:px-4 focus:py-3 focus:text-accent-fg focus:ring-2 focus:ring-accent-fg"
         >
           Skip to content
         </a>

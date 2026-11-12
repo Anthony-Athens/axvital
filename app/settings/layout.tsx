@@ -13,7 +13,7 @@ export default async function AccountLayout({ children }: { children: React.Reac
     <>
       <nav
         aria-label="Account settings"
-        className="mx-auto flex max-w-6xl flex-wrap gap-1 border-b border-slate-200 px-4 py-3"
+        className="mx-auto flex max-w-6xl flex-wrap gap-1 border-b border-line px-4 py-3"
       >
         {[
           ["/me", "Back to Me"],
@@ -27,7 +27,7 @@ export default async function AccountLayout({ children }: { children: React.Reac
           <Link
             key={href}
             href={href}
-            className="inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-semibold text-blue-700 hover:bg-blue-50 focus-visible:ring-2 focus-visible:ring-blue-600"
+            className="inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-semibold text-blue-300 hover:bg-blue-500/10 focus-visible:ring-2 focus-visible:ring-accent-fg"
           >
             {label}
           </Link>

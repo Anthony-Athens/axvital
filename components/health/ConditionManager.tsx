@@ -158,7 +158,7 @@ export function ConditionManager({ id }: { id: string }) {
         </div>
       ) : null}
       <Surface className="mt-6">
-        <h2 className="text-lg font-semibold text-slate-900">Condition details</h2>
+        <h2 className="text-lg font-semibold text-fg">Condition details</h2>
         <form onSubmit={save} className="mt-4 grid gap-5">
           <ConditionDetailsFields values={values} onChange={setValues} />
           <div className="flex flex-wrap gap-2">
@@ -186,15 +186,15 @@ export function ConditionManager({ id }: { id: string }) {
             </h2>
             <div className="mt-3 grid gap-3 sm:grid-cols-3">
               <Surface compact>
-                <p className="text-sm text-slate-500">Last 30 days</p>
+                <p className="text-sm text-fg-3">Last 30 days</p>
                 <p className="text-2xl font-semibold">{summary.count30}</p>
               </Surface>
               <Surface compact>
-                <p className="text-sm text-slate-500">Last 90 days</p>
+                <p className="text-sm text-fg-3">Last 90 days</p>
                 <p className="text-2xl font-semibold">{summary.count90}</p>
               </Surface>
               <Surface compact>
-                <p className="text-sm text-slate-500">Average resolved duration</p>
+                <p className="text-sm text-fg-3">Average resolved duration</p>
                 <p className="text-2xl font-semibold">
                   {summary.averageResolvedDurationHours == null
                     ? "—"
@@ -203,7 +203,7 @@ export function ConditionManager({ id }: { id: string }) {
               </Surface>
             </div>
             {summary.commonSymptoms.length ? (
-              <p className="mt-3 text-sm text-slate-600">
+              <p className="mt-3 text-sm text-fg-2">
                 <span className="font-semibold">Most linked symptoms:</span>{" "}
                 {summary.commonSymptoms.map((x) => x.name).join(", ")}
               </p>
@@ -223,7 +223,7 @@ export function ConditionManager({ id }: { id: string }) {
       ) : (
         <Surface className="mt-5">
           <h2 className="font-semibold">No episodes logged yet</h2>
-          <p className="mt-1 text-sm text-slate-600">
+          <p className="mt-1 text-sm text-fg-2">
             Track flares, outbreaks, attacks, or other meaningful health episodes related to this
             condition.
           </p>
@@ -234,7 +234,7 @@ export function ConditionManager({ id }: { id: string }) {
       )}
       <Surface className="mt-5">
         <h2 className="font-semibold">Patterns before {label.toLowerCase()}s</h2>
-        <p className="mt-1 text-sm text-slate-600">
+        <p className="mt-1 text-sm text-fg-2">
           Compare the periods before episodes with your own recent baseline.
         </p>
         <ButtonLink href={`/health/conditions/${item.id}/patterns`} className="mt-3">
@@ -249,14 +249,14 @@ export function ConditionManager({ id }: { id: string }) {
           ["History", `${episodes.length} episode${episodes.length === 1 ? "" : "s"} recorded`],
         ].map(([title, detail]) => (
           <Surface compact key={title}>
-            <h2 className="font-semibold text-slate-900">{title}</h2>
-            <p className="mt-1 text-sm text-slate-500">{detail}</p>
+            <h2 className="font-semibold text-fg">{title}</h2>
+            <p className="mt-1 text-sm text-fg-3">{detail}</p>
           </Surface>
         ))}
       </div>
-      <Surface className="mt-5 border-slate-300">
-        <h2 className="font-semibold text-slate-900">Archive condition</h2>
-        <p className="mt-1 text-sm leading-6 text-slate-600">
+      <Surface className="mt-5 border-line-strong">
+        <h2 className="font-semibold text-fg">Archive condition</h2>
+        <p className="mt-1 text-sm leading-6 text-fg-2">
           Archiving removes this condition from your active view while preserving its record.
         </p>
         {confirmArchive ? (
@@ -264,12 +264,12 @@ export function ConditionManager({ id }: { id: string }) {
             role="group"
             aria-labelledby="archive-title"
             aria-describedby="archive-description"
-            className="mt-4 rounded-xl border border-slate-300 bg-slate-50 p-4"
+            className="mt-4 rounded-xl border border-line-strong bg-raised p-4"
           >
-            <h3 id="archive-title" className="font-semibold text-slate-900">
+            <h3 id="archive-title" className="font-semibold text-fg">
               Archive {name}?
             </h3>
-            <p id="archive-description" className="mt-1 text-sm text-slate-600">
+            <p id="archive-description" className="mt-1 text-sm text-fg-2">
               You can restore it later from My Health.
             </p>
             <div className="mt-4 flex flex-wrap gap-2">

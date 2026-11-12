@@ -24,27 +24,27 @@ export function ConditionIntelligenceMarketingDemo({
       <h2 id="intelligence-demo-title" className="text-3xl font-semibold tracking-tight">
         See your condition in context
       </h2>
-      <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-600">
+      <p className="mt-4 max-w-3xl text-lg leading-8 text-fg-2">
         Track episodes, review the days before them, and explore patterns in your recorded sleep,
         stress, energy, and exercise. Condition Intelligence connects those comparisons to the
         history behind them.
       </p>
       <div
-        className="mt-7 min-w-0 rounded-2xl border border-slate-200 bg-slate-50 p-3 sm:p-6"
+        className="mt-7 min-w-0 rounded-2xl border border-line bg-raised p-3 sm:p-6"
         data-condition-demo={conditionKey}
       >
         <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wide text-blue-700">
+            <p className="text-xs font-semibold uppercase tracking-wide text-blue-300">
               Condition Intelligence
             </p>
             <h3 className="mt-1 text-2xl font-semibold">{name}</h3>
           </div>
-          <span className="rounded-full border border-blue-200 bg-white px-3 py-2 text-xs font-semibold text-blue-700">
+          <span className="rounded-full border border-blue-400/25 bg-surface px-3 py-2 text-xs font-semibold text-blue-300">
             Illustrative example
           </span>
         </div>
-        <p className="mb-5 text-sm leading-6 text-slate-600">
+        <p className="mb-5 text-sm leading-6 text-fg-2">
           Fictional data, September 2025–September 2026. This example is not a finding about {name}{" "}
           or a prediction of your results.
         </p>
@@ -60,7 +60,7 @@ export function ConditionIntelligenceMarketingDemo({
         </div>
         <KeyInsight associations={demo.associations} />
         <ConditionTimeline {...demo} mode="marketing" interactive={false} />
-        <p className="mt-4 text-sm leading-6 text-slate-600">
+        <p className="mt-4 text-sm leading-6 text-fg-2">
           Shaded windows show the seven days before each episode. In your account, select an episode
           or view a pattern’s evidence to inspect the supporting records. Associations do not
           establish causes; missing data can limit comparisons.

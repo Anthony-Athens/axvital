@@ -88,48 +88,33 @@ export function TodayPlan() {
       setBusy(null);
     }
   }
+  const done = items.filter((item) => item.status === "completed").length;
+  const nextId = items.find((item) => item.status === "planned")?.id;
   return (
-    <section
-      className="rounded-xl border border-slate-200 bg-white p-4 sm:p-5"
-      aria-labelledby="today-plan-heading"
-    >
-      <div className="flex items-center justify-between gap-4">
+    <section aria-labelledby="today-plan-heading" className="flex flex-col gap-3">
+      <div className="flex items-end justify-between gap-4">
         <div>
-          <h2
-            id="today-plan-heading"
-            className="text-lg font-semibold tracking-tight text-slate-900"
-          >
+          <h2 id="today-plan-heading" className="text-lg font-semibold tracking-tight text-fg">
             Today’s Plan
           </h2>
-          <p className="mt-1 text-sm text-slate-500">
-            {items.length
-              ? `${items.filter((item) => item.status === "completed").length} of ${items.length} completed`
-              : "What you have planned today"}
+          <p className="mt-0.5 text-[13px] tabular-nums text-fg-3">
+            {items.length ? `${done} of ${items.length} completed` : "What you have planned today"}
           </p>
         </div>
         <Link
           href="/weekly-overview"
-          className="min-h-11 rounded-lg border border-slate-200 bg-white px-3 py-3 text-xs font-semibold text-slate-700 hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-blue-600"
+          className="inline-flex min-h-11 items-center rounded-xl px-3 text-sm font-semibold text-accent-fg hover:bg-raised focus-visible:ring-2 focus-visible:ring-accent-fg"
         >
           View full week
         </Link>
       </div>
       {error ? (
-        <p role="alert" className="mt-4 rounded-2xl bg-rose-50 p-3 font-bold text-rose-700">
+        <p
+          role="alert"
+          className="rounded-xl bg-rose-500/10 p-3 text-sm font-semibold text-rose-200"
+        >
           {error}
         </p>
-      ) : null}
-      {loading ? <p className="mt-4 font-semibold text-slate-500">Loading today’s plan…</p> : null}
-      {!loading && !items.length ? (
-        <div className="mt-4 border-t border-slate-200 pt-4">
-          <p className="text-sm text-slate-600">Nothing planned yet.</p>
-          <Link
-            href="/weekly-overview"
-            className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-blue-700"
-          >
-            Plan your week
-          </Link>
-        </div>
       ) : null}
       {[
         ...new Map(
@@ -143,38 +128,60 @@ export function TodayPlan() {
         return (
           <div
             key={protocol.id}
-            className="mt-4 flex items-center justify-between rounded-2xl bg-violet-50 p-4"
+            className="flex items-center justify-between gap-3 rounded-2xl border border-cat-habit/25 bg-cat-habit/10 px-4 py-3"
           >
-            <div>
-              <p className="font-black text-violet-900">
+            <div className="min-w-0">
+              <p className="truncate text-[15px] font-semibold text-fg">
                 {protocol.name} · Day {protocolDay(protocol.start_date, todayString())}
               </p>
-              <p className="text-sm font-bold text-violet-700">
+              <p className="text-[13px] tabular-nums text-fg-2">
                 {own.filter((row) => row.status === "completed").length} of {own.length} completed
                 today
               </p>
             </div>
-            <Link href={`/protocols/${protocol.id}`} className="text-sm font-black text-violet-800">
+            <Link
+              href={`/protocols/${protocol.id}`}
+              className="inline-flex min-h-11 items-center rounded-xl px-3 text-sm font-semibold text-cat-habit hover:bg-raised"
+            >
               View
             </Link>
           </div>
         );
       })}
-      <div className="mt-4 grid gap-3 md:grid-cols-2">
-        {items.map((item) => (
-          <OccurrenceCard
-            key={item.id}
-            occurrence={item}
-            busy={busy === item.id}
-            onStatus={(status) => void change(item, status)}
-            onProgress={
-              item.planned_activity?.activity_type === "habit" ||
-              item.planned_activity?.user_protocol_id
-                ? () => setProgressItem(item)
-                : undefined
-            }
-          />
-        ))}
+      <div className="overflow-hidden rounded-2xl border border-line bg-surface">
+        {loading ? (
+          <p role="status" className="px-5 py-4 text-sm font-semibold text-fg-3">
+            Loading today’s plan…
+          </p>
+        ) : null}
+        {!loading && !items.length ? (
+          <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-4">
+            <p className="text-sm text-fg-2">Nothing planned yet.</p>
+            <Link
+              href="/weekly-overview"
+              className="inline-flex min-h-11 items-center rounded-xl px-3 text-sm font-semibold text-accent-fg hover:bg-raised"
+            >
+              Plan your week
+            </Link>
+          </div>
+        ) : null}
+        <div className="divide-y divide-line">
+          {items.map((item) => (
+            <OccurrenceCard
+              key={item.id}
+              occurrence={item}
+              busy={busy === item.id}
+              highlight={item.id === nextId}
+              onStatus={(status) => void change(item, status)}
+              onProgress={
+                item.planned_activity?.activity_type === "habit" ||
+                item.planned_activity?.user_protocol_id
+                  ? () => setProgressItem(item)
+                  : undefined
+              }
+            />
+          ))}
+        </div>
       </div>
       {progressItem ? (
         <ProgressModal

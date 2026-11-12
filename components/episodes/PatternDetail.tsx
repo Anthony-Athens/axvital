@@ -82,33 +82,33 @@ export function PatternDetail({
         title={`${pattern.exposureLabel} and ${data?.conditionLabel} ${data?.episodeLabel}s`}
         description={pattern.summary}
         actions={
-          <span className="rounded-full bg-blue-50 px-3 py-1.5 text-sm font-semibold capitalize text-blue-800">
+          <span className="rounded-full bg-blue-500/10 px-3 py-1.5 text-sm font-semibold capitalize text-blue-200">
             {pattern.evidenceStrength}
           </span>
         }
       />
       <div className="mt-6 grid gap-3 sm:grid-cols-2">
         <Surface compact>
-          <p className="text-sm text-slate-500">Average before episodes</p>
+          <p className="text-sm text-fg-3">Average before episodes</p>
           <p className="text-2xl font-semibold">
             {pattern.episodeValue} {pattern.unit}
           </p>
         </Surface>
         <Surface compact>
-          <p className="text-sm text-slate-500">Personal baseline</p>
+          <p className="text-sm text-fg-3">Personal baseline</p>
           <p className="text-2xl font-semibold">
             {pattern.baselineValue} {pattern.unit}
           </p>
         </Surface>
         <Surface compact>
-          <p className="text-sm text-slate-500">Absolute difference</p>
+          <p className="text-sm text-fg-3">Absolute difference</p>
           <p className="text-2xl font-semibold">
             {pattern.absoluteDifference && pattern.absoluteDifference > 0 ? "+" : ""}
             {pattern.absoluteDifference} {pattern.unit}
           </p>
         </Surface>
         <Surface compact>
-          <p className="text-sm text-slate-500">Data completeness</p>
+          <p className="text-sm text-fg-3">Data completeness</p>
           <p className="text-2xl font-semibold">{pattern.completenessPercentage}%</p>
         </Surface>
       </div>
@@ -118,13 +118,13 @@ export function PatternDetail({
           {pattern.episodesMatchingPattern} of {pattern.episodesAnalyzed} episodes moved in the same
           direction relative to their personal baseline.
         </p>
-        <p className="mt-1 text-sm text-slate-600">
+        <p className="mt-1 text-sm text-fg-2">
           {pattern.comparisonWindows} baseline day-observations were available.
         </p>
       </Surface>
       <Surface className="mt-5">
         <h2 className="font-semibold">Limitations</h2>
-        <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-600">
+        <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-fg-2">
           {pattern.limitations.map((x) => (
             <li key={x}>{x}</li>
           ))}
@@ -136,7 +136,7 @@ export function PatternDetail({
       </Surface>
       <Surface className="mt-5">
         <h2 className="font-semibold">Methodology</h2>
-        <p className="mt-2 text-sm leading-6 text-slate-600">{data?.methodology}</p>
+        <p className="mt-2 text-sm leading-6 text-fg-2">{data?.methodology}</p>
       </Surface>
     </PageContainer>
   );

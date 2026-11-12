@@ -9,7 +9,6 @@ import {
   Suspense,
   useCallback,
   useEffect,
-  useMemo,
   useRef,
   useState,
   useSyncExternalStore,
@@ -20,7 +19,10 @@ import { supabase } from "@/lib/supabase/client";
 import type { HealthEventType } from "@/lib/types";
 import { TodayPlan } from "@/components/planner/TodayPlan";
 import { ActiveEpisodes } from "@/components/episodes/ActiveEpisodes";
-import { CollapsibleSection, usePersistentDisclosure } from "@/components/ui/CollapsibleSection";
+import { usePersistentDisclosure } from "@/components/ui/CollapsibleSection";
+import { CategoryIcon, type Category } from "@/components/ui/CategoryIcon";
+import { controlClass } from "@/components/ui/design-system";
+import { TodaySummary } from "@/components/today/TodaySummary";
 import { CheckInFieldGroup } from "@/components/checkin/CheckInFieldGroup";
 import { QuickLogDialog } from "@/components/checkin/QuickLogDialog";
 import { QuickLogTagPicker } from "@/components/checkin/QuickLogTagPicker";
@@ -74,21 +76,21 @@ const questions = [
     label: "Sleep Quality",
     helper: "How did last night's sleep feel?",
     options: ["Poor", "Average", "Good", "Great"],
-    columns: "grid-cols-2",
+    columns: "grid-cols-4",
   },
   {
     id: "exercise",
     label: "Exercise",
     helper: "What was today's activity level?",
     options: ["None", "Light", "Moderate", "Intense"],
-    columns: "grid-cols-2",
+    columns: "grid-cols-4",
   },
   {
     id: "nutrition",
     label: "Nutrition",
     helper: "How well did you eat today?",
     options: ["Poor", "Average", "Good", "Excellent"],
-    columns: "grid-cols-2",
+    columns: "grid-cols-4",
   },
   {
     id: "stress",
@@ -106,8 +108,73 @@ const questions = [
   },
 ];
 
-const primaryQuickLogTypes: QuickAddType[] = ["Food", "Symptom", "Supplement", "Exercise"];
-const secondaryQuickLogTypes: QuickAddType[] = ["Fluid", "Medication", "Note"];
+const quickLogTypes: [QuickAddType, Category][] = [
+  ["Food", "food"],
+  ["Fluid", "fluid"],
+  ["Supplement", "supplement"],
+  ["Exercise", "workout"],
+  ["Symptom", "symptom"],
+  ["Medication", "medication"],
+  ["Note", "note"],
+];
+
+function greetingFor(hour: number) {
+  return hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
+}
+const subscribeGreeting = () => () => {};
+const currentGreeting = () => greetingFor(new Date().getHours());
+
+function MicIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect x="9" y="3" width="6" height="11" rx="3" />
+      <path d="M5 11a7 7 0 0 0 14 0M12 18v3" />
+    </svg>
+  );
+}
+
+function ProgressRing({ value, total }: { value: number; total: number }) {
+  const radius = 15;
+  const circumference = 2 * Math.PI * radius;
+  const percent = Math.round((value / total) * 100);
+  return (
+    <div
+      className="flex items-center gap-2.5"
+      role="progressbar"
+      aria-label="Daily check-in progress"
+      aria-valuenow={percent}
+      aria-valuemin={0}
+      aria-valuemax={100}
+    >
+      <span className="whitespace-nowrap text-sm tabular-nums text-fg-2">
+        {value} of {total}
+      </span>
+      <svg aria-hidden="true" width="38" height="38" viewBox="0 0 38 38">
+        <circle cx="19" cy="19" r={radius} fill="none" className="stroke-line" strokeWidth="4" />
+        <circle
+          cx="19"
+          cy="19"
+          r={radius}
+          fill="none"
+          className="stroke-accent-fg transition-[stroke-dasharray] motion-reduce:transition-none"
+          strokeWidth="4"
+          strokeLinecap="round"
+          strokeDasharray={`${(circumference * value) / total} ${circumference}`}
+          transform="rotate(-90 19 19)"
+        />
+      </svg>
+    </div>
+  );
+}
 
 const tagOptions = [
   "travel",
@@ -353,12 +420,12 @@ function integerValue(formData: FormData, key: string) {
 function QuickLogFieldControl({ field }: { field: QuickAddField }) {
   return (
     <label className="block">
-      <span className="text-sm font-semibold text-slate-700">{field.label}</span>
+      <span className="text-sm font-semibold text-fg-2">{field.label}</span>
       {field.kind === "select" ? (
         <select
           name={field.name}
           defaultValue=""
-          className="mt-2 min-h-12 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 text-base font-medium outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+          className="mt-2 min-h-12 w-full rounded-lg border border-line-strong bg-raised px-4 text-base font-medium outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-500/30"
         >
           <option value="" disabled>
             {field.placeholder}
@@ -374,7 +441,7 @@ function QuickLogFieldControl({ field }: { field: QuickAddField }) {
           name={field.name}
           placeholder={field.placeholder}
           rows={3}
-          className="mt-2 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-3 text-base font-medium outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+          className="mt-2 w-full rounded-lg border border-line-strong bg-raised px-4 py-3 text-base font-medium outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-500/30"
         />
       ) : (
         <input
@@ -385,7 +452,7 @@ function QuickLogFieldControl({ field }: { field: QuickAddField }) {
           inputMode={field.kind === "number" || field.kind === "integer" ? "decimal" : undefined}
           step={field.kind === "integer" ? "1" : field.kind === "number" ? "any" : undefined}
           placeholder={field.placeholder}
-          className="mt-2 min-h-12 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 text-base font-medium outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+          className="mt-2 min-h-12 w-full rounded-lg border border-line-strong bg-raised px-4 text-base font-medium outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-500/30"
         />
       )}
     </label>
@@ -518,14 +585,12 @@ function CheckInForm({ date, historical }: { date: string; historical: boolean }
   const quickAddTriggerRef = useRef<HTMLButtonElement | null>(null);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [showEventDetails, setShowEventDetails] = useState(false);
+  // After a check-in is saved it collapses to a summary; this tracks "editing again".
   const [checkinExpanded, setCheckinExpanded] = usePersistentDisclosure(
-    "axvital.today.dailyCheckIn.expanded",
+    "axvital.today.checkin.editing",
     false,
   );
-  const [eventsExpanded, setEventsExpanded] = usePersistentDisclosure(
-    "axvital.today.optionalEvents.expanded",
-    false,
-  );
+  const greeting = useSyncExternalStore(subscribeGreeting, currentGreeting, () => "Today");
 
   useEffect(() => {
     let active = true;
@@ -568,10 +633,6 @@ function CheckInForm({ date, historical }: { date: string; historical: boolean }
     });
     return () => data.subscription.unsubscribe();
   }, [ownerId, setCheckinExpanded]);
-  const progress = useMemo(() => {
-    const complete = questions.filter((question) => answers[question.id]).length;
-    return Math.round((complete / questions.length) * 100);
-  }, [answers]);
 
   function choose(questionId: string, option: string) {
     setSaved(false);
@@ -602,6 +663,7 @@ function CheckInForm({ date, historical }: { date: string; historical: boolean }
       setWeight(draft.weight);
       setSaved(true);
       setCheckinMessage(`Check-in saved for ${date}.`);
+      if (!historical) setCheckinExpanded(false);
       refreshTimeline();
     } catch (error) {
       setSaved(false);
@@ -683,273 +745,326 @@ function CheckInForm({ date, historical }: { date: string; historical: boolean }
     }
   }
 
+  const answeredCount = questions.filter((question) => answers[question.id]).length;
+  const showCheckinForm = historical || loadFailed || loadingCheckin || !saved || checkinExpanded;
+  const dateLabel = new Intl.DateTimeFormat(undefined, {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  }).format(new Date(`${date}T12:00:00`));
+
   return (
-    <div className="mx-auto max-w-6xl px-4 py-5 md:px-6 md:py-10">
-      <header className="border-b border-slate-200 pb-5">
-        <Link className="mb-3 inline-block text-sm text-blue-700 underline" href="/experiments">
-          Record an experiment observation
-        </Link>
-        <h1 className="text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl">
-          {historical ? "Historical Check-In" : "Today"}
-        </h1>
-        <p className="mt-1 text-sm font-medium text-slate-500">
-          {new Intl.DateTimeFormat(undefined, {
-            weekday: "long",
-            month: "long",
-            day: "numeric",
-          }).format(new Date(`${date}T12:00:00`))}
-        </p>
-        <div className="mt-4 flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3">
-          <div className="min-w-0 flex-1">
-            <div className="flex justify-between gap-3 text-sm">
-              <span className="font-medium text-slate-700">Daily Check-In</span>
-              <span className="tabular-nums text-slate-500">
-                {questions.filter((question) => answers[question.id]).length} of {questions.length}{" "}
-                complete
-              </span>
-            </div>
-            <div
-              className="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-100"
-              role="progressbar"
-              aria-label="Daily check-in progress"
-              aria-valuenow={progress}
-              aria-valuemin={0}
-              aria-valuemax={100}
+    <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:py-8">
+      <header className="flex flex-wrap items-end justify-between gap-4">
+        <div className="min-w-0">
+          <p className="text-sm font-medium text-fg-3">{dateLabel}</p>
+          <h1 className="mt-1 text-[28px] font-bold leading-tight tracking-tight text-fg sm:text-[32px]">
+            {historical ? "Historical check-in" : greeting}
+          </h1>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          {historical ? (
+            <a
+              href="/today"
+              className="inline-flex min-h-11 items-center rounded-xl px-3 text-sm font-semibold text-accent-fg hover:bg-raised"
             >
-              <div
-                className="h-full rounded-full bg-blue-600 transition-all motion-reduce:transition-none"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-          </div>
+              Return to Today
+            </a>
+          ) : (
+            <>
+              <Link
+                href="/experiments"
+                className="inline-flex min-h-11 items-center rounded-xl px-3 text-sm font-semibold text-accent-fg hover:bg-raised"
+              >
+                Record an experiment observation
+              </Link>
+              <button
+                type="button"
+                onClick={() => setVoiceOpen(true)}
+                className="hidden min-h-11 items-center gap-2 rounded-xl border border-accent-fg/35 bg-accent/15 px-4 text-[15px] font-semibold text-blue-200 hover:bg-accent/25 focus-visible:ring-2 focus-visible:ring-accent-fg lg:inline-flex"
+              >
+                <MicIcon />
+                Voice log
+              </button>
+            </>
+          )}
         </div>
       </header>
 
-      {!historical ? <GettingStarted checkinComplete={saved} /> : null}
+      <div className="mt-6 flex flex-col gap-6">
+        {!historical ? <GettingStarted checkinComplete={saved} /> : null}
+        {!historical ? <TodaySummary today={date} /> : null}
 
-      {historical && (
-        <a href="/today" className="inline-block py-3 text-blue-700 underline">
-          Return to Today
-        </a>
-      )}
-
-      <div className="mt-5 space-y-6">
-        <section aria-labelledby="daily-status-heading">
-          <h2 id="daily-status-heading" className="mb-3 text-lg font-semibold text-slate-900">
-            {historical ? "Daily status for this day" : "How are you doing today?"}
-          </h2>
-          <CollapsibleSection
-            id="daily-checkin"
-            title="Daily Check-In"
-            description={
-              saved
-                ? `Your answers are saved for ${date}.`
-                : historical
-                  ? "Review the check-in for this date."
-                  : "Record how you’re feeling and the daily essentials that matter."
-            }
-            status={
-              <span
-                className={`rounded-full px-2.5 py-1 text-xs font-semibold ${saved ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"}`}
+        <div
+          className={`flex flex-col gap-6 ${historical ? "" : "lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(340px,400px)] lg:items-start"}`}
+        >
+          <div className="contents lg:flex lg:min-w-0 lg:flex-col lg:gap-6">
+            {showCheckinForm ? (
+              <section
+                aria-labelledby="daily-checkin-heading"
+                className="order-1 min-w-0 rounded-2xl border border-line bg-surface p-4 sm:p-6"
               >
-                {loadingCheckin
-                  ? "Loading…"
-                  : saved
-                    ? progress === 100
-                      ? "Complete"
-                      : `${questions.filter((question) => answers[question.id]).length} of ${questions.length}`
-                    : progress
-                      ? `${questions.filter((question) => answers[question.id]).length} of ${questions.length}`
-                      : "Not started"}
-              </span>
-            }
-            expanded={historical || checkinExpanded}
-            onToggle={() => setCheckinExpanded((value) => !value)}
-          >
-            <form
-              onSubmit={(event) => {
-                event.preventDefault();
-                void saveDailyCheckin();
-              }}
-            >
-              <fieldset
-                disabled={loadingCheckin || loadFailed || savingCheckin}
-                className="space-y-4"
-              >
-                {questions.map((question) => (
-                  <CheckInFieldGroup
-                    key={question.id}
-                    id={question.id}
-                    label={question.label}
-                    helper={question.helper}
+                <div className="flex items-start justify-between gap-4">
+                  <div className="min-w-0">
+                    <h2 id="daily-checkin-heading" className="text-lg font-semibold text-fg">
+                      Daily check-in
+                    </h2>
+                    <p className="mt-0.5 text-[13px] text-fg-3">
+                      {loadingCheckin
+                        ? "Loading…"
+                        : historical
+                          ? "Review or update this day’s answers."
+                          : saved
+                            ? "Saved. Change anything that’s different."
+                            : "About 30 seconds. Answer what you can."}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <ProgressRing value={answeredCount} total={questions.length} />
+                    {saved && !historical && checkinExpanded ? (
+                      <button
+                        type="button"
+                        onClick={() => setCheckinExpanded(false)}
+                        className="min-h-11 rounded-xl px-3 text-sm font-semibold text-fg-2 hover:bg-raised focus-visible:ring-2 focus-visible:ring-accent-fg"
+                      >
+                        Close
+                      </button>
+                    ) : null}
+                  </div>
+                </div>
+                <form
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    void saveDailyCheckin();
+                  }}
+                >
+                  <fieldset
+                    disabled={loadingCheckin || loadFailed || savingCheckin}
+                    className="mt-5 grid gap-x-8 gap-y-6 md:grid-cols-2"
                   >
-                    <div className={`mt-4 grid ${question.columns} gap-2`}>
-                      {(answers[question.id] && !question.options.includes(answers[question.id])
-                        ? [...question.options, answers[question.id]]
-                        : question.options
-                      ).map((option) => {
-                        const selected = answers[question.id] === option;
-                        return (
-                          <button
-                            key={option}
-                            type="button"
-                            onClick={() => choose(question.id, option)}
-                            className={`min-h-12 rounded-lg border px-2 text-sm font-semibold transition outline-none focus-visible:ring-2 focus-visible:ring-blue-600 ${
-                              selected
-                                ? "border-blue-600 bg-blue-600 text-white"
-                                : "border-slate-200 bg-white text-slate-700"
-                            }`}
-                            aria-pressed={selected}
-                          >
-                            {option}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </CheckInFieldGroup>
-                ))}
+                    {questions.map((question) => (
+                      <CheckInFieldGroup
+                        key={question.id}
+                        id={question.id}
+                        label={question.label}
+                        helper={question.helper}
+                        value={
+                          answers[question.id]
+                            ? question.options.length === 10
+                              ? `${answers[question.id]} / 10`
+                              : answers[question.id]
+                            : undefined
+                        }
+                      >
+                        <div className={`mt-3 grid ${question.columns} gap-1.5`}>
+                          {(answers[question.id] && !question.options.includes(answers[question.id])
+                            ? [...question.options, answers[question.id]]
+                            : question.options
+                          ).map((option) => {
+                            const selected = answers[question.id] === option;
+                            return (
+                              <button
+                                key={option}
+                                type="button"
+                                onClick={() => choose(question.id, option)}
+                                className={`min-h-11 rounded-[10px] border px-1.5 text-sm font-semibold tabular-nums transition outline-none focus-visible:ring-2 focus-visible:ring-accent-fg ${
+                                  selected
+                                    ? "border-accent-fg bg-accent text-white"
+                                    : "border-line bg-raised text-fg-2 hover:border-line-strong hover:text-fg"
+                                }`}
+                                aria-pressed={selected}
+                              >
+                                {option}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </CheckInFieldGroup>
+                    ))}
 
-                <label className="block rounded-xl border border-slate-200 bg-slate-50 p-4">
-                  <span className="block text-lg font-black text-slate-950">
-                    Weight (lb for new entries)
-                  </span>
-                  <span className="mt-1 block text-sm font-medium leading-6 text-slate-500">
-                    {baseline?.weight != null && baseline.weight_provenance_version !== 1
-                      ? "This historical value has unknown units and has not been converted. Leave it unchanged, or replace it with a newly measured value in pounds."
-                      : "Optional. Enter pounds; new entries retain verified units for experiments."}
-                  </span>
-                  <input
-                    value={weight}
-                    onChange={(event) => {
-                      setSaved(false);
-                      setCheckinMessage("");
-                      setWeight(event.target.value);
-                    }}
-                    inputMode="decimal"
-                    placeholder="Optional weight"
-                    className="mt-4 min-h-12 w-full rounded-lg border border-slate-300 bg-white px-4 text-base font-medium outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
-                  />
-                </label>
-              </fieldset>
-            </form>
+                    <label className="block min-w-0">
+                      <span className="block text-[15px] font-semibold text-fg">
+                        Weight <span className="font-normal text-fg-3">(lb, optional)</span>
+                      </span>
+                      <span className="mt-0.5 block text-[13px] text-fg-3">
+                        {baseline?.weight != null && baseline.weight_provenance_version !== 1
+                          ? "This historical value has unknown units and has not been converted. Leave it unchanged, or replace it with a newly measured value in pounds."
+                          : "New entries keep verified units for experiments."}
+                      </span>
+                      <input
+                        value={weight}
+                        onChange={(event) => {
+                          setSaved(false);
+                          setCheckinMessage("");
+                          setWeight(event.target.value);
+                        }}
+                        inputMode="decimal"
+                        placeholder="e.g. 172.4"
+                        className={`mt-3 ${controlClass}`}
+                      />
+                    </label>
+                  </fieldset>
+                </form>
 
-            <div className="mt-5 border-t border-slate-200 pt-4">
-              {saved ? (
-                <p
-                  role="status"
-                  className="mb-3 rounded-2xl bg-emerald-50 p-4 text-sm font-black text-emerald-700"
-                >
-                  {checkinMessage}
-                </p>
-              ) : checkinMessage ? (
-                <p
-                  role="alert"
-                  className="mb-3 rounded-2xl bg-amber-50 p-4 text-sm font-black text-amber-900"
-                >
-                  {checkinMessage}
-                </p>
-              ) : null}
-              <button
-                type="button"
-                onClick={saveDailyCheckin}
-                disabled={
-                  savingCheckin ||
-                  loadingCheckin ||
-                  loadFailed ||
-                  (!baseline && !progress && !weight.trim())
-                }
-                className="flex min-h-12 w-full items-center justify-center rounded-lg bg-blue-600 px-6 text-base font-semibold text-white transition hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-400"
-              >
-                {savingCheckin
-                  ? "Saving..."
-                  : saved
-                    ? "Daily Check-In Saved"
-                    : "Save Daily Check-In"}
-              </button>
-            </div>
-          </CollapsibleSection>
-        </section>
-
-        {!historical ? <TodayPlan /> : null}
-
-        <div className="space-y-5">
-          {!historical && (
-            <CollapsibleSection
-              id="optional-events"
-              title="Quick Log"
-              description="Record something that happened today."
-              expanded={eventsExpanded}
-              onToggle={() => setEventsExpanded((value) => !value)}
-            >
-              {eventMessage && !activeQuickAdd ? (
-                <p
-                  role="status"
-                  className="mb-4 rounded-xl bg-emerald-50 p-3 text-sm font-semibold text-emerald-700"
-                >
-                  {eventMessage}
-                </p>
-              ) : null}
-              <button
-                type="button"
-                aria-label="Open Voice Log"
-                onClick={() => setVoiceOpen(true)}
-                className="mb-3 flex min-h-12 w-full items-center justify-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-4 font-semibold text-blue-800 focus-visible:ring-2 focus-visible:ring-blue-600"
-              >
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  className="h-5 w-5"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <rect x="9" y="2" width="6" height="12" rx="3" />
-                  <path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8" />
-                </svg>
-                Voice Log
-              </button>
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                {primaryQuickLogTypes.map((type) => (
+                <div className="mt-6 flex flex-col gap-3">
+                  {saved && checkinMessage ? (
+                    <p
+                      role="status"
+                      className="rounded-xl bg-emerald-500/10 p-3 text-sm font-semibold text-emerald-300"
+                    >
+                      {checkinMessage}
+                    </p>
+                  ) : checkinMessage ? (
+                    <p
+                      role="alert"
+                      className="rounded-xl bg-amber-500/10 p-3 text-sm font-semibold text-amber-100"
+                    >
+                      {checkinMessage}
+                    </p>
+                  ) : null}
                   <button
-                    key={type}
                     type="button"
-                    onClick={(event) => openQuickAdd(type, event.currentTarget)}
-                    className="min-h-12 rounded-lg border border-slate-200 bg-slate-50 px-4 text-left text-sm font-semibold text-slate-900 transition hover:border-blue-300 hover:bg-blue-50 focus-visible:ring-2 focus-visible:ring-blue-600"
+                    onClick={saveDailyCheckin}
+                    disabled={
+                      savingCheckin ||
+                      loadingCheckin ||
+                      loadFailed ||
+                      (!baseline && !answeredCount && !weight.trim())
+                    }
+                    className="flex min-h-12 w-full items-center justify-center rounded-xl bg-accent px-6 text-base font-semibold text-white transition hover:bg-accent-hover focus-visible:ring-2 focus-visible:ring-accent-fg focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-line-strong disabled:text-fg-3"
                   >
-                    {type}
+                    {savingCheckin
+                      ? "Saving..."
+                      : saved
+                        ? "Daily Check-In Saved"
+                        : "Save Daily Check-In"}
                   </button>
-                ))}
+                </div>
+              </section>
+            ) : null}
+
+            {!historical ? (
+              <div className="order-3 min-w-0">
+                <TodayPlan />
               </div>
-              <details className="mt-3 rounded-lg border border-slate-200 bg-slate-50 px-3">
-                <summary className="min-h-11 cursor-pointer py-3 text-sm font-semibold text-slate-700">
-                  More logging options
-                </summary>
-                <div className="grid grid-cols-2 gap-2 border-t border-slate-200 py-3 sm:grid-cols-3">
-                  {secondaryQuickLogTypes.map((type) => (
+            ) : null}
+            {!historical ? (
+              <div className="order-4 min-w-0 empty:hidden">
+                <ActiveEpisodes />
+              </div>
+            ) : null}
+            <div className="order-5 min-w-0">
+              <Timeline
+                key={date}
+                startDate={date}
+                history={historical}
+                title={historical ? "Activity for this day" : "Logged today"}
+              />
+            </div>
+          </div>
+
+          {!historical ? (
+            <aside className="order-2 flex min-w-0 flex-col gap-4">
+              {!showCheckinForm ? (
+                <section
+                  aria-labelledby="checkin-done-heading"
+                  className="rounded-2xl border border-line bg-surface p-4 sm:p-5"
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <h2 id="checkin-done-heading" className="text-[17px] font-semibold text-fg">
+                      {answeredCount === questions.length ? "Check-in complete" : "Check-in saved"}
+                    </h2>
+                    <span className="grid h-8 w-8 place-items-center rounded-full bg-emerald-500/15 text-emerald-300">
+                      <svg
+                        aria-hidden="true"
+                        viewBox="0 0 24 24"
+                        className="h-4 w-4"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.6"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M20 6L9 17l-5-5" />
+                      </svg>
+                    </span>
+                  </div>
+                  <dl className="mt-4 grid grid-cols-2 gap-2">
+                    {questions
+                      .filter((question) =>
+                        ["energy", "mood", "sleep", "stress"].includes(question.id),
+                      )
+                      .map((question) => (
+                        <div key={question.id} className="rounded-xl bg-raised px-3 py-2.5">
+                          <dt className="text-[13px] text-fg-3">
+                            {question.id === "sleep" ? "Sleep" : question.label}
+                          </dt>
+                          <dd className="text-xl font-semibold tabular-nums text-fg">
+                            {answers[question.id] ?? "—"}
+                          </dd>
+                        </div>
+                      ))}
+                  </dl>
+                  {answeredCount < questions.length ? (
+                    <p className="mt-3 text-[13px] text-fg-3">
+                      {answeredCount} of {questions.length} answered
+                    </p>
+                  ) : null}
+                  <button
+                    type="button"
+                    onClick={() => setCheckinExpanded(true)}
+                    className="mt-4 flex min-h-11 w-full items-center justify-center rounded-xl border border-line-strong bg-raised text-sm font-semibold text-fg hover:bg-line focus-visible:ring-2 focus-visible:ring-accent-fg"
+                  >
+                    Edit check-in
+                  </button>
+                </section>
+              ) : null}
+
+              <section
+                aria-labelledby="quick-log-heading"
+                className="rounded-2xl border border-line bg-surface p-4 sm:p-5"
+              >
+                <div className="flex items-baseline justify-between gap-3">
+                  <h2 id="quick-log-heading" className="text-[17px] font-semibold text-fg">
+                    Quick log
+                  </h2>
+                  <span className="text-[13px] text-fg-3">Tap or speak</span>
+                </div>
+                {eventMessage && !activeQuickAdd ? (
+                  <p
+                    role="status"
+                    className="mt-3 rounded-xl bg-emerald-500/10 p-3 text-sm font-semibold text-emerald-300"
+                  >
+                    {eventMessage}
+                  </p>
+                ) : null}
+                <div className="mt-3 grid grid-cols-4 gap-2">
+                  {quickLogTypes.map(([type, category]) => (
                     <button
                       key={type}
                       type="button"
                       onClick={(event) => openQuickAdd(type, event.currentTarget)}
-                      className="min-h-12 rounded-lg border border-slate-200 bg-white px-4 text-left text-sm font-semibold text-slate-900 transition hover:border-blue-300 hover:bg-blue-50 focus-visible:ring-2 focus-visible:ring-blue-600"
+                      className="flex min-h-[76px] min-w-0 flex-col items-center justify-center gap-2 rounded-xl border border-line bg-raised px-0.5 text-xs font-semibold text-fg transition hover:border-line-strong hover:bg-line focus-visible:ring-2 focus-visible:ring-accent-fg"
                     >
-                      {type}
+                      <CategoryIcon category={category} size="sm" />
+                      <span className="max-w-full truncate">{type}</span>
                     </button>
                   ))}
                 </div>
-              </details>
-            </CollapsibleSection>
-          )}
-
-          {!historical ? <ActiveEpisodes /> : null}
-          <Timeline
-            key={date}
-            startDate={date}
-            history={historical}
-            title={historical ? "Activity for this day" : "Today’s Activity"}
-          />
+                <button
+                  type="button"
+                  aria-label="Open Voice Log"
+                  onClick={() => setVoiceOpen(true)}
+                  className="mt-3 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-accent-fg/35 bg-accent/15 px-4 text-[15px] font-semibold text-blue-200 hover:bg-accent/25 focus-visible:ring-2 focus-visible:ring-accent-fg"
+                >
+                  <MicIcon />
+                  Voice log
+                </button>
+              </section>
+            </aside>
+          ) : null}
         </div>
       </div>
-
       {voiceOpen && (
         <VoiceLogDialog
           onClose={() => setVoiceOpen(false)}
@@ -977,11 +1092,11 @@ function CheckInForm({ date, historical }: { date: string; historical: boolean }
           </div>
 
           {quickAddFields[activeQuickAdd].some((field) => field.detail) ? (
-            <section className="mt-5 border-t border-slate-200 pt-4">
+            <section className="mt-5 border-t border-line pt-4">
               <button
                 type="button"
                 onClick={() => setShowEventDetails((value) => !value)}
-                className="min-h-11 rounded-lg px-2 text-sm font-semibold text-blue-700 hover:bg-blue-50 focus-visible:ring-2 focus-visible:ring-blue-600"
+                className="min-h-11 rounded-lg px-2 text-sm font-semibold text-blue-300 hover:bg-blue-500/10 focus-visible:ring-2 focus-visible:ring-accent-fg"
                 aria-expanded={showEventDetails}
                 aria-controls="quick-log-details"
               >

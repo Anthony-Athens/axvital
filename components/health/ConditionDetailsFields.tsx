@@ -17,7 +17,7 @@ export function ConditionDetailsFields({
 }) {
   return (
     <div className="grid gap-4">
-      <label className="grid gap-1.5 text-sm font-semibold text-slate-700">
+      <label className="grid gap-1.5 text-sm font-semibold text-fg-2">
         Status
         <select
           className={controlClass}
@@ -33,8 +33,8 @@ export function ConditionDetailsFields({
         </select>
       </label>
       <div className="grid gap-4 sm:grid-cols-2">
-        <label className="grid gap-1.5 text-sm font-semibold text-slate-700">
-          Diagnosis date <span className="font-normal text-slate-500">Optional</span>
+        <label className="grid gap-1.5 text-sm font-semibold text-fg-2">
+          Diagnosis date <span className="font-normal text-fg-3">Optional</span>
           <input
             type="date"
             max={new Date().toISOString().slice(0, 10)}
@@ -49,8 +49,8 @@ export function ConditionDetailsFields({
             }
           />
         </label>
-        <label className="grid gap-1.5 text-sm font-semibold text-slate-700">
-          Diagnosis year <span className="font-normal text-slate-500">Optional alternative</span>
+        <label className="grid gap-1.5 text-sm font-semibold text-fg-2">
+          Diagnosis year <span className="font-normal text-fg-3">Optional alternative</span>
           <input
             type="number"
             min="1900"
@@ -63,7 +63,7 @@ export function ConditionDetailsFields({
           />
         </label>
       </div>
-      <label className="flex min-h-11 items-center gap-3 text-sm font-medium text-slate-700">
+      <label className="flex min-h-11 items-center gap-3 text-sm font-medium text-fg-2">
         <input
           type="checkbox"
           className="h-5 w-5 accent-blue-600"
@@ -72,8 +72,8 @@ export function ConditionDetailsFields({
         />
         Make this my primary condition
       </label>
-      <label className="grid gap-1.5 text-sm font-semibold text-slate-700">
-        Notes <span className="font-normal text-slate-500">Optional, up to 2,000 characters</span>
+      <label className="grid gap-1.5 text-sm font-semibold text-fg-2">
+        Notes <span className="font-normal text-fg-3">Optional, up to 2,000 characters</span>
         <textarea
           rows={4}
           maxLength={2000}
@@ -81,7 +81,7 @@ export function ConditionDetailsFields({
           value={values.notes}
           onChange={(event) => onChange({ ...values, notes: event.target.value })}
         />
-        <span className="text-right text-xs font-normal text-slate-500">
+        <span className="text-right text-xs font-normal text-fg-3">
           {values.notes.length}/2,000
         </span>
       </label>

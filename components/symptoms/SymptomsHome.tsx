@@ -49,19 +49,17 @@ function EventCard({ event, onChanged }: { event: SymptomEvent; onChanged: () =>
     onChanged();
   }
   return (
-    <article className="rounded-xl border border-slate-200 bg-white p-4">
+    <article className="rounded-xl border border-line bg-surface p-4">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h3 className="font-semibold text-slate-900">{name}</h3>
-          <p className="mt-1 text-sm text-slate-500">
-            {new Date(event.started_at).toLocaleString()}
-          </p>
+          <h3 className="font-semibold text-fg">{name}</h3>
+          <p className="mt-1 text-sm text-fg-3">{new Date(event.started_at).toLocaleString()}</p>
         </div>
-        <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-700">
+        <span className="rounded-full bg-raised px-2.5 py-1 text-xs font-semibold text-fg-2">
           {event.resolved ? "Resolved" : "Ongoing or status unknown"}
         </span>
       </div>
-      <div className="mt-3 flex flex-wrap gap-3 text-sm text-slate-600">
+      <div className="mt-3 flex flex-wrap gap-3 text-sm text-fg-2">
         {event.severity ? <span>Severity {event.severity}/10</span> : null}
         {event.ended_at ? (
           <span>
@@ -76,11 +74,9 @@ function EventCard({ event, onChanged }: { event: SymptomEvent; onChanged: () =>
         ) : null}
       </div>
       {conditions.length ? (
-        <p className="mt-2 text-sm text-slate-600">Associated with {conditions.join(", ")}</p>
+        <p className="mt-2 text-sm text-fg-2">Associated with {conditions.join(", ")}</p>
       ) : null}
-      {event.notes ? (
-        <p className="mt-2 line-clamp-2 text-sm text-slate-600">{event.notes}</p>
-      ) : null}
+      {event.notes ? <p className="mt-2 line-clamp-2 text-sm text-fg-2">{event.notes}</p> : null}
       <div className="mt-3 flex flex-wrap gap-2">
         {!event.resolved ? (
           <Button
@@ -262,15 +258,15 @@ export function SymptomsHome({ historyOnly = false }: { historyOnly?: boolean })
         <>
           <section className="mt-6 grid gap-3 sm:grid-cols-3" aria-label="30-day symptom summary">
             <Surface compact>
-              <p className="text-sm text-slate-500">Occurrences · 30 days</p>
+              <p className="text-sm text-fg-3">Occurrences · 30 days</p>
               <p className="mt-1 text-2xl font-semibold">{summary.count}</p>
             </Surface>
             <Surface compact>
-              <p className="text-sm text-slate-500">Average severity</p>
+              <p className="text-sm text-fg-3">Average severity</p>
               <p className="mt-1 text-2xl font-semibold">{summary.averageSeverity ?? "—"}</p>
             </Surface>
             <Surface compact>
-              <p className="text-sm text-slate-500">Ongoing</p>
+              <p className="text-sm text-fg-3">Ongoing</p>
               <p className="mt-1 text-2xl font-semibold">{summary.ongoing}</p>
             </Surface>
           </section>
@@ -280,7 +276,7 @@ export function SymptomsHome({ historyOnly = false }: { historyOnly?: boolean })
                 <h2 id="my-symptoms-title" className="text-xl font-semibold">
                   My Symptoms
                 </h2>
-                <p className="mt-1 text-sm text-slate-600">
+                <p className="mt-1 text-sm text-fg-2">
                   Favorites and symptoms you track frequently.
                 </p>
               </div>
@@ -292,14 +288,14 @@ export function SymptomsHome({ historyOnly = false }: { historyOnly?: boolean })
                     <div className="flex justify-between gap-3">
                       <div>
                         <h3 className="font-semibold">{symptomName(m)}</h3>
-                        <p className="text-sm text-slate-500">
+                        <p className="text-sm text-fg-3">
                           {m.symptom ? m.symptom.category?.name : "Custom symptom"}
                         </p>
                       </div>
                       <button
                         aria-label={`${m.is_favorite ? "Unfavorite" : "Favorite"} ${symptomName(m)}`}
                         onClick={() => void toggle(m)}
-                        className="min-h-11 min-w-11 text-xl text-blue-700"
+                        className="min-h-11 min-w-11 text-xl text-blue-300"
                       >
                         {m.is_favorite ? "★" : "☆"}
                       </button>
@@ -334,7 +330,7 @@ export function SymptomsHome({ historyOnly = false }: { historyOnly?: boolean })
             <h2 id="recommended-title" className="text-xl font-semibold">
               Recommended for You
             </h2>
-            <p className="mt-1 text-sm text-slate-600">
+            <p className="mt-1 text-sm text-fg-2">
               Commonly tracked with conditions in your health profile.
             </p>
             {recommended.length ? (
@@ -343,14 +339,14 @@ export function SymptomsHome({ historyOnly = false }: { historyOnly?: boolean })
                   <button
                     key={s.id}
                     onClick={() => void track(s)}
-                    className="min-h-11 rounded-full border border-blue-200 bg-blue-50 px-4 text-sm font-semibold text-blue-800"
+                    className="min-h-11 rounded-xl border border-blue-400/25 bg-blue-500/10 px-4 text-sm font-semibold text-blue-200"
                   >
                     + {s.name}
                   </button>
                 ))}
               </div>
             ) : (
-              <p className="mt-3 text-sm text-slate-500">No new recommendations right now.</p>
+              <p className="mt-3 text-sm text-fg-3">No new recommendations right now.</p>
             )}
           </section>
           <section className="mt-8" aria-labelledby="browse-title">
@@ -385,12 +381,12 @@ export function SymptomsHome({ historyOnly = false }: { historyOnly?: boolean })
             <div aria-live="polite" className="sr-only">
               {results.length} matching symptoms
             </div>
-            <div className="mt-3 max-h-80 divide-y divide-slate-100 overflow-y-auto rounded-xl border border-slate-200 bg-white">
+            <div className="mt-3 max-h-80 divide-y divide-line overflow-y-auto rounded-xl border border-line bg-surface">
               {results.map((s) => (
                 <div key={s.id} className="flex items-center justify-between gap-3 p-3">
                   <div>
                     <p className="font-semibold">{s.name}</p>
-                    <p className="text-sm text-slate-500">{s.category?.name}</p>
+                    <p className="text-sm text-fg-3">{s.category?.name}</p>
                   </div>
                   <div className="flex gap-1">
                     <Button variant="tertiary" onClick={() => void track(s)}>
@@ -405,9 +401,7 @@ export function SymptomsHome({ historyOnly = false }: { historyOnly?: boolean })
               {!results.length ? (
                 <div className="p-6 text-center">
                   <p className="font-semibold">No matching symptoms found</p>
-                  <p className="text-sm text-slate-500">
-                    Try another search or add a custom symptom.
-                  </p>
+                  <p className="text-sm text-fg-3">Try another search or add a custom symptom.</p>
                 </div>
               ) : null}
             </div>
@@ -441,7 +435,7 @@ export function SymptomsHome({ historyOnly = false }: { historyOnly?: boolean })
               </h2>
               <Link
                 href="/health/symptoms/history"
-                className="min-h-11 py-3 text-sm font-semibold text-blue-700"
+                className="min-h-11 py-3 text-sm font-semibold text-blue-300"
               >
                 View symptom history
               </Link>

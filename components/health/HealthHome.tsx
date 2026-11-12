@@ -95,19 +95,19 @@ export function HealthHome() {
         description="A private overview of the health areas you are tracking."
         actions={<Button onClick={() => setDialogOpen(true)}>Add condition</Button>}
       />
-      <p className="mt-4 text-sm text-slate-600">
+      <p className="mt-4 text-sm text-fg-2">
         Your health profile is private to your AXVital account.
       </p>
       <section
-        className="mt-6 rounded-xl border border-blue-200 bg-blue-50 p-5"
+        className="mt-6 rounded-xl border border-blue-400/25 bg-blue-500/10 p-5"
         aria-labelledby="symptoms-section-title"
       >
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 id="symptoms-section-title" className="text-xl font-semibold text-slate-900">
+            <h2 id="symptoms-section-title" className="text-xl font-semibold text-fg">
               Health activity
             </h2>
-            <p className="mt-1 text-sm text-slate-600">
+            <p className="mt-1 text-sm text-fg-2">
               Review your timeline or manage symptom tracking and history.
             </p>
           </div>
@@ -123,7 +123,7 @@ export function HealthHome() {
         </div>
       </section>
       {sectionError ? (
-        <div role="status" className="mt-4 rounded-xl bg-amber-50 p-4 text-sm text-amber-900">
+        <div role="status" className="mt-4 rounded-xl bg-amber-500/10 p-4 text-sm text-amber-100">
           {sectionError}
           <Button
             variant="secondary"
@@ -136,20 +136,20 @@ export function HealthHome() {
         </div>
       ) : null}
       <section className="mt-6" aria-labelledby="health-summary-title">
-        <h2 id="health-summary-title" className="text-lg font-semibold text-slate-900">
+        <h2 id="health-summary-title" className="text-lg font-semibold text-fg">
           Health summary
         </h2>
         <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <Surface compact>
-            <p className="text-sm text-slate-500">Conditions</p>
-            <p className="mt-1 text-2xl font-semibold text-slate-900">
+            <p className="text-sm text-fg-3">Conditions</p>
+            <p className="mt-1 text-2xl font-semibold text-fg">
               {loading || loadError ? "—" : active.length}
             </p>
-            <p className="text-xs text-slate-500">currently tracked</p>
+            <p className="text-xs text-fg-3">currently tracked</p>
           </Surface>
           {episodes.some((x) => x.status === "ongoing") ? (
             <Surface compact>
-              <p className="text-sm text-slate-500">Active Episodes</p>
+              <p className="text-sm text-fg-3">Active Episodes</p>
               <p className="mt-1 text-2xl font-semibold">
                 {episodes.filter((x) => x.status === "ongoing").length}
               </p>
@@ -160,7 +160,7 @@ export function HealthHome() {
           ) : null}
           {episodes.length ? (
             <Surface compact>
-              <p className="text-sm text-slate-500">Recent Episodes</p>
+              <p className="text-sm text-fg-3">Recent Episodes</p>
               <p className="mt-1 text-2xl font-semibold">
                 {
                   episodes.filter(
@@ -168,7 +168,7 @@ export function HealthHome() {
                   ).length
                 }
               </p>
-              <p className="text-xs text-slate-500">in the last 90 days</p>
+              <p className="text-xs text-fg-3">in the last 90 days</p>
             </Surface>
           ) : null}
         </div>
@@ -176,12 +176,10 @@ export function HealthHome() {
       <section className="mt-8" aria-labelledby="conditions-title">
         <div className="flex items-center justify-between gap-4">
           <div>
-            <h2 id="conditions-title" className="text-xl font-semibold text-slate-900">
+            <h2 id="conditions-title" className="text-xl font-semibold text-fg">
               Conditions you’re managing
             </h2>
-            <p className="mt-1 text-sm text-slate-600">
-              Self-reported health areas you want to track.
-            </p>
+            <p className="mt-1 text-sm text-fg-2">Self-reported health areas you want to track.</p>
           </div>
         </div>
         {loadError ? (
@@ -214,10 +212,10 @@ export function HealthHome() {
       </section>
       {!loading && archived.length ? (
         <section className="mt-8" aria-labelledby="archived-title">
-          <h2 id="archived-title" className="text-lg font-semibold text-slate-900">
+          <h2 id="archived-title" className="text-lg font-semibold text-fg">
             Archived conditions
           </h2>
-          <p className="mt-1 text-sm text-slate-600">
+          <p className="mt-1 text-sm text-fg-2">
             Restore a condition when you want it back in your active health profile.
           </p>
           {actionError ? (
@@ -225,7 +223,7 @@ export function HealthHome() {
               <InlineNotice>{actionError}</InlineNotice>
             </div>
           ) : null}
-          <div className="mt-3 divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white">
+          <div className="mt-3 divide-y divide-line rounded-xl border border-line bg-surface">
             {archived.map((item) => {
               const name = item.condition?.name ?? item.custom_condition_name ?? "Condition";
               return (
@@ -234,8 +232,8 @@ export function HealthHome() {
                   className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between"
                 >
                   <div>
-                    <p className="font-semibold text-slate-900">{name}</p>
-                    <p className="text-sm text-slate-500">
+                    <p className="font-semibold text-fg">{name}</p>
+                    <p className="text-sm text-fg-3">
                       Archived {new Date(item.archived_at!).toLocaleDateString()}
                     </p>
                   </div>
@@ -253,7 +251,7 @@ export function HealthHome() {
           </div>
         </section>
       ) : null}
-      <aside className="mt-8 rounded-xl bg-slate-100 p-4 text-sm leading-6 text-slate-600">
+      <aside className="mt-8 rounded-xl bg-raised p-4 text-sm leading-6 text-fg-2">
         AXVital helps you organize self-reported health information and is not a substitute for
         professional medical care.
       </aside>

@@ -16,39 +16,37 @@ const labels: Record<TriggerWindowHours, string> = {
 };
 export function PatternCard({ pattern }: { pattern: TriggerPattern }) {
   return (
-    <article className="rounded-xl border border-slate-200 bg-white p-4">
+    <article className="rounded-xl border border-line bg-surface p-4">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div>
-          <p className="text-xs font-semibold uppercase text-slate-500">
-            {pattern.exposureCategory}
-          </p>
+          <p className="text-xs font-semibold uppercase text-fg-3">{pattern.exposureCategory}</p>
           <h3 className="font-semibold">{pattern.exposureLabel}</h3>
         </div>
-        <span className="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-semibold capitalize text-blue-800">
+        <span className="rounded-full bg-blue-500/10 px-2.5 py-1 text-xs font-semibold capitalize text-blue-200">
           {pattern.evidenceStrength}
         </span>
       </div>
-      <p className="mt-2 text-sm leading-6 text-slate-700">{pattern.summary}</p>
+      <p className="mt-2 text-sm leading-6 text-fg-2">{pattern.summary}</p>
       <dl className="mt-3 grid gap-2 text-sm sm:grid-cols-2">
         <div>
-          <dt className="text-slate-500">Before episodes</dt>
+          <dt className="text-fg-3">Before episodes</dt>
           <dd className="font-semibold">
             {pattern.episodeValue ?? "—"} {pattern.unit}
           </dd>
         </div>
         <div>
-          <dt className="text-slate-500">Personal baseline</dt>
+          <dt className="text-fg-3">Personal baseline</dt>
           <dd className="font-semibold">
             {pattern.baselineValue ?? "—"} {pattern.unit}
           </dd>
         </div>
       </dl>
-      <p className="mt-2 text-xs text-slate-500">
+      <p className="mt-2 text-xs text-fg-3">
         {pattern.episodesAnalyzed} episodes analyzed · {pattern.completenessPercentage}% complete
       </p>
       <Link
         href={`/health/conditions/${pattern.userConditionId}/patterns/${pattern.exposureKey}?window=${pattern.windowHours}`}
-        className="mt-2 inline-flex min-h-11 items-center font-semibold text-blue-700"
+        className="mt-2 inline-flex min-h-11 items-center font-semibold text-blue-300"
         aria-label={`View ${pattern.exposureLabel} pattern before ${pattern.conditionLabel} ${pattern.episodeLabel.toLowerCase()}s`}
       >
         View details
@@ -92,7 +90,7 @@ export function ConditionPatterns({ conditionId }: { conditionId: string }) {
     return (
       <>
         <h2 className="text-2xl font-semibold">Patterns Before Episodes</h2>
-        <p className="mt-2 text-sm text-slate-600">
+        <p className="mt-2 text-sm text-fg-2">
           {preview.episodeCount} episodes recorded · Potential categories include{" "}
           {preview.categories.join(", ")}.
         </p>
@@ -111,7 +109,7 @@ export function ConditionPatterns({ conditionId }: { conditionId: string }) {
           <h2 className="text-2xl font-semibold">
             Patterns {data ? `Before ${data.episodeLabel}s` : "Before Episodes"}
           </h2>
-          <p className="mt-1 max-w-2xl text-sm text-slate-600">
+          <p className="mt-1 max-w-2xl text-sm text-fg-2">
             AXVital compares periods before your episodes with your usual patterns to identify
             possible associations worth watching.
           </p>
@@ -133,7 +131,7 @@ export function ConditionPatterns({ conditionId }: { conditionId: string }) {
           ))}
         </div>
       </div>
-      <p className="mt-3 text-sm text-slate-500">These observations do not establish causation.</p>
+      <p className="mt-3 text-sm text-fg-3">These observations do not establish causation.</p>
       {error ? (
         <div className="mt-4">
           <InlineNotice>{error}</InlineNotice>
@@ -147,14 +145,14 @@ export function ConditionPatterns({ conditionId }: { conditionId: string }) {
       ) : data && data.episodeCount < 3 ? (
         <Surface className="mt-4">
           <h3 className="font-semibold">More episode history needed</h3>
-          <p className="mt-1 text-sm text-slate-600">
+          <p className="mt-1 text-sm text-fg-2">
             AXVital needs at least 3 episodes before it can begin comparing patterns.
           </p>
         </Surface>
       ) : data && !data.patterns.length ? (
         <Surface className="mt-4">
           <h3 className="font-semibold">No clear difference observed</h3>
-          <p className="mt-1 text-sm text-slate-600">
+          <p className="mt-1 text-sm text-fg-2">
             Your data did not show a sufficiently supported difference for the curated variables in
             this window.
           </p>
@@ -171,7 +169,7 @@ export function ConditionPatterns({ conditionId }: { conditionId: string }) {
           <summary className="min-h-11 cursor-pointer font-semibold">
             Other variables analyzed
           </summary>
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-fg-2">
             {data.otherVariables.join(", ")}. These were suppressed because data, consistency, or
             difference thresholds were not met.
           </p>
@@ -180,8 +178,8 @@ export function ConditionPatterns({ conditionId }: { conditionId: string }) {
       {data ? (
         <Surface className="mt-4">
           <h3 className="font-semibold">How this comparison works</h3>
-          <p className="mt-2 text-sm leading-6 text-slate-600">{data.methodology}</p>
-          <p className="mt-2 text-xs text-slate-500">Analysis version: {data.analysisVersion}</p>
+          <p className="mt-2 text-sm leading-6 text-fg-2">{data.methodology}</p>
+          <p className="mt-2 text-xs text-fg-3">Analysis version: {data.analysisVersion}</p>
         </Surface>
       ) : null}
     </>

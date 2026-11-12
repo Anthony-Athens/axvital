@@ -35,30 +35,30 @@ export function WeeklySymptomSummary() {
       .finally(() => setLoaded(true));
   }, []);
   return (
-    <section className="mt-6 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm md:p-8">
-      <p className="text-sm font-bold uppercase tracking-[0.18em] text-blue-700">
+    <section className="mt-6 rounded-2xl border border-line bg-surface p-5 shadow-sm md:p-8">
+      <p className="text-sm font-bold uppercase tracking-[0.18em] text-blue-300">
         Symptoms this week
       </p>
       {!loaded ? (
-        <p className="mt-3 text-sm text-slate-500">Loading symptom summary…</p>
+        <p className="mt-3 text-sm text-fg-3">Loading symptom summary…</p>
       ) : rows.length ? (
-        <div className="mt-4 divide-y divide-slate-100">
+        <div className="mt-4 divide-y divide-line">
           {rows.map((r) => (
             <div key={r.name} className="flex items-center justify-between gap-4 py-3">
               <div>
-                <p className="font-semibold text-slate-900">{r.name}</p>
-                <p className="text-sm text-slate-500">
+                <p className="font-semibold text-fg">{r.name}</p>
+                <p className="text-sm text-fg-3">
                   {r.count} occurrence{r.count === 1 ? "" : "s"}
                 </p>
               </div>
-              <p className="text-sm font-semibold text-slate-700">
+              <p className="text-sm font-semibold text-fg-2">
                 {r.average == null ? "No severity recorded" : `Average severity ${r.average}`}
               </p>
             </div>
           ))}
         </div>
       ) : (
-        <p className="mt-3 text-sm text-slate-500">
+        <p className="mt-3 text-sm text-fg-3">
           No structured symptom occurrences logged this week.
         </p>
       )}

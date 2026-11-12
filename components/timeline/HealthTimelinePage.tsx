@@ -18,10 +18,10 @@ export function HealthTimelinePage() {
   const go = (date: string) => router.replace(`/health/timeline?date=${date}`);
   return (
     <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6 lg:py-8">
-      <header className="border-b border-slate-200 pb-5">
-        <p className="text-sm font-semibold text-blue-700">Longitudinal health</p>
+      <header className="border-b border-line pb-5">
+        <p className="text-sm font-semibold text-blue-300">Longitudinal health</p>
         <h1 className="mt-1 text-3xl font-semibold tracking-tight">Health Timeline</h1>
-        <p className="mt-1 text-sm text-slate-600">
+        <p className="mt-1 text-sm text-fg-2">
           Review your health, activity, nutrition, symptoms, and routines in one place.
         </p>
       </header>
@@ -56,7 +56,7 @@ export function HealthTimelinePage() {
       <Timeline key={end} startDate={start} endDate={end} history />
       <Link
         href="/today"
-        className="mt-4 inline-flex min-h-11 items-center font-semibold text-blue-700"
+        className="mt-4 inline-flex min-h-11 items-center font-semibold text-blue-300"
       >
         Back to Today
       </Link>

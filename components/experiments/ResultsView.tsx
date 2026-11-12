@@ -37,15 +37,15 @@ function MeasurementDetails({
       {value.kind === "continuous" ? (
         <dl className="mt-3 space-y-2 text-sm">
           <div>
-            <dt className="text-slate-500">Average</dt>
+            <dt className="text-fg-3">Average</dt>
             <dd className="font-semibold">{shown(value.mean, unit)}</dd>
           </div>
           <div>
-            <dt className="text-slate-500">Median</dt>
+            <dt className="text-fg-3">Median</dt>
             <dd>{shown(value.median, unit)}</dd>
           </div>
           <div>
-            <dt className="text-slate-500">Observed range</dt>
+            <dt className="text-fg-3">Observed range</dt>
             <dd>
               {shown(value.minimum, unit)} – {shown(value.maximum, unit)}
             </dd>
@@ -54,7 +54,7 @@ function MeasurementDetails({
       ) : (
         <>
           <p className="mt-3 text-sm">
-            <span className="text-slate-500">Central observed ranks</span>
+            <span className="text-fg-3">Central observed ranks</span>
             <br />
             <strong>
               {value.medianLower}–{value.medianUpper}
@@ -85,7 +85,7 @@ function StatisticalUncertainty({
       <div className="rounded-xl border p-4">
         <h3 className="font-semibold">Statistical uncertainty</h3>
         <p className="mt-2 font-medium">{state.title}</p>
-        <p className="mt-1 text-sm text-slate-600">{state.description}</p>
+        <p className="mt-1 text-sm text-fg-2">{state.description}</p>
         {reliability.limitations[0] ? (
           <p className="mt-2 text-sm">{resultCopy(reliability.limitations[0])}</p>
         ) : null}
@@ -102,7 +102,7 @@ function StatisticalUncertainty({
         Observed difference: {signed(reliability.estimate.value, unit)}. 95% uncertainty range:{" "}
         {signed(reliability.interval.lower, unit)} to {signed(reliability.interval.upper, unit)}.
       </p>
-      <p className="mt-2 text-sm text-slate-600">
+      <p className="mt-2 text-sm text-fg-2">
         {clear
           ? "The estimated range stays entirely on one side of zero, so the measured periods are more clearly separated."
           : "The estimated range includes zero, so the data are compatible with little or no difference. This does not mean the intervention failed or that nothing changed."}
@@ -117,14 +117,14 @@ function StatisticalUncertainty({
         </p>
         <dl className="mt-2 grid gap-2 text-sm sm:grid-cols-2">
           <div>
-            <dt className="text-slate-500">Measurements</dt>
+            <dt className="text-fg-3">Measurements</dt>
             <dd>
               {reliability.sample.baseline} starting point · {reliability.sample.intervention}{" "}
               experiment
             </dd>
           </div>
           <div>
-            <dt className="text-slate-500">Resamples</dt>
+            <dt className="text-fg-3">Resamples</dt>
             <dd>{reliability.sample.iterations}</dd>
           </div>
         </dl>
@@ -176,13 +176,13 @@ export function ResultsView({
   return (
     <div className="min-w-0 space-y-6 break-words">
       <header>
-        <p className="text-sm font-semibold text-blue-700">
+        <p className="text-sm font-semibold text-blue-300">
           Experiments 2.0 · {data.experiment.status.replaceAll("_", " ")}
         </p>
         <h1 className="mt-2 text-3xl font-semibold">
           {v2?.experimentName ?? data.experiment.name}
         </h1>
-        <p className="mt-2 text-slate-600">{v2?.question ?? data.experiment.question}</p>
+        <p className="mt-2 text-fg-2">{v2?.question ?? data.experiment.question}</p>
       </header>
       {data.revisions.length ? (
         <details className="rounded-xl border p-4">
@@ -196,7 +196,7 @@ export function ResultsView({
             <select
               id="analysis-revision"
               aria-label="Historical analysis revision"
-              className="mt-2 w-full min-w-0 rounded-lg border bg-white p-3 text-sm"
+              className="mt-2 w-full min-w-0 rounded-lg border bg-surface p-3 text-sm"
               value={selected ?? ""}
               disabled={busy}
               onChange={(e) => onSelect(Number(e.target.value))}
@@ -226,7 +226,7 @@ export function ResultsView({
                 {data.latestRevision}.
               </p>
             ) : null}
-            <p className="mt-2 text-sm text-slate-600">
+            <p className="mt-2 text-sm text-fg-2">
               Revisions preserve the evidence available when each analysis was created. Newer does
               not mean stronger.
             </p>
@@ -239,23 +239,23 @@ export function ResultsView({
             Your experiment has ended. Generate Results to save the evidence currently available and
             create a reproducible analysis.
           </p>
-          <p className="mt-2 text-sm text-slate-600">
+          <p className="mt-2 text-sm text-fg-2">
             Generating results does not guarantee that enough usable evidence exists.
           </p>
         </section>
       )}
       {notice ? <p role="status">{notice}</p> : null}
       {error ? (
-        <p role="alert" className="rounded-lg border border-red-200 p-3">
+        <p role="alert" className="rounded-lg border border-red-400/25 p-3">
           {error}
         </p>
       ) : null}
       {loading ? <p role="status">Loading selected analysis…</p> : null}
       {result && !loading ? (
         <article aria-label={`Analysis revision ${result.analysisRevision}`} className="space-y-6">
-          <p className="text-sm font-semibold text-blue-700">What happened?</p>
-          <section aria-labelledby="analysis-heading" className="rounded-2xl bg-slate-50 p-5">
-            <p className="text-sm text-slate-600">
+          <p className="text-sm font-semibold text-blue-300">What happened?</p>
+          <section aria-labelledby="analysis-heading" className="rounded-2xl bg-raised p-5">
+            <p className="text-sm text-fg-2">
               Analysis from{" "}
               {result.capturedAt
                 ? new Date(result.capturedAt).toLocaleDateString()
@@ -279,11 +279,11 @@ export function ResultsView({
                 </p>
                 <dl className="mt-5 grid gap-3 sm:grid-cols-2">
                   <div>
-                    <dt className="text-sm text-slate-500">Starting-point average</dt>
+                    <dt className="text-sm text-fg-3">Starting-point average</dt>
                     <dd className="text-xl font-semibold">{shown(facts.baseline.mean, unit)}</dd>
                   </div>
                   <div>
-                    <dt className="text-sm text-slate-500">Experiment average</dt>
+                    <dt className="text-sm text-fg-3">Experiment average</dt>
                     <dd className="text-xl font-semibold">
                       {shown(facts.intervention.mean, unit)}
                     </dd>
@@ -315,17 +315,17 @@ export function ResultsView({
                 </h2>
                 <dl className="mt-3 grid gap-3 sm:grid-cols-2">
                   <div className="rounded-xl border p-4">
-                    <dt className="text-sm text-slate-500">Change</dt>
+                    <dt className="text-sm text-fg-3">Change</dt>
                     <dd className="mt-1 font-semibold">
                       {v2?.interventionLabel ?? "Your frozen experiment change"}
                     </dd>
                   </div>
                   <div className="rounded-xl border p-4">
-                    <dt className="text-sm text-slate-500">Measured</dt>
+                    <dt className="text-sm text-fg-3">Measured</dt>
                     <dd className="mt-1 font-semibold">{display?.outcomeLabel ?? "Outcome"}</dd>
                   </div>
                   <div className="rounded-xl border p-4">
-                    <dt className="text-sm text-slate-500">Experiment period</dt>
+                    <dt className="text-sm text-fg-3">Experiment period</dt>
                     <dd className="mt-1 font-semibold">
                       {v2?.design.plannedDays != null
                         ? `${v2.design.plannedDays} planned days`
@@ -333,7 +333,7 @@ export function ResultsView({
                     </dd>
                   </div>
                   <div className="rounded-xl border p-4">
-                    <dt className="text-sm text-slate-500">Starting point</dt>
+                    <dt className="text-sm text-fg-3">Starting point</dt>
                     <dd className="mt-1 font-semibold">
                       {v2?.design.baselineDays != null
                         ? `${v2.design.baselineDays} historical days`
@@ -352,7 +352,7 @@ export function ResultsView({
                   <>
                     <p className="mt-3 text-4xl font-semibold">{adherence.percent}%</p>
                     <p className="mt-2 font-medium">{adherence.summary}</p>
-                    <p className="mt-1 text-sm text-slate-600">{adherence.detail}</p>
+                    <p className="mt-1 text-sm text-fg-2">{adherence.detail}</p>
                     <p className="mt-3 text-sm">
                       Results summarize the experiment as it actually occurred, including eligible
                       days when the target was not met. Unknown opportunities are not counted as not
@@ -396,17 +396,17 @@ export function ResultsView({
                 </h2>
                 <dl className="mt-3 grid gap-3 sm:grid-cols-3">
                   <div>
-                    <dt className="text-sm text-slate-500">Starting point</dt>
+                    <dt className="text-sm text-fg-3">Starting point</dt>
                     <dd className="font-semibold">
                       {v2?.design.baselineDays ?? "Unknown"} historical days
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-sm text-slate-500">Planned experiment</dt>
+                    <dt className="text-sm text-fg-3">Planned experiment</dt>
                     <dd className="font-semibold">{v2?.design.plannedDays ?? "Unknown"} days</dd>
                   </div>
                   <div>
-                    <dt className="text-sm text-slate-500">Included period</dt>
+                    <dt className="text-sm text-fg-3">Included period</dt>
                     <dd className="font-semibold">
                       {v2?.design.activeDays ??
                         result.outcomeQuality.intervention.expected ??
@@ -416,7 +416,7 @@ export function ResultsView({
                   </div>
                 </dl>
                 {data.experiment.status === "ended_early" ? (
-                  <div className="mt-4 rounded-xl border border-amber-300 p-4">
+                  <div className="mt-4 rounded-xl border border-amber-400/40 p-4">
                     <h3 className="font-semibold">Experiment ended early</h3>
                     <p className="mt-1">
                       Planned: {v2?.design.plannedDays ?? "Unknown"} days · Completed:{" "}
@@ -455,7 +455,7 @@ export function ResultsView({
             <h2 id="quality-heading" className="text-xl font-semibold">
               How reliable is this result?
             </h2>
-            <p className="mt-2 text-sm text-slate-600">
+            <p className="mt-2 text-sm text-fg-2">
               Data quality, change tracking, and statistical uncertainty answer different questions.
               None establishes causation.
             </p>

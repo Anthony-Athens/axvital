@@ -75,7 +75,7 @@ export function ExerciseSelector({ onSelect }: { onSelect: (exercise: Exercise) 
         ref={triggerRef}
         type="button"
         onClick={() => setOpen(true)}
-        className="mt-2 min-h-12 w-full rounded-2xl border border-dashed border-emerald-500 px-4 text-left font-black text-emerald-700"
+        className="mt-2 min-h-12 w-full rounded-xl border border-dashed border-accent px-4 text-left font-semibold text-accent-fg"
       >
         Search exercise library…
       </button>
@@ -96,7 +96,7 @@ export function ExerciseSelector({ onSelect }: { onSelect: (exercise: Exercise) 
               <button
                 type="button"
                 onClick={() => setCreating(true)}
-                className="w-full min-h-12 rounded-full bg-emerald-500 px-5 font-black text-white"
+                className="w-full min-h-12 rounded-xl bg-accent hover:bg-accent-hover px-5 font-semibold text-white"
               >
                 Create Custom Exercise{search ? ` “${search}”` : ""}
               </button>
@@ -108,7 +108,7 @@ export function ExerciseSelector({ onSelect }: { onSelect: (exercise: Exercise) 
                 ref={inputRef}
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
-                className="mt-2 min-h-12 w-full rounded-2xl border px-4"
+                className="mt-2 min-h-12 w-full rounded-lg border px-4"
                 placeholder="Try RDL or bench press"
               />
             </label>
@@ -153,7 +153,7 @@ export function ExerciseSelector({ onSelect }: { onSelect: (exercise: Exercise) 
               {loading ? (
                 <p className="p-5 text-center">Loading exercises…</p>
               ) : error ? (
-                <div role="alert" className="p-5 text-center text-rose-700">
+                <div role="alert" className="p-5 text-center text-rose-300">
                   {error}
                   <button
                     type="button"
@@ -169,10 +169,10 @@ export function ExerciseSelector({ onSelect }: { onSelect: (exercise: Exercise) 
                     type="button"
                     key={exercise.id}
                     onClick={() => choose(exercise)}
-                    className="mb-2 min-h-16 w-full rounded-2xl bg-slate-50 p-4 text-left hover:bg-emerald-50 focus:bg-emerald-50"
+                    className="mb-2 min-h-16 w-full rounded-xl bg-raised p-4 text-left hover:bg-emerald-500/10 focus:bg-emerald-500/10"
                   >
-                    <span className="block font-black">{exercise.name}</span>
-                    <span className="mt-1 block text-sm text-slate-600">
+                    <span className="block font-semibold">{exercise.name}</span>
+                    <span className="mt-1 block text-sm text-fg-2">
                       {[
                         metadataLabel(exercise.category),
                         exercise.primary_muscle_group &&
@@ -187,7 +187,7 @@ export function ExerciseSelector({ onSelect }: { onSelect: (exercise: Exercise) 
                 ))
               )}
               {!loading && !error && !results.length ? (
-                <p className="p-5 text-center text-slate-500">No matching exercises.</p>
+                <p className="p-5 text-center text-fg-3">No matching exercises.</p>
               ) : null}
             </div>
           </SheetDialog>

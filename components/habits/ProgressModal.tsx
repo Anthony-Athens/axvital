@@ -33,7 +33,7 @@ export function ProgressModal({
       footer={
         <button
           disabled={saving}
-          className="min-h-12 w-full rounded-full bg-emerald-500 font-black text-white disabled:opacity-50"
+          className="min-h-12 w-full rounded-xl bg-accent hover:bg-accent-hover font-semibold text-white disabled:opacity-50"
         >
           {saving ? "Saving…" : "Save progress"}
         </button>
@@ -50,16 +50,16 @@ export function ProgressModal({
             step="any"
             value={value}
             onChange={(e) => setValue(e.target.value)}
-            className="mt-2 min-h-12 w-full rounded-2xl border border-slate-200 px-4 text-lg font-bold focus:border-emerald-500 focus:outline-none"
+            className="mt-2 min-h-12 w-full rounded-lg border border-line px-4 text-lg font-bold focus:border-emerald-500 focus:outline-none"
           />
         </label>
       ) : null}
       <label className="mt-5 block font-bold">
-        Completion note <span className="text-slate-400">(optional)</span>
+        Completion note <span className="text-fg-3">(optional)</span>
         <textarea
           value={note}
           onChange={(e) => setNote(e.target.value)}
-          className="mt-2 min-h-24 w-full rounded-2xl border border-slate-200 p-4 focus:border-emerald-500 focus:outline-none"
+          className="mt-2 min-h-24 w-full rounded-lg border border-line p-4 focus:border-emerald-500 focus:outline-none"
         />
       </label>
       {activity.tracking_type !== "binary" ? (
@@ -68,7 +68,7 @@ export function ProgressModal({
             type="checkbox"
             checked={complete}
             onChange={(e) => setComplete(e.target.checked)}
-            className="h-5 w-5 accent-emerald-500"
+            className="h-5 w-5 accent-blue-500"
           />{" "}
           Mark complete even if below target
         </label>

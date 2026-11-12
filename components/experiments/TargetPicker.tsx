@@ -88,7 +88,7 @@ export function TargetPicker({
     <fieldset className="mt-4 min-w-0">
       <legend className="font-semibold">{label}</legend>
       {value ? (
-        <p className="mt-2 rounded-lg bg-blue-50 p-3 text-sm">
+        <p className="mt-2 rounded-lg bg-blue-500/10 p-3 text-sm">
           Selected: {value.label ?? "Unavailable item"}
           {!value.available ? " — choose an available replacement" : ""}
         </p>
@@ -132,7 +132,7 @@ export function TargetPicker({
         {page.items.map((item) => (
           <label
             key={`${item.identity}:${item.id}`}
-            className="flex min-h-12 cursor-pointer items-center gap-3 rounded-lg border border-slate-200 p-3 text-sm has-[:checked]:border-blue-600 has-[:checked]:bg-blue-50"
+            className="flex min-h-12 cursor-pointer items-center gap-3 rounded-lg border border-line p-3 text-sm has-[:checked]:border-blue-600 has-[:checked]:bg-blue-500/10"
           >
             <input
               type="radio"
@@ -149,7 +149,7 @@ export function TargetPicker({
           Loading options…
         </p>
       ) : !error && !page.items.length ? (
-        <p role="status" className="mt-3 text-sm text-slate-600">
+        <p role="status" className="mt-3 text-sm text-fg-2">
           {kind === "target_rules"
             ? "You don’t have an experiment-ready nutrition goal matching this search. Create Nutrition Goal to add one."
             : "No matching items. Try another search or create an item in its AXVital section."}

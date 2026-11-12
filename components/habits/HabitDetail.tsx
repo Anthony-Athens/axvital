@@ -86,12 +86,12 @@ export function HabitDetail() {
     }
   }
   if (loading)
-    return <div className="mx-auto max-w-4xl p-6 font-black">Loading habit history…</div>;
+    return <div className="mx-auto max-w-4xl p-6 font-semibold">Loading habit history…</div>;
   if (!habit)
     return (
       <div className="mx-auto max-w-4xl p-6">
-        <h1 className="text-3xl font-black">Habit not found</h1>
-        <Link href="/habits" className="mt-4 inline-block font-black text-emerald-700">
+        <h1 className="text-3xl font-semibold">Habit not found</h1>
+        <Link href="/habits" className="mt-4 inline-block font-semibold text-accent-fg">
           Back to Habits
         </Link>
       </div>
@@ -101,15 +101,15 @@ export function HabitDetail() {
     .sort((a, b) => b.scheduled_date.localeCompare(a.scheduled_date));
   return (
     <div className="mx-auto max-w-4xl px-4 py-6 md:px-6 md:py-10">
-      <Link href="/habits" className="font-black text-emerald-700">
+      <Link href="/habits" className="font-semibold text-accent-fg">
         ← Back to Habits
       </Link>
-      <section className="mt-4 rounded-3xl bg-slate-950 p-6 text-white md:p-8">
-        <p className="text-sm font-black uppercase tracking-widest text-emerald-300">
+      <section className="mt-4 rounded-2xl bg-slate-950 p-6 text-white md:p-8">
+        <p className="text-sm font-semibold uppercase tracking-widest text-emerald-300">
           Habit detail
         </p>
-        <h1 className="mt-2 text-4xl font-black">{habit.title}</h1>
-        <p className="mt-3 text-slate-300">{habit.description || "No description."}</p>
+        <h1 className="mt-2 text-4xl font-semibold">{habit.title}</h1>
+        <p className="mt-3 text-fg-2">{habit.description || "No description."}</p>
         <div className="mt-5 flex flex-wrap gap-2 text-sm font-bold">
           <span className="rounded-full bg-white/10 px-3 py-2 capitalize">
             {habit.tracking_type}
@@ -130,7 +130,7 @@ export function HabitDetail() {
         </div>
       </section>
       {error ? (
-        <p className="mt-4 rounded-2xl bg-rose-50 p-4 font-bold text-rose-700">{error}</p>
+        <p className="mt-4 rounded-2xl bg-rose-500/10 p-4 font-bold text-rose-300">{error}</p>
       ) : null}
       <section className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
         {[
@@ -139,14 +139,14 @@ export function HabitDetail() {
           ["Weekly rate", `${stats.week}%`],
           ["Monthly rate", `${stats.month}%`],
         ].map(([label, value]) => (
-          <div key={label} className="rounded-2xl bg-white p-4 shadow-sm">
-            <p className="text-xs font-black uppercase text-slate-400">{label}</p>
-            <p className="mt-2 text-2xl font-black">{value}</p>
+          <div key={label} className="rounded-2xl bg-surface p-4 shadow-sm">
+            <p className="text-xs font-semibold uppercase text-fg-3">{label}</p>
+            <p className="mt-2 text-2xl font-semibold">{value}</p>
           </div>
         ))}
       </section>
-      <section className="mt-5 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-        <h2 className="text-2xl font-black">Last 30 days</h2>
+      <section className="mt-5 rounded-2xl border border-line bg-surface p-5 shadow-sm">
+        <h2 className="text-2xl font-semibold">Last 30 days</h2>
         <div className="mt-4 space-y-2">
           {recent.map((row) => {
             const status = derivedOccurrenceStatus(row, today);
@@ -154,25 +154,25 @@ export function HabitDetail() {
               <button
                 key={row.id}
                 onClick={() => setEditing(row)}
-                className="flex min-h-14 w-full items-center justify-between rounded-2xl bg-slate-50 px-4 text-left"
+                className="flex min-h-14 w-full items-center justify-between rounded-xl bg-raised px-4 text-left"
               >
                 <span>
-                  <span className="block font-black">{formatDate(row.scheduled_date)}</span>
-                  <span className="text-sm font-semibold text-slate-500">
+                  <span className="block font-semibold">{formatDate(row.scheduled_date)}</span>
+                  <span className="text-sm font-semibold text-fg-3">
                     {row.actual_value !== null
                       ? `${row.actual_value} ${habit.target_unit ?? ""}`
                       : "No value"}
                     {row.completion_note ? ` · ${row.completion_note}` : ""}
                   </span>
                 </span>
-                <span className="rounded-full bg-white px-3 py-1 text-xs font-black capitalize ring-1 ring-slate-200">
+                <span className="rounded-full bg-surface px-3 py-1 text-xs font-semibold capitalize ring-1 ring-line">
                   {status}
                 </span>
               </button>
             );
           })}
           {!recent.length ? (
-            <p className="rounded-2xl bg-slate-50 p-5 font-semibold text-slate-500">
+            <p className="rounded-2xl bg-raised p-5 font-semibold text-fg-3">
               No scheduled history in the last 30 days.
             </p>
           ) : null}

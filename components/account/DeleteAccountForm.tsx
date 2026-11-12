@@ -59,13 +59,13 @@ export function DeleteAccountForm({ enabled }: { enabled: boolean }) {
       <div className="space-y-3">
         <InlineNotice tone="success">Your account was deleted.</InlineNotice>
         {message && <InlineNotice tone="info">{message}</InlineNotice>}
-        <Link href="/account-deleted" className="text-blue-700 underline">
+        <Link href="/account-deleted" className="text-blue-300 underline">
           Continue
         </Link>
       </div>
     );
   return (
-    <form onSubmit={submit} className="space-y-4 border-t border-slate-200 pt-5">
+    <form onSubmit={submit} className="space-y-4 border-t border-line pt-5">
       {!enabled && (
         <InlineNotice tone="info">
           Self-service deletion is not enabled on this deployment yet.{" "}
@@ -88,7 +88,7 @@ export function DeleteAccountForm({ enabled }: { enabled: boolean }) {
             onChange={(e) => setPassword(e.target.value)}
           />
         </label>
-        <p className="text-sm text-slate-600">
+        <p className="text-sm text-fg-2">
           Your current password is verified with the authentication provider. If you cannot use
           password sign-in, recover your password or contact Support.
         </p>
@@ -126,7 +126,7 @@ export function DeleteAccountForm({ enabled }: { enabled: boolean }) {
         </Button>
       </fieldset>
       {message && <InlineNotice>{message}</InlineNotice>}
-      <Link className="inline-flex min-h-11 items-center text-blue-700 underline" href="/settings">
+      <Link className="inline-flex min-h-11 items-center text-blue-300 underline" href="/settings">
         Keep my account
       </Link>
     </form>

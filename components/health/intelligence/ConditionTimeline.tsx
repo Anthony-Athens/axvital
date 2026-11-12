@@ -18,7 +18,7 @@ export const dateLabel = (at: number, timeZone = "UTC") =>
 const colors = ["#2563eb", "#059669", "#9333ea", "#d97706", "#0891b2", "#db2777", "#475569"];
 export function HealthEventLegend({ categories }: { categories: string[] }) {
   return (
-    <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-xs text-slate-600">
+    <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-xs text-fg-2">
       {categories.map((category, i) => (
         <li key={category} className="flex items-center gap-2">
           <span
@@ -181,15 +181,15 @@ export function ConditionTimeline({
   return (
     <section
       data-mode={mode}
-      className="min-w-0 rounded-xl border border-slate-200 bg-white p-4 sm:p-5"
+      className="min-w-0 rounded-xl border border-line bg-surface p-4 sm:p-5"
     >
       <h2 className="text-lg font-semibold">Episode history</h2>
-      <p id="timeline-help" className="mt-1 text-sm text-slate-500">
+      <p id="timeline-help" className="mt-1 text-sm text-fg-3">
         {CONDITION_RANGE_LABEL} · Scroll horizontally to explore. Calendar days: {timeZone}.{" "}
         {interactive ? "Select an episode for details." : "Illustrative episode history."}
       </p>
       <div
-        className="mt-4 max-w-full overflow-x-auto rounded-lg bg-slate-50 focus-visible:ring-2 focus-visible:ring-blue-600"
+        className="mt-4 max-w-full overflow-x-auto rounded-lg bg-raised focus-visible:ring-2 focus-visible:ring-accent-fg"
         role="region"
         aria-label="Condition timeline"
         aria-describedby="timeline-help"
@@ -282,7 +282,7 @@ export function ConditionTimeline({
         </svg>
       </div>
       {episodes.length ? (
-        <p className="mt-3 text-sm text-slate-600">
+        <p className="mt-3 text-sm text-fg-2">
           {days((now - episodes.at(-1)!.start) / 86400000)} since last episode started
         </p>
       ) : null}

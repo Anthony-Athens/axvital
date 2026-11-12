@@ -109,7 +109,7 @@ function SymptomLogForm({
           </label>
           {symptom?.supports_duration !== false ? (
             <label className="grid gap-1.5 text-sm font-semibold">
-              Ended <span className="font-normal text-slate-500">Optional</span>
+              Ended <span className="font-normal text-fg-3">Optional</span>
               <input
                 type="datetime-local"
                 className={controlClass}
@@ -132,10 +132,7 @@ function SymptomLogForm({
               onChange={(e) => setSeverity(e.target.value)}
               aria-describedby="severity-help"
             />
-            <span
-              id="severity-help"
-              className="flex justify-between text-xs font-normal text-slate-500"
-            >
+            <span id="severity-help" className="flex justify-between text-xs font-normal text-fg-3">
               <span>1 — Very mild</span>
               <span>10 — Severe</span>
             </span>
@@ -155,7 +152,7 @@ function SymptomLogForm({
         ) : null}
         {symptom?.supports_body_location ? (
           <label className="grid gap-1.5 text-sm font-semibold">
-            Body location <span className="font-normal text-slate-500">Optional</span>
+            Body location <span className="font-normal text-fg-3">Optional</span>
             <input
               maxLength={120}
               className={controlClass}
@@ -177,13 +174,13 @@ function SymptomLogForm({
           <fieldset>
             <legend className="text-sm font-semibold">
               Associate with a condition you track{" "}
-              <span className="font-normal text-slate-500">Optional</span>
+              <span className="font-normal text-fg-3">Optional</span>
             </legend>
             <div className="mt-2 grid gap-2 sm:grid-cols-2">
               {conditions.map((c) => (
                 <label
                   key={c.id}
-                  className="flex min-h-11 items-center gap-3 rounded-lg border border-slate-200 px-3 text-sm"
+                  className="flex min-h-11 items-center gap-3 rounded-lg border border-line px-3 text-sm"
                 >
                   <input
                     type="checkbox"
@@ -202,7 +199,7 @@ function SymptomLogForm({
           </fieldset>
         ) : null}
         <label className="grid gap-1.5 text-sm font-semibold">
-          Notes <span className="font-normal text-slate-500">Optional</span>
+          Notes <span className="font-normal text-fg-3">Optional</span>
           <textarea
             maxLength={2000}
             rows={3}

@@ -10,18 +10,18 @@ export default function MePage() {
       />
 
       <section className="mt-6" aria-labelledby="me-health-heading">
-        <p className="text-sm font-semibold text-blue-700">Your health context</p>
-        <Surface className="mt-2 border-blue-200 bg-blue-50/60">
+        <p className="text-sm font-semibold text-blue-300">Your health context</p>
+        <Surface className="mt-2 border-blue-400/25 bg-blue-500/10">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <h2 id="me-health-heading" className="text-2xl font-semibold text-slate-900">
+              <h2 id="me-health-heading" className="text-2xl font-semibold text-fg">
                 My Health
               </h2>
-              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-fg-2">
                 Manage your health conditions and the context AXVital uses to better understand your
                 tracking data, including related episodes and symptoms.
               </p>
-              <p className="mt-2 text-xs leading-5 text-slate-500">
+              <p className="mt-2 text-xs leading-5 text-fg-3">
                 Manage condition context here. AXVital surfaces condition-specific patterns and
                 outlooks in Learn.
               </p>
@@ -34,14 +34,14 @@ export default function MePage() {
       </section>
 
       <section className="mt-7" aria-labelledby="me-profile-heading">
-        <p className="text-sm font-semibold text-blue-700">Personalization</p>
+        <p className="text-sm font-semibold text-blue-300">Personalization</p>
         <Surface className="mt-2">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <h2 id="me-profile-heading" className="text-xl font-semibold text-slate-900">
+              <h2 id="me-profile-heading" className="text-xl font-semibold text-fg">
                 Goals & Profile
               </h2>
-              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-fg-2">
                 Manage the personal information and goals AXVital uses to personalize your
                 experience, including your primary goal, weight goals, sleep context, and health
                 focus.
@@ -54,13 +54,13 @@ export default function MePage() {
         </Surface>
       </section>
 
-      <section className="mt-7 border-t border-slate-200 pt-6" aria-labelledby="me-account-heading">
+      <section className="mt-7 border-t border-line pt-6" aria-labelledby="me-account-heading">
         <div className="max-w-2xl">
-          <p className="text-sm font-semibold text-slate-500">Account</p>
-          <h2 id="me-account-heading" className="mt-1 text-lg font-semibold text-slate-900">
+          <p className="text-sm font-semibold text-fg-3">Account</p>
+          <h2 id="me-account-heading" className="mt-1 text-lg font-semibold text-fg">
             Account administration
           </h2>
-          <p className="mt-1 text-sm leading-6 text-slate-600">
+          <p className="mt-1 text-sm leading-6 text-fg-2">
             Manage account access, your plan, and personal data. Additional controls, including
             account deletion and support, remain available inside Account Settings.
           </p>

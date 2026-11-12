@@ -132,3 +132,32 @@ test("blank optional values persist as null and required fields are contextual",
   assert.equal(required.errors.weight, "Enter the weight completed.");
   assert.equal(required.errors.reps, "Enter the repetitions completed.");
 });
+
+test("set editors show only the inputs a tracking type needs, plus existing values", async () => {
+  const { visibleSetFields } = await import("./execution.ts");
+  assert.deepEqual(visibleSetFields("weight_reps"), ["weight", "reps"]);
+  assert.deepEqual(visibleSetFields("bodyweight_reps"), ["reps"]);
+  assert.deepEqual(visibleSetFields("distance_duration"), ["duration", "distance"]);
+  assert.deepEqual(visibleSetFields("completion"), []);
+  assert.deepEqual(visibleSetFields("custom"), ["weight", "reps", "duration", "distance"]);
+  assert.deepEqual(visibleSetFields("bodyweight_reps", { weight: 20 }), ["weight", "reps"]);
+});
+
+test("rest timer counts from the most recent completed set", async () => {
+  const { secondsSinceLastSet } = await import("./execution.ts");
+  const set = (status: string, completed_at: string | null) =>
+    ({ status, completed_at }) as unknown as Parameters<typeof secondsSinceLastSet>[0][number];
+  const now = Date.parse("2026-11-12T18:10:00Z");
+  assert.equal(secondsSinceLastSet([], now), null);
+  assert.equal(
+    secondsSinceLastSet(
+      [
+        set("completed", "2026-11-12T18:05:00Z"),
+        set("completed", "2026-11-12T18:08:30Z"),
+        set("skipped", "2026-11-12T18:09:59Z"),
+      ],
+      now,
+    ),
+    90,
+  );
+});

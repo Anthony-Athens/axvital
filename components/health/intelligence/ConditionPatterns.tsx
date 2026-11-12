@@ -29,7 +29,7 @@ export function AssociationEvidence({
 }: { association: ConditionAssociation } & EvidenceSelection) {
   const selected = selectedKey === association.factorKey;
   return (
-    <details open={selected} className="mt-4 border-t border-slate-200 pt-2">
+    <details open={selected} className="mt-4 border-t border-line pt-2">
       <summary
         aria-controls="condition-timeline"
         aria-expanded={selected}
@@ -37,15 +37,15 @@ export function AssociationEvidence({
           event.preventDefault();
           onSelect(selected ? null : association.factorKey);
         }}
-        className="min-h-11 cursor-pointer py-3 text-sm font-semibold text-blue-700 focus-visible:outline-2 focus-visible:outline-blue-600"
+        className="min-h-11 cursor-pointer py-3 text-sm font-semibold text-blue-300 focus-visible:outline-2 focus-visible:outline-accent-fg"
       >
         View evidence<span className="sr-only"> for {association.label}</span>
         {selected ? <span className="ml-2 text-xs">Timeline focus active</span> : null}
       </summary>
-      <div className="space-y-3 pb-2 text-sm leading-6 text-slate-600">
+      <div className="space-y-3 pb-2 text-sm leading-6 text-fg-2">
         <a
           href="#condition-timeline"
-          className="inline-flex min-h-11 items-center font-semibold text-blue-700"
+          className="inline-flex min-h-11 items-center font-semibold text-blue-300"
         >
           See highlighted timeline context ↑
         </a>
@@ -56,8 +56,8 @@ export function AssociationEvidence({
         </p>
         <ul className="space-y-3">
           {association.evidence.map((e) => (
-            <li key={e.episodeId} className="rounded-lg bg-slate-50 p-3">
-              <strong className="block text-slate-900">
+            <li key={e.episodeId} className="rounded-lg bg-raised p-3">
+              <strong className="block text-fg">
                 Episode starting {dateLabel(e.onset, timeZone)}
               </strong>
               <span className="block">
@@ -104,36 +104,34 @@ export function AssociationCard({
     <Surface
       className={selection.selectedKey === association.factorKey ? "ring-2 ring-blue-600" : ""}
     >
-      <p className="text-xs font-semibold text-slate-500">
-        {coverageLabels[association.dataQuality]}
-      </p>
+      <p className="text-xs font-semibold text-fg-3">{coverageLabels[association.dataQuality]}</p>
       <h3 className="mt-2 text-lg font-semibold">{association.label}</h3>
       {association.sufficient ? (
         <>
-          <p className="mt-2 text-sm text-slate-600">
+          <p className="mt-2 text-sm text-fg-2">
             Observed before {association.episodesObserved} of {association.eligibleEpisodes}{" "}
             eligible episodes
           </p>
           <dl className="mt-5 grid grid-cols-2 gap-4">
             <div>
-              <dt className="text-xs text-slate-500">Pre-episode tracked days</dt>
+              <dt className="text-xs text-fg-3">Pre-episode tracked days</dt>
               <dd className="mt-1 text-2xl font-semibold">{percent(association.preEpisodeRate)}</dd>
-              <dd className="text-xs text-slate-500">
+              <dd className="text-xs text-fg-3">
                 {association.preEpisodeOccurrences} / {association.preEpisodeEligibleDays} days
               </dd>
             </div>
             <div>
-              <dt className="text-xs text-slate-500">Typical eligible tracked days</dt>
+              <dt className="text-xs text-fg-3">Typical eligible tracked days</dt>
               <dd className="mt-1 text-2xl font-semibold">{percent(association.baselineRate)}</dd>
-              <dd className="text-xs text-slate-500">
+              <dd className="text-xs text-fg-3">
                 {association.baselineOccurrences} / {association.baselineEligibleDays} days
               </dd>
             </div>
           </dl>
-          <p className="mt-4 text-sm font-medium text-slate-700">{relative}</p>
+          <p className="mt-4 text-sm font-medium text-fg-2">{relative}</p>
         </>
       ) : (
-        <p className="mt-3 text-sm text-slate-600">Not enough data yet</p>
+        <p className="mt-3 text-sm text-fg-2">Not enough data yet</p>
       )}
       <AssociationEvidence association={association} {...selection} />
     </Surface>
@@ -148,7 +146,7 @@ export function ConditionPatterns({
       <h2 id="potential-patterns-title" className="text-xl font-semibold">
         Potential patterns observed before episodes
       </h2>
-      <p className="mt-2 text-sm text-slate-500">
+      <p className="mt-2 text-sm text-fg-3">
         Possible associations — not proof of causation. Comparisons use full local calendar days
         within the displayed 12 months. Data coverage describes availability, not clinical
         confidence.

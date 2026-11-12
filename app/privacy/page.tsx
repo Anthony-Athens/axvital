@@ -13,7 +13,7 @@ export const metadata: Metadata = socialMetadata(
 export default function PrivacyPage() {
   return (
     <TrustPage title="Privacy Policy">
-      <p className="text-sm text-slate-500">Effective September 24, 2026</p>
+      <p className="text-sm text-fg-3">Effective September 24, 2026</p>
       <section>
         <h2 className="text-xl font-semibold">Overview</h2>
         <p>
@@ -118,11 +118,11 @@ export default function PrivacyPage() {
         <p>
           Active account data is generally retained while your account exists; AXVital does not
           currently promise a universal time-based retention period. You may use{" "}
-          <Link className="text-blue-700 underline" href="/settings/data">
+          <Link className="text-blue-300 underline" href="/settings/data">
             data export
           </Link>{" "}
           and, where enabled,{" "}
-          <Link className="text-blue-700 underline" href="/settings/delete">
+          <Link className="text-blue-300 underline" href="/settings/delete">
             account deletion
           </Link>
           . Deletion removes active user-owned application records after verification, but provider
@@ -155,7 +155,7 @@ export default function PrivacyPage() {
           Health and wellness records may be sensitive. Limit entries to information you are
           comfortable storing and do not share account credentials. AXVital does not use your
           records to provide diagnosis or treatment. See the{" "}
-          <Link className="text-blue-700 underline" href="/health-disclaimer">
+          <Link className="text-blue-300 underline" href="/health-disclaimer">
             Health Disclaimer
           </Link>
           .
@@ -175,7 +175,7 @@ export default function PrivacyPage() {
           AXVital may update this policy as the service or legal requirements change. Material
           updates will be identified by a revised effective date and, when appropriate, additional
           notice. Contact AXVital through the{" "}
-          <Link className="text-blue-700 underline" href="/contact">
+          <Link className="text-blue-300 underline" href="/contact">
             support form
           </Link>{" "}
           for privacy questions or requests.

@@ -11,9 +11,9 @@ export function ConditionMetricCard({
 }) {
   return (
     <Surface compact>
-      <p className="text-sm text-slate-500">{label}</p>
-      <p className="mt-2 text-xl font-semibold tracking-tight text-slate-900">{value}</p>
-      {context ? <p className="mt-2 text-xs text-slate-500">{context}</p> : null}
+      <p className="text-sm text-fg-3">{label}</p>
+      <p className="mt-2 text-xl font-semibold tracking-tight text-fg">{value}</p>
+      {context ? <p className="mt-2 text-xs text-fg-3">{context}</p> : null}
     </Surface>
   );
 }

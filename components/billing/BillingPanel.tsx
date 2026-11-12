@@ -46,9 +46,9 @@ export function BillingPanel() {
   return (
     <>
       <h1 className="text-3xl font-semibold">Billing</h1>
-      <p className="mt-1 text-slate-600">Manage your AXVital plan and subscription.</p>
+      <p className="mt-1 text-fg-2">Manage your AXVital plan and subscription.</p>
       {error ? (
-        <p role="alert" className="mt-4 rounded-xl bg-rose-50 p-4 text-rose-800">
+        <p role="alert" className="mt-4 rounded-xl bg-rose-500/10 p-4 text-rose-200">
           {error}
           <Button onClick={() => void load()} disabled={loading || opening} className="mt-3">
             Retry
@@ -57,9 +57,9 @@ export function BillingPanel() {
       ) : null}
       {data ? (
         <Surface className="mt-5">
-          <p className="text-sm font-semibold text-slate-500">Current plan</p>
+          <p className="text-sm font-semibold text-fg-3">Current plan</p>
           <h2 className="mt-1 text-2xl font-semibold">{presentation?.planLabel}</h2>
-          <p className="mt-2 capitalize text-slate-600">
+          <p className="mt-2 capitalize text-fg-2">
             Access: {data.entitlementState.replaceAll("_", " ")}
           </p>
           <p className="mt-1 text-sm capitalize">
@@ -69,7 +69,7 @@ export function BillingPanel() {
             <p className="mt-2 text-sm">{presentation.cancellation}</p>
           ) : null}
           {data.currentPeriodEnd ? (
-            <p className="mt-1 text-sm text-slate-600">
+            <p className="mt-1 text-sm text-fg-2">
               {presentation?.dateLabel}: {new Date(data.currentPeriodEnd).toLocaleDateString()}
             </p>
           ) : null}

@@ -22,9 +22,9 @@ import { VoiceNutritionReview } from "./VoiceNutritionReview";
 
 type Phase = "idle" | "permission" | "recording" | "processing" | "review" | "saving" | "error";
 const control =
-  "min-h-11 rounded-lg border border-slate-300 bg-white px-3 py-2 text-base focus-visible:ring-2 focus-visible:ring-blue-600";
+  "min-h-11 rounded-lg border border-line-strong bg-surface px-3 py-2 text-base focus-visible:ring-2 focus-visible:ring-accent-fg";
 const button =
-  "min-h-12 min-w-12 rounded-lg px-4 py-2 font-semibold focus-visible:ring-2 focus-visible:ring-blue-600 disabled:opacity-50";
+  "min-h-12 min-w-12 rounded-lg px-4 py-2 font-semibold focus-visible:ring-2 focus-visible:ring-accent-fg disabled:opacity-50";
 
 export function VoiceLogDialog({ onClose, onSaved }: { onClose: () => void; onSaved: () => void }) {
   const [phase, setPhase] = useState<Phase>("idle");
@@ -333,9 +333,9 @@ export function VoiceLogDialog({ onClose, onSaved }: { onClose: () => void; onSa
         role="dialog"
         aria-modal="true"
         aria-labelledby="voice-log-title"
-        className="relative flex max-h-[calc(var(--sheet-vh,100dvh)-1rem)] w-full flex-col overflow-hidden rounded-t-2xl bg-white shadow-xl sm:max-w-2xl sm:rounded-xl"
+        className="relative flex max-h-[calc(var(--sheet-vh,100dvh)-1rem)] w-full flex-col overflow-hidden rounded-t-2xl bg-surface shadow-xl sm:max-w-2xl sm:rounded-xl"
       >
-        <header className="flex shrink-0 items-center justify-between border-b border-slate-200 px-5 py-4">
+        <header className="flex shrink-0 items-center justify-between border-b border-line px-5 py-4">
           <h2 id="voice-log-title" className="text-xl font-semibold">
             Voice Log
           </h2>
@@ -357,7 +357,7 @@ export function VoiceLogDialog({ onClose, onSaved }: { onClose: () => void; onSa
                 Describe what you ate, drank, took, did or felt. You’ll review and edit every event
                 before saving.
               </p>
-              <p className="text-sm text-slate-600">
+              <p className="text-sm text-fg-2">
                 Up to 75 seconds. Audio is sent to OpenAI for processing. AXVital does not keep
                 recordings or a transcript history.
               </p>
@@ -376,7 +376,7 @@ export function VoiceLogDialog({ onClose, onSaved }: { onClose: () => void; onSa
           )}
           {phase === "recording" && (
             <div className="space-y-4">
-              <p role="status" className="font-semibold text-red-700">
+              <p role="status" className="font-semibold text-red-300">
                 ● Recording — microphone is on
               </p>
               <p aria-label="Recording duration">
@@ -404,14 +404,14 @@ export function VoiceLogDialog({ onClose, onSaved }: { onClose: () => void; onSa
                 {candidates.map((candidate, index) => (
                   <article
                     key={index}
-                    className="space-y-3 rounded-xl border border-slate-200 p-4"
+                    className="space-y-3 rounded-xl border border-line p-4"
                     aria-label={`Event ${index + 1}`}
                   >
                     <div className="flex items-center justify-between gap-3">
                       <h3 className="font-semibold">Event {index + 1} — review details</h3>
                       <button
                         type="button"
-                        className={`${button} text-red-700`}
+                        className={`${button} text-red-300`}
                         aria-label={`Remove event ${index + 1}`}
                         onClick={() => {
                           setCandidates((current) => current.filter((_, i) => i !== index));
@@ -498,7 +498,7 @@ export function VoiceLogDialog({ onClose, onSaved }: { onClose: () => void; onSa
                         />
                       </label>
                     </div>
-                    <p className="text-sm text-amber-800">{candidate.time_note}</p>
+                    <p className="text-sm text-amber-200">{candidate.time_note}</p>
                     {["food", "fluid"].includes(candidate.event.event_type) && (
                       <label className="grid gap-1">
                         Amount (optional)
@@ -585,7 +585,7 @@ export function VoiceLogDialog({ onClose, onSaved }: { onClose: () => void; onSa
                       />
                     </label>
                     <details>
-                      <summary className="min-h-11 cursor-pointer py-2 text-sm text-slate-600">
+                      <summary className="min-h-11 cursor-pointer py-2 text-sm text-fg-2">
                         What we heard
                       </summary>
                       <p className="break-words text-sm">{candidate.source_fragment}</p>
@@ -597,7 +597,7 @@ export function VoiceLogDialog({ onClose, onSaved }: { onClose: () => void; onSa
             </div>
           )}
           {message && (
-            <p role="alert" className="mt-4 rounded-lg bg-amber-50 p-3 text-amber-900">
+            <p role="alert" className="mt-4 rounded-lg bg-amber-500/10 p-3 text-amber-100">
               {message}
             </p>
           )}
@@ -612,10 +612,10 @@ export function VoiceLogDialog({ onClose, onSaved }: { onClose: () => void; onSa
             </label>
           )}
         </div>
-        <footer className="safe-bottom flex shrink-0 gap-3 border-t border-slate-200 p-4">
+        <footer className="safe-bottom flex shrink-0 gap-3 border-t border-line p-4">
           <button
             type="button"
-            className={`${button} border border-slate-300`}
+            className={`${button} border border-line-strong`}
             onClick={cancel}
             disabled={phase === "saving"}
           >

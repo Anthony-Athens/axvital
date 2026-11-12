@@ -5,6 +5,7 @@ import { useCallback, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ActivityForm } from "./ActivityForm";
 import { OccurrenceCard } from "./OccurrenceCard";
+import { activityCategory, categoryTone } from "@/components/ui/CategoryIcon";
 import { addCalendarDays } from "@/lib/planner/recurrence";
 import {
   createPlannedActivity,
@@ -182,138 +183,286 @@ export function WeeklyPlanner() {
   function navigate(start: string) {
     router.push(`/weekly-overview?week=${start}`);
   }
+  const today = localDate();
+  const isCurrentWeek = weekStart === mondayFor(today);
+  const visible = (item: (typeof occurrences)[number]) =>
+    filter === "all" || filter === "protocols"
+      ? filter === "all" || Boolean(item.planned_activity?.user_protocol_id)
+      : filter === "habits"
+        ? item.planned_activity?.activity_type === "habit" &&
+          !item.planned_activity?.user_protocol_id
+        : !item.planned_activity?.user_protocol_id &&
+          item.planned_activity?.activity_type !== "habit";
+  const shown = occurrences.filter(visible);
+  const doneCount = shown.filter((item) => item.status === "completed").length;
+  const skippedCount = shown.filter((item) => item.status === "skipped").length;
+  const nextId = shown
+    .filter((item) => item.status === "planned" && item.scheduled_date >= today)
+    .sort((a, b) =>
+      `${a.scheduled_date}${a.scheduled_time ?? "99"}`.localeCompare(
+        `${b.scheduled_date}${b.scheduled_time ?? "99"}`,
+      ),
+    )[0]?.id;
+
   return (
-    <div className="mx-auto max-w-6xl px-4 py-6 md:px-6 md:py-10">
-      <section className="rounded-3xl bg-slate-950 p-6 text-white shadow-xl md:p-8">
-        <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-300">Planner</p>
-        <div className="mt-3 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <h1 className="text-4xl font-black tracking-tight">Weekly Overview</h1>
-            <p className="mt-2 font-semibold text-slate-300">
-              {dateLabel(weekStart, { month: "long", day: "numeric" })} –{" "}
-              {dateLabel(weekEnd, { month: "long", day: "numeric", year: "numeric" })}
-            </p>
+    <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:py-8">
+      <header className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <nav aria-label="Breadcrumb" className="text-sm text-fg-3">
+            <a href="/track" className="hover:text-fg">
+              Track
+            </a>{" "}
+            / <span className="text-fg-2">Weekly Overview</span>
+          </nav>
+          <h1 className="mt-1 text-[28px] font-bold leading-tight tracking-tight text-fg sm:text-[32px]">
+            {isCurrentWeek ? "This week" : "Weekly Overview"}
+          </h1>
+          <p className="mt-0.5 text-sm text-fg-3">
+            {dateLabel(weekStart, { month: "long", day: "numeric" })} –{" "}
+            {dateLabel(weekEnd, { month: "long", day: "numeric", year: "numeric" })}
+          </p>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="flex items-center gap-1 rounded-xl border border-line bg-surface p-1">
+            <button
+              aria-label="Previous week"
+              onClick={() => navigate(addCalendarDays(weekStart, -7))}
+              className="grid h-10 w-10 place-items-center rounded-lg text-fg-2 hover:bg-raised"
+            >
+              <Chevron direction="left" />
+            </button>
+            <button
+              onClick={() => navigate(mondayFor(localDate()))}
+              disabled={isCurrentWeek}
+              className="min-h-10 rounded-lg px-3 text-sm font-semibold text-fg hover:bg-raised disabled:text-fg-3 disabled:hover:bg-transparent"
+            >
+              Current week
+            </button>
+            <button
+              aria-label="Next week"
+              onClick={() => navigate(addCalendarDays(weekStart, 7))}
+              className="grid h-10 w-10 place-items-center rounded-lg text-fg-2 hover:bg-raised"
+            >
+              <Chevron direction="right" />
+            </button>
           </div>
           <button
             onClick={() => {
               setEditing(null);
               setFormOpen(true);
             }}
-            className="min-h-12 rounded-full bg-emerald-500 px-6 font-black text-white"
+            className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-accent px-5 font-semibold text-white hover:bg-accent-hover"
           >
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              className="h-[18px] w-[18px]"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.4"
+              strokeLinecap="round"
+            >
+              <path d="M12 5v14M5 12h14" />
+            </svg>
             Add Activity
           </button>
         </div>
+      </header>
+
+      <section
+        aria-label="Week summary"
+        className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-4 rounded-2xl border border-line bg-surface p-4 sm:px-5"
+      >
+        <div className="min-w-[240px] flex-1">
+          <div aria-hidden="true" className="flex h-2.5 overflow-hidden rounded-full bg-line">
+            <span
+              className="bg-accent-fg"
+              style={{ width: `${shown.length ? (doneCount / shown.length) * 100 : 0}%` }}
+            />
+            <span
+              className="bg-slate-500"
+              style={{ width: `${shown.length ? (skippedCount / shown.length) * 100 : 0}%` }}
+            />
+          </div>
+          <p className="mt-2 text-sm tabular-nums text-fg-2">
+            <b className="text-fg">{doneCount}</b> done · <b className="text-fg">{skippedCount}</b>{" "}
+            skipped · <b className="text-fg">{shown.length - doneCount - skippedCount}</b> still to
+            come
+          </p>
+        </div>
+        <div role="group" aria-label="Show" className="flex gap-1.5 overflow-x-auto">
+          {(
+            [
+              ["all", "All activities"],
+              ["protocols", "Protocols"],
+              ["habits", "Habits"],
+              ["other", "Other"],
+            ] as const
+          ).map(([value, label]) => (
+            <button
+              key={value}
+              aria-pressed={filter === value}
+              onClick={() => setFilter(value)}
+              className={`min-h-10 shrink-0 rounded-full border px-3.5 text-[13px] font-semibold ${
+                filter === value
+                  ? "border-line-strong bg-raised text-fg"
+                  : "border-line text-fg-3 hover:text-fg"
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
       </section>
-      <div className="mt-5 grid grid-cols-3 gap-2">
-        <button
-          aria-label="Previous week"
-          onClick={() => navigate(addCalendarDays(weekStart, -7))}
-          className="min-h-12 rounded-full border border-slate-200 bg-white font-black"
-        >
-          ← Previous
-        </button>
-        <button
-          onClick={() => navigate(mondayFor(localDate()))}
-          className="min-h-12 rounded-full bg-slate-200 font-black"
-        >
-          Current week
-        </button>
-        <button
-          aria-label="Next week"
-          onClick={() => navigate(addCalendarDays(weekStart, 7))}
-          className="min-h-12 rounded-full border border-slate-200 bg-white font-black"
-        >
-          Next →
-        </button>
-      </div>
-      <div className="mt-3 flex gap-2 overflow-x-auto">
-        {(["all", "protocols", "habits", "other"] as const).map((value) => (
-          <button
-            key={value}
-            aria-pressed={filter === value}
-            onClick={() => setFilter(value)}
-            className={`min-h-11 shrink-0 rounded-full px-4 text-sm font-black capitalize ${filter === value ? "bg-violet-600 text-white" : "bg-white"}`}
-          >
-            {value === "all" ? "All activities" : value}
-          </button>
-        ))}
-      </div>
+
+      {!loading ? (
+        <nav aria-label="Jump to day" className="mt-4 grid grid-cols-7 gap-1.5 sm:gap-2">
+          {days.map((day) => {
+            const items = shown.filter((item) => item.scheduled_date === day);
+            const isToday = day === today;
+            return (
+              <a
+                key={day}
+                href={`#day-${day}`}
+                className={`flex min-h-[76px] min-w-0 flex-col items-center gap-1.5 rounded-xl px-1 py-2.5 hover:bg-raised ${
+                  isToday ? "border-[1.5px] border-accent-fg bg-surface" : "border border-line"
+                }`}
+              >
+                <span
+                  className={`text-xs ${isToday ? "font-semibold text-blue-300" : "text-fg-3"}`}
+                >
+                  {dateLabel(day, { weekday: "short" })}
+                </span>
+                <span className="text-lg font-semibold leading-none tabular-nums">
+                  {dateLabel(day, { day: "numeric" })}
+                </span>
+                <span aria-hidden="true" className="flex max-w-full flex-wrap justify-center gap-1">
+                  {items.slice(0, 6).map((item) => {
+                    const tone =
+                      categoryTone[
+                        activityCategory(
+                          item.planned_activity?.activity_type,
+                          Boolean(item.planned_activity?.user_protocol),
+                        )
+                      ];
+                    return (
+                      <span
+                        key={item.id}
+                        className={`h-1.5 w-1.5 rounded-full ${tone.bar} ${item.status === "planned" ? "" : "opacity-40"}`}
+                      />
+                    );
+                  })}
+                </span>
+                <span className="sr-only">{items.length} activities</span>
+              </a>
+            );
+          })}
+        </nav>
+      ) : null}
+
       {error ? (
-        <p role="alert" className="mt-5 rounded-2xl bg-rose-50 p-4 font-bold text-rose-700">
+        <p role="alert" className="mt-5 rounded-xl bg-rose-500/10 p-4 font-semibold text-rose-200">
           {error}
         </p>
       ) : null}
       {success ? (
-        <p role="status" className="mt-5 rounded-2xl bg-emerald-50 p-4 font-bold text-emerald-800">
+        <p
+          role="status"
+          className="mt-5 rounded-xl bg-emerald-500/10 p-4 font-semibold text-emerald-200"
+        >
           {success}
         </p>
       ) : null}
       {loading ? (
-        <div className="mt-5 rounded-3xl bg-white p-6 font-black shadow-sm">
+        <div className="mt-5 rounded-2xl border border-line bg-surface p-6 font-semibold text-fg-2">
           Loading your weekly plan…
         </div>
       ) : null}
       {!loading && !occurrences.length ? (
-        <div className="mt-5 rounded-3xl border border-dashed border-slate-300 bg-white p-8 text-center">
-          <h2 className="text-xl font-black">Nothing planned this week.</h2>
-          <p className="mt-2 font-semibold text-slate-500">
-            Add an activity to begin building your routine.
-          </p>
+        <div className="mt-5 rounded-2xl border border-dashed border-line-strong p-8 text-center">
+          <h2 className="text-lg font-semibold">Nothing planned this week.</h2>
+          <p className="mt-1 text-sm text-fg-2">Add an activity to begin building your routine.</p>
         </div>
       ) : null}
       {!loading ? (
-        <div className="mt-5 grid gap-4 lg:grid-cols-2">
+        <div className="mt-6 flex flex-col gap-5">
           {days.map((day) => {
-            const items = occurrences
-              .filter((item) => item.scheduled_date === day)
-              .filter((item) =>
-                filter === "all" || filter === "protocols"
-                  ? filter === "all" || Boolean(item.planned_activity?.user_protocol_id)
-                  : filter === "habits"
-                    ? item.planned_activity?.activity_type === "habit" &&
-                      !item.planned_activity?.user_protocol_id
-                    : !item.planned_activity?.user_protocol_id &&
-                      item.planned_activity?.activity_type !== "habit",
-              );
+            const items = occurrences.filter((item) => item.scheduled_date === day).filter(visible);
+            const isToday = day === today;
             return (
-              <section
-                key={day}
-                className="rounded-3xl border border-slate-200 bg-slate-100/70 p-4"
-              >
-                <div className="mb-3 flex items-baseline justify-between">
-                  <h2 className="text-xl font-black">{dateLabel(day, { weekday: "long" })}</h2>
-                  <span className="text-sm font-black text-slate-500">
-                    {dateLabel(day, { month: "short", day: "numeric" })}
-                  </span>
-                </div>
-                <div className="space-y-3">
-                  {items.map((item) => (
-                    <OccurrenceCard
-                      key={item.id}
-                      occurrence={item}
-                      busy={busyId === item.id || busyId === item.planned_activity_id}
-                      showManagement
-                      onStatus={(status) => void changeStatus(item, status)}
-                      onEdit={() => {
-                        setEditing(item.planned_activity ?? null);
-                        setFormOpen(true);
-                      }}
-                      onDelete={() => item.planned_activity && void remove(item.planned_activity)}
-                      onProgress={
-                        item.planned_activity?.activity_type === "habit" ||
-                        item.planned_activity?.user_protocol_id
-                          ? () => setProgressItem(item)
-                          : undefined
-                      }
-                    />
-                  ))}
-                  {!items.length ? (
-                    <p className="rounded-2xl bg-white/70 p-4 text-sm font-semibold text-slate-400">
+              <section key={day} id={`day-${day}`} className="scroll-mt-24">
+                {/* Days already behind you this week start collapsed. */}
+                <details open={!(isCurrentWeek && day < today)} className="group">
+                  <summary className="mb-2 flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-xl [&::-webkit-details-marker]:hidden">
+                    <svg
+                      aria-hidden="true"
+                      viewBox="0 0 24 24"
+                      className="h-4 w-4 shrink-0 text-fg-3 transition-transform group-open:rotate-90 motion-reduce:transition-none"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M9 6l6 6-6 6" />
+                    </svg>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-baseline gap-2.5">
+                        <h2
+                          className={`text-lg font-semibold ${isToday ? "text-blue-300" : "text-fg"}`}
+                        >
+                          {dateLabel(day, { weekday: "long" })}
+                        </h2>
+                        <span className="text-sm text-fg-3">
+                          {dateLabel(day, { month: "short", day: "numeric" })}
+                        </span>
+                        {isToday ? (
+                          <span className="rounded-full bg-accent/15 px-2 py-0.5 text-xs font-semibold text-blue-300">
+                            Today
+                          </span>
+                        ) : null}
+                        <span className="ml-auto text-[13px] tabular-nums text-fg-3">
+                          {items.length
+                            ? `${items.filter((item) => item.status === "completed").length}/${items.length} done`
+                            : ""}
+                        </span>
+                      </div>
+                    </div>
+                  </summary>
+                  {items.length ? (
+                    <div
+                      className={`divide-y divide-line overflow-hidden rounded-2xl border bg-surface ${isToday ? "border-accent-fg/40" : "border-line"}`}
+                    >
+                      {items.map((item) => (
+                        <OccurrenceCard
+                          key={item.id}
+                          occurrence={item}
+                          busy={busyId === item.id || busyId === item.planned_activity_id}
+                          showManagement
+                          highlight={item.id === nextId}
+                          onStatus={(status) => void changeStatus(item, status)}
+                          onEdit={() => {
+                            setEditing(item.planned_activity ?? null);
+                            setFormOpen(true);
+                          }}
+                          onDelete={() =>
+                            item.planned_activity && void remove(item.planned_activity)
+                          }
+                          onProgress={
+                            item.planned_activity?.activity_type === "habit" ||
+                            item.planned_activity?.user_protocol_id
+                              ? () => setProgressItem(item)
+                              : undefined
+                          }
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="rounded-2xl border border-dashed border-line px-4 py-3 text-sm text-fg-3">
                       Nothing scheduled.
                     </p>
-                  ) : null}
-                </div>
+                  )}
+                </details>
               </section>
             );
           })}
@@ -342,5 +491,22 @@ export function WeeklyPlanner() {
         />
       ) : null}
     </div>
+  );
+}
+
+function Chevron({ direction }: { direction: "left" | "right" }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="h-[18px] w-[18px]"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d={direction === "left" ? "M15 6l-6 6 6 6" : "M9 6l6 6-6 6"} />
+    </svg>
   );
 }

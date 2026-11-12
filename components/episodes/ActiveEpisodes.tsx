@@ -25,21 +25,19 @@ export function ActiveEpisodes() {
               "Condition",
             label = e.user_condition?.condition?.preferred_episode_label ?? "Episode";
           return (
-            <article key={e.id} className="rounded-xl border border-blue-200 bg-blue-50 p-4">
+            <article key={e.id} className="rounded-xl border border-blue-400/25 bg-blue-500/10 p-4">
               <p className="font-semibold">
                 {name} {label}
               </p>
-              <p className="mt-1 text-sm text-slate-600">
+              <p className="mt-1 text-sm text-fg-2">
                 Day {episodeDay(e.started_at)}
                 {e.overall_severity ? ` · Severity ${e.overall_severity} / 10` : ""}
                 {e.functional_impact ? ` · ${e.functional_impact} impact` : ""}
               </p>
-              <p className="text-sm text-slate-600">
-                {e.symptom_links?.length ?? 0} symptoms tracked
-              </p>
+              <p className="text-sm text-fg-2">{e.symptom_links?.length ?? 0} symptoms tracked</p>
               <Link
                 href={`/health/episodes/${e.id}`}
-                className="mt-2 inline-flex min-h-11 items-center font-semibold text-blue-700"
+                className="mt-2 inline-flex min-h-11 items-center font-semibold text-blue-300"
                 aria-label={`Update ${name} ${label} started ${new Date(e.started_at).toLocaleDateString()}`}
               >
                 Update {label}

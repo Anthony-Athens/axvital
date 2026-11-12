@@ -150,13 +150,13 @@ function TrendBars({
   const computedMax = maxValue ?? Math.max(...values, 1);
 
   return (
-    <section className="rounded-xl bg-white p-5">
+    <section className="rounded-xl bg-surface p-5">
       <div className="flex items-start justify-between gap-4">
         <div>
           <h3 className="text-lg font-semibold tracking-tight">{title}</h3>
-          <p className="mt-1 text-sm font-semibold leading-6 text-slate-500">{subtitle}</p>
+          <p className="mt-1 text-sm font-semibold leading-6 text-fg-3">{subtitle}</p>
         </div>
-        <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-600">
+        <span className="rounded-full bg-raised px-3 py-1 text-xs font-semibold text-fg-2">
           30 days
         </span>
       </div>
@@ -173,9 +173,9 @@ function TrendBars({
               role="img"
               aria-label={`${point.date}: ${point.value ?? "No data"}`}
             >
-              <div className="flex h-28 w-full items-end rounded-full bg-slate-100">
+              <div className="flex h-28 w-full items-end rounded-full bg-raised">
                 <div
-                  className={`w-full rounded-full ${point.value === null ? "bg-slate-200" : color}`}
+                  className={`w-full rounded-full ${point.value === null ? "bg-line" : color}`}
                   style={{ height: `${height}%` }}
                 />
               </div>
@@ -183,7 +183,7 @@ function TrendBars({
           );
         })}
       </div>
-      <div className="mt-3 flex justify-between text-xs font-bold text-slate-400">
+      <div className="mt-3 flex justify-between text-xs font-bold text-fg-3">
         <span>{points[0]?.label}</span>
         <span>{points[Math.floor(points.length / 2)]?.label}</span>
         <span>{points[points.length - 1]?.label}</span>
@@ -194,12 +194,12 @@ function TrendBars({
 
 function MetricCard({ label, value, helper }: { label: string; value: string; helper: string }) {
   return (
-    <article className="grid grid-cols-[1fr_auto] items-center gap-x-4 rounded-xl bg-white p-4 sm:block sm:p-5">
-      <p className="text-sm font-medium text-slate-500">{label}</p>
-      <p className="col-start-2 row-span-2 row-start-1 text-2xl font-semibold tracking-tight text-slate-950 sm:mt-2 sm:text-3xl">
+    <article className="grid grid-cols-[1fr_auto] items-center gap-x-4 rounded-xl bg-surface p-4 sm:block sm:p-5">
+      <p className="text-sm font-medium text-fg-3">{label}</p>
+      <p className="col-start-2 row-span-2 row-start-1 text-2xl font-semibold tracking-tight text-fg sm:mt-2 sm:text-3xl">
         {value}
       </p>
-      <p className="col-start-1 row-start-2 text-sm leading-6 text-slate-500 sm:mt-2">{helper}</p>
+      <p className="col-start-1 row-start-2 text-sm leading-6 text-fg-3 sm:mt-2">{helper}</p>
     </article>
   );
 }
@@ -342,20 +342,20 @@ export default function DashboardPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
-      <header className="border-b border-slate-200 pb-6">
+      <header className="border-b border-line pb-6">
         <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Health Overview</h1>
-        <p className="mt-2 text-slate-600">
+        <p className="mt-2 text-fg-2">
           Your recent signals, personal trends, and the activity behind them.
         </p>
         {today ? (
-          <p className="mt-3 text-sm text-slate-500">
+          <p className="mt-3 text-sm text-fg-3">
             Overview: {shortDateLabel(daysAgoFrom(today, 29))}–{shortDateLabel(today)} · Local dates
           </p>
         ) : null}
       </header>
 
       {error ? (
-        <p role="alert" className="mt-5 rounded-xl bg-amber-50 p-4 text-sm text-amber-900">
+        <p role="alert" className="mt-5 rounded-xl bg-amber-500/10 p-4 text-sm text-amber-100">
           {error}
         </p>
       ) : null}
@@ -366,7 +366,7 @@ export default function DashboardPage() {
           className="mt-6 grid gap-4 sm:grid-cols-3"
         >
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-28 animate-pulse rounded-xl bg-slate-100" />
+            <div key={i} className="h-28 animate-pulse rounded-xl bg-raised" />
           ))}
         </section>
       ) : snapshot.length ? (
@@ -378,12 +378,12 @@ export default function DashboardPage() {
       ) : !error ? (
         <section className="mt-6">
           <h2 className="text-xl font-semibold">Your snapshot starts with a check-in.</h2>
-          <p className="mt-2 text-sm leading-6 text-slate-600">
+          <p className="mt-2 text-sm leading-6 text-fg-2">
             Not enough recent check-in data yet. Activity you log elsewhere still appears below.
           </p>
           <Link
             href="/today#daily-checkin"
-            className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-blue-700 focus-visible:outline-2 focus-visible:outline-blue-600"
+            className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-blue-300 focus-visible:outline-2 focus-visible:outline-accent-fg"
           >
             Complete a check-in →
           </Link>
@@ -398,19 +398,19 @@ export default function DashboardPage() {
             <h2 id="trends-heading" className="text-xl font-semibold">
               What changed?
             </h2>
-            <p className="mt-1 text-sm text-slate-500">
+            <p className="mt-1 text-sm text-fg-3">
               Daily observations over the past 30 days—not an interpretation of cause.
             </p>
           </div>
           <Link
             href="/insights"
-            className="inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-semibold text-blue-700 focus-visible:outline-2 focus-visible:outline-blue-600"
+            className="inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-semibold text-blue-300 focus-visible:outline-2 focus-visible:outline-accent-fg"
           >
             View Insights →
           </Link>
         </div>
         {!loading && !hasEnoughData ? (
-          <p className="mt-3 text-sm leading-6 text-slate-600">
+          <p className="mt-3 text-sm leading-6 text-fg-2">
             A few more check-ins will make trends more useful. Missing days are not zero scores.
           </p>
         ) : null}
@@ -446,23 +446,23 @@ export default function DashboardPage() {
         ) : null}
       </section>
 
-      <section aria-labelledby="next-heading" className="mt-10 border-t border-slate-200 pt-6">
+      <section aria-labelledby="next-heading" className="mt-10 border-t border-line pt-6">
         <h2 id="next-heading" className="text-xl font-semibold">
           Look a little closer
         </h2>
         <div className="mt-5 grid gap-6 md:grid-cols-2">
           <article>
-            <p className="text-sm font-semibold text-blue-700">Weekly Recap</p>
+            <p className="text-sm font-semibold text-blue-300">Weekly Recap</p>
             <h3 className="mt-2 text-lg font-semibold">
               {weeklyRecap?.title ?? "Your week in context"}
             </h3>
-            <p className="mt-2 text-sm leading-7 text-slate-600">
+            <p className="mt-2 text-sm leading-7 text-fg-2">
               {weeklyRecap?.summary ??
                 "Review a summary of what you tracked, or generate your first recap."}
             </p>
             <Link
               href="/weekly-recap"
-              className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-blue-700 focus-visible:outline-2 focus-visible:outline-blue-600"
+              className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-blue-300 focus-visible:outline-2 focus-visible:outline-accent-fg"
             >
               Open Weekly Recap →
             </Link>
@@ -470,25 +470,25 @@ export default function DashboardPage() {
           <article>
             <h3 className="text-lg font-semibold">Your tracking routines</h3>
             {!loading && checkins.length ? (
-              <p className="mt-2 text-sm leading-7 text-slate-600">
+              <p className="mt-2 text-sm leading-7 text-fg-2">
                 {checkins.length} check-ins in this window · Latest recorded streak:{" "}
                 {metrics.streak} days
                 {metrics.latestWeight !== null ? ` · Latest weight: ${metrics.latestWeight}` : ""}
               </p>
             ) : null}
-            <p className="mt-2 text-sm leading-7 text-slate-600">
+            <p className="mt-2 text-sm leading-7 text-fg-2">
               Review scheduled actions and routine progress in their dedicated views.
             </p>
             <div className="mt-2 flex flex-wrap gap-x-6">
               <Link
                 href="/habits"
-                className="inline-flex min-h-11 items-center text-sm font-semibold text-blue-700 focus-visible:outline-2 focus-visible:outline-blue-600"
+                className="inline-flex min-h-11 items-center text-sm font-semibold text-blue-300 focus-visible:outline-2 focus-visible:outline-accent-fg"
               >
                 View Habits →
               </Link>
               <Link
                 href="/protocols"
-                className="inline-flex min-h-11 items-center text-sm font-semibold text-blue-700 focus-visible:outline-2 focus-visible:outline-blue-600"
+                className="inline-flex min-h-11 items-center text-sm font-semibold text-blue-300 focus-visible:outline-2 focus-visible:outline-accent-fg"
               >
                 View Protocols →
               </Link>

@@ -9,7 +9,7 @@ export default async function Page({
   return (
     <PageContainer narrow>
       {checkout === "success" ? (
-        <p role="status" className="mb-4 rounded-xl bg-blue-50 p-4 text-blue-900">
+        <p role="status" className="mb-4 rounded-xl bg-blue-500/10 p-4 text-blue-100">
           <strong>Checkout returned.</strong> Your plan will update after your payment is confirmed.
         </p>
       ) : null}

@@ -45,7 +45,7 @@ export function ConditionOutlook({ conditionId }: { conditionId: string }) {
     return (
       <>
         <h1 className="text-2xl font-semibold">Current Outlook</h1>
-        <p className="mt-1 text-sm text-slate-600">Analyzing your recent pattern...</p>
+        <p className="mt-1 text-sm text-fg-2">Analyzing your recent pattern...</p>
         <LoadingSkeleton className="mt-4 h-56" />
       </>
     );
@@ -79,30 +79,30 @@ export function ConditionOutlook({ conditionId }: { conditionId: string }) {
   return (
     <>
       <header>
-        <p className="text-sm font-semibold text-blue-700">{data.conditionLabel}</p>
+        <p className="text-sm font-semibold text-blue-300">{data.conditionLabel}</p>
         <h1 className="mt-1 text-2xl font-semibold">Current Pattern</h1>
-        <p className="mt-1 text-sm text-slate-600">
+        <p className="mt-1 text-sm text-fg-2">
           A personalized comparison of the 72 hours before now with your own recorded history.
         </p>
       </header>
       <Surface className="mt-5">
-        <p className="text-sm font-semibold text-slate-500">Recent pattern similarity</p>
+        <p className="text-sm font-semibold text-fg-3">Recent pattern similarity</p>
         <h2 className="mt-1 text-2xl font-semibold">{labels[data.classification]}</h2>
         {unavailable ? (
-          <p className="mt-2 text-sm leading-6 text-slate-600">
+          <p className="mt-2 text-sm leading-6 text-fg-2">
             AXVital needs at least 3 usable {data.episodeLabel.toLowerCase()} windows and comparison
             history before it can compare your current pattern reliably.
           </p>
         ) : (
           <>
-            <p className="mt-2 text-sm leading-6 text-slate-700">
+            <p className="mt-2 text-sm leading-6 text-fg-2">
               {data.classification === "low_similarity"
                 ? `Your recent pattern does not closely resemble most periods that preceded your recorded ${data.episodeLabel.toLowerCase()}s.`
                 : data.classification === "typical"
                   ? `Your recent pattern looks more like your usual historical periods than most pre-${data.episodeLabel.toLowerCase()} periods.`
                   : `Your recent pattern is more similar than usual to periods that preceded some previous ${data.episodeLabel.toLowerCase()}s.`}
             </p>
-            <p className="mt-3 font-semibold text-slate-800">
+            <p className="mt-3 font-semibold text-fg">
               {data.classification === "low_similarity"
                 ? "Low similarity does not guarantee that an episode will not occur."
                 : "This does not mean an episode will occur."}
@@ -119,8 +119,8 @@ export function ConditionOutlook({ conditionId }: { conditionId: string }) {
             {data.contributingFactors.map((x) => (
               <Surface compact key={x.key}>
                 <h3 className="font-semibold">{x.label}</h3>
-                <p className="mt-1 text-sm text-slate-600">{x.summary}</p>
-                <p className="mt-2 text-xs text-slate-500">
+                <p className="mt-1 text-sm text-fg-2">{x.summary}</p>
+                <p className="mt-2 text-xs text-fg-3">
                   Current {x.currentValue} · usual {x.negativeMean}
                 </p>
               </Surface>
@@ -134,15 +134,15 @@ export function ConditionOutlook({ conditionId }: { conditionId: string }) {
         </h2>
         <dl className="mt-3 grid gap-3 sm:grid-cols-3">
           <Surface compact>
-            <dt className="text-sm text-slate-500">Usable pre-episode periods</dt>
+            <dt className="text-sm text-fg-3">Usable pre-episode periods</dt>
             <dd className="text-2xl font-semibold">{data.readiness.usablePositiveWindows}</dd>
           </Surface>
           <Surface compact>
-            <dt className="text-sm text-slate-500">Comparison periods</dt>
+            <dt className="text-sm text-fg-3">Comparison periods</dt>
             <dd className="text-2xl font-semibold">{data.readiness.negativeWindows}</dd>
           </Surface>
           <Surface compact>
-            <dt className="text-sm text-slate-500">Model readiness</dt>
+            <dt className="text-sm text-fg-3">Model readiness</dt>
             <dd className="mt-1 font-semibold capitalize">
               {data.readiness.level.replace("_", " ")}
             </dd>
@@ -157,12 +157,12 @@ export function ConditionOutlook({ conditionId }: { conditionId: string }) {
               <Link
                 key={x.episodeId}
                 href={`/health/episodes/${x.episodeId}`}
-                className="flex min-h-11 items-center justify-between rounded-xl border bg-white p-4 font-semibold"
+                className="flex min-h-11 items-center justify-between rounded-xl border bg-surface p-4 font-semibold"
               >
                 <span>
                   {new Date(x.onsetAt).toLocaleDateString()} {data.episodeLabel.toLowerCase()}
                 </span>
-                <span className="text-sm text-blue-700">{x.label}</span>
+                <span className="text-sm text-blue-300">{x.label}</span>
               </Link>
             ))}
           </div>
@@ -172,17 +172,17 @@ export function ConditionOutlook({ conditionId }: { conditionId: string }) {
         <summary className="min-h-11 cursor-pointer font-semibold">
           How this comparison works
         </summary>
-        <p className="mt-2 text-sm leading-6 text-slate-600">
+        <p className="mt-2 text-sm leading-6 text-fg-2">
           The same feature definitions are used for current, pre-episode, and comparison windows.
           Category-balanced distance is normalized to your own history. Similarity is not a
           probability.
         </p>
-        <ul className="mt-2 list-disc pl-5 text-sm text-slate-600">
+        <ul className="mt-2 list-disc pl-5 text-sm text-fg-2">
           {data.limitations.map((x) => (
             <li key={x}>{x}</li>
           ))}
         </ul>
-        <p className="mt-2 text-xs text-slate-500">Analysis version: {data.analysisVersion}</p>
+        <p className="mt-2 text-xs text-fg-3">Analysis version: {data.analysisVersion}</p>
       </details>
     </>
   );

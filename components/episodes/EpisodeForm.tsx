@@ -91,7 +91,7 @@ export function EpisodeForm({ conditionId }: { conditionId?: string }) {
         </select>
       </label>
       {chosen ? (
-        <p className="rounded-lg bg-blue-50 p-3 text-sm text-blue-900">
+        <p className="rounded-lg bg-blue-500/10 p-3 text-sm text-blue-100">
           Log {label}. AXVital will not infer one from symptoms.
         </p>
       ) : null}
@@ -115,20 +115,20 @@ export function EpisodeForm({ conditionId }: { conditionId?: string }) {
           onChange={(e) => setSeverity(e.target.value)}
           aria-label={`Overall severity ${severity || "not set"}`}
         />
-        <span className="flex justify-between text-xs font-normal text-slate-500">
+        <span className="flex justify-between text-xs font-normal text-fg-3">
           <span>1 — Very mild</span>
           <span>10 — Severe</span>
         </span>
       </label>
       <fieldset>
         <legend className="text-sm font-semibold">
-          Functional impact <span className="font-normal text-slate-500">Optional</span>
+          Functional impact <span className="font-normal text-fg-3">Optional</span>
         </legend>
         <div className="mt-2 flex flex-wrap gap-2">
           <button
             type="button"
             onClick={() => setImpact("")}
-            className={`min-h-11 rounded-lg border px-3 ${!impact ? "border-blue-600 bg-blue-50" : "border-slate-200"}`}
+            className={`min-h-11 rounded-lg border px-3 ${!impact ? "border-blue-600 bg-blue-500/10" : "border-line"}`}
           >
             Not set
           </button>
@@ -138,7 +138,7 @@ export function EpisodeForm({ conditionId }: { conditionId?: string }) {
               key={x}
               onClick={() => setImpact(x)}
               aria-pressed={impact === x}
-              className={`min-h-11 rounded-lg border px-3 capitalize ${impact === x ? "border-blue-600 bg-blue-50" : "border-slate-200"}`}
+              className={`min-h-11 rounded-lg border px-3 capitalize ${impact === x ? "border-blue-600 bg-blue-500/10" : "border-line"}`}
             >
               {x}
             </button>
@@ -149,9 +149,7 @@ export function EpisodeForm({ conditionId }: { conditionId?: string }) {
         <fieldset>
           <legend className="text-sm font-semibold">
             Link recent symptom events{" "}
-            <span className="font-normal text-slate-500">
-              Optional; nothing is linked automatically
-            </span>
+            <span className="font-normal text-fg-3">Optional; nothing is linked automatically</span>
           </legend>
           <div className="mt-2 max-h-48 space-y-2 overflow-y-auto">
             {recent.map((x) => (
@@ -180,8 +178,7 @@ export function EpisodeForm({ conditionId }: { conditionId?: string }) {
       ) : null}
       <fieldset className="rounded-xl border p-4">
         <legend className="px-1 text-sm font-semibold">
-          Add one new structured symptom{" "}
-          <span className="font-normal text-slate-500">Optional</span>
+          Add one new structured symptom <span className="font-normal text-fg-3">Optional</span>
         </legend>
         <select
           aria-label="New symptom to link"
@@ -211,7 +208,7 @@ export function EpisodeForm({ conditionId }: { conditionId?: string }) {
         ) : null}
       </fieldset>
       <label className="grid gap-1.5 text-sm font-semibold">
-        Notes <span className="font-normal text-slate-500">Optional</span>
+        Notes <span className="font-normal text-fg-3">Optional</span>
         <textarea
           rows={4}
           maxLength={2000}

@@ -8,9 +8,9 @@ export function TrustPage({ title, children }: { title: string; children: React.
       <article className="mx-auto max-w-3xl px-4 py-10">
         <h1 className="text-3xl font-semibold">{title}</h1>
         {details.operator && (
-          <p className="mt-2 text-sm text-slate-600">Operated by {details.operator}</p>
+          <p className="mt-2 text-sm text-fg-2">Operated by {details.operator}</p>
         )}
-        <div className="mt-6 space-y-6 leading-7 text-slate-700">{children}</div>
+        <div className="mt-6 space-y-6 leading-7 text-fg-2">{children}</div>
         <nav
           aria-label="Legal, support, and account links"
           className="mt-8 flex flex-wrap gap-4 border-t pt-4"
@@ -23,7 +23,7 @@ export function TrustPage({ title, children }: { title: string; children: React.
             ["/settings", "Account controls"],
           ].map(([href, label]) => (
             <Link
-              className="inline-flex min-h-11 items-center font-semibold text-blue-700 underline"
+              className="inline-flex min-h-11 items-center font-semibold text-blue-300 underline"
               key={href}
               href={href}
             >

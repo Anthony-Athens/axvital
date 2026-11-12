@@ -47,11 +47,11 @@ export function EpisodeLookbackCard({
   const counts = summarizeLookback(episode, events, timeZone);
   return (
     <Surface compact>
-      <p className="text-xs font-semibold uppercase tracking-wide text-blue-700">
+      <p className="text-xs font-semibold uppercase tracking-wide text-blue-300">
         Episode {index + 1}
       </p>
       <h3 className="mt-1 font-semibold">{dateLabel(episode.start, timeZone)}</h3>
-      <p className="mt-1 text-xs text-slate-500">
+      <p className="mt-1 text-xs text-fg-3">
         {episode.end === null ? "Ongoing" : days((episode.end - episode.start) / 86400000)} ·
         Severity {episode.severity ?? "not recorded"}
       </p>
@@ -65,7 +65,7 @@ export function EpisodeLookbackCard({
           ))}
         </ul>
       ) : (
-        <p className="mt-4 text-sm text-slate-500">
+        <p className="mt-4 text-sm text-fg-3">
           {incomplete
             ? "Activity is partially unavailable for this window."
             : "No health activity recorded in this window."}
@@ -128,7 +128,7 @@ export function ConditionIntelligence({
   return (
     <PageContainer className="min-w-0 pb-28 [overflow-wrap:anywhere]">
       {mode === "app" ? (
-        <nav aria-label="Breadcrumb" className="mb-4 text-sm text-blue-700">
+        <nav aria-label="Breadcrumb" className="mb-4 text-sm text-blue-300">
           <a href="/my-health">My Health</a>
           <span> / Conditions / </span>
           <a href={`/health/conditions/${condition.id}`}>{condition.name}</a>
@@ -144,10 +144,10 @@ export function ConditionIntelligence({
           ) : undefined
         }
       />
-      <div className="my-5 border-b border-slate-200 pb-3 text-sm font-semibold text-blue-700">
+      <div className="my-5 border-b border-line pb-3 text-sm font-semibold text-blue-300">
         Overview
       </div>
-      <p className="mb-4 text-sm text-slate-500">
+      <p className="mb-4 text-sm text-fg-3">
         {CONDITION_RANGE_LABEL} · Intervals and time since an episode use start times. Duration uses
         completed episodes; most recent duration uses the latest end time. Severity uses the latest
         recorded episode-level value.
@@ -178,12 +178,12 @@ export function ConditionIntelligence({
         </div>
       ) : null}
       {rows.length === 1 ? (
-        <p className="mt-4 text-sm text-slate-600">
+        <p className="mt-4 text-sm text-fg-2">
           Time between episodes becomes available after at least two episodes are logged.
         </p>
       ) : null}
       {unavailable.length ? (
-        <p role="status" className="mt-5 rounded-lg bg-amber-50 p-4 text-sm text-amber-900">
+        <p role="status" className="mt-5 rounded-lg bg-amber-500/10 p-4 text-sm text-amber-100">
           Some activity could not be loaded completely: {unavailable.join(", ")}. Summaries below
           are partial. Reload to try again.
         </p>
@@ -230,11 +230,11 @@ export function ConditionIntelligence({
       ) : null}
       <section className="mt-8">
         <h2 className="text-xl font-semibold">What happened before your episodes?</h2>
-        <p className="mt-2 text-sm text-slate-500">
+        <p className="mt-2 text-sm text-fg-3">
           Events recorded in the {PRE_EPISODE_LOOKBACK_DAYS} days before each episode. Logs cover
           the seven local calendar days before onset day. Counts summarize recorded health activity.
         </p>
-        <p className="mt-2 text-sm text-slate-500">
+        <p className="mt-2 text-sm text-fg-3">
           More consistent tracking gives AXVital more context around your episodes.
         </p>
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

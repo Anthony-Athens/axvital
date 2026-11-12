@@ -9,7 +9,7 @@ const labels: Record<ConditionStatus, string> = {
 };
 export function ConditionStatusBadge({ status }: { status: ConditionStatus }) {
   return (
-    <span className="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700">
+    <span className="rounded-full bg-blue-500/10 px-2.5 py-1 text-xs font-semibold text-blue-300">
       {labels[status]}
     </span>
   );

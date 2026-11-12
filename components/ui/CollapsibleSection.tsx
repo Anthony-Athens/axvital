@@ -37,18 +37,18 @@ export function CollapsibleSection({
   children: ReactNode;
 }) {
   return (
-    <section id={id} className="rounded-xl border border-slate-200 bg-white">
+    <section id={id} className="rounded-2xl border border-line bg-surface">
       <button
         type="button"
         onClick={onToggle}
         aria-expanded={expanded}
         aria-controls={`${id}-content`}
-        className="flex min-h-16 w-full items-center justify-between gap-4 rounded-xl px-4 py-3 text-left outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 sm:px-5"
+        className="flex min-h-16 w-full items-center justify-between gap-4 rounded-2xl px-4 py-3 text-left outline-none focus-visible:ring-2 focus-visible:ring-accent-fg focus-visible:ring-offset-2 sm:px-5"
       >
         <span className="min-w-0">
-          <span className="block text-base font-semibold text-slate-900">{title}</span>
+          <span className="block text-base font-semibold text-fg">{title}</span>
           {description ? (
-            <span className="mt-0.5 block text-sm font-normal text-slate-600">{description}</span>
+            <span className="mt-0.5 block text-sm font-normal text-fg-2">{description}</span>
           ) : null}
         </span>
         <span className="flex shrink-0 items-center gap-3">
@@ -56,7 +56,7 @@ export function CollapsibleSection({
           <svg
             aria-hidden="true"
             viewBox="0 0 20 20"
-            className={`h-5 w-5 text-slate-500 transition-transform motion-reduce:transition-none ${expanded ? "rotate-180" : ""}`}
+            className={`h-5 w-5 text-fg-3 transition-transform motion-reduce:transition-none ${expanded ? "rotate-180" : ""}`}
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
@@ -65,7 +65,7 @@ export function CollapsibleSection({
           </svg>
         </span>
       </button>
-      <div id={`${id}-content`} hidden={!expanded} className="border-t border-slate-200 p-4 sm:p-5">
+      <div id={`${id}-content`} hidden={!expanded} className="border-t border-line p-4 sm:p-5">
         {children}
       </div>
     </section>

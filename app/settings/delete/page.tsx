@@ -27,12 +27,12 @@ export default function DeletePage() {
           </li>
         </ul>
         <p>
-          <Link className="font-semibold text-blue-700 underline" href="/settings/data">
+          <Link className="font-semibold text-blue-300 underline" href="/settings/data">
             Export your data first
           </Link>{" "}
           if you want to keep a copy. For subscription cancellation without deleting health records,
           use{" "}
-          <Link className="text-blue-700 underline" href="/settings/billing">
+          <Link className="text-blue-300 underline" href="/settings/billing">
             Billing
           </Link>
           .

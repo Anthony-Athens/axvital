@@ -11,7 +11,7 @@ export function DesktopNavigation({ pathname }: { pathname: string }) {
             key={item.id}
             href={item.href}
             aria-current={active ? "page" : undefined}
-            className={`rounded-lg px-2.5 py-2 text-xs font-medium outline-none transition focus-visible:ring-2 focus-visible:ring-blue-600 xl:px-3 xl:text-sm ${active ? "bg-blue-50 font-semibold text-blue-700" : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"}`}
+            className={`rounded-xl px-3 py-2.5 text-sm font-medium outline-none transition focus-visible:ring-2 focus-visible:ring-accent-fg xl:px-3.5 xl:text-[15px] ${active ? "bg-raised font-semibold text-fg" : "text-fg-2 hover:bg-raised/60 hover:text-fg"}`}
           >
             {item.label}
           </Link>

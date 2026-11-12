@@ -35,7 +35,7 @@ export function StartProtocolModal({
       footer={
         <button
           disabled={busy}
-          className="min-h-12 w-full rounded-full bg-emerald-500 font-black text-white disabled:opacity-50"
+          className="min-h-12 w-full rounded-xl bg-accent hover:bg-accent-hover font-semibold text-white disabled:opacity-50"
         >
           {busy ? "Starting…" : "Start Protocol"}
         </button>
@@ -52,25 +52,25 @@ export function StartProtocolModal({
             if (template.duration_days)
               setEnd(addDaysToDateString(e.target.value, template.duration_days - 1));
           }}
-          className="mt-2 min-h-12 w-full rounded-2xl border px-4"
+          className="mt-2 min-h-12 w-full rounded-lg border px-4"
         />
       </label>
       <label className="mt-4 block font-bold">
-        Custom name <span className="text-slate-400">(optional)</span>
+        Custom name <span className="text-fg-3">(optional)</span>
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="mt-2 min-h-12 w-full rounded-2xl border px-4"
+          className="mt-2 min-h-12 w-full rounded-lg border px-4"
         />
       </label>
       <label className="mt-4 block font-bold">
-        End date <span className="text-slate-400">(optional)</span>
+        End date <span className="text-fg-3">(optional)</span>
         <input
           type="date"
           min={start}
           value={end}
           onChange={(e) => setEnd(e.target.value)}
-          className="mt-2 min-h-12 w-full rounded-2xl border px-4"
+          className="mt-2 min-h-12 w-full rounded-lg border px-4"
         />
       </label>
     </SheetDialog>

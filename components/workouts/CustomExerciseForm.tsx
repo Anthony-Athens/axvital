@@ -31,7 +31,7 @@ export function CustomExerciseForm({
   const [error, setError] = useState("");
   const [similar, setSimilar] = useState<Exercise[]>([]);
   const [confirmed, setConfirmed] = useState(false);
-  const input = "mt-2 min-h-12 w-full rounded-2xl border border-slate-200 bg-white px-4";
+  const input = "mt-2 min-h-12 w-full rounded-2xl border border-line bg-surface px-4";
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -86,13 +86,13 @@ export function CustomExerciseForm({
             type="button"
             onClick={onCancel}
             disabled={saving}
-            className="min-h-12 flex-1 rounded-full bg-slate-100 font-black"
+            className="min-h-12 flex-1 rounded-xl bg-raised font-semibold"
           >
             Cancel
           </button>
           <button
             disabled={saving}
-            className="min-h-12 flex-1 rounded-full bg-emerald-500 font-black text-white"
+            className="min-h-12 flex-1 rounded-xl bg-accent hover:bg-accent-hover font-semibold text-white"
           >
             {saving ? "Saving…" : "Save Exercise"}
           </button>
@@ -100,7 +100,7 @@ export function CustomExerciseForm({
       }
     >
       {error ? (
-        <p role="alert" className="mt-3 rounded-xl bg-rose-50 p-3 font-bold text-rose-700">
+        <p role="alert" className="mt-3 rounded-xl bg-rose-500/10 p-3 font-bold text-rose-300">
           {error}
         </p>
       ) : null}
@@ -118,8 +118,8 @@ export function CustomExerciseForm({
         />
       </label>
       {similar.length ? (
-        <div className="mt-3 rounded-2xl border border-amber-300 bg-amber-50 p-4">
-          <p className="font-black">A similar exercise already exists.</p>
+        <div className="mt-3 rounded-2xl border border-amber-400/40 bg-amber-500/10 p-4">
+          <p className="font-semibold">A similar exercise already exists.</p>
           <p className="mt-1 text-sm">
             Select it to avoid a duplicate, or continue if yours is meaningfully different.
           </p>
@@ -129,7 +129,7 @@ export function CustomExerciseForm({
                 type="button"
                 key={exercise.id}
                 onClick={() => onCreated(exercise)}
-                className="min-h-11 rounded-full bg-white px-4 font-bold"
+                className="min-h-11 rounded-xl bg-surface px-4 font-bold"
               >
                 Use {exercise.name}
               </button>
@@ -140,7 +140,7 @@ export function CustomExerciseForm({
                 setConfirmed(true);
                 setSimilar([]);
               }}
-              className="min-h-11 rounded-full bg-amber-200 px-4 font-bold"
+              className="min-h-11 rounded-xl bg-amber-500/25 px-4 font-bold"
             >
               Continue creating
             </button>

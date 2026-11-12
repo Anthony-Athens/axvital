@@ -10,7 +10,7 @@ export default async function SecurityPage() {
   if (error || !data.user) redirect("/login");
   return (
     <AuthCard title="Change password">
-      <p className="mt-3 text-sm leading-6 text-slate-600">
+      <p className="mt-3 text-sm leading-6 text-fg-2">
         Update your account password. You’ll remain signed in.
       </p>
       <PasswordForm />
