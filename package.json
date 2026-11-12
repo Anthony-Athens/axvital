@@ -9,7 +9,9 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "test": "node --experimental-strip-types --test lib/**/*.test.ts",
-    "ops:preflight": "node --env-file-if-exists=.env.local scripts/beta-preflight.mjs"
+    "ops:preflight": "node --env-file-if-exists=.env.local scripts/beta-preflight.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",
@@ -31,6 +33,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.3",
     "jsdom": "^30.0.1",
+    "prettier": "3.6.2",
     "supabase": "^2.117.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^5"
