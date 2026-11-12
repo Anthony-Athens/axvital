@@ -1,10 +1,15 @@
 import { readFileSync, readdirSync } from "node:fs";
 import { PGlite } from "@electric-sql/pglite";
-const A = "aaaaaaaa-aaaa-4aaa-aaaa-aaaaaaaaaaaa", B = "bbbbbbbb-bbbb-4bbb-bbbb-bbbbbbbbbbbb";
+const A = "aaaaaaaa-aaaa-4aaa-aaaa-aaaaaaaaaaaa",
+  B = "bbbbbbbb-bbbb-4bbb-bbbb-bbbbbbbbbbbb";
 /** Synthetic baseline ONLY: these four original CREATE TABLEs are absent from the repo.
  * All subsequent migrations are executed unmodified, with real PostgreSQL roles/RLS.
  * This is not evidence about a deployed Supabase schema or its default grants. */
-export async function database(withInsights=false, beforeAccount?:(db:PGlite)=>Promise<void>, throughMigration?:string) {
+export async function database(
+  withInsights = false,
+  beforeAccount?: (db: PGlite) => Promise<void>,
+  throughMigration?: string,
+) {
   const db = new PGlite();
   await db.exec(`
     -- Fixtures declaring UTC analysis dates must not inherit the host's local timezone.
@@ -32,14 +37,24 @@ export async function database(withInsights=false, beforeAccount?:(db:PGlite)=>P
     insert into auth.users values('${A}'),('${B}');
   `);
   const directory = new URL("../../supabase/migrations/", import.meta.url);
-  for (const file of readdirSync(directory).filter(file => file.endsWith(".sql") && (!throughMigration || file <= throughMigration)).sort()) {
+  for (const file of readdirSync(directory)
+    .filter((file) => file.endsWith(".sql") && (!throughMigration || file <= throughMigration))
+    .sort()) {
     try {
-      if(file==="202608270003_account_control.sql"&&beforeAccount)await beforeAccount(db);
+      if (file === "202608270003_account_control.sql" && beforeAccount) await beforeAccount(db);
       // Supabase deployments can grant functions to API roles by default.
-      if(file==="202608270003_account_control.sql"||file==="202608270005_billing_customer_coordination.sql")await db.exec("alter default privileges in schema public grant execute on functions to anon,authenticated;");
-      await db.exec(readFileSync(new URL(file, directory),"utf8"));
+      if (
+        file === "202608270003_account_control.sql" ||
+        file === "202608270005_billing_customer_coordination.sql"
+      )
+        await db.exec(
+          "alter default privileges in schema public grant execute on functions to anon,authenticated;",
+        );
+      await db.exec(readFileSync(new URL(file, directory), "utf8"));
+    } catch (error) {
+      await db.close();
+      throw new Error(`Migration failed: ${file}`, { cause: error });
     }
-    catch (error) { await db.close(); throw new Error(`Migration failed: ${file}`, { cause: error }); }
   }
   return db;
 }

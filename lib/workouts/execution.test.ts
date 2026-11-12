@@ -13,11 +13,7 @@ import {
 } from "./execution.ts";
 import type { SessionSet } from "./types.ts";
 
-function set(
-  id: string,
-  set_number: number,
-  status: SessionSet["status"],
-): SessionSet {
+function set(id: string, set_number: number, status: SessionSet["status"]): SessionSet {
   return {
     id,
     set_number,
@@ -50,7 +46,10 @@ test("the earliest persisted pending set is the only current set", () => {
     set("current", 2, "pending"),
   ];
   assert.equal(getCurrentSessionSet(sets)?.id, "current");
-  assert.deepEqual(getHiddenFutureSessionSets(sets).map(({ id }) => id), ["future"]);
+  assert.deepEqual(
+    getHiddenFutureSessionSets(sets).map(({ id }) => id),
+    ["future"],
+  );
 });
 
 test("completed and skipped sets become addressed compact rows", () => {
@@ -108,10 +107,7 @@ test("subsequent and added pending sets also initialize blank", () => {
   const added = { ...set("added", 3, "pending"), planned_workout_set_id: null };
   for (const pending of [subsequent, added]) {
     assert.deepEqual(
-      [
-        actualInputValue(pending.actual_weight),
-        actualInputValue(pending.actual_reps),
-      ],
+      [actualInputValue(pending.actual_weight), actualInputValue(pending.actual_reps)],
       ["", ""],
     );
   }

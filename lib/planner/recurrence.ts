@@ -33,7 +33,12 @@ export function datesInRange(start: string, end: string) {
 }
 
 export function occursOnDate(rule: RecurrenceRule, date: string): boolean {
-  if (date < rule.start_date || (rule.recurrence_active_from && date < rule.recurrence_active_from) || (rule.end_date && date > rule.end_date)) return false;
+  if (
+    date < rule.start_date ||
+    (rule.recurrence_active_from && date < rule.recurrence_active_from) ||
+    (rule.end_date && date > rule.end_date)
+  )
+    return false;
   const elapsed = daysBetween(rule.start_date, date);
   const day = weekday(date);
   const recurrence: Record<RecurrenceType, () => boolean> = {
@@ -47,12 +52,39 @@ export function occursOnDate(rule: RecurrenceRule, date: string): boolean {
   return recurrence[rule.recurrence_type]();
 }
 
-export function buildOccurrenceRows(activities: PlannedActivity[], userId: string, start: string, end: string) {
-  const unique = new Map<string, { user_id: string; planned_activity_id: string; scheduled_date: string; scheduled_time: string | null }>();
-  activities.forEach((activity) => datesInRange(start, end).filter((date) => occursOnDate(activity, date)).forEach((date) => unique.set(`${activity.id}:${date}`, { user_id: userId, planned_activity_id: activity.id, scheduled_date: date, scheduled_time: activity.scheduled_time })));
+export function buildOccurrenceRows(
+  activities: PlannedActivity[],
+  userId: string,
+  start: string,
+  end: string,
+) {
+  const unique = new Map<
+    string,
+    {
+      user_id: string;
+      planned_activity_id: string;
+      scheduled_date: string;
+      scheduled_time: string | null;
+    }
+  >();
+  activities.forEach((activity) =>
+    datesInRange(start, end)
+      .filter((date) => occursOnDate(activity, date))
+      .forEach((date) =>
+        unique.set(`${activity.id}:${date}`, {
+          user_id: userId,
+          planned_activity_id: activity.id,
+          scheduled_date: date,
+          scheduled_time: activity.scheduled_time,
+        }),
+      ),
+  );
   return [...unique.values()];
 }
 
-export function shouldDeleteOccurrenceForRecurrenceEdit(occurrence: Pick<PlannedActivityOccurrence, "status" | "scheduled_date">, futureFrom: string) {
+export function shouldDeleteOccurrenceForRecurrenceEdit(
+  occurrence: Pick<PlannedActivityOccurrence, "status" | "scheduled_date">,
+  futureFrom: string,
+) {
   return occurrence.status === "planned" && occurrence.scheduled_date >= futureFrom;
 }

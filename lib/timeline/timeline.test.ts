@@ -1,36 +1,355 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import assert from"node:assert/strict";import test from"node:test";import type{SupabaseClient}from"@supabase/supabase-js";import{addLocalDays,localDateForTimestamp,localDayRange}from"./dates.ts";import{filterTimeline}from"./filter.ts";import{getTimeline}from"./getTimeline.ts";import{getCheckinEvents}from"./sources/checkins.ts";import{getNutritionEvents}from"./sources/nutrition.ts";import{getRoutineEvents}from"./sources/routines.ts";import type{TimelineEvent,TimelineSourceContext}from"./types.ts";
-function client(rows:unknown[]):SupabaseClient{const chain:any={select:()=>chain,eq:()=>chain,gte:()=>chain,lte:()=>chain,lt:()=>chain,is:()=>chain,neq:()=>chain,then:(resolve:(x:unknown)=>unknown)=>resolve({data:rows,error:null})};return{from:()=>chain,auth:{getUser:async()=>({data:{user:{id:"user"}},error:null})}}as unknown as SupabaseClient;}
-const context=(rows:unknown[]):TimelineSourceContext=>({client:client(rows),userId:"user",...localDayRange("2026-08-21")});
-test("manual and voice nutrition each hydrate once; incomplete intake never displays zero macros", async () => {
-  const common = { entry_type: "food", meal_type: null, consumed_at: "2026-08-21T12:00:00Z", notes: null };
-  const rows = await getNutritionEvents(context([
-    { ...common, id: "manual", title: "Egg", source_type: "manual", items: [{ source_name: "Egg", calories: 216, protein_grams: 18.9 }] },
-    { ...common, id: "voice", title: "Egg", source_type: "voice", items: [{ source_name: "Egg", calories: 216, protein_grams: 18.9 }] },
-    { ...common, id: "pending", title: "Family stew", nutrition_status: "incomplete", source_type: "voice", items: [] },
-  ]));
-  assert.equal(rows.length, 3); assert.ok(rows.every(row => row.sourceType === "nutrition_entry"));
-  assert.equal(rows[0].subtitle, rows[1].subtitle); assert.equal(rows[1].metadata.inputMethod, "voice");
-  assert.equal(rows[2].metadata.calories, null); assert.match(rows[2].subtitle!, /incomplete/); assert.doesNotMatch(rows[2].subtitle!, /0 kcal/);
+import assert from "node:assert/strict";
+import test from "node:test";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import { addLocalDays, localDateForTimestamp, localDayRange } from "./dates.ts";
+import { filterTimeline } from "./filter.ts";
+import { getTimeline } from "./getTimeline.ts";
+import { getCheckinEvents } from "./sources/checkins.ts";
+import { getNutritionEvents } from "./sources/nutrition.ts";
+import { getRoutineEvents } from "./sources/routines.ts";
+import type { TimelineEvent, TimelineSourceContext } from "./types.ts";
+function client(rows: unknown[]): SupabaseClient {
+  const chain: any = {
+    select: () => chain,
+    eq: () => chain,
+    gte: () => chain,
+    lte: () => chain,
+    lt: () => chain,
+    is: () => chain,
+    neq: () => chain,
+    then: (resolve: (x: unknown) => unknown) => resolve({ data: rows, error: null }),
+  };
+  return {
+    from: () => chain,
+    auth: { getUser: async () => ({ data: { user: { id: "user" } }, error: null }) },
+  } as unknown as SupabaseClient;
+}
+const context = (rows: unknown[]): TimelineSourceContext => ({
+  client: client(rows),
+  userId: "user",
+  ...localDayRange("2026-08-21"),
 });
-const event=(eventType:TimelineEvent["eventType"]):TimelineEvent=>({id:`x:${eventType}`,sourceId:eventType,sourceType:"x",eventType,occurredAt:"2026-08-21T12:00:00Z",endedAt:null,title:eventType,subtitle:null,description:null,status:null,metadata:{},editable:false,deletable:false,detailHref:null,editHref:null});
+test("manual and voice nutrition each hydrate once; incomplete intake never displays zero macros", async () => {
+  const common = {
+    entry_type: "food",
+    meal_type: null,
+    consumed_at: "2026-08-21T12:00:00Z",
+    notes: null,
+  };
+  const rows = await getNutritionEvents(
+    context([
+      {
+        ...common,
+        id: "manual",
+        title: "Egg",
+        source_type: "manual",
+        items: [{ source_name: "Egg", calories: 216, protein_grams: 18.9 }],
+      },
+      {
+        ...common,
+        id: "voice",
+        title: "Egg",
+        source_type: "voice",
+        items: [{ source_name: "Egg", calories: 216, protein_grams: 18.9 }],
+      },
+      {
+        ...common,
+        id: "pending",
+        title: "Family stew",
+        nutrition_status: "incomplete",
+        source_type: "voice",
+        items: [],
+      },
+    ]),
+  );
+  assert.equal(rows.length, 3);
+  assert.ok(rows.every((row) => row.sourceType === "nutrition_entry"));
+  assert.equal(rows[0].subtitle, rows[1].subtitle);
+  assert.equal(rows[1].metadata.inputMethod, "voice");
+  assert.equal(rows[2].metadata.calories, null);
+  assert.match(rows[2].subtitle!, /incomplete/);
+  assert.doesNotMatch(rows[2].subtitle!, /0 kcal/);
+});
+const event = (eventType: TimelineEvent["eventType"]): TimelineEvent => ({
+  id: `x:${eventType}`,
+  sourceId: eventType,
+  sourceType: "x",
+  eventType,
+  occurredAt: "2026-08-21T12:00:00Z",
+  endedAt: null,
+  title: eventType,
+  subtitle: null,
+  description: null,
+  status: null,
+  metadata: {},
+  editable: false,
+  deletable: false,
+  detailHref: null,
+  editHref: null,
+});
 import { calendarDateInZone, calendarNoonInZone } from "./dates.ts";
-test("daily analysis anchors preserve the calendar date across DST and the international date line",()=>{for(const zone of["America/Los_Angeles","America/New_York","Pacific/Kiritimati","Pacific/Pago_Pago"]){for(const date of["2026-03-08","2026-11-01","2026-08-21"]){const at=calendarNoonInZone(date,zone);assert.equal(calendarDateInZone(at,zone),date);assert.equal(new Intl.DateTimeFormat("en-US",{timeZone:zone,hour:"2-digit",hourCycle:"h23"}).format(new Date(at)),"12")}}});
-test("daily check-in normalizes into one stable timeline event",async()=>{const rows=await getCheckinEvents(context([{id:"1",checkin_date:"2026-08-21",energy_score:8,mood_score:7,sleep_quality:"Good",exercise_level:"Moderate",nutrition_quality:"Good",stress_level:"Low",alcohol:false,weight:180,notes:null,created_at:"2026-08-21T12:00:00Z",updated_at:null}]));assert.equal(rows[0].id,"daily_checkin:1");assert.match(rows[0].subtitle!,/Energy 8/)});
-test("nutrition food normalizes calories and protein",async()=>{const rows=await getNutritionEvents(context([{id:"1",entry_type:"food",meal_type:"lunch",title:null,consumed_at:"2026-08-21T12:00:00Z",notes:null,items:[{source_name:"Chicken",calories:281,protein_grams:52.5}]}]));assert.equal(rows[0].eventType,"food");assert.equal(rows[0].metadata.calories,281)});
-test("multi-item nutrition entry becomes one grouped meal",async()=>{const rows=await getNutritionEvents(context([{id:"1",entry_type:"meal",meal_type:"breakfast",title:"Breakfast",consumed_at:"2026-08-21T12:00:00Z",notes:null,items:[{source_name:"Eggs",calories:200,protein_grams:20},{source_name:"Toast",calories:100,protein_grams:4}]}]));assert.equal(rows.length,1);assert.equal(rows[0].eventType,"meal");assert.equal(rows[0].metadata.itemCount,2)});
-test("timeline filters map domain groups",()=>{const all=[event("checkin"),event("food"),event("supplement"),event("symptom"),event("workout"),event("habit"),event("protocol"),event("experiment")];assert.equal(filterTimeline(all,"all").length,8);assert.deepEqual(filterTimeline(all,"nutrition").map(x=>x.eventType),["food","supplement"]);assert.deepEqual(filterTimeline(all,"activity").map(x=>x.eventType),["workout"]);assert.deepEqual(filterTimeline(all,"routines").map(x=>x.eventType),["habit","protocol"])});
-test("local day range is exactly adjacent local midnights",()=>{const range=localDayRange("2026-08-21");assert.equal(new Date(range.end).getTime()-new Date(range.start).getTime(),24*60*60*1000)});
-test("local date grouping converts timestamps through the runtime timezone",()=>assert.equal(localDateForTimestamp(new Date(2026,7,21,0,5).toISOString()),"2026-08-21"));
-test("date navigation uses calendar arithmetic",()=>assert.equal(addLocalDays("2026-08-31",1),"2026-09-01"));
-test("one failed source returns partial timeline results",async()=>{const good=async()=>[event("note")],bad=async()=>{throw new Error("failed")};const result=await getTimeline(client([]),localDayRange("2026-08-21"),{good,bad});assert.equal(result.events.length,1);assert.deepEqual(result.failedSources,["bad"])});
-test("authentication failure rejects the whole aggregation",async()=>{const unauth={auth:{getUser:async()=>({data:{user:null},error:null})}}as unknown as SupabaseClient;await assert.rejects(()=>getTimeline(unauth,localDayRange("2026-08-21"),{}),/AUTH_REQUIRED/)});
-test("timeline events expose links instead of mutation methods",()=>{const value=event("symptom");assert.equal("delete" in value,false);assert.equal("update" in value,false)});
+test("daily analysis anchors preserve the calendar date across DST and the international date line", () => {
+  for (const zone of [
+    "America/Los_Angeles",
+    "America/New_York",
+    "Pacific/Kiritimati",
+    "Pacific/Pago_Pago",
+  ]) {
+    for (const date of ["2026-03-08", "2026-11-01", "2026-08-21"]) {
+      const at = calendarNoonInZone(date, zone);
+      assert.equal(calendarDateInZone(at, zone), date);
+      assert.equal(
+        new Intl.DateTimeFormat("en-US", {
+          timeZone: zone,
+          hour: "2-digit",
+          hourCycle: "h23",
+        }).format(new Date(at)),
+        "12",
+      );
+    }
+  }
+});
+test("daily check-in normalizes into one stable timeline event", async () => {
+  const rows = await getCheckinEvents(
+    context([
+      {
+        id: "1",
+        checkin_date: "2026-08-21",
+        energy_score: 8,
+        mood_score: 7,
+        sleep_quality: "Good",
+        exercise_level: "Moderate",
+        nutrition_quality: "Good",
+        stress_level: "Low",
+        alcohol: false,
+        weight: 180,
+        notes: null,
+        created_at: "2026-08-21T12:00:00Z",
+        updated_at: null,
+      },
+    ]),
+  );
+  assert.equal(rows[0].id, "daily_checkin:1");
+  assert.match(rows[0].subtitle!, /Energy 8/);
+});
+test("nutrition food normalizes calories and protein", async () => {
+  const rows = await getNutritionEvents(
+    context([
+      {
+        id: "1",
+        entry_type: "food",
+        meal_type: "lunch",
+        title: null,
+        consumed_at: "2026-08-21T12:00:00Z",
+        notes: null,
+        items: [{ source_name: "Chicken", calories: 281, protein_grams: 52.5 }],
+      },
+    ]),
+  );
+  assert.equal(rows[0].eventType, "food");
+  assert.equal(rows[0].metadata.calories, 281);
+});
+test("multi-item nutrition entry becomes one grouped meal", async () => {
+  const rows = await getNutritionEvents(
+    context([
+      {
+        id: "1",
+        entry_type: "meal",
+        meal_type: "breakfast",
+        title: "Breakfast",
+        consumed_at: "2026-08-21T12:00:00Z",
+        notes: null,
+        items: [
+          { source_name: "Eggs", calories: 200, protein_grams: 20 },
+          { source_name: "Toast", calories: 100, protein_grams: 4 },
+        ],
+      },
+    ]),
+  );
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].eventType, "meal");
+  assert.equal(rows[0].metadata.itemCount, 2);
+});
+test("timeline filters map domain groups", () => {
+  const all = [
+    event("checkin"),
+    event("food"),
+    event("supplement"),
+    event("symptom"),
+    event("workout"),
+    event("habit"),
+    event("protocol"),
+    event("experiment"),
+  ];
+  assert.equal(filterTimeline(all, "all").length, 8);
+  assert.deepEqual(
+    filterTimeline(all, "nutrition").map((x) => x.eventType),
+    ["food", "supplement"],
+  );
+  assert.deepEqual(
+    filterTimeline(all, "activity").map((x) => x.eventType),
+    ["workout"],
+  );
+  assert.deepEqual(
+    filterTimeline(all, "routines").map((x) => x.eventType),
+    ["habit", "protocol"],
+  );
+});
+test("local day range is exactly adjacent local midnights", () => {
+  const range = localDayRange("2026-08-21");
+  assert.equal(
+    new Date(range.end).getTime() - new Date(range.start).getTime(),
+    24 * 60 * 60 * 1000,
+  );
+});
+test("local date grouping converts timestamps through the runtime timezone", () =>
+  assert.equal(localDateForTimestamp(new Date(2026, 7, 21, 0, 5).toISOString()), "2026-08-21"));
+test("date navigation uses calendar arithmetic", () =>
+  assert.equal(addLocalDays("2026-08-31", 1), "2026-09-01"));
+test("one failed source returns partial timeline results", async () => {
+  const good = async () => [event("note")],
+    bad = async () => {
+      throw new Error("failed");
+    };
+  const result = await getTimeline(client([]), localDayRange("2026-08-21"), { good, bad });
+  assert.equal(result.events.length, 1);
+  assert.deepEqual(result.failedSources, ["bad"]);
+});
+test("authentication failure rejects the whole aggregation", async () => {
+  const unauth = {
+    auth: { getUser: async () => ({ data: { user: null }, error: null }) },
+  } as unknown as SupabaseClient;
+  await assert.rejects(() => getTimeline(unauth, localDayRange("2026-08-21"), {}), /AUTH_REQUIRED/);
+});
+test("timeline events expose links instead of mutation methods", () => {
+  const value = event("symptom");
+  assert.equal("delete" in value, false);
+  assert.equal("update" in value, false);
+});
 
-test("historical check-in stays on its logical date after a later edit",async()=>{const rows=await getCheckinEvents(context([{id:"old",checkin_date:"2026-08-01",energy_score:3,created_at:"2026-08-01T23:00:00Z",updated_at:"2026-08-22T01:00:00Z"}]));assert.equal(rows[0].logicalDate,"2026-08-01");assert.equal(rows[0].occurredAt,"2026-08-01T12:00:00");assert.equal(rows[0].editHref,"/today?date=2026-08-01#daily-checkin");assert.equal(rows[0].id,"daily_checkin:old")});
-test("invalid source check-in dates are omitted and malformed timestamp formatting is safe",async()=>{const rows=await getCheckinEvents(context([{id:"bad",checkin_date:"2026-02-30"}]));assert.equal(rows.length,0);assert.equal(localDateForTimestamp("bad"),"unknown");assert.throws(()=>localDayRange("2026-02-30"),/INVALID_DATE/)});
-test("manual exercise and a completed workout remain separate source events",async()=>{const result=await getTimeline(client([]),localDayRange("2026-08-21"),{manual:async()=>[{...event("workout"),id:"health_event:one",sourceType:"health_event"}],workout:async()=>[{...event("workout"),id:"workout_session:one",sourceType:"workout_session"}]});assert.deepEqual(result.events.map(row=>row.id),["health_event:one","workout_session:one"])});
-test("completed workout planner metadata does not hydrate as a habit",async()=>{const rows=await getRoutineEvents(context([{id:"workout-occurrence",scheduled_date:"2026-08-21",status:"completed",completed_at:"2026-08-21T18:45:00Z",planned_activity:{id:"workout-activity",title:"CB1 - L1",activity_type:"workout",user_protocol_id:null}}]));assert.deepEqual(rows,[])});
-test("a real completed habit still hydrates as a habit",async()=>{const rows=await getRoutineEvents(context([{id:"habit-occurrence",scheduled_date:"2026-08-21",status:"completed",completed_at:"2026-08-21T18:45:00Z",planned_activity:{id:"habit-activity",title:"CB1 - L1",activity_type:"habit",user_protocol_id:null}}]));assert.equal(rows.length,1);assert.equal(rows[0].eventType,"habit");assert.equal(rows[0].subtitle,"Habit completed");assert.equal(rows[0].detailHref,"/habits/habit-activity")});
-test("protocol-linked planner completion retains protocol classification",async()=>{const rows=await getRoutineEvents(context([{id:"protocol-occurrence",scheduled_date:"2026-08-21",status:"completed",completed_at:"2026-08-21T18:45:00Z",planned_activity:{id:"protocol-activity",title:"Mobility",activity_type:"mobility",user_protocol_id:"protocol-1",user_protocol:{id:"protocol-1",name:"Recovery"}}}]));assert.equal(rows.length,1);assert.equal(rows[0].eventType,"protocol");assert.equal(rows[0].subtitle,"Recovery · completed");assert.equal(rows[0].detailHref,"/protocols/protocol-1")});
-test("same-name workout and habit remain independent semantic events",async()=>{const result=await getTimeline(client([]),localDayRange("2026-08-21"),{workout:async()=>[{...event("workout"),id:"workout_session:one",sourceType:"workout_session",title:"CB1 - L1"}],habit:async()=>[{...event("habit"),id:"planned_occurrence:one",sourceType:"planned_activity_occurrence",title:"CB1 - L1"}]});assert.deepEqual(result.events.map(row=>row.id),["workout_session:one","planned_occurrence:one"])});
+test("historical check-in stays on its logical date after a later edit", async () => {
+  const rows = await getCheckinEvents(
+    context([
+      {
+        id: "old",
+        checkin_date: "2026-08-01",
+        energy_score: 3,
+        created_at: "2026-08-01T23:00:00Z",
+        updated_at: "2026-08-22T01:00:00Z",
+      },
+    ]),
+  );
+  assert.equal(rows[0].logicalDate, "2026-08-01");
+  assert.equal(rows[0].occurredAt, "2026-08-01T12:00:00");
+  assert.equal(rows[0].editHref, "/today?date=2026-08-01#daily-checkin");
+  assert.equal(rows[0].id, "daily_checkin:old");
+});
+test("invalid source check-in dates are omitted and malformed timestamp formatting is safe", async () => {
+  const rows = await getCheckinEvents(context([{ id: "bad", checkin_date: "2026-02-30" }]));
+  assert.equal(rows.length, 0);
+  assert.equal(localDateForTimestamp("bad"), "unknown");
+  assert.throws(() => localDayRange("2026-02-30"), /INVALID_DATE/);
+});
+test("manual exercise and a completed workout remain separate source events", async () => {
+  const result = await getTimeline(client([]), localDayRange("2026-08-21"), {
+    manual: async () => [
+      { ...event("workout"), id: "health_event:one", sourceType: "health_event" },
+    ],
+    workout: async () => [
+      { ...event("workout"), id: "workout_session:one", sourceType: "workout_session" },
+    ],
+  });
+  assert.deepEqual(
+    result.events.map((row) => row.id),
+    ["health_event:one", "workout_session:one"],
+  );
+});
+test("completed workout planner metadata does not hydrate as a habit", async () => {
+  const rows = await getRoutineEvents(
+    context([
+      {
+        id: "workout-occurrence",
+        scheduled_date: "2026-08-21",
+        status: "completed",
+        completed_at: "2026-08-21T18:45:00Z",
+        planned_activity: {
+          id: "workout-activity",
+          title: "CB1 - L1",
+          activity_type: "workout",
+          user_protocol_id: null,
+        },
+      },
+    ]),
+  );
+  assert.deepEqual(rows, []);
+});
+test("a real completed habit still hydrates as a habit", async () => {
+  const rows = await getRoutineEvents(
+    context([
+      {
+        id: "habit-occurrence",
+        scheduled_date: "2026-08-21",
+        status: "completed",
+        completed_at: "2026-08-21T18:45:00Z",
+        planned_activity: {
+          id: "habit-activity",
+          title: "CB1 - L1",
+          activity_type: "habit",
+          user_protocol_id: null,
+        },
+      },
+    ]),
+  );
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].eventType, "habit");
+  assert.equal(rows[0].subtitle, "Habit completed");
+  assert.equal(rows[0].detailHref, "/habits/habit-activity");
+});
+test("protocol-linked planner completion retains protocol classification", async () => {
+  const rows = await getRoutineEvents(
+    context([
+      {
+        id: "protocol-occurrence",
+        scheduled_date: "2026-08-21",
+        status: "completed",
+        completed_at: "2026-08-21T18:45:00Z",
+        planned_activity: {
+          id: "protocol-activity",
+          title: "Mobility",
+          activity_type: "mobility",
+          user_protocol_id: "protocol-1",
+          user_protocol: { id: "protocol-1", name: "Recovery" },
+        },
+      },
+    ]),
+  );
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].eventType, "protocol");
+  assert.equal(rows[0].subtitle, "Recovery · completed");
+  assert.equal(rows[0].detailHref, "/protocols/protocol-1");
+});
+test("same-name workout and habit remain independent semantic events", async () => {
+  const result = await getTimeline(client([]), localDayRange("2026-08-21"), {
+    workout: async () => [
+      {
+        ...event("workout"),
+        id: "workout_session:one",
+        sourceType: "workout_session",
+        title: "CB1 - L1",
+      },
+    ],
+    habit: async () => [
+      {
+        ...event("habit"),
+        id: "planned_occurrence:one",
+        sourceType: "planned_activity_occurrence",
+        title: "CB1 - L1",
+      },
+    ],
+  });
+  assert.deepEqual(
+    result.events.map((row) => row.id),
+    ["workout_session:one", "planned_occurrence:one"],
+  );
+});

@@ -24,7 +24,8 @@ export type DailyCheckin = {
     | "Excellent"
     | "Clean"
     | "Balanced"
-    | "Great" | null;
+    | "Great"
+    | null;
   stress_level: "Low" | "Medium" | "High" | null;
   alcohol: boolean | null;
   notes?: string | null;
@@ -52,16 +53,9 @@ export type Profile = {
   updated_at?: string | null;
 };
 
-export type InsightType =
-  | "sleep_energy"
-  | "stress_mood"
-  | "exercise_energy"
-  | "alcohol_sleep";
+export type InsightType = "sleep_energy" | "stress_mood" | "exercise_energy" | "alcohol_sleep";
 
-export type InsightConfidenceLevel =
-  | "Early Signal"
-  | "Moderate Confidence"
-  | "Strong Signal";
+export type InsightConfidenceLevel = "Early Signal" | "Moderate Confidence" | "Strong Signal";
 
 export type UserInsight = {
   id?: string;

@@ -1,1 +1,15 @@
-import{PatternDetail}from"@/components/episodes/PatternDetail";import{TestPatternButton}from"@/components/episodes/TestPatternButton";export default async function Page({params}:{params:Promise<{id:string;patternKey:string}>}){const{id,patternKey}=await params;return <><PatternDetail conditionId={id} patternKey={patternKey}/><TestPatternButton conditionId={id} patternKey={patternKey}/></>}
+import { PatternDetail } from "@/components/episodes/PatternDetail";
+import { TestPatternButton } from "@/components/episodes/TestPatternButton";
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string; patternKey: string }>;
+}) {
+  const { id, patternKey } = await params;
+  return (
+    <>
+      <PatternDetail conditionId={id} patternKey={patternKey} />
+      <TestPatternButton conditionId={id} patternKey={patternKey} />
+    </>
+  );
+}

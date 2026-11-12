@@ -1,1 +1,4 @@
-import{WorkoutSummary}from"@/components/workouts/WorkoutSummary";export default function Page(){return <WorkoutSummary/>}
+import { WorkoutSummary } from "@/components/workouts/WorkoutSummary";
+export default function Page() {
+  return <WorkoutSummary />;
+}

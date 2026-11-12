@@ -1,3 +1,22 @@
 import Link from "next/link";
 import { activeNavigationId, desktopNavigationItems } from "@/lib/navigation/routes";
-export function DesktopNavigation({ pathname }: { pathname: string }) { const activeId = activeNavigationId(pathname); return <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Primary">{desktopNavigationItems.map((item) => { const active = activeId === item.id; return <Link key={item.id} href={item.href} aria-current={active ? "page" : undefined} className={`rounded-lg px-2.5 py-2 text-xs font-medium outline-none transition focus-visible:ring-2 focus-visible:ring-blue-600 xl:px-3 xl:text-sm ${active ? "bg-blue-50 font-semibold text-blue-700" : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"}`}>{item.label}</Link>; })}</nav>; }
+export function DesktopNavigation({ pathname }: { pathname: string }) {
+  const activeId = activeNavigationId(pathname);
+  return (
+    <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Primary">
+      {desktopNavigationItems.map((item) => {
+        const active = activeId === item.id;
+        return (
+          <Link
+            key={item.id}
+            href={item.href}
+            aria-current={active ? "page" : undefined}
+            className={`rounded-lg px-2.5 py-2 text-xs font-medium outline-none transition focus-visible:ring-2 focus-visible:ring-blue-600 xl:px-3 xl:text-sm ${active ? "bg-blue-50 font-semibold text-blue-700" : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"}`}
+          >
+            {item.label}
+          </Link>
+        );
+      })}
+    </nav>
+  );
+}

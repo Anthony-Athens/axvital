@@ -21,21 +21,58 @@ const rows = {
 export const supabase = {auth:{getUser:async()=>({data:{user:{id:"synthetic"}},error:null})},from(table){let filters=[];const q={select(){return q},order(){return q},limit(){return q},eq(k,v){if(k!=="user_id")filters.push(r=>r[k]===v);return q},neq(k,v){if(!k.includes("."))filters.push(r=>r[k]!==v);return q},gte(){return q},lte(){return q},lt(){return q},is(k,v){filters.push(r=>(r[k]??null)===v);return q},in(k,vs){filters.push(r=>vs.includes(r[k]));return q},maybeSingle(){return Promise.resolve({data:null,error:null})},then(resolve){if(scenario==="loading")return new Promise(()=>{});return Promise.resolve({data:scenario==="empty"?[]:(rows[table]??[]).filter(r=>filters.every(f=>f(r))),error:scenario==="error"||(scenario==="partial"&&table==="nutrition_entries")?{message:"Synthetic unavailable source"}:null}).then(resolve)}};return q}};
 `;
 const result = await build({
-  stdin: { contents: 'import React from "react"; import {createRoot} from "react-dom/client"; import Dashboard from "./app/dashboard/page"; createRoot(document.getElementById("root")).render(<Dashboard/>);', resolveDir: process.cwd(), loader: "tsx" },
-  bundle: true, write: false, format: "iife", platform: "browser",
+  stdin: {
+    contents:
+      'import React from "react"; import {createRoot} from "react-dom/client"; import Dashboard from "./app/dashboard/page"; createRoot(document.getElementById("root")).render(<Dashboard/>);',
+    resolveDir: process.cwd(),
+    loader: "tsx",
+  },
+  bundle: true,
+  write: false,
+  format: "iife",
+  platform: "browser",
   define: { "process.env.NODE_ENV": '"development"', "process.env": "{}" },
-  plugins: [{ name: "synthetic-dashboard", setup(b) {
-    b.onResolve({ filter: /^@\/lib\/supabase\/client$/ }, () => ({ path: "client", namespace: "fixture" }));
-    b.onResolve({ filter: /^next\/link$/ }, () => ({ path: "link", namespace: "fixture" }));
-    b.onLoad({ filter: /.*/, namespace: "fixture" }, args => ({ contents: args.path === "client" ? mock : 'import React from "react"; export default function Link(props){return React.createElement("a",props)}', resolveDir: process.cwd() }));
-  } }],
+  plugins: [
+    {
+      name: "synthetic-dashboard",
+      setup(b) {
+        b.onResolve({ filter: /^@\/lib\/supabase\/client$/ }, () => ({
+          path: "client",
+          namespace: "fixture",
+        }));
+        b.onResolve({ filter: /^next\/link$/ }, () => ({ path: "link", namespace: "fixture" }));
+        b.onLoad({ filter: /.*/, namespace: "fixture" }, (args) => ({
+          contents:
+            args.path === "client"
+              ? mock
+              : 'import React from "react"; export default function Link(props){return React.createElement("a",props)}',
+          resolveDir: process.cwd(),
+        }));
+      },
+    },
+  ],
 });
-const css = readdirSync(resolve(".next/static/chunks")).filter(name => name.endsWith(".css")).map(name => readFileSync(resolve(".next/static/chunks", name), "utf8")).join("\n");
+const css = readdirSync(resolve(".next/static/chunks"))
+  .filter((name) => name.endsWith(".css"))
+  .map((name) => readFileSync(resolve(".next/static/chunks", name), "utf8"))
+  .join("\n");
 const server = createServer((request, response) => {
   response.setHeader("Cache-Control", "no-store");
-  if (request.url === "/bundle.js") { response.setHeader("Content-Type", "text/javascript"); response.end(result.outputFiles[0].text); return; }
-  if (request.url === "/style.css") { response.setHeader("Content-Type", "text/css"); response.end(css); return; }
+  if (request.url === "/bundle.js") {
+    response.setHeader("Content-Type", "text/javascript");
+    response.end(result.outputFiles[0].text);
+    return;
+  }
+  if (request.url === "/style.css") {
+    response.setHeader("Content-Type", "text/css");
+    response.end(css);
+    return;
+  }
   response.setHeader("Content-Type", "text/html");
-  response.end('<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Dashboard synthetic QA</title><link rel="stylesheet" href="/style.css"></head><body><p style="padding:8px;text-align:center;font-size:12px">Local synthetic data · not a user account</p><main id="root"></main><script src="/bundle.js"></script></body></html>');
+  response.end(
+    '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Dashboard synthetic QA</title><link rel="stylesheet" href="/style.css"></head><body><p style="padding:8px;text-align:center;font-size:12px">Local synthetic data · not a user account</p><main id="root"></main><script src="/bundle.js"></script></body></html>',
+  );
 });
-server.listen(3101, "127.0.0.1", () => console.log("Dashboard synthetic preview: http://127.0.0.1:3101"));
+server.listen(3101, "127.0.0.1", () =>
+  console.log("Dashboard synthetic preview: http://127.0.0.1:3101"),
+);

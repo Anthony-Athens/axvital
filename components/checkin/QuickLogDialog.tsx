@@ -62,10 +62,16 @@ export function QuickLogDialog({
         </div>
 
         <form onSubmit={onSubmit} className="flex min-h-0 flex-1 flex-col">
-          <div data-sheet-body className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-5 md:px-6">
+          <div
+            data-sheet-body
+            className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-5 md:px-6"
+          >
             {children}
             {message ? (
-              <p role="alert" className="mt-4 rounded-lg bg-amber-50 p-3 text-sm font-semibold text-amber-900">
+              <p
+                role="alert"
+                className="mt-4 rounded-lg bg-amber-50 p-3 text-sm font-semibold text-amber-900"
+              >
                 {message}
               </p>
             ) : null}

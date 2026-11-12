@@ -6,4 +6,6 @@ import { inferFood } from "@/lib/nutrition/food-ai";
 
 export const runtime = "nodejs";
 export const maxDuration = 90;
-export const POST = voiceParseApi(createClient, processVoice, (client, candidates, signal) => enrichFoodCandidates(client, candidates, signal, inferFood));
+export const POST = voiceParseApi(createClient, processVoice, (client, candidates, signal) =>
+  enrichFoodCandidates(client, candidates, signal, inferFood),
+);

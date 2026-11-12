@@ -35,11 +35,7 @@ function isNoRowsError(error: SupabaseErrorDetails) {
   const message = error.message?.toLowerCase() ?? "";
   const details = error.details?.toLowerCase() ?? "";
 
-  return (
-    error.code === "PGRST116" ||
-    message.includes("no rows") ||
-    details.includes("0 rows")
-  );
+  return error.code === "PGRST116" || message.includes("no rows") || details.includes("0 rows");
 }
 
 function localDateString(date: Date) {
@@ -188,7 +184,9 @@ function buildWatchFor({
   const bullets: string[] = [];
 
   if (averageEnergy !== null && averageEnergy < 6) {
-    bullets.push("Energy was lower this week, so sleep, stress, and activity patterns may be worth watching.");
+    bullets.push(
+      "Energy was lower this week, so sleep, stress, and activity patterns may be worth watching.",
+    );
   }
 
   if (averageMood !== null && averageMood < 6) {
@@ -200,14 +198,18 @@ function buildWatchFor({
   }
 
   if (symptomCount > 0) {
-    bullets.push(`${symptomCount} symptom event${symptomCount === 1 ? "" : "s"} were logged this week.`);
+    bullets.push(
+      `${symptomCount} symptom event${symptomCount === 1 ? "" : "s"} were logged this week.`,
+    );
   }
 
   if (weightDelta !== null && Math.abs(weightDelta) >= 2) {
     bullets.push(`Weight changed by ${weightDelta > 0 ? "+" : ""}${weightDelta} this week.`);
   }
 
-  return bullets.length ? bullets.slice(0, 3) : ["Keep logging consistently so weekly patterns become clearer."];
+  return bullets.length
+    ? bullets.slice(0, 3)
+    : ["Keep logging consistently so weekly patterns become clearer."];
 }
 
 export function buildWeeklyRecap({
@@ -278,10 +280,7 @@ export function buildWeeklyRecap({
   };
 }
 
-export async function generateWeeklyRecap(
-  supabase: SupabaseClient,
-  userId: string,
-) {
+export async function generateWeeklyRecap(supabase: SupabaseClient, userId: string) {
   const today = localDateString(new Date());
   const weekStart = daysAgoFrom(today, 6);
   const weekEnd = today;
@@ -323,7 +322,6 @@ export async function generateWeeklyRecap(
     return null;
   }
 
-
   const { data, error } = await supabase
     .from("weekly_recaps")
     .upsert(recap, { onConflict: "user_id,week_start" })
@@ -340,10 +338,7 @@ export async function generateWeeklyRecap(
   return data as WeeklyRecap;
 }
 
-export async function loadLatestWeeklyRecap(
-  supabase: SupabaseClient,
-  userId: string,
-) {
+export async function loadLatestWeeklyRecap(supabase: SupabaseClient, userId: string) {
   const { data, error } = await supabase
     .from("weekly_recaps")
     .select(

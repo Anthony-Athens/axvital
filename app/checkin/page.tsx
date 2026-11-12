@@ -4,7 +4,16 @@ import { reportActivation } from "@/lib/telemetry/activation";
 import { ingestHealthEvent } from "@/lib/health-events/ingestion";
 import { VoiceLogDialog } from "@/components/checkin/VoiceLogDialog";
 
-import { FormEvent, Suspense, useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import {
+  FormEvent,
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import type { User } from "@supabase/supabase-js";
 import { friendlyErrorMessage, logDevError } from "@/lib/app-errors";
 import { supabase } from "@/lib/supabase/client";
@@ -18,7 +27,12 @@ import { QuickLogTagPicker } from "@/components/checkin/QuickLogTagPicker";
 import { GettingStarted } from "@/components/checkin/GettingStarted";
 import { Timeline } from "@/components/timeline/Timeline";
 import { useSearchParams, useRouter } from "next/navigation";
-import { draftFromRecord, loadCheckin, saveCheckin, type CheckinRecord } from "@/lib/checkins/persistence";
+import {
+  draftFromRecord,
+  loadCheckin,
+  saveCheckin,
+  type CheckinRecord,
+} from "@/lib/checkins/persistence";
 import { localDateString, selectedCalendarDate } from "@/lib/timeline/dates";
 
 type AnswerMap = Record<string, string>;
@@ -184,7 +198,13 @@ const quickAddFields: Record<QuickAddType, QuickAddField[]> = {
     },
     { label: "Amount", name: "amount", placeholder: "16 oz" },
     { label: "Time", name: "time", placeholder: "10:30", kind: "time", detail: true },
-    { label: "Notes", name: "notes", placeholder: "Optional context", kind: "textarea", detail: true },
+    {
+      label: "Notes",
+      name: "notes",
+      placeholder: "Optional context",
+      kind: "textarea",
+      detail: true,
+    },
   ],
   Supplement: [
     {
@@ -208,7 +228,13 @@ const quickAddFields: Record<QuickAddType, QuickAddField[]> = {
       options: doseUnitOptions,
     },
     { label: "Time", name: "time", placeholder: "08:00", kind: "time", detail: true },
-    { label: "Notes", name: "notes", placeholder: "Optional context", kind: "textarea", detail: true },
+    {
+      label: "Notes",
+      name: "notes",
+      placeholder: "Optional context",
+      kind: "textarea",
+      detail: true,
+    },
   ],
   Exercise: [
     {
@@ -242,7 +268,13 @@ const quickAddFields: Record<QuickAddType, QuickAddField[]> = {
       detail: true,
     },
     { label: "Time", name: "time", placeholder: "17:00", kind: "time", detail: true },
-    { label: "Notes", name: "notes", placeholder: "Optional context", kind: "textarea", detail: true },
+    {
+      label: "Notes",
+      name: "notes",
+      placeholder: "Optional context",
+      kind: "textarea",
+      detail: true,
+    },
   ],
   Symptom: [
     { label: "Symptom", name: "symptom", placeholder: "Headache" },
@@ -271,7 +303,13 @@ const quickAddFields: Record<QuickAddType, QuickAddField[]> = {
       options: doseUnitOptions,
     },
     { label: "Time", name: "time", placeholder: "09:00", kind: "time", detail: true },
-    { label: "Notes", name: "notes", placeholder: "Optional context", kind: "textarea", detail: true },
+    {
+      label: "Notes",
+      name: "notes",
+      placeholder: "Optional context",
+      kind: "textarea",
+      detail: true,
+    },
   ],
   Note: [
     { label: "Note text", name: "note_text", placeholder: "What happened?", kind: "textarea" },
@@ -281,9 +319,7 @@ const quickAddFields: Record<QuickAddType, QuickAddField[]> = {
 
 function currentTimeValue() {
   const now = new Date();
-  return `${String(now.getHours()).padStart(2, "0")}:${String(
-    now.getMinutes(),
-  ).padStart(2, "0")}`;
+  return `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
 }
 
 function todayDateString() {
@@ -319,16 +355,33 @@ function QuickLogFieldControl({ field }: { field: QuickAddField }) {
     <label className="block">
       <span className="text-sm font-semibold text-slate-700">{field.label}</span>
       {field.kind === "select" ? (
-        <select name={field.name} defaultValue="" className="mt-2 min-h-12 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 text-base font-medium outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100">
-          <option value="" disabled>{field.placeholder}</option>
-          {field.options?.map((option) => <option key={option} value={option}>{option}</option>)}
+        <select
+          name={field.name}
+          defaultValue=""
+          className="mt-2 min-h-12 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 text-base font-medium outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+        >
+          <option value="" disabled>
+            {field.placeholder}
+          </option>
+          {field.options?.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
         </select>
       ) : field.kind === "textarea" ? (
-        <textarea name={field.name} placeholder={field.placeholder} rows={3} className="mt-2 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-3 text-base font-medium outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100" />
+        <textarea
+          name={field.name}
+          placeholder={field.placeholder}
+          rows={3}
+          className="mt-2 w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-3 text-base font-medium outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+        />
       ) : (
         <input
           name={field.name}
-          type={field.kind === "number" || field.kind === "integer" ? "number" : field.kind ?? "text"}
+          type={
+            field.kind === "number" || field.kind === "integer" ? "number" : (field.kind ?? "text")
+          }
           inputMode={field.kind === "number" || field.kind === "integer" ? "decimal" : undefined}
           step={field.kind === "integer" ? "1" : field.kind === "number" ? "any" : undefined}
           placeholder={field.placeholder}
@@ -385,19 +438,15 @@ function buildHealthEventPayload(
     event_time: eventTimeValue(formValue(formData, "time")),
     event_type: eventType,
     title,
-    description:
-      type === "Food" || type === "Fluid" ? formValue(formData, "description") : null,
+    description: type === "Food" || type === "Fluid" ? formValue(formData, "description") : null,
     amount: type === "Fluid" ? formValue(formData, "amount") : null,
     dose:
       (type === "Supplement" || type === "Medication") && doseAmount && doseUnit
         ? `${doseAmount} ${doseUnit}`
         : null,
-    duration:
-      type === "Exercise" && durationMinutes ? `${durationMinutes} min` : null,
+    duration: type === "Exercise" && durationMinutes ? `${durationMinutes} min` : null,
     intensity:
-      type === "Exercise"
-        ? formValue(formData, "intensity")?.toLowerCase() ?? null
-        : null,
+      type === "Exercise" ? (formValue(formData, "intensity")?.toLowerCase() ?? null) : null,
     severity: type === "Symptom" ? integerValue(formData, "severity") : null,
     notes: formValue(formData, "notes") ?? formValue(formData, "note_text"),
     tags,
@@ -405,17 +454,13 @@ function buildHealthEventPayload(
     protein_g: type === "Food" ? integerValue(formData, "protein_g") : null,
     carbs_g: type === "Food" ? integerValue(formData, "carbs_g") : null,
     fat_g: type === "Food" ? integerValue(formData, "fat_g") : null,
-    supplement_name:
-      type === "Supplement" ? formValue(formData, "supplement_name") : null,
-    dose_amount:
-      type === "Supplement" || type === "Medication" ? doseAmount : null,
+    supplement_name: type === "Supplement" ? formValue(formData, "supplement_name") : null,
+    dose_amount: type === "Supplement" || type === "Medication" ? doseAmount : null,
     dose_unit: type === "Supplement" || type === "Medication" ? doseUnit : null,
-    exercise_type:
-      type === "Exercise" ? formValue(formData, "exercise_type") : null,
+    exercise_type: type === "Exercise" ? formValue(formData, "exercise_type") : null,
     duration_minutes: type === "Exercise" ? durationMinutes : null,
     distance: type === "Exercise" ? numberValue(formData, "distance") : null,
-    distance_unit:
-      type === "Exercise" ? formValue(formData, "distance_unit") : null,
+    distance_unit: type === "Exercise" ? formValue(formData, "distance_unit") : null,
   };
 }
 
@@ -423,13 +468,37 @@ const subscribeDate = () => () => {};
 function DateRoute() {
   const params = useSearchParams();
   const today = useSyncExternalStore(subscribeDate, localDateString, () => "");
-  if (!today) return <p role="status" className="p-6">Loading check-in…</p>;
-  const date = params.getAll("date").length > 1 ? null : selectedCalendarDate(params.get("date"), today);
-  if (!date) return <div role="alert" className="p-6">Choose a valid date that is not in the future. <a href="/today" className="underline">Return to Today</a></div>;
+  if (!today)
+    return (
+      <p role="status" className="p-6">
+        Loading check-in…
+      </p>
+    );
+  const date =
+    params.getAll("date").length > 1 ? null : selectedCalendarDate(params.get("date"), today);
+  if (!date)
+    return (
+      <div role="alert" className="p-6">
+        Choose a valid date that is not in the future.{" "}
+        <a href="/today" className="underline">
+          Return to Today
+        </a>
+      </div>
+    );
   return <CheckInForm key={date} date={date} historical={date !== today} />;
 }
 export default function CheckInPage() {
-  return <Suspense fallback={<p role="status" className="p-6">Loading check-in…</p>}><DateRoute /></Suspense>;
+  return (
+    <Suspense
+      fallback={
+        <p role="status" className="p-6">
+          Loading check-in…
+        </p>
+      }
+    >
+      <DateRoute />
+    </Suspense>
+  );
 }
 function CheckInForm({ date, historical }: { date: string; historical: boolean }) {
   const router = useRouter();
@@ -442,38 +511,60 @@ function CheckInForm({ date, historical }: { date: string; historical: boolean }
   const [saved, setSaved] = useState(false);
   const [checkinMessage, setCheckinMessage] = useState("");
   const [savingCheckin, setSavingCheckin] = useState(false);
-  const [activeQuickAdd, setActiveQuickAdd] = useState<QuickAddType | null>(
-    null,
-  );
+  const [activeQuickAdd, setActiveQuickAdd] = useState<QuickAddType | null>(null);
   const [eventMessage, setEventMessage] = useState("");
   const [savingEvent, setSavingEvent] = useState(false);
   const [voiceOpen, setVoiceOpen] = useState(false);
   const quickAddTriggerRef = useRef<HTMLButtonElement | null>(null);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [showEventDetails, setShowEventDetails] = useState(false);
-  const [checkinExpanded, setCheckinExpanded] = usePersistentDisclosure("axvital.today.dailyCheckIn.expanded", false);
-  const [eventsExpanded, setEventsExpanded] = usePersistentDisclosure("axvital.today.optionalEvents.expanded", false);
+  const [checkinExpanded, setCheckinExpanded] = usePersistentDisclosure(
+    "axvital.today.dailyCheckIn.expanded",
+    false,
+  );
+  const [eventsExpanded, setEventsExpanded] = usePersistentDisclosure(
+    "axvital.today.optionalEvents.expanded",
+    false,
+  );
 
   useEffect(() => {
     let active = true;
-    loadCheckin(supabase, date).then(({ row, userId }) => {
-      if (!active) return;
-      const draft = draftFromRecord(row);
-      setBaseline(row); setOwnerId(userId); setAnswers(draft.answers); setWeight(draft.weight);
-      setSaved(Boolean(row)); setCheckinMessage(row ? `Check-in saved for ${date}.` : "");
-    }).catch(() => {
-      if (!active) return;
-      setLoadFailed(true); setCheckinMessage("Your check-in could not be loaded. Reload before editing."); setCheckinExpanded(true);
-    }).finally(() => { if (active) setLoadingCheckin(false); });
-    return () => { active = false; };
+    loadCheckin(supabase, date)
+      .then(({ row, userId }) => {
+        if (!active) return;
+        const draft = draftFromRecord(row);
+        setBaseline(row);
+        setOwnerId(userId);
+        setAnswers(draft.answers);
+        setWeight(draft.weight);
+        setSaved(Boolean(row));
+        setCheckinMessage(row ? `Check-in saved for ${date}.` : "");
+      })
+      .catch(() => {
+        if (!active) return;
+        setLoadFailed(true);
+        setCheckinMessage("Your check-in could not be loaded. Reload before editing.");
+        setCheckinExpanded(true);
+      })
+      .finally(() => {
+        if (active) setLoadingCheckin(false);
+      });
+    return () => {
+      active = false;
+    };
   }, [date, setCheckinExpanded]);
 
   useEffect(() => {
     if (!ownerId) return;
     const { data } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user.id === ownerId) return;
-      setAnswers({}); setWeight(""); setBaseline(null); setSaved(false); setLoadFailed(true);
-      setCheckinMessage("Your sign-in changed. Reload before editing."); setCheckinExpanded(true);
+      setAnswers({});
+      setWeight("");
+      setBaseline(null);
+      setSaved(false);
+      setLoadFailed(true);
+      setCheckinMessage("Your sign-in changed. Reload before editing.");
+      setCheckinExpanded(true);
     });
     return () => data.subscription.unsubscribe();
   }, [ownerId, setCheckinExpanded]);
@@ -495,28 +586,45 @@ function CheckInForm({ date, historical }: { date: string; historical: boolean }
     return user;
   }
 
-  function refreshTimeline() { window.dispatchEvent(new Event("axvital:timeline-refresh")); }
+  function refreshTimeline() {
+    window.dispatchEvent(new Event("axvital:timeline-refresh"));
+  }
 
   async function saveDailyCheckin() {
     if (loadingCheckin || loadFailed || savingCheckin) return;
-    setSavingCheckin(true); setCheckinMessage("");
+    setSavingCheckin(true);
+    setCheckinMessage("");
     try {
       const row = await saveCheckin(supabase, date, ownerId, baseline, { answers, weight });
       const draft = draftFromRecord(row);
-      setBaseline(row); setAnswers(draft.answers); setWeight(draft.weight); setSaved(true);
-      setCheckinMessage(`Check-in saved for ${date}.`); refreshTimeline();
+      setBaseline(row);
+      setAnswers(draft.answers);
+      setWeight(draft.weight);
+      setSaved(true);
+      setCheckinMessage(`Check-in saved for ${date}.`);
+      refreshTimeline();
     } catch (error) {
       setSaved(false);
-      setCheckinMessage(error instanceof Error && error.message === "INVALID_WEIGHT"
-        ? "Enter a valid weight greater than zero and no more than 2000."
-        : "Check-in was not saved. Your answers are still here. Check your connection and sign-in; if this record changed elsewhere, reload before retrying.");
+      setCheckinMessage(
+        error instanceof Error && error.message === "INVALID_WEIGHT"
+          ? "Enter a valid weight greater than zero and no more than 2000."
+          : "Check-in was not saved. Your answers are still here. Check your connection and sign-in; if this record changed elsewhere, reload before retrying.",
+      );
       setCheckinExpanded(true);
-    } finally { setSavingCheckin(false); }
+    } finally {
+      setSavingCheckin(false);
+    }
   }
 
   function openQuickAdd(type: QuickAddType, trigger: HTMLButtonElement) {
-    if (type === "Food") { router.push("/health/nutrition"); return; }
-    if (type === "Symptom") { router.push("/health/symptoms"); return; }
+    if (type === "Food") {
+      router.push("/health/nutrition");
+      return;
+    }
+    if (type === "Symptom") {
+      router.push("/health/symptoms");
+      return;
+    }
     quickAddTriggerRef.current = trigger;
     setEventMessage("");
     setSelectedTags([]);
@@ -553,12 +661,7 @@ function CheckInForm({ date, historical }: { date: string; historical: boolean }
     try {
       const user = await getAuthenticatedUser();
       if (user) {
-        const payload = buildHealthEventPayload(
-          activeQuickAdd,
-          formData,
-          user.id,
-          selectedTags,
-        );
+        const payload = buildHealthEventPayload(activeQuickAdd, formData, user.id, selectedTags);
         await ingestHealthEvent(supabase, payload);
 
         reportActivation("first_health_event");
@@ -583,141 +686,294 @@ function CheckInForm({ date, historical }: { date: string; historical: boolean }
   return (
     <div className="mx-auto max-w-6xl px-4 py-5 md:px-6 md:py-10">
       <header className="border-b border-slate-200 pb-5">
-        <Link className="mb-3 inline-block text-sm text-blue-700 underline" href="/experiments">Record an experiment observation</Link>
-        <h1 className="text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl">{historical ? "Historical Check-In" : "Today"}</h1>
-        <p className="mt-1 text-sm font-medium text-slate-500">{new Intl.DateTimeFormat(undefined, { weekday: "long", month: "long", day: "numeric" }).format(new Date(`${date}T12:00:00`))}</p>
-        <div className="mt-4 flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3"><div className="min-w-0 flex-1"><div className="flex justify-between gap-3 text-sm"><span className="font-medium text-slate-700">Daily Check-In</span><span className="tabular-nums text-slate-500">{questions.filter((question) => answers[question.id]).length} of {questions.length} complete</span></div><div className="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-100" role="progressbar" aria-label="Daily check-in progress" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100}><div className="h-full rounded-full bg-blue-600 transition-all motion-reduce:transition-none" style={{ width: `${progress}%` }}/></div></div></div>
+        <Link className="mb-3 inline-block text-sm text-blue-700 underline" href="/experiments">
+          Record an experiment observation
+        </Link>
+        <h1 className="text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl">
+          {historical ? "Historical Check-In" : "Today"}
+        </h1>
+        <p className="mt-1 text-sm font-medium text-slate-500">
+          {new Intl.DateTimeFormat(undefined, {
+            weekday: "long",
+            month: "long",
+            day: "numeric",
+          }).format(new Date(`${date}T12:00:00`))}
+        </p>
+        <div className="mt-4 flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3">
+          <div className="min-w-0 flex-1">
+            <div className="flex justify-between gap-3 text-sm">
+              <span className="font-medium text-slate-700">Daily Check-In</span>
+              <span className="tabular-nums text-slate-500">
+                {questions.filter((question) => answers[question.id]).length} of {questions.length}{" "}
+                complete
+              </span>
+            </div>
+            <div
+              className="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-100"
+              role="progressbar"
+              aria-label="Daily check-in progress"
+              aria-valuenow={progress}
+              aria-valuemin={0}
+              aria-valuemax={100}
+            >
+              <div
+                className="h-full rounded-full bg-blue-600 transition-all motion-reduce:transition-none"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+          </div>
+        </div>
       </header>
 
       {!historical ? <GettingStarted checkinComplete={saved} /> : null}
 
-      {historical && <a href="/today" className="inline-block py-3 text-blue-700 underline">Return to Today</a>}
+      {historical && (
+        <a href="/today" className="inline-block py-3 text-blue-700 underline">
+          Return to Today
+        </a>
+      )}
 
       <div className="mt-5 space-y-6">
-        <section aria-labelledby="daily-status-heading"><h2 id="daily-status-heading" className="mb-3 text-lg font-semibold text-slate-900">{historical ? "Daily status for this day" : "How are you doing today?"}</h2><CollapsibleSection id="daily-checkin" title="Daily Check-In" description={saved ? `Your answers are saved for ${date}.` : historical ? "Review the check-in for this date." : "Record how you’re feeling and the daily essentials that matter."} status={<span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${saved ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"}`}>{loadingCheckin ? "Loading…" : saved ? progress === 100 ? "Complete" : `${questions.filter((question) => answers[question.id]).length} of ${questions.length}` : progress ? `${questions.filter((question) => answers[question.id]).length} of ${questions.length}` : "Not started"}</span>} expanded={historical || checkinExpanded} onToggle={() => setCheckinExpanded((value) => !value)}>
-
-          <form onSubmit={event => { event.preventDefault(); void saveDailyCheckin(); }}><fieldset disabled={loadingCheckin || loadFailed || savingCheckin} className="space-y-4">
-            {questions.map((question) => (
-              <CheckInFieldGroup
-                key={question.id}
-                id={question.id}
-                label={question.label}
-                helper={question.helper}
+        <section aria-labelledby="daily-status-heading">
+          <h2 id="daily-status-heading" className="mb-3 text-lg font-semibold text-slate-900">
+            {historical ? "Daily status for this day" : "How are you doing today?"}
+          </h2>
+          <CollapsibleSection
+            id="daily-checkin"
+            title="Daily Check-In"
+            description={
+              saved
+                ? `Your answers are saved for ${date}.`
+                : historical
+                  ? "Review the check-in for this date."
+                  : "Record how you’re feeling and the daily essentials that matter."
+            }
+            status={
+              <span
+                className={`rounded-full px-2.5 py-1 text-xs font-semibold ${saved ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"}`}
               >
-                <div className={`mt-4 grid ${question.columns} gap-2`}>
-                  {(answers[question.id] && !question.options.includes(answers[question.id]) ? [...question.options, answers[question.id]] : question.options).map((option) => {
-                    const selected = answers[question.id] === option;
-                    return (
-                      <button
-                        key={option}
-                        type="button"
-                        onClick={() => choose(question.id, option)}
-                        className={`min-h-12 rounded-lg border px-2 text-sm font-semibold transition outline-none focus-visible:ring-2 focus-visible:ring-blue-600 ${
-                          selected
-                            ? "border-blue-600 bg-blue-600 text-white"
-                            : "border-slate-200 bg-white text-slate-700"
-                        }`}
-                        aria-pressed={selected}
-                      >
-                        {option}
-                      </button>
-                    );
-                  })}
-                </div>
-              </CheckInFieldGroup>
-            ))}
-
-            <label className="block rounded-xl border border-slate-200 bg-slate-50 p-4">
-              <span className="block text-lg font-black text-slate-950">
-                Weight (lb for new entries)
+                {loadingCheckin
+                  ? "Loading…"
+                  : saved
+                    ? progress === 100
+                      ? "Complete"
+                      : `${questions.filter((question) => answers[question.id]).length} of ${questions.length}`
+                    : progress
+                      ? `${questions.filter((question) => answers[question.id]).length} of ${questions.length}`
+                      : "Not started"}
               </span>
-              <span className="mt-1 block text-sm font-medium leading-6 text-slate-500">
-                {baseline?.weight!=null&&baseline.weight_provenance_version!==1 ? "This historical value has unknown units and has not been converted. Leave it unchanged, or replace it with a newly measured value in pounds." : "Optional. Enter pounds; new entries retain verified units for experiments."}
-              </span>
-              <input
-                value={weight}
-                onChange={(event) => {
-                  setSaved(false);
-                  setCheckinMessage("");
-                  setWeight(event.target.value);
-                }}
-                inputMode="decimal"
-                placeholder="Optional weight"
-                className="mt-4 min-h-12 w-full rounded-lg border border-slate-300 bg-white px-4 text-base font-medium outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
-              />
-            </label>
-          </fieldset></form>
-
-          <div className="mt-5 border-t border-slate-200 pt-4">
-            {saved ? (
-              <p role="status" className="mb-3 rounded-2xl bg-emerald-50 p-4 text-sm font-black text-emerald-700">
-                {checkinMessage}
-              </p>
-            ) : checkinMessage ? (
-              <p role="alert" className="mb-3 rounded-2xl bg-amber-50 p-4 text-sm font-black text-amber-900">
-                {checkinMessage}
-              </p>
-            ) : null}
-            <button
-              type="button"
-              onClick={saveDailyCheckin}
-              disabled={savingCheckin || loadingCheckin || loadFailed || (!baseline && !progress && !weight.trim())}
-              className="flex min-h-12 w-full items-center justify-center rounded-lg bg-blue-600 px-6 text-base font-semibold text-white transition hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-400"
+            }
+            expanded={historical || checkinExpanded}
+            onToggle={() => setCheckinExpanded((value) => !value)}
+          >
+            <form
+              onSubmit={(event) => {
+                event.preventDefault();
+                void saveDailyCheckin();
+              }}
             >
-              {savingCheckin
-                ? "Saving..."
-                : saved
-                  ? "Daily Check-In Saved"
-                  : "Save Daily Check-In"}
-            </button>
-          </div>
-        </CollapsibleSection></section>
+              <fieldset
+                disabled={loadingCheckin || loadFailed || savingCheckin}
+                className="space-y-4"
+              >
+                {questions.map((question) => (
+                  <CheckInFieldGroup
+                    key={question.id}
+                    id={question.id}
+                    label={question.label}
+                    helper={question.helper}
+                  >
+                    <div className={`mt-4 grid ${question.columns} gap-2`}>
+                      {(answers[question.id] && !question.options.includes(answers[question.id])
+                        ? [...question.options, answers[question.id]]
+                        : question.options
+                      ).map((option) => {
+                        const selected = answers[question.id] === option;
+                        return (
+                          <button
+                            key={option}
+                            type="button"
+                            onClick={() => choose(question.id, option)}
+                            className={`min-h-12 rounded-lg border px-2 text-sm font-semibold transition outline-none focus-visible:ring-2 focus-visible:ring-blue-600 ${
+                              selected
+                                ? "border-blue-600 bg-blue-600 text-white"
+                                : "border-slate-200 bg-white text-slate-700"
+                            }`}
+                            aria-pressed={selected}
+                          >
+                            {option}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </CheckInFieldGroup>
+                ))}
+
+                <label className="block rounded-xl border border-slate-200 bg-slate-50 p-4">
+                  <span className="block text-lg font-black text-slate-950">
+                    Weight (lb for new entries)
+                  </span>
+                  <span className="mt-1 block text-sm font-medium leading-6 text-slate-500">
+                    {baseline?.weight != null && baseline.weight_provenance_version !== 1
+                      ? "This historical value has unknown units and has not been converted. Leave it unchanged, or replace it with a newly measured value in pounds."
+                      : "Optional. Enter pounds; new entries retain verified units for experiments."}
+                  </span>
+                  <input
+                    value={weight}
+                    onChange={(event) => {
+                      setSaved(false);
+                      setCheckinMessage("");
+                      setWeight(event.target.value);
+                    }}
+                    inputMode="decimal"
+                    placeholder="Optional weight"
+                    className="mt-4 min-h-12 w-full rounded-lg border border-slate-300 bg-white px-4 text-base font-medium outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+                  />
+                </label>
+              </fieldset>
+            </form>
+
+            <div className="mt-5 border-t border-slate-200 pt-4">
+              {saved ? (
+                <p
+                  role="status"
+                  className="mb-3 rounded-2xl bg-emerald-50 p-4 text-sm font-black text-emerald-700"
+                >
+                  {checkinMessage}
+                </p>
+              ) : checkinMessage ? (
+                <p
+                  role="alert"
+                  className="mb-3 rounded-2xl bg-amber-50 p-4 text-sm font-black text-amber-900"
+                >
+                  {checkinMessage}
+                </p>
+              ) : null}
+              <button
+                type="button"
+                onClick={saveDailyCheckin}
+                disabled={
+                  savingCheckin ||
+                  loadingCheckin ||
+                  loadFailed ||
+                  (!baseline && !progress && !weight.trim())
+                }
+                className="flex min-h-12 w-full items-center justify-center rounded-lg bg-blue-600 px-6 text-base font-semibold text-white transition hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-400"
+              >
+                {savingCheckin
+                  ? "Saving..."
+                  : saved
+                    ? "Daily Check-In Saved"
+                    : "Save Daily Check-In"}
+              </button>
+            </div>
+          </CollapsibleSection>
+        </section>
 
         {!historical ? <TodayPlan /> : null}
 
         <div className="space-y-5">
-          {!historical && <CollapsibleSection id="optional-events" title="Quick Log" description="Record something that happened today." expanded={eventsExpanded} onToggle={() => setEventsExpanded((value) => !value)}>
-            {eventMessage && !activeQuickAdd ? (
-              <p role="status" className="mb-4 rounded-xl bg-emerald-50 p-3 text-sm font-semibold text-emerald-700">
-                {eventMessage}
-              </p>
-            ) : null}
-            <button type="button" aria-label="Open Voice Log" onClick={() => setVoiceOpen(true)} className="mb-3 flex min-h-12 w-full items-center justify-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-4 font-semibold text-blue-800 focus-visible:ring-2 focus-visible:ring-blue-600">
-              <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8"/></svg>
-              Voice Log
-            </button>
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-              {primaryQuickLogTypes.map((type) => (
-                <button
-                  key={type}
-                  type="button"
-                  onClick={(event) => openQuickAdd(type, event.currentTarget)}
-                  className="min-h-12 rounded-lg border border-slate-200 bg-slate-50 px-4 text-left text-sm font-semibold text-slate-900 transition hover:border-blue-300 hover:bg-blue-50 focus-visible:ring-2 focus-visible:ring-blue-600"
+          {!historical && (
+            <CollapsibleSection
+              id="optional-events"
+              title="Quick Log"
+              description="Record something that happened today."
+              expanded={eventsExpanded}
+              onToggle={() => setEventsExpanded((value) => !value)}
+            >
+              {eventMessage && !activeQuickAdd ? (
+                <p
+                  role="status"
+                  className="mb-4 rounded-xl bg-emerald-50 p-3 text-sm font-semibold text-emerald-700"
                 >
-                  {type}
-                </button>
-              ))}
-            </div>
-            <details className="mt-3 rounded-lg border border-slate-200 bg-slate-50 px-3">
-              <summary className="min-h-11 cursor-pointer py-3 text-sm font-semibold text-slate-700">More logging options</summary>
-              <div className="grid grid-cols-2 gap-2 border-t border-slate-200 py-3 sm:grid-cols-3">
-                {secondaryQuickLogTypes.map((type) => <button key={type} type="button" onClick={(event) => openQuickAdd(type, event.currentTarget)} className="min-h-12 rounded-lg border border-slate-200 bg-white px-4 text-left text-sm font-semibold text-slate-900 transition hover:border-blue-300 hover:bg-blue-50 focus-visible:ring-2 focus-visible:ring-blue-600">{type}</button>)}
+                  {eventMessage}
+                </p>
+              ) : null}
+              <button
+                type="button"
+                aria-label="Open Voice Log"
+                onClick={() => setVoiceOpen(true)}
+                className="mb-3 flex min-h-12 w-full items-center justify-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-4 font-semibold text-blue-800 focus-visible:ring-2 focus-visible:ring-blue-600"
+              >
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  className="h-5 w-5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <rect x="9" y="2" width="6" height="12" rx="3" />
+                  <path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8" />
+                </svg>
+                Voice Log
+              </button>
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                {primaryQuickLogTypes.map((type) => (
+                  <button
+                    key={type}
+                    type="button"
+                    onClick={(event) => openQuickAdd(type, event.currentTarget)}
+                    className="min-h-12 rounded-lg border border-slate-200 bg-slate-50 px-4 text-left text-sm font-semibold text-slate-900 transition hover:border-blue-300 hover:bg-blue-50 focus-visible:ring-2 focus-visible:ring-blue-600"
+                  >
+                    {type}
+                  </button>
+                ))}
               </div>
-            </details>
-          </CollapsibleSection>}
+              <details className="mt-3 rounded-lg border border-slate-200 bg-slate-50 px-3">
+                <summary className="min-h-11 cursor-pointer py-3 text-sm font-semibold text-slate-700">
+                  More logging options
+                </summary>
+                <div className="grid grid-cols-2 gap-2 border-t border-slate-200 py-3 sm:grid-cols-3">
+                  {secondaryQuickLogTypes.map((type) => (
+                    <button
+                      key={type}
+                      type="button"
+                      onClick={(event) => openQuickAdd(type, event.currentTarget)}
+                      className="min-h-12 rounded-lg border border-slate-200 bg-white px-4 text-left text-sm font-semibold text-slate-900 transition hover:border-blue-300 hover:bg-blue-50 focus-visible:ring-2 focus-visible:ring-blue-600"
+                    >
+                      {type}
+                    </button>
+                  ))}
+                </div>
+              </details>
+            </CollapsibleSection>
+          )}
 
           {!historical ? <ActiveEpisodes /> : null}
-          <Timeline key={date} startDate={date} history={historical} title={historical ? "Activity for this day" : "Today’s Activity"} />
+          <Timeline
+            key={date}
+            startDate={date}
+            history={historical}
+            title={historical ? "Activity for this day" : "Today’s Activity"}
+          />
         </div>
       </div>
 
-      {voiceOpen && <VoiceLogDialog onClose={() => setVoiceOpen(false)} onSaved={() => { setVoiceOpen(false); refreshTimeline(); setEventMessage("Events saved. Timeline refreshed."); }} />}
+      {voiceOpen && (
+        <VoiceLogDialog
+          onClose={() => setVoiceOpen(false)}
+          onSaved={() => {
+            setVoiceOpen(false);
+            refreshTimeline();
+            setEventMessage("Events saved. Timeline refreshed.");
+          }}
+        />
+      )}
       {activeQuickAdd ? (
-        <QuickLogDialog title={activeQuickAdd} saving={savingEvent} message={eventMessage} onClose={closeQuickAdd} onSubmit={saveHealthEvent}>
+        <QuickLogDialog
+          title={activeQuickAdd}
+          saving={savingEvent}
+          message={eventMessage}
+          onClose={closeQuickAdd}
+          onSubmit={saveHealthEvent}
+        >
           <div className="space-y-4">
-            {quickAddFields[activeQuickAdd].filter((field) => !field.detail).map((field) => (
-              <QuickLogFieldControl key={field.name} field={field} />
-            ))}
+            {quickAddFields[activeQuickAdd]
+              .filter((field) => !field.detail)
+              .map((field) => (
+                <QuickLogFieldControl key={field.name} field={field} />
+              ))}
           </div>
 
           {quickAddFields[activeQuickAdd].some((field) => field.detail) ? (
@@ -732,14 +988,20 @@ function CheckInForm({ date, historical }: { date: string; historical: boolean }
                 {showEventDetails ? "− Hide details" : "+ Add details"}
               </button>
               <div id="quick-log-details" hidden={!showEventDetails} className="mt-3 space-y-4">
-                {quickAddFields[activeQuickAdd].filter((field) => field.detail).map((field) => (
-                  <QuickLogFieldControl key={field.name} field={field} />
-                ))}
+                {quickAddFields[activeQuickAdd]
+                  .filter((field) => field.detail)
+                  .map((field) => (
+                    <QuickLogFieldControl key={field.name} field={field} />
+                  ))}
               </div>
             </section>
           ) : null}
 
-          <QuickLogTagPicker options={tagOptions} selected={selectedTags} onChange={setSelectedTags} />
+          <QuickLogTagPicker
+            options={tagOptions}
+            selected={selectedTags}
+            onChange={setSelectedTags}
+          />
         </QuickLogDialog>
       ) : null}
     </div>

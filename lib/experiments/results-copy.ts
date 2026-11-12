@@ -1,36 +1,282 @@
-export const eligibilityLabels:Record<string,string>={ready:"Ready",insufficient_data:"Insufficient data",unable_to_determine:"Unable to determine",unsupported_design:"Unsupported design",blocked_by_integrity:"Blocked by integrity"};
-export const eligibilityDescriptions:Record<string,string>={ready:"A supported descriptive analysis is available.",insufficient_data:"Available observations or exposure evidence do not meet the analysis policy.",unable_to_determine:"Required evidence could not be established.",unsupported_design:"Reliable analysis for this design or outcome is not supported yet.",blocked_by_integrity:"Historical configuration, lifecycle or evidence conflicts prevent reliable analysis."};
-const copy:Record<string,string>={
- WEIGHT_PROVENANCE_EXCLUSIONS:"Some weight records have unverified units or invalid values. They were not used, and this comparison cannot establish a reliable weight result.",
- UNSUPPORTED_OUTCOME_CADENCE_OR_AGGREGATION:"Analysis does not support this outcome's measurement schedule or summary method yet.",
- TERMINAL_STUDY_REQUIRED:"This study must have an authoritative completion or early end before generating results.",START_SNAPSHOT_REQUIRED:"A matching versioned Start snapshot is required.",HISTORICAL_BASELINE_REQUIRED:"This analysis requires a frozen historical baseline.",UNSUPPORTED_INTERVENTION_SOURCE:"Historical exposure for this intervention is not supported. Protocol, pattern and workout tracking alone does not verify execution.",UNSUPPORTED_OUTCOME_TYPE:"This outcome lacks a supported measurement contract; weight units and provenance also remain unresolved.",PRE_POST_ASSESSMENT_PROTOCOL_UNAVAILABLE:"Formal baseline and post-study assessment points are not available; ordinary training sets are not formal tests.",EVENT_SURVEILLANCE_DENOMINATOR_UNAVAILABLE:"Event surveillance is unavailable. Missing event logs cannot be treated as confirmed zero events.",CAPTURE_LIMIT:"The retained-analysis revision limit has been reached.",
- INSUFFICIENT_BASELINE_OBSERVATIONS:"Too few usable baseline observations.",INSUFFICIENT_INTERVENTION_OBSERVATIONS:"Too few usable intervention observations.",INSUFFICIENT_EXPOSURE_EVIDENCE:"Intervention exposure is incomplete or unknown.",INCOMPLETE_OBSERVATION_READ:"The observation read was incomplete; partial records were not used as complete evidence.",OBSERVATION_READ_UNAVAILABLE:"Required observations were unavailable.",EXPOSURE_EVIDENCE_UNAVAILABLE:"Exposure evidence was unavailable.",UNKNOWN_EXPOSURE_DENOMINATOR:"The number of eligible intervention opportunities could not be established.",UNRESOLVED_PAUSE_HISTORY:"Pause history could not be reconciled.",OPEN_PAUSE:"An open pause prevents analysis.",UNVERIFIED_LIFECYCLE_HISTORY:"Historical lifecycle provenance could not be verified.",AUTHORITATIVE_END_REQUIRED:"An authoritative actual study end is required.",UNSUPPORTED_TERMINAL_STATE:"This lifecycle state does not support a new analysis.",
- DESCRIPTIVE_NONRANDOMIZED_COMPARISON:"This is a nonrandomized comparison of study periods.",NO_CAUSAL_IDENTIFICATION:"This comparison does not establish causation.",NO_SIGNIFICANCE_OR_UNCERTAINTY_INTERVALS:"No statistical significance tests or uncertainty intervals are provided.",MINIMUM_SAMPLE_FLOOR_IS_NOT_POWER_OR_PRECISION:"The minimum observation count is not a measure of statistical power or precision.",MISSING_OBSERVATIONS_NOT_IMPUTED:"Missing observations were not filled in or treated as zero.",COMPLETE_CASE_SUMMARIES_MAY_BE_SELECTIVELY_OBSERVED:"Only usable observed records were summarized; missingness may bias this comparison.",EARLY_END_MAY_BE_INFORMATIVE:"This study ended early. The reason for stopping may be related to the outcome, limiting interpretation.",PAUSE_TOUCHED_DAYS_EXCLUDED:"Days touched by reconciled pauses were excluded from both outcomes and exposure—not counted as non-adherent.",WHOLE_ACTIVE_LOCAL_DAYS_ONLY:"Only complete active local study days were included.",PAUSES_DO_NOT_EXTEND_PLANNED_END:"Pauses did not extend the planned study end.",ACTUAL_START_END_BOUNDARY_DAYS_EXCLUDED_IF_PARTIAL:"Partial start and end days were excluded.",SELF_REPORTED_EVIDENCE:"Self-reported logging does not independently prove execution, measurement accuracy or complete intake.",DURABLE_SOURCE_CAPTURE_NOT_SOURCE_HISTORY:"This revision preserves evidence at capture, not the full history of source edits.",PRE_CAPTURE_EDITS_NOT_RECONSTRUCTED:"Edits made before this capture cannot be reconstructed.",CAPTURE_AT_ONE_DATABASE_READ_SNAPSHOT:"Evidence was retained from one database read snapshot.",ALL_OBSERVED_ACTIVE_INTERVENTION_DAYS_RETAINED:"Usable observations on active intervention days were retained, including known non-adherent days.",ALL_OBSERVED_INTERVENTION_DAYS_RETAINED:"Usable intervention observations were retained, including known non-adherent days.",EXPECTED_DIRECTION_IS_NOT_DESIRABILITY:"Expected movement alone does not establish whether higher or lower values are desirable.",EXACT_EQUALITY_NOT_CLINICAL_EQUIVALENCE:"Equal summaries do not establish clinical equivalence.",RELATIVE_CHANGE_UNDEFINED_AT_ZERO_BASELINE:"Relative change is undefined when the baseline mean is zero.",ORDINAL_RANKS_NOT_INTERVAL_SCALE:"Ordinal ranks do not imply equally spaced measurements.",MEDIAN_INTERVAL_NOT_ARITHMETIC_RANK_AVERAGE:"The two central ranks are shown without averaging ordinal codes.",CURRENT_RECORD_RETROSPECTIVE:"Records reflect the information available at capture.",MUTABLE_HISTORY_NOT_RECONSTRUCTED:"Earlier edits to source records were not reconstructed.",
- RELIABILITY_EVIDENCE_UNAVAILABLE:"The evidence needed to estimate statistical uncertainty was unavailable.",RELIABILITY_REQUIRES_DESCRIPTIVE_ELIGIBILITY:"Statistical uncertainty requires a supported descriptive comparison first.",RELIABILITY_SAMPLE_MINIMUM_NOT_MET:"At least 10 usable measurements in each period are required for this uncertainty method.",RELIABILITY_MISSINGNESS_LIMIT_EXCEEDED:"Too many expected measurements were missing for this uncertainty method.",ORDINAL_RELIABILITY_UNSUPPORTED_V1:"Statistical uncertainty for ranked outcomes is not supported yet.",RELIABILITY_METHOD_UNSUPPORTED_V1:"A statistical uncertainty method is not supported for this outcome yet.",EARLY_END_RELIABILITY_UNSUPPORTED_V1:"Statistical uncertainty is not estimated for an experiment that ended early because the stopping decision may be related to the outcome.",ORDERED_RELIABILITY_INPUT_INVALID:"The ordered measurement evidence could not be validated for statistical uncertainty.",SERIAL_CORRELATION_PARTIALLY_MODELED:"Adjacent-day dependence is partially represented by resampling blocks of ordered measurements.",BASELINE_TREND_NOT_ADJUSTED:"The method compares period averages and does not adjust for an underlying time trend.",SELECTIVE_COMPLETE_CASE:"Only usable observed measurements were included; missingness may affect the estimated range.",ORDERED_WITHIN_PERIOD:"Measurements are ordered by local study day within each period.",PERIODS_SAMPLED_SEPARATELY:"Starting-point and experiment measurements are resampled separately.",ALL_ELIGIBLE_OBSERVED_DAYS_INCLUDED:"All usable eligible days were included regardless of whether the change was followed.",
+export const eligibilityLabels: Record<string, string> = {
+  ready: "Ready",
+  insufficient_data: "Insufficient data",
+  unable_to_determine: "Unable to determine",
+  unsupported_design: "Unsupported design",
+  blocked_by_integrity: "Blocked by integrity",
+};
+export const eligibilityDescriptions: Record<string, string> = {
+  ready: "A supported descriptive analysis is available.",
+  insufficient_data: "Available observations or exposure evidence do not meet the analysis policy.",
+  unable_to_determine: "Required evidence could not be established.",
+  unsupported_design: "Reliable analysis for this design or outcome is not supported yet.",
+  blocked_by_integrity:
+    "Historical configuration, lifecycle or evidence conflicts prevent reliable analysis.",
+};
+const copy: Record<string, string> = {
+  WEIGHT_PROVENANCE_EXCLUSIONS:
+    "Some weight records have unverified units or invalid values. They were not used, and this comparison cannot establish a reliable weight result.",
+  UNSUPPORTED_OUTCOME_CADENCE_OR_AGGREGATION:
+    "Analysis does not support this outcome's measurement schedule or summary method yet.",
+  TERMINAL_STUDY_REQUIRED:
+    "This study must have an authoritative completion or early end before generating results.",
+  START_SNAPSHOT_REQUIRED: "A matching versioned Start snapshot is required.",
+  HISTORICAL_BASELINE_REQUIRED: "This analysis requires a frozen historical baseline.",
+  UNSUPPORTED_INTERVENTION_SOURCE:
+    "Historical exposure for this intervention is not supported. Protocol, pattern and workout tracking alone does not verify execution.",
+  UNSUPPORTED_OUTCOME_TYPE:
+    "This outcome lacks a supported measurement contract; weight units and provenance also remain unresolved.",
+  PRE_POST_ASSESSMENT_PROTOCOL_UNAVAILABLE:
+    "Formal baseline and post-study assessment points are not available; ordinary training sets are not formal tests.",
+  EVENT_SURVEILLANCE_DENOMINATOR_UNAVAILABLE:
+    "Event surveillance is unavailable. Missing event logs cannot be treated as confirmed zero events.",
+  CAPTURE_LIMIT: "The retained-analysis revision limit has been reached.",
+  INSUFFICIENT_BASELINE_OBSERVATIONS: "Too few usable baseline observations.",
+  INSUFFICIENT_INTERVENTION_OBSERVATIONS: "Too few usable intervention observations.",
+  INSUFFICIENT_EXPOSURE_EVIDENCE: "Intervention exposure is incomplete or unknown.",
+  INCOMPLETE_OBSERVATION_READ:
+    "The observation read was incomplete; partial records were not used as complete evidence.",
+  OBSERVATION_READ_UNAVAILABLE: "Required observations were unavailable.",
+  EXPOSURE_EVIDENCE_UNAVAILABLE: "Exposure evidence was unavailable.",
+  UNKNOWN_EXPOSURE_DENOMINATOR:
+    "The number of eligible intervention opportunities could not be established.",
+  UNRESOLVED_PAUSE_HISTORY: "Pause history could not be reconciled.",
+  OPEN_PAUSE: "An open pause prevents analysis.",
+  UNVERIFIED_LIFECYCLE_HISTORY: "Historical lifecycle provenance could not be verified.",
+  AUTHORITATIVE_END_REQUIRED: "An authoritative actual study end is required.",
+  UNSUPPORTED_TERMINAL_STATE: "This lifecycle state does not support a new analysis.",
+  DESCRIPTIVE_NONRANDOMIZED_COMPARISON: "This is a nonrandomized comparison of study periods.",
+  NO_CAUSAL_IDENTIFICATION: "This comparison does not establish causation.",
+  NO_SIGNIFICANCE_OR_UNCERTAINTY_INTERVALS:
+    "No statistical significance tests or uncertainty intervals are provided.",
+  MINIMUM_SAMPLE_FLOOR_IS_NOT_POWER_OR_PRECISION:
+    "The minimum observation count is not a measure of statistical power or precision.",
+  MISSING_OBSERVATIONS_NOT_IMPUTED: "Missing observations were not filled in or treated as zero.",
+  COMPLETE_CASE_SUMMARIES_MAY_BE_SELECTIVELY_OBSERVED:
+    "Only usable observed records were summarized; missingness may bias this comparison.",
+  EARLY_END_MAY_BE_INFORMATIVE:
+    "This study ended early. The reason for stopping may be related to the outcome, limiting interpretation.",
+  PAUSE_TOUCHED_DAYS_EXCLUDED:
+    "Days touched by reconciled pauses were excluded from both outcomes and exposure—not counted as non-adherent.",
+  WHOLE_ACTIVE_LOCAL_DAYS_ONLY: "Only complete active local study days were included.",
+  PAUSES_DO_NOT_EXTEND_PLANNED_END: "Pauses did not extend the planned study end.",
+  ACTUAL_START_END_BOUNDARY_DAYS_EXCLUDED_IF_PARTIAL: "Partial start and end days were excluded.",
+  SELF_REPORTED_EVIDENCE:
+    "Self-reported logging does not independently prove execution, measurement accuracy or complete intake.",
+  DURABLE_SOURCE_CAPTURE_NOT_SOURCE_HISTORY:
+    "This revision preserves evidence at capture, not the full history of source edits.",
+  PRE_CAPTURE_EDITS_NOT_RECONSTRUCTED: "Edits made before this capture cannot be reconstructed.",
+  CAPTURE_AT_ONE_DATABASE_READ_SNAPSHOT: "Evidence was retained from one database read snapshot.",
+  ALL_OBSERVED_ACTIVE_INTERVENTION_DAYS_RETAINED:
+    "Usable observations on active intervention days were retained, including known non-adherent days.",
+  ALL_OBSERVED_INTERVENTION_DAYS_RETAINED:
+    "Usable intervention observations were retained, including known non-adherent days.",
+  EXPECTED_DIRECTION_IS_NOT_DESIRABILITY:
+    "Expected movement alone does not establish whether higher or lower values are desirable.",
+  EXACT_EQUALITY_NOT_CLINICAL_EQUIVALENCE: "Equal summaries do not establish clinical equivalence.",
+  RELATIVE_CHANGE_UNDEFINED_AT_ZERO_BASELINE:
+    "Relative change is undefined when the baseline mean is zero.",
+  ORDINAL_RANKS_NOT_INTERVAL_SCALE: "Ordinal ranks do not imply equally spaced measurements.",
+  MEDIAN_INTERVAL_NOT_ARITHMETIC_RANK_AVERAGE:
+    "The two central ranks are shown without averaging ordinal codes.",
+  CURRENT_RECORD_RETROSPECTIVE: "Records reflect the information available at capture.",
+  MUTABLE_HISTORY_NOT_RECONSTRUCTED: "Earlier edits to source records were not reconstructed.",
+  RELIABILITY_EVIDENCE_UNAVAILABLE:
+    "The evidence needed to estimate statistical uncertainty was unavailable.",
+  RELIABILITY_REQUIRES_DESCRIPTIVE_ELIGIBILITY:
+    "Statistical uncertainty requires a supported descriptive comparison first.",
+  RELIABILITY_SAMPLE_MINIMUM_NOT_MET:
+    "At least 10 usable measurements in each period are required for this uncertainty method.",
+  RELIABILITY_MISSINGNESS_LIMIT_EXCEEDED:
+    "Too many expected measurements were missing for this uncertainty method.",
+  ORDINAL_RELIABILITY_UNSUPPORTED_V1:
+    "Statistical uncertainty for ranked outcomes is not supported yet.",
+  RELIABILITY_METHOD_UNSUPPORTED_V1:
+    "A statistical uncertainty method is not supported for this outcome yet.",
+  EARLY_END_RELIABILITY_UNSUPPORTED_V1:
+    "Statistical uncertainty is not estimated for an experiment that ended early because the stopping decision may be related to the outcome.",
+  ORDERED_RELIABILITY_INPUT_INVALID:
+    "The ordered measurement evidence could not be validated for statistical uncertainty.",
+  SERIAL_CORRELATION_PARTIALLY_MODELED:
+    "Adjacent-day dependence is partially represented by resampling blocks of ordered measurements.",
+  BASELINE_TREND_NOT_ADJUSTED:
+    "The method compares period averages and does not adjust for an underlying time trend.",
+  SELECTIVE_COMPLETE_CASE:
+    "Only usable observed measurements were included; missingness may affect the estimated range.",
+  ORDERED_WITHIN_PERIOD: "Measurements are ordered by local study day within each period.",
+  PERIODS_SAMPLED_SEPARATELY:
+    "Starting-point and experiment measurements are resampled separately.",
+  ALL_ELIGIBLE_OBSERVED_DAYS_INCLUDED:
+    "All usable eligible days were included regardless of whether the change was followed.",
 };
 /** Future codes remain visible in readable form, not silently discarded. */
-export function resultCopy(code:string){return copy[code]??`${code.toLowerCase().replaceAll("_"," ")}.`;}
-export const eligibilityNext:Record<string,string>={ready:"Compare the observed periods alongside the data quality and limitations below.",insufficient_data:"Review missing observations and exposure below. A new capture can include corrected records, but cannot create missing measurements.",unable_to_determine:"Refresh to check availability. Create another capture only after the evidence issue is resolved.",unsupported_design:"You can keep this study record. Analysis requires future support for this design; this does not mean the intervention failed.",blocked_by_integrity:"Keep this revision for reference. The conflicting history must be resolved before reliable analysis; repeated captures alone will not fix it."};
-const important=["EARLY_END_MAY_BE_INFORMATIVE","NO_CAUSAL_IDENTIFICATION","DESCRIPTIVE_NONRANDOMIZED_COMPARISON","COMPLETE_CASE_SUMMARIES_MAY_BE_SELECTIVELY_OBSERVED","MISSING_OBSERVATIONS_NOT_IMPUTED","SELF_REPORTED_EVIDENCE","PAUSE_TOUCHED_DAYS_EXCLUDED"];
-export function orderedLimitations(codes:string[]){return codes.map((code,index)=>({code,index,rank:important.indexOf(code)})).sort((a,b)=>(a.rank<0?important.length:a.rank)-(b.rank<0?important.length:b.rank)||a.index-b.index).map(item=>item.code);}
-export const resultStateCopy:Record<string,{title:string;description:string}>={
- ready:{title:"What happened?",description:"AXVital found a supported descriptive comparison."},
- insufficient_data:{title:"Not enough usable data",description:"We don’t have enough usable data to compare your starting point with the experiment period yet."},
- unable_to_determine:{title:"Unable to determine the result",description:"AXVital could not verify enough of the experiment data to calculate a result."},
- unsupported_design:{title:"This result is not supported yet",description:"AXVital can track this experiment, but this type of result is not supported yet."},
- blocked_by_integrity:{title:"Historical information could not be reconciled",description:"Some historical experiment information could not be reconciled safely."},
+export function resultCopy(code: string) {
+  return copy[code] ?? `${code.toLowerCase().replaceAll("_", " ")}.`;
+}
+export const eligibilityNext: Record<string, string> = {
+  ready: "Compare the observed periods alongside the data quality and limitations below.",
+  insufficient_data:
+    "Review missing observations and exposure below. A new capture can include corrected records, but cannot create missing measurements.",
+  unable_to_determine:
+    "Refresh to check availability. Create another capture only after the evidence issue is resolved.",
+  unsupported_design:
+    "You can keep this study record. Analysis requires future support for this design; this does not mean the intervention failed.",
+  blocked_by_integrity:
+    "Keep this revision for reference. The conflicting history must be resolved before reliable analysis; repeated captures alone will not fix it.",
 };
-export function movementCopy(label:string,movement:string,direction:string){
- const verb=movement==="higher"?"increased":movement==="lower"?"decreased":movement==="unchanged"?"was unchanged":"was indeterminate";
- const desirability=direction==="improved"?"The server-supported desirability definition classifies this movement as improved.":direction==="worsened"?"The server-supported desirability definition classifies this movement as worsened.":null;
- return {title:`${label} ${verb}`,interpretation:movement==="higher"?`Your measured ${label} was higher during the experiment period than during your starting-point period.`:movement==="lower"?`Your measured ${label} was lower during the experiment period than during your starting-point period.`:movement==="unchanged"?`The returned ${label} period summaries were exactly equal.`:`AXVital could not determine a direction for ${label}.`,desirability};
+const important = [
+  "EARLY_END_MAY_BE_INFORMATIVE",
+  "NO_CAUSAL_IDENTIFICATION",
+  "DESCRIPTIVE_NONRANDOMIZED_COMPARISON",
+  "COMPLETE_CASE_SUMMARIES_MAY_BE_SELECTIVELY_OBSERVED",
+  "MISSING_OBSERVATIONS_NOT_IMPUTED",
+  "SELF_REPORTED_EVIDENCE",
+  "PAUSE_TOUCHED_DAYS_EXCLUDED",
+];
+export function orderedLimitations(codes: string[]) {
+  return codes
+    .map((code, index) => ({ code, index, rank: important.indexOf(code) }))
+    .sort(
+      (a, b) =>
+        (a.rank < 0 ? important.length : a.rank) - (b.rank < 0 ? important.length : b.rank) ||
+        a.index - b.index,
+    )
+    .map((item) => item.code);
 }
-export function adherencePresentation(exposure:{eligible:number|null;adherent:number|null;nonAdherent:number|null;unknown:number|null}|null){
- if(!exposure||exposure.eligible===null||exposure.adherent===null||exposure.eligible<=0)return {percent:null,summary:"A reliable eligible-opportunity denominator was not available.",detail:null};
- const percent=Math.round(exposure.adherent/exposure.eligible*100),nonAdherent=exposure.nonAdherent??0,unknown=exposure.unknown??0;
- return {percent,summary:`${exposure.adherent} of ${exposure.eligible} eligible opportunities followed`,detail:`${nonAdherent} not followed · ${unknown} could not be confirmed`};
+export const resultStateCopy: Record<string, { title: string; description: string }> = {
+  ready: {
+    title: "What happened?",
+    description: "AXVital found a supported descriptive comparison.",
+  },
+  insufficient_data: {
+    title: "Not enough usable data",
+    description:
+      "We don’t have enough usable data to compare your starting point with the experiment period yet.",
+  },
+  unable_to_determine: {
+    title: "Unable to determine the result",
+    description: "AXVital could not verify enough of the experiment data to calculate a result.",
+  },
+  unsupported_design: {
+    title: "This result is not supported yet",
+    description: "AXVital can track this experiment, but this type of result is not supported yet.",
+  },
+  blocked_by_integrity: {
+    title: "Historical information could not be reconciled",
+    description: "Some historical experiment information could not be reconciled safely.",
+  },
+};
+export function movementCopy(label: string, movement: string, direction: string) {
+  const verb =
+    movement === "higher"
+      ? "increased"
+      : movement === "lower"
+        ? "decreased"
+        : movement === "unchanged"
+          ? "was unchanged"
+          : "was indeterminate";
+  const desirability =
+    direction === "improved"
+      ? "The server-supported desirability definition classifies this movement as improved."
+      : direction === "worsened"
+        ? "The server-supported desirability definition classifies this movement as worsened."
+        : null;
+  return {
+    title: `${label} ${verb}`,
+    interpretation:
+      movement === "higher"
+        ? `Your measured ${label} was higher during the experiment period than during your starting-point period.`
+        : movement === "lower"
+          ? `Your measured ${label} was lower during the experiment period than during your starting-point period.`
+          : movement === "unchanged"
+            ? `The returned ${label} period summaries were exactly equal.`
+            : `AXVital could not determine a direction for ${label}.`,
+    desirability,
+  };
 }
-export const reliabilityStateCopy={supported:{title:"Statistical uncertainty estimated",description:"This estimates how clearly the measured periods differ."},insufficient_data:{title:"Not enough data",description:"There is a descriptive comparison, but not enough usable evidence for the uncertainty method."},unsupported_method:{title:"Statistical uncertainty is not supported yet",description:"The descriptive result remains available, but this outcome or study lifecycle does not have a supported uncertainty method."},unable_to_determine:{title:"Statistical uncertainty could not be estimated",description:"The evidence needed for the uncertainty calculation could not be validated."}} as const;
-const dataCodes=new Set(["WEIGHT_PROVENANCE_EXCLUSIONS","INSUFFICIENT_BASELINE_OBSERVATIONS","INSUFFICIENT_INTERVENTION_OBSERVATIONS","INCOMPLETE_OBSERVATION_READ","OBSERVATION_READ_UNAVAILABLE","MISSING_OBSERVATIONS_NOT_IMPUTED","COMPLETE_CASE_SUMMARIES_MAY_BE_SELECTIVELY_OBSERVED"]);
-const experimentCodes=new Set(["INSUFFICIENT_EXPOSURE_EVIDENCE","EXPOSURE_EVIDENCE_UNAVAILABLE","UNKNOWN_EXPOSURE_DENOMINATOR","UNRESOLVED_PAUSE_HISTORY","OPEN_PAUSE","EARLY_END_MAY_BE_INFORMATIVE","PAUSE_TOUCHED_DAYS_EXCLUDED","WHOLE_ACTIVE_LOCAL_DAYS_ONLY","PAUSES_DO_NOT_EXTEND_PLANNED_END","ACTUAL_START_END_BOUNDARY_DAYS_EXCLUDED_IF_PARTIAL","ALL_OBSERVED_ACTIVE_INTERVENTION_DAYS_RETAINED","ALL_OBSERVED_INTERVENTION_DAYS_RETAINED"]);
-export function groupedLimitations(codes:string[]){const groups={data:[] as string[],experiment:[] as string[],interpretation:[] as string[]};for(const code of orderedLimitations(codes))(dataCodes.has(code)?groups.data:experimentCodes.has(code)?groups.experiment:groups.interpretation).push(code);return groups;}
+export function adherencePresentation(
+  exposure: {
+    eligible: number | null;
+    adherent: number | null;
+    nonAdherent: number | null;
+    unknown: number | null;
+  } | null,
+) {
+  if (
+    !exposure ||
+    exposure.eligible === null ||
+    exposure.adherent === null ||
+    exposure.eligible <= 0
+  )
+    return {
+      percent: null,
+      summary: "A reliable eligible-opportunity denominator was not available.",
+      detail: null,
+    };
+  const percent = Math.round((exposure.adherent / exposure.eligible) * 100),
+    nonAdherent = exposure.nonAdherent ?? 0,
+    unknown = exposure.unknown ?? 0;
+  return {
+    percent,
+    summary: `${exposure.adherent} of ${exposure.eligible} eligible opportunities followed`,
+    detail: `${nonAdherent} not followed · ${unknown} could not be confirmed`,
+  };
+}
+export const reliabilityStateCopy = {
+  supported: {
+    title: "Statistical uncertainty estimated",
+    description: "This estimates how clearly the measured periods differ.",
+  },
+  insufficient_data: {
+    title: "Not enough data",
+    description:
+      "There is a descriptive comparison, but not enough usable evidence for the uncertainty method.",
+  },
+  unsupported_method: {
+    title: "Statistical uncertainty is not supported yet",
+    description:
+      "The descriptive result remains available, but this outcome or study lifecycle does not have a supported uncertainty method.",
+  },
+  unable_to_determine: {
+    title: "Statistical uncertainty could not be estimated",
+    description: "The evidence needed for the uncertainty calculation could not be validated.",
+  },
+} as const;
+const dataCodes = new Set([
+  "WEIGHT_PROVENANCE_EXCLUSIONS",
+  "INSUFFICIENT_BASELINE_OBSERVATIONS",
+  "INSUFFICIENT_INTERVENTION_OBSERVATIONS",
+  "INCOMPLETE_OBSERVATION_READ",
+  "OBSERVATION_READ_UNAVAILABLE",
+  "MISSING_OBSERVATIONS_NOT_IMPUTED",
+  "COMPLETE_CASE_SUMMARIES_MAY_BE_SELECTIVELY_OBSERVED",
+]);
+const experimentCodes = new Set([
+  "INSUFFICIENT_EXPOSURE_EVIDENCE",
+  "EXPOSURE_EVIDENCE_UNAVAILABLE",
+  "UNKNOWN_EXPOSURE_DENOMINATOR",
+  "UNRESOLVED_PAUSE_HISTORY",
+  "OPEN_PAUSE",
+  "EARLY_END_MAY_BE_INFORMATIVE",
+  "PAUSE_TOUCHED_DAYS_EXCLUDED",
+  "WHOLE_ACTIVE_LOCAL_DAYS_ONLY",
+  "PAUSES_DO_NOT_EXTEND_PLANNED_END",
+  "ACTUAL_START_END_BOUNDARY_DAYS_EXCLUDED_IF_PARTIAL",
+  "ALL_OBSERVED_ACTIVE_INTERVENTION_DAYS_RETAINED",
+  "ALL_OBSERVED_INTERVENTION_DAYS_RETAINED",
+]);
+export function groupedLimitations(codes: string[]) {
+  const groups = {
+    data: [] as string[],
+    experiment: [] as string[],
+    interpretation: [] as string[],
+  };
+  for (const code of orderedLimitations(codes))
+    (dataCodes.has(code)
+      ? groups.data
+      : experimentCodes.has(code)
+        ? groups.experiment
+        : groups.interpretation
+    ).push(code);
+  return groups;
+}

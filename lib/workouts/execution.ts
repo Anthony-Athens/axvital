@@ -1,8 +1,7 @@
 import type { ExerciseTrackingType } from "./exercise-metadata";
 import type { SessionSet } from "./types";
 
-export const WORKOUT_STATUS_HEADER_CLASS =
-  "rounded-xl border border-slate-200 bg-white p-4";
+export const WORKOUT_STATUS_HEADER_CLASS = "rounded-xl border border-slate-200 bg-white p-4";
 
 export const WORKOUT_FINAL_ACTIONS_CLASS =
   "safe-bottom mt-6 rounded-xl border border-slate-200 bg-white p-4";
@@ -64,11 +63,7 @@ export function actualInputValue(value: number | null | undefined) {
   return value === null || value === undefined ? "" : String(value);
 }
 
-function parseActualNumber(
-  value: string,
-  label: string,
-  required: boolean,
-) {
+function parseActualNumber(value: string, label: string, required: boolean) {
   if (!value.trim()) {
     return required
       ? { value: null, error: `Enter the ${label.toLowerCase()} completed.` }
@@ -88,9 +83,7 @@ export function validateActualSetInput(
   const required = {
     weight: trackingType === "weight_reps",
     reps: ["weight_reps", "bodyweight_reps", "repetitions"].includes(trackingType),
-    duration: ["duration", "distance_duration", "calories_duration"].includes(
-      trackingType,
-    ),
+    duration: ["duration", "distance_duration", "calories_duration"].includes(trackingType),
     distance: trackingType === "distance_duration",
   };
   const parsed = {

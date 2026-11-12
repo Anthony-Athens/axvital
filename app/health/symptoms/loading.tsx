@@ -1,1 +1,9 @@
-import{LoadingSkeleton,PageContainer}from"@/components/ui/design-system";export default function Loading(){return <PageContainer><LoadingSkeleton className="h-28"/><LoadingSkeleton className="mt-5 h-72"/></PageContainer>}
+import { LoadingSkeleton, PageContainer } from "@/components/ui/design-system";
+export default function Loading() {
+  return (
+    <PageContainer>
+      <LoadingSkeleton className="h-28" />
+      <LoadingSkeleton className="mt-5 h-72" />
+    </PageContainer>
+  );
+}

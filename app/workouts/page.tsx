@@ -1,1 +1,4 @@
-import{WorkoutsHome}from"@/components/workouts/WorkoutsHome";export default function Page(){return <WorkoutsHome/>}
+import { WorkoutsHome } from "@/components/workouts/WorkoutsHome";
+export default function Page() {
+  return <WorkoutsHome />;
+}

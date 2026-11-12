@@ -1,1 +1,58 @@
-"use client";import {trackProduct} from "@/lib/telemetry/client";import {recordProductEvent} from "@/lib/telemetry/product-events-client";import{useState}from"react";import{useRouter}from"next/navigation";export function CheckoutButton({interval,className="",children}:{interval:"monthly"|"annual";className?:string;children:React.ReactNode}){const[loading,setLoading]=useState(false),[error,setError]=useState(""),router=useRouter();async function start(){setLoading(true);setError("");try{void recordProductEvent("upgrade_clicked");const response=await fetch("/api/billing/checkout",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({interval})});if(response.status===401){router.push(`/login?redirectedFrom=/pricing`);return}const data=await response.json();if(!response.ok||!data.url)throw new Error();trackProduct("Checkout Started",interval);window.location.assign(data.url)}catch{setError("We couldn't start checkout. Please try again.");setLoading(false)}}return <div><button onClick={()=>void start()} disabled={loading} className={`min-h-12 rounded-xl bg-blue-600 px-5 font-semibold text-white disabled:opacity-60 ${className}`} aria-label={`Upgrade to Premium ${interval}`}>{loading?"Opening secure checkout…":children}</button>{error?<p role="alert" className="mt-2 text-sm text-rose-700">{error}</p>:null}</div>}
+"use client";
+import { trackProduct } from "@/lib/telemetry/client";
+import { recordProductEvent } from "@/lib/telemetry/product-events-client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+export function CheckoutButton({
+  interval,
+  className = "",
+  children,
+}: {
+  interval: "monthly" | "annual";
+  className?: string;
+  children: React.ReactNode;
+}) {
+  const [loading, setLoading] = useState(false),
+    [error, setError] = useState(""),
+    router = useRouter();
+  async function start() {
+    setLoading(true);
+    setError("");
+    try {
+      void recordProductEvent("upgrade_clicked");
+      const response = await fetch("/api/billing/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ interval }),
+      });
+      if (response.status === 401) {
+        router.push(`/login?redirectedFrom=/pricing`);
+        return;
+      }
+      const data = await response.json();
+      if (!response.ok || !data.url) throw new Error();
+      trackProduct("Checkout Started", interval);
+      window.location.assign(data.url);
+    } catch {
+      setError("We couldn't start checkout. Please try again.");
+      setLoading(false);
+    }
+  }
+  return (
+    <div>
+      <button
+        onClick={() => void start()}
+        disabled={loading}
+        className={`min-h-12 rounded-xl bg-blue-600 px-5 font-semibold text-white disabled:opacity-60 ${className}`}
+        aria-label={`Upgrade to Premium ${interval}`}
+      >
+        {loading ? "Opening secure checkout…" : children}
+      </button>
+      {error ? (
+        <p role="alert" className="mt-2 text-sm text-rose-700">
+          {error}
+        </p>
+      ) : null}
+    </div>
+  );
+}

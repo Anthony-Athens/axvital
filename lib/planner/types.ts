@@ -1,10 +1,25 @@
 export const ACTIVITY_TYPES = [
-  "habit", "workout", "supplement", "medication", "nutrition", "hydration",
-  "mobility", "recovery", "cardio", "rehab", "mindfulness", "custom",
+  "habit",
+  "workout",
+  "supplement",
+  "medication",
+  "nutrition",
+  "hydration",
+  "mobility",
+  "recovery",
+  "cardio",
+  "rehab",
+  "mindfulness",
+  "custom",
 ] as const;
 
 export const RECURRENCE_TYPES = [
-  "none", "daily", "weekdays", "specific_days", "weekly", "interval",
+  "none",
+  "daily",
+  "weekdays",
+  "specific_days",
+  "weekly",
+  "interval",
 ] as const;
 
 export type ActivityType = (typeof ACTIVITY_TYPES)[number];

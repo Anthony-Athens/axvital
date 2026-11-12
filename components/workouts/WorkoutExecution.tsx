@@ -25,11 +25,7 @@ import {
   validateActualSetInput,
 } from "@/lib/workouts/execution";
 import type { ExerciseTrackingType } from "@/lib/workouts/exercise-metadata";
-import type {
-  SessionExercise,
-  SessionSet,
-  WorkoutSession,
-} from "@/lib/workouts/types";
+import type { SessionExercise, SessionSet, WorkoutSession } from "@/lib/workouts/types";
 import { supabase } from "@/lib/supabase/client";
 
 type SetValues = {
@@ -39,10 +35,7 @@ type SetValues = {
   actual_distance: number | null;
 };
 
-function plannedSetSummary(
-  set: SessionSet,
-  trackingType: ExerciseTrackingType,
-) {
+function plannedSetSummary(set: SessionSet, trackingType: ExerciseTrackingType) {
   const parts: string[] = [];
   if (trackingType === "bodyweight_reps") parts.push("Bodyweight");
   if (set.planned_weight !== null) parts.push(`${set.planned_weight} lb`);
@@ -88,9 +81,7 @@ function SetEditor({
 }) {
   const [reps, setReps] = useState(actualInputValue(set.actual_reps));
   const [weight, setWeight] = useState(actualInputValue(set.actual_weight));
-  const [duration, setDuration] = useState(
-    actualInputValue(set.actual_duration_seconds),
-  );
+  const [duration, setDuration] = useState(actualInputValue(set.actual_duration_seconds));
   const [distance, setDistance] = useState(actualInputValue(set.actual_distance));
   const [fieldErrors, setFieldErrors] = useState<
     Partial<Record<"weight" | "reps" | "duration" | "distance", string>>
@@ -130,8 +121,7 @@ function SetEditor({
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div>
           <h3 className="font-semibold text-slate-900">
-            {editing ? "Edit completed set" : "Current set"} · Set {set.set_number} of{" "}
-            {totalSets}
+            {editing ? "Edit completed set" : "Current set"} · Set {set.set_number} of {totalSets}
           </h3>
           <p className="mt-1 text-sm text-slate-600">
             Plan: {plannedSetSummary(set, trackingType)}
@@ -159,7 +149,10 @@ function SetEditor({
             className="mt-1.5 min-h-12 w-full rounded-lg border border-slate-300 bg-white px-3 text-base font-semibold outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
           />
           {fieldErrors.weight ? (
-            <span id={`${set.id}-weight-error`} className="mt-1 block text-xs font-medium text-rose-700">
+            <span
+              id={`${set.id}-weight-error`}
+              className="mt-1 block text-xs font-medium text-rose-700"
+            >
               {fieldErrors.weight}
             </span>
           ) : null}
@@ -179,7 +172,10 @@ function SetEditor({
             className="mt-1.5 min-h-12 w-full rounded-lg border border-slate-300 bg-white px-3 text-base font-semibold outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
           />
           {fieldErrors.reps ? (
-            <span id={`${set.id}-reps-error`} className="mt-1 block text-xs font-medium text-rose-700">
+            <span
+              id={`${set.id}-reps-error`}
+              className="mt-1 block text-xs font-medium text-rose-700"
+            >
               {fieldErrors.reps}
             </span>
           ) : null}
@@ -199,7 +195,10 @@ function SetEditor({
             className="mt-1.5 min-h-12 w-full rounded-lg border border-slate-300 bg-white px-3 text-base font-semibold outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
           />
           {fieldErrors.duration ? (
-            <span id={`${set.id}-duration-error`} className="mt-1 block text-xs font-medium text-rose-700">
+            <span
+              id={`${set.id}-duration-error`}
+              className="mt-1 block text-xs font-medium text-rose-700"
+            >
               {fieldErrors.duration}
             </span>
           ) : null}
@@ -219,7 +218,10 @@ function SetEditor({
             className="mt-1.5 min-h-12 w-full rounded-lg border border-slate-300 bg-white px-3 text-base font-semibold outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
           />
           {fieldErrors.distance ? (
-            <span id={`${set.id}-distance-error`} className="mt-1 block text-xs font-medium text-rose-700">
+            <span
+              id={`${set.id}-distance-error`}
+              className="mt-1 block text-xs font-medium text-rose-700"
+            >
               {fieldErrors.distance}
             </span>
           ) : null}
@@ -289,9 +291,7 @@ function CompletedSetRow({
     <div className="flex min-h-11 flex-wrap items-center gap-x-3 gap-y-1 border-b border-slate-200 py-2.5 text-sm last:border-b-0">
       <span className="font-semibold text-slate-900">Set {set.set_number}</span>
       <span className="min-w-0 flex-1 text-slate-600">{actualSetSummary(set)}</span>
-      <span
-        className={`font-semibold ${completed ? "text-emerald-700" : "text-amber-700"}`}
-      >
+      <span className={`font-semibold ${completed ? "text-emerald-700" : "text-amber-700"}`}>
         {completed ? "Completed" : "Skipped"}
       </span>
       {completed ? (
@@ -340,11 +340,7 @@ function ExercisePanel({
   const [expanded, setExpanded] = useState(Boolean(current));
   const [editingSetId, setEditingSetId] = useState<string | null>(null);
 
-  async function updateSet(
-    set: SessionSet,
-    values: SetValues,
-    collapseAfter: boolean,
-  ) {
+  async function updateSet(set: SessionSet, values: SetValues, collapseAfter: boolean) {
     try {
       onError("");
       await completeSessionSet(supabase, set.id, values);
@@ -456,15 +452,17 @@ function ExercisePanel({
                 totalSets={sets.length}
                 busy={busy}
                 onComplete={(values) =>
-                  updateSet(current, values, sets.filter((set) => set.status === "pending").length === 1)
+                  updateSet(
+                    current,
+                    values,
+                    sets.filter((set) => set.status === "pending").length === 1,
+                  )
                 }
                 onSkip={() =>
                   skipSet(current, sets.filter((set) => set.status === "pending").length === 1)
                 }
                 onRemove={
-                  !current.planned_workout_set_id
-                    ? () => void onRemove(current.id)
-                    : undefined
+                  !current.planned_workout_set_id ? () => void onRemove(current.id) : undefined
                 }
               />
             </div>
@@ -574,16 +572,11 @@ export function WorkoutExecution() {
   }
 
   if (!session) {
-    return (
-      <div className="mx-auto max-w-4xl p-6 font-semibold">
-        {error || "Loading workout…"}
-      </div>
-    );
+    return <div className="mx-auto max-w-4xl p-6 font-semibold">{error || "Loading workout…"}</div>;
   }
 
   const exercises = [...(session.exercises ?? [])].sort(
-    (a, b) =>
-      a.group_order - b.group_order || a.exercise_order - b.exercise_order,
+    (a, b) => a.group_order - b.group_order || a.exercise_order - b.exercise_order,
   );
 
   return (
@@ -605,7 +598,10 @@ export function WorkoutExecution() {
       </header>
 
       {error ? (
-        <p role="alert" className="mt-4 rounded-xl bg-rose-50 p-4 text-sm font-semibold text-rose-700">
+        <p
+          role="alert"
+          className="mt-4 rounded-xl bg-rose-50 p-4 text-sm font-semibold text-rose-700"
+        >
           {error}
         </p>
       ) : null}

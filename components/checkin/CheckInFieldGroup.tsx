@@ -21,9 +21,7 @@ export function CheckInFieldGroup({
       <div id={headingId}>
         <span className="block text-base font-semibold text-slate-900">{label}</span>
         {helper ? (
-          <span className="mt-1 block text-sm font-medium leading-6 text-slate-500">
-            {helper}
-          </span>
+          <span className="mt-1 block text-sm font-medium leading-6 text-slate-500">{helper}</span>
         ) : null}
       </div>
       {children}

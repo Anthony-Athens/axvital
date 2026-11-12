@@ -1,2 +1,78 @@
-"use client"; import {SheetDialog} from "@/components/ui/SheetDialog"; import {FormEvent,useState}from"react"; import {addDaysToDateString}from"@/lib/protocols/dates"; import type{ProtocolTemplate}from"@/lib/protocols/types";
-export function StartProtocolModal({template,busy,onClose,onStart}:{template:ProtocolTemplate;busy:boolean;onClose:()=>void;onStart:(start:string,name:string,end:string|null)=>Promise<void>}){const d=new Date();const today=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;const[start,setStart]=useState(today);const[name,setName]=useState("");const[end,setEnd]=useState(template.duration_days?addDaysToDateString(today,template.duration_days-1):"");async function submit(e:FormEvent){e.preventDefault();await onStart(start,name,end||null)}return <SheetDialog title={`Start ${template.name}`} onClose={onClose} saving={busy} onSubmit={submit} failureMessage="We couldn’t start this protocol. Please try again." footer={<button disabled={busy} className="min-h-12 w-full rounded-full bg-emerald-500 font-black text-white disabled:opacity-50">{busy?"Starting…":"Start Protocol"}</button>}><label className="mt-5 block font-bold">Start date<input type="date" required value={start} onChange={e=>{setStart(e.target.value);if(template.duration_days)setEnd(addDaysToDateString(e.target.value,template.duration_days-1))}} className="mt-2 min-h-12 w-full rounded-2xl border px-4"/></label><label className="mt-4 block font-bold">Custom name <span className="text-slate-400">(optional)</span><input value={name} onChange={e=>setName(e.target.value)} className="mt-2 min-h-12 w-full rounded-2xl border px-4"/></label><label className="mt-4 block font-bold">End date <span className="text-slate-400">(optional)</span><input type="date" min={start} value={end} onChange={e=>setEnd(e.target.value)} className="mt-2 min-h-12 w-full rounded-2xl border px-4"/></label></SheetDialog>}
+"use client";
+import { SheetDialog } from "@/components/ui/SheetDialog";
+import { FormEvent, useState } from "react";
+import { addDaysToDateString } from "@/lib/protocols/dates";
+import type { ProtocolTemplate } from "@/lib/protocols/types";
+export function StartProtocolModal({
+  template,
+  busy,
+  onClose,
+  onStart,
+}: {
+  template: ProtocolTemplate;
+  busy: boolean;
+  onClose: () => void;
+  onStart: (start: string, name: string, end: string | null) => Promise<void>;
+}) {
+  const d = new Date();
+  const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  const [start, setStart] = useState(today);
+  const [name, setName] = useState("");
+  const [end, setEnd] = useState(
+    template.duration_days ? addDaysToDateString(today, template.duration_days - 1) : "",
+  );
+  async function submit(e: FormEvent) {
+    e.preventDefault();
+    await onStart(start, name, end || null);
+  }
+  return (
+    <SheetDialog
+      title={`Start ${template.name}`}
+      onClose={onClose}
+      saving={busy}
+      onSubmit={submit}
+      failureMessage="We couldn’t start this protocol. Please try again."
+      footer={
+        <button
+          disabled={busy}
+          className="min-h-12 w-full rounded-full bg-emerald-500 font-black text-white disabled:opacity-50"
+        >
+          {busy ? "Starting…" : "Start Protocol"}
+        </button>
+      }
+    >
+      <label className="mt-5 block font-bold">
+        Start date
+        <input
+          type="date"
+          required
+          value={start}
+          onChange={(e) => {
+            setStart(e.target.value);
+            if (template.duration_days)
+              setEnd(addDaysToDateString(e.target.value, template.duration_days - 1));
+          }}
+          className="mt-2 min-h-12 w-full rounded-2xl border px-4"
+        />
+      </label>
+      <label className="mt-4 block font-bold">
+        Custom name <span className="text-slate-400">(optional)</span>
+        <input
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="mt-2 min-h-12 w-full rounded-2xl border px-4"
+        />
+      </label>
+      <label className="mt-4 block font-bold">
+        End date <span className="text-slate-400">(optional)</span>
+        <input
+          type="date"
+          min={start}
+          value={end}
+          onChange={(e) => setEnd(e.target.value)}
+          className="mt-2 min-h-12 w-full rounded-2xl border px-4"
+        />
+      </label>
+    </SheetDialog>
+  );
+}

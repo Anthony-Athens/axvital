@@ -6,7 +6,12 @@ export function endOfMonth(date: string) {
   const month = Number(match[2]);
   const day = Number(match[3]);
   const value = new Date(Date.UTC(year, month - 1, day));
-  if (value.getUTCFullYear() !== year || value.getUTCMonth() !== month - 1 || value.getUTCDate() !== day) throw new Error("INVALID_DATE");
+  if (
+    value.getUTCFullYear() !== year ||
+    value.getUTCMonth() !== month - 1 ||
+    value.getUTCDate() !== day
+  )
+    throw new Error("INVALID_DATE");
 
   return new Date(Date.UTC(year, month, 0)).toISOString().slice(0, 10);
 }

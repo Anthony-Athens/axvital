@@ -14,7 +14,8 @@ export default function ResetPasswordPage() {
     let active = true;
     const supabase = createClient();
     const url = new URL(window.location.href);
-    const failed = url.searchParams.has("error") || new URLSearchParams(url.hash.slice(1)).has("error");
+    const failed =
+      url.searchParams.has("error") || new URLSearchParams(url.hash.slice(1)).has("error");
     async function validate() {
       try {
         // getUser waits for the shared client's automatic PKCE URL exchange.
@@ -23,19 +24,43 @@ export default function ResetPasswordPage() {
           window.history.replaceState(window.history.state, "", "/reset-password");
           setState(!failed && !error && recovery.valid(data.user?.id) ? "valid" : "invalid");
         }
-      } catch { if (active) setState("invalid"); }
+      } catch {
+        if (active) setState("invalid");
+      }
     }
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(event => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event) => {
       // Never await another auth method while Supabase holds its event lock.
-      if (event === "PASSWORD_RECOVERY") setTimeout(() => { if (active) void validate(); }, 0);
+      if (event === "PASSWORD_RECOVERY")
+        setTimeout(() => {
+          if (active) void validate();
+        }, 0);
     });
     void validate();
-    return () => { active = false; subscription.unsubscribe(); };
+    return () => {
+      active = false;
+      subscription.unsubscribe();
+    };
   }, []);
-  return <AuthCard title="Choose a new password">
-    {state === "loading" ? <p role="status" className="mt-4">Checking your reset link...</p> : state === "valid" ? <PasswordForm recoveryMode /> : <div className="mt-4 space-y-4">
-      <p role="alert" className="text-sm leading-6 text-slate-600">{INVALID_RECOVERY}</p>
-      <ButtonLink href="/forgot-password" className="w-full">Request new reset link</ButtonLink>
-    </div>}
-  </AuthCard>;
+  return (
+    <AuthCard title="Choose a new password">
+      {state === "loading" ? (
+        <p role="status" className="mt-4">
+          Checking your reset link...
+        </p>
+      ) : state === "valid" ? (
+        <PasswordForm recoveryMode />
+      ) : (
+        <div className="mt-4 space-y-4">
+          <p role="alert" className="text-sm leading-6 text-slate-600">
+            {INVALID_RECOVERY}
+          </p>
+          <ButtonLink href="/forgot-password" className="w-full">
+            Request new reset link
+          </ButtonLink>
+        </div>
+      )}
+    </AuthCard>
+  );
 }

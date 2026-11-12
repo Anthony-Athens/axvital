@@ -3,9 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { friendlyErrorMessage, logDevError } from "@/lib/app-errors";
-import {
-  loadLatestWeeklyRecap,
-} from "@/lib/recaps/weekly";
+import { loadLatestWeeklyRecap } from "@/lib/recaps/weekly";
 import { supabase } from "@/lib/supabase/client";
 import type { WeeklyRecap } from "@/lib/types";
 import { RecentActivity } from "@/components/dashboard/RecentActivity";
@@ -156,9 +154,7 @@ function TrendBars({
       <div className="flex items-start justify-between gap-4">
         <div>
           <h3 className="text-lg font-semibold tracking-tight">{title}</h3>
-          <p className="mt-1 text-sm font-semibold leading-6 text-slate-500">
-            {subtitle}
-          </p>
+          <p className="mt-1 text-sm font-semibold leading-6 text-slate-500">{subtitle}</p>
         </div>
         <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-600">
           30 days
@@ -167,8 +163,7 @@ function TrendBars({
 
       <div className="mt-5 flex h-36 items-end gap-1.5">
         {points.map((point) => {
-          const height =
-            point.value === null ? 0 : Math.max((point.value / computedMax) * 100, 10);
+          const height = point.value === null ? 0 : Math.max((point.value / computedMax) * 100, 10);
 
           return (
             <div
@@ -197,26 +192,14 @@ function TrendBars({
   );
 }
 
-function MetricCard({
-  label,
-  value,
-  helper,
-}: {
-  label: string;
-  value: string;
-  helper: string;
-}) {
+function MetricCard({ label, value, helper }: { label: string; value: string; helper: string }) {
   return (
     <article className="grid grid-cols-[1fr_auto] items-center gap-x-4 rounded-xl bg-white p-4 sm:block sm:p-5">
-      <p className="text-sm font-medium text-slate-500">
-        {label}
-      </p>
+      <p className="text-sm font-medium text-slate-500">{label}</p>
       <p className="col-start-2 row-span-2 row-start-1 text-2xl font-semibold tracking-tight text-slate-950 sm:mt-2 sm:text-3xl">
         {value}
       </p>
-      <p className="col-start-1 row-start-2 text-sm leading-6 text-slate-500 sm:mt-2">
-        {helper}
-      </p>
+      <p className="col-start-1 row-start-2 text-sm leading-6 text-slate-500 sm:mt-2">{helper}</p>
     </article>
   );
 }
@@ -317,14 +300,10 @@ export default function DashboardPage() {
     }
 
     const last7Start = daysAgoFrom(today, 6);
-    const last7Checkins = checkins.filter(
-      (checkin) => checkin.checkin_date >= last7Start,
-    );
+    const last7Checkins = checkins.filter((checkin) => checkin.checkin_date >= last7Start);
     const averageEnergy = average(last7Checkins.map((checkin) => checkin.energy_score));
     const averageMood = average(last7Checkins.map((checkin) => checkin.mood_score));
-    const averageSleep = average(
-      last7Checkins.map((checkin) => sleepScore(checkin.sleep_quality)),
-    );
+    const averageSleep = average(last7Checkins.map((checkin) => sleepScore(checkin.sleep_quality)));
     const latestWeight =
       [...checkins].reverse().find((checkin) => checkin.weight !== null)?.weight ?? null;
 
@@ -342,42 +321,184 @@ export default function DashboardPage() {
 
   const hasEnoughData = checkins.length >= 3;
   const snapshot = [
-    metrics.averageEnergy !== null ? { label: "Energy", value: formatNumber(metrics.averageEnergy), helper: "Average · past 7 days" } : null,
-    metrics.averageMood !== null ? { label: "Mood", value: formatNumber(metrics.averageMood), helper: "Average · past 7 days" } : null,
-    metrics.averageSleep !== null ? { label: "Sleep quality", value: sleepLabel(metrics.averageSleep), helper: "Average · past 7 days" } : null,
-  ].filter(item => item !== null);
+    metrics.averageEnergy !== null
+      ? {
+          label: "Energy",
+          value: formatNumber(metrics.averageEnergy),
+          helper: "Average · past 7 days",
+        }
+      : null,
+    metrics.averageMood !== null
+      ? { label: "Mood", value: formatNumber(metrics.averageMood), helper: "Average · past 7 days" }
+      : null,
+    metrics.averageSleep !== null
+      ? {
+          label: "Sleep quality",
+          value: sleepLabel(metrics.averageSleep),
+          helper: "Average · past 7 days",
+        }
+      : null,
+  ].filter((item) => item !== null);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
       <header className="border-b border-slate-200 pb-6">
         <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Health Overview</h1>
-        <p className="mt-2 text-slate-600">Your recent signals, personal trends, and the activity behind them.</p>
-        {today ? <p className="mt-3 text-sm text-slate-500">Overview: {shortDateLabel(daysAgoFrom(today, 29))}–{shortDateLabel(today)} · Local dates</p> : null}
+        <p className="mt-2 text-slate-600">
+          Your recent signals, personal trends, and the activity behind them.
+        </p>
+        {today ? (
+          <p className="mt-3 text-sm text-slate-500">
+            Overview: {shortDateLabel(daysAgoFrom(today, 29))}–{shortDateLabel(today)} · Local dates
+          </p>
+        ) : null}
       </header>
 
-      {error ? <p role="alert" className="mt-5 rounded-xl bg-amber-50 p-4 text-sm text-amber-900">{error}</p> : null}
-      {loading ? <section aria-label="Loading health snapshot" aria-busy="true" className="mt-6 grid gap-4 sm:grid-cols-3">{[1, 2, 3].map(i => <div key={i} className="h-28 animate-pulse rounded-xl bg-slate-100"/>)}</section> : snapshot.length ? <section aria-label="Current snapshot" className="mt-6 grid gap-4 sm:grid-cols-3">{snapshot.map(item => <MetricCard key={item.label} {...item}/>)}</section> : !error ? <section className="mt-6"><h2 className="text-xl font-semibold">Your snapshot starts with a check-in.</h2><p className="mt-2 text-sm leading-6 text-slate-600">Not enough recent check-in data yet. Activity you log elsewhere still appears below.</p><Link href="/today#daily-checkin" className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-blue-700 focus-visible:outline-2 focus-visible:outline-blue-600">Complete a check-in →</Link></section> : null}
+      {error ? (
+        <p role="alert" className="mt-5 rounded-xl bg-amber-50 p-4 text-sm text-amber-900">
+          {error}
+        </p>
+      ) : null}
+      {loading ? (
+        <section
+          aria-label="Loading health snapshot"
+          aria-busy="true"
+          className="mt-6 grid gap-4 sm:grid-cols-3"
+        >
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="h-28 animate-pulse rounded-xl bg-slate-100" />
+          ))}
+        </section>
+      ) : snapshot.length ? (
+        <section aria-label="Current snapshot" className="mt-6 grid gap-4 sm:grid-cols-3">
+          {snapshot.map((item) => (
+            <MetricCard key={item.label} {...item} />
+          ))}
+        </section>
+      ) : !error ? (
+        <section className="mt-6">
+          <h2 className="text-xl font-semibold">Your snapshot starts with a check-in.</h2>
+          <p className="mt-2 text-sm leading-6 text-slate-600">
+            Not enough recent check-in data yet. Activity you log elsewhere still appears below.
+          </p>
+          <Link
+            href="/today#daily-checkin"
+            className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-blue-700 focus-visible:outline-2 focus-visible:outline-blue-600"
+          >
+            Complete a check-in →
+          </Link>
+        </section>
+      ) : null}
 
       <RecentActivity />
 
       <section aria-labelledby="trends-heading" className="mt-10">
-        <div className="flex flex-wrap items-center justify-between gap-3"><div><h2 id="trends-heading" className="text-xl font-semibold">What changed?</h2><p className="mt-1 text-sm text-slate-500">Daily observations over the past 30 days—not an interpretation of cause.</p></div><Link href="/insights" className="inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-semibold text-blue-700 focus-visible:outline-2 focus-visible:outline-blue-600">View Insights →</Link></div>
-        {!loading && !hasEnoughData ? <p className="mt-3 text-sm leading-6 text-slate-600">A few more check-ins will make trends more useful. Missing days are not zero scores.</p> : null}
-        {!loading ? <div className="mt-5 grid gap-5 lg:grid-cols-3">
-          {metrics.energyTrend.some(p => p.value !== null) ? <TrendBars title="Energy" subtitle="Daily energy score" points={metrics.energyTrend} color="bg-blue-500" maxValue={10}/> : null}
-          {metrics.moodTrend.some(p => p.value !== null) ? <TrendBars title="Mood" subtitle="Daily mood score" points={metrics.moodTrend} color="bg-blue-500" maxValue={10}/> : null}
-          {metrics.weightTrend.some(p => p.value !== null) ? <TrendBars title="Weight" subtitle="Recorded weight values" points={metrics.weightTrend} color="bg-slate-500"/> : null}
-        </div> : null}
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 id="trends-heading" className="text-xl font-semibold">
+              What changed?
+            </h2>
+            <p className="mt-1 text-sm text-slate-500">
+              Daily observations over the past 30 days—not an interpretation of cause.
+            </p>
+          </div>
+          <Link
+            href="/insights"
+            className="inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-semibold text-blue-700 focus-visible:outline-2 focus-visible:outline-blue-600"
+          >
+            View Insights →
+          </Link>
+        </div>
+        {!loading && !hasEnoughData ? (
+          <p className="mt-3 text-sm leading-6 text-slate-600">
+            A few more check-ins will make trends more useful. Missing days are not zero scores.
+          </p>
+        ) : null}
+        {!loading ? (
+          <div className="mt-5 grid gap-5 lg:grid-cols-3">
+            {metrics.energyTrend.some((p) => p.value !== null) ? (
+              <TrendBars
+                title="Energy"
+                subtitle="Daily energy score"
+                points={metrics.energyTrend}
+                color="bg-blue-500"
+                maxValue={10}
+              />
+            ) : null}
+            {metrics.moodTrend.some((p) => p.value !== null) ? (
+              <TrendBars
+                title="Mood"
+                subtitle="Daily mood score"
+                points={metrics.moodTrend}
+                color="bg-blue-500"
+                maxValue={10}
+              />
+            ) : null}
+            {metrics.weightTrend.some((p) => p.value !== null) ? (
+              <TrendBars
+                title="Weight"
+                subtitle="Recorded weight values"
+                points={metrics.weightTrend}
+                color="bg-slate-500"
+              />
+            ) : null}
+          </div>
+        ) : null}
       </section>
 
       <section aria-labelledby="next-heading" className="mt-10 border-t border-slate-200 pt-6">
-        <h2 id="next-heading" className="text-xl font-semibold">Look a little closer</h2>
+        <h2 id="next-heading" className="text-xl font-semibold">
+          Look a little closer
+        </h2>
         <div className="mt-5 grid gap-6 md:grid-cols-2">
-          <article><p className="text-sm font-semibold text-blue-700">Weekly Recap</p><h3 className="mt-2 text-lg font-semibold">{weeklyRecap?.title ?? "Your week in context"}</h3><p className="mt-2 text-sm leading-7 text-slate-600">{weeklyRecap?.summary ?? "Review a summary of what you tracked, or generate your first recap."}</p><Link href="/weekly-recap" className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-blue-700 focus-visible:outline-2 focus-visible:outline-blue-600">Open Weekly Recap →</Link></article>
-          <article><h3 className="text-lg font-semibold">Your tracking routines</h3>{!loading && checkins.length ? <p className="mt-2 text-sm leading-7 text-slate-600">{checkins.length} check-ins in this window · Latest recorded streak: {metrics.streak} days{metrics.latestWeight !== null ? ` · Latest weight: ${metrics.latestWeight}` : ""}</p> : null}<p className="mt-2 text-sm leading-7 text-slate-600">Review scheduled actions and routine progress in their dedicated views.</p><div className="mt-2 flex flex-wrap gap-x-6"><Link href="/habits" className="inline-flex min-h-11 items-center text-sm font-semibold text-blue-700 focus-visible:outline-2 focus-visible:outline-blue-600">View Habits →</Link><Link href="/protocols" className="inline-flex min-h-11 items-center text-sm font-semibold text-blue-700 focus-visible:outline-2 focus-visible:outline-blue-600">View Protocols →</Link></div></article>
+          <article>
+            <p className="text-sm font-semibold text-blue-700">Weekly Recap</p>
+            <h3 className="mt-2 text-lg font-semibold">
+              {weeklyRecap?.title ?? "Your week in context"}
+            </h3>
+            <p className="mt-2 text-sm leading-7 text-slate-600">
+              {weeklyRecap?.summary ??
+                "Review a summary of what you tracked, or generate your first recap."}
+            </p>
+            <Link
+              href="/weekly-recap"
+              className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-blue-700 focus-visible:outline-2 focus-visible:outline-blue-600"
+            >
+              Open Weekly Recap →
+            </Link>
+          </article>
+          <article>
+            <h3 className="text-lg font-semibold">Your tracking routines</h3>
+            {!loading && checkins.length ? (
+              <p className="mt-2 text-sm leading-7 text-slate-600">
+                {checkins.length} check-ins in this window · Latest recorded streak:{" "}
+                {metrics.streak} days
+                {metrics.latestWeight !== null ? ` · Latest weight: ${metrics.latestWeight}` : ""}
+              </p>
+            ) : null}
+            <p className="mt-2 text-sm leading-7 text-slate-600">
+              Review scheduled actions and routine progress in their dedicated views.
+            </p>
+            <div className="mt-2 flex flex-wrap gap-x-6">
+              <Link
+                href="/habits"
+                className="inline-flex min-h-11 items-center text-sm font-semibold text-blue-700 focus-visible:outline-2 focus-visible:outline-blue-600"
+              >
+                View Habits →
+              </Link>
+              <Link
+                href="/protocols"
+                className="inline-flex min-h-11 items-center text-sm font-semibold text-blue-700 focus-visible:outline-2 focus-visible:outline-blue-600"
+              >
+                View Protocols →
+              </Link>
+            </div>
+          </article>
         </div>
       </section>
-      <div className="[&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center"><HealthDisclaimerNote /></div>
+      <div className="[&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center">
+        <HealthDisclaimerNote />
+      </div>
     </div>
   );
 }

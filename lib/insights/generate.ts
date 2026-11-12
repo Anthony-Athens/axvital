@@ -1,10 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { logDevError } from "@/lib/app-errors";
-import type {
-  InsightConfidenceLevel,
-  InsightType,
-  UserInsight,
-} from "@/lib/types";
+import type { InsightConfidenceLevel, InsightType, UserInsight } from "@/lib/types";
 
 type SupabaseErrorDetails = {
   message?: string;
@@ -122,9 +118,7 @@ function comparisonInsight({
 }): InsightDraft {
   const sampleSize = firstCount + secondCount;
   const difference =
-    firstAverage === null || secondAverage === null
-      ? null
-      : firstAverage - secondAverage;
+    firstAverage === null || secondAverage === null ? null : firstAverage - secondAverage;
   const description =
     difference === null
       ? fallback
@@ -156,20 +150,17 @@ export function generateUserInsights(
   const poorSleepDays = checkins.filter((checkin) =>
     ["poor", "average"].includes(normalized(checkin.sleep_quality)),
   );
-  const lowStressDays = checkins.filter(
-    (checkin) => normalized(checkin.stress_level) === "low",
-  );
-  const highStressDays = checkins.filter(
-    (checkin) => normalized(checkin.stress_level) === "high",
-  );
+  const lowStressDays = checkins.filter((checkin) => normalized(checkin.stress_level) === "low");
+  const highStressDays = checkins.filter((checkin) => normalized(checkin.stress_level) === "high");
   const exerciseDays = checkins.filter(
     (checkin) =>
       exerciseEventDates.has(checkin.checkin_date) ||
       !["", "none", "no workout"].includes(normalized(checkin.exercise_level)),
   );
-  const nonExerciseDays = checkins.filter((checkin) =>
-    !exerciseEventDates.has(checkin.checkin_date) &&
-    ["none", "no workout"].includes(normalized(checkin.exercise_level)),
+  const nonExerciseDays = checkins.filter(
+    (checkin) =>
+      !exerciseEventDates.has(checkin.checkin_date) &&
+      ["none", "no workout"].includes(normalized(checkin.exercise_level)),
   );
   const alcoholDays = checkins.filter((checkin) => Boolean(checkin.alcohol));
   const nonAlcoholDays = checkins.filter((checkin) => !checkin.alcohol);
@@ -185,8 +176,7 @@ export function generateUserInsights(
       secondAverage: average(poorSleepDays.map((checkin) => checkin.energy_score)),
       secondCount: poorSleepDays.length,
       metricLabel: "Energy",
-      fallback:
-        "More sleep variety is needed before AXVital can compare sleep quality and energy.",
+      fallback: "More sleep variety is needed before AXVital can compare sleep quality and energy.",
     }),
     comparisonInsight({
       insightType: "stress_mood",
@@ -230,10 +220,7 @@ export function generateUserInsights(
   ];
 }
 
-export async function refreshUserInsights(
-  supabase: SupabaseClient,
-  userId: string,
-) {
+export async function refreshUserInsights(supabase: SupabaseClient, userId: string) {
   const startDate = daysAgo(29);
   const [checkinResult, eventResult] = await Promise.all([
     supabase

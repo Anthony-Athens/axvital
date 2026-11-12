@@ -12,6 +12,12 @@ export async function recordProductEvent(event: (typeof CLIENT_PRODUCT_EVENTS)[n
   try {
     const { data } = await createClient().auth.getSession();
     if (!data.session) return;
-    await fetch("/api/product-events", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ event }) });
-  } catch { /* Best effort: analytics never blocks the page. */ }
+    await fetch("/api/product-events", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ event }),
+    });
+  } catch {
+    /* Best effort: analytics never blocks the page. */
+  }
 }

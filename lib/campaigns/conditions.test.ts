@@ -22,11 +22,14 @@ test("only the three requested condition campaigns exist and are public", () => 
 test("campaign conversion uses the scoped CTA while preserving legal and privacy boundaries", () => {
   const source = read("../../components/campaigns/ConditionLandingPage.tsx");
   assert.match(read("../../components/campaigns/CampaignSignup.tsx"), /rel="noreferrer"/);
-  assert.equal((source.match(/<CampaignSignup condition=\{conditionKey\}\/>/g) ?? []).length, 4);
-  for (const route of ["privacy", "terms", "contact", "health-disclaimer"]) assert.ok(source.includes(`href="/${route}"`));
+  assert.equal((source.match(/<CampaignSignup condition=\{conditionKey\} \/>/g) ?? []).length, 4);
+  for (const route of ["privacy", "terms", "contact", "health-disclaimer"])
+    assert.ok(source.includes(`href="/${route}"`));
   assert.doesNotMatch(source, /fetch\(|localStorage|sessionStorage|trackEvent|gtag|fbq|\/signup\?/);
-  assert.match(source, /does not provide medical advice, diagnosis, or treatment/);
-  assert.match(source, /not medical advice or a recommended intervention/);
+  // JSX copy wraps across lines; compare it the way it renders.
+  const copy = source.replace(/\s+/g, " ");
+  assert.match(copy, /does not provide medical advice, diagnosis, or treatment/);
+  assert.match(copy, /not medical advice or a recommended intervention/);
 });
 test("campaign routes are indexable and referrer-safe without inbound public navigation", () => {
   const route = read("../../app/conditions/[slug]/page.tsx");
@@ -34,5 +37,6 @@ test("campaign routes are indexable and referrer-safe without inbound public nav
   assert.match(route, /referrer: "no-referrer"/);
   assert.match(route, /dynamicParams = false/);
   assert.match(read("../../next.config.ts"), /Referrer-Policy.*no-referrer/);
-  for (const file of ["../../app/page.tsx", "../../components/Footer.tsx"]) assert.doesNotMatch(read(file), /\/conditions\//);
+  for (const file of ["../../app/page.tsx", "../../components/Footer.tsx"])
+    assert.doesNotMatch(read(file), /\/conditions\//);
 });

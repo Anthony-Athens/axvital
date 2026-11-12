@@ -7,11 +7,17 @@ let releasePage: (() => void) | undefined;
 
 // Shared by Quick Log and Add Condition. Geometry follows the visible viewport,
 // while content changes affect only the sheet's scroll region.
-export function useSheetDialog(onClose: () => void, saving: boolean, { boundMobileViewport = false }: { boundMobileViewport?: boolean } = {}) {
+export function useSheetDialog(
+  onClose: () => void,
+  saving: boolean,
+  { boundMobileViewport = false }: { boundMobileViewport?: boolean } = {},
+) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
-  const dismiss = useEffectEvent(() => { if (!saving) onClose(); });
+  const dismiss = useEffectEvent(() => {
+    if (!saving) onClose();
+  });
 
   useEffect(() => {
     const dialog = dialogRef.current!;
@@ -20,7 +26,12 @@ export function useSheetDialog(onClose: () => void, saving: boolean, { boundMobi
     const previous = document.activeElement as HTMLElement | null;
     const body = document.body;
     if (sheets.length === 1) {
-      const original = { overflow: body.style.overflow, position: body.style.position, top: body.style.top, width: body.style.width };
+      const original = {
+        overflow: body.style.overflow,
+        position: body.style.position,
+        top: body.style.top,
+        width: body.style.width,
+      };
       const scrollY = window.scrollY;
       body.style.overflow = "hidden";
       body.style.position = "fixed";
@@ -61,24 +72,47 @@ export function useSheetDialog(onClose: () => void, saving: boolean, { boundMobi
     viewport?.addEventListener("resize", updateViewport);
     viewport?.addEventListener("scroll", updateViewport);
     window.addEventListener("resize", updateViewport);
-    const focusFrame = requestAnimationFrame(() => { if (isTop()) closeRef.current?.focus({ preventScroll: true }); });
-    const focusables = () => Array.from(dialogRef.current?.querySelectorAll<HTMLElement>(
-      'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])',
-    ) ?? []).filter((node) => node.tabIndex >= 0 && !node.closest("[hidden], [inert], fieldset[disabled]"));
+    const focusFrame = requestAnimationFrame(() => {
+      if (isTop()) closeRef.current?.focus({ preventScroll: true });
+    });
+    const focusables = () =>
+      Array.from(
+        dialogRef.current?.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])',
+        ) ?? [],
+      ).filter(
+        (node) => node.tabIndex >= 0 && !node.closest("[hidden], [inert], fieldset[disabled]"),
+      );
     const handleKeyDown = (event: KeyboardEvent) => {
       if (!isTop()) return;
-      if (event.key === "Escape" && !event.defaultPrevented) { event.preventDefault(); dismiss(); }
+      if (event.key === "Escape" && !event.defaultPrevented) {
+        event.preventDefault();
+        dismiss();
+      }
       if (event.key !== "Tab") return;
       const items = focusables();
-      const first = items[0], last = items.at(-1);
-      if (!first) { event.preventDefault(); dialogRef.current?.focus(); return; }
-      if (!dialogRef.current?.contains(document.activeElement) || (event.shiftKey && document.activeElement === first)) {
-        event.preventDefault(); (event.shiftKey ? last : first)?.focus();
-      } else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+      const first = items[0],
+        last = items.at(-1);
+      if (!first) {
+        event.preventDefault();
+        dialogRef.current?.focus();
+        return;
+      }
+      if (
+        !dialogRef.current?.contains(document.activeElement) ||
+        (event.shiftKey && document.activeElement === first)
+      ) {
+        event.preventDefault();
+        (event.shiftKey ? last : first)?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     };
     const handleFocus = () => {
       if (!isTop()) return;
-      if (!dialogRef.current?.contains(document.activeElement)) (focusables()[0] ?? dialogRef.current)?.focus({ preventScroll: true });
+      if (!dialogRef.current?.contains(document.activeElement))
+        (focusables()[0] ?? dialogRef.current)?.focus({ preventScroll: true });
       revealFocus();
     };
     document.addEventListener("keydown", handleKeyDown);
@@ -93,7 +127,10 @@ export function useSheetDialog(onClose: () => void, saving: boolean, { boundMobi
       window.removeEventListener("resize", updateViewport);
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("focusin", handleFocus);
-      if (!sheets.length) { releasePage?.(); releasePage = undefined; }
+      if (!sheets.length) {
+        releasePage?.();
+        releasePage = undefined;
+      }
       if (wasTop && previous?.isConnected) previous.focus({ preventScroll: true });
     };
   }, [boundMobileViewport]);

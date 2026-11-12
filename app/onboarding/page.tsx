@@ -128,14 +128,10 @@ export default function OnboardingPage() {
       setPrimaryGoal(loadedProfile.primary_goal ?? "");
       setBirthMonth(loadedProfile.birth_month ? String(loadedProfile.birth_month) : "");
       setBirthYear(loadedProfile.birth_year ? String(loadedProfile.birth_year) : "");
-      setCurrentWeight(
-        loadedProfile.current_weight ? String(loadedProfile.current_weight) : "",
-      );
+      setCurrentWeight(loadedProfile.current_weight ? String(loadedProfile.current_weight) : "");
       setGoalWeight(loadedProfile.goal_weight ? String(loadedProfile.goal_weight) : "");
       setTypicalSleepHours(
-        loadedProfile.typical_sleep_hours
-          ? String(loadedProfile.typical_sleep_hours)
-          : "",
+        loadedProfile.typical_sleep_hours ? String(loadedProfile.typical_sleep_hours) : "",
       );
       setHealthFocusNote(loadedProfile.health_focus_note ?? "");
       setLoading(false);
@@ -188,15 +184,13 @@ export default function OnboardingPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-6 md:px-6 md:py-10">
       <header>
-        <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-600">
-          Onboarding
-        </p>
+        <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-600">Onboarding</p>
         <h1 className="mt-3 text-4xl font-black tracking-tight md:text-5xl">
           Tune AXVital to your goal
         </h1>
         <p className="mt-3 max-w-2xl leading-7 text-slate-600">
-          Pick the outcome you care about most. The rest is optional context for
-          future personalization.
+          Pick the outcome you care about most. The rest is optional context for future
+          personalization.
         </p>
       </header>
 
@@ -233,9 +227,7 @@ export default function OnboardingPage() {
         <section className="mt-6 space-y-4">
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="block">
-              <span className="text-sm font-black text-slate-700">
-                Birth month
-              </span>
+              <span className="text-sm font-black text-slate-700">Birth month</span>
               <select
                 value={birthMonth}
                 onChange={(event) => setBirthMonth(event.target.value)}
@@ -249,9 +241,7 @@ export default function OnboardingPage() {
               </select>
             </label>
             <label className="block">
-              <span className="text-sm font-black text-slate-700">
-                Birth year
-              </span>
+              <span className="text-sm font-black text-slate-700">Birth year</span>
               <input
                 value={birthYear}
                 onChange={(event) => setBirthYear(event.target.value)}
@@ -264,9 +254,7 @@ export default function OnboardingPage() {
 
           <div className="grid gap-4 sm:grid-cols-3">
             <label className="block">
-              <span className="text-sm font-black text-slate-700">
-                Current weight
-              </span>
+              <span className="text-sm font-black text-slate-700">Current weight</span>
               <input
                 value={currentWeight}
                 onChange={(event) => setCurrentWeight(event.target.value)}
@@ -276,9 +264,7 @@ export default function OnboardingPage() {
               />
             </label>
             <label className="block">
-              <span className="text-sm font-black text-slate-700">
-                Goal weight
-              </span>
+              <span className="text-sm font-black text-slate-700">Goal weight</span>
               <input
                 value={goalWeight}
                 onChange={(event) => setGoalWeight(event.target.value)}
@@ -288,9 +274,7 @@ export default function OnboardingPage() {
               />
             </label>
             <label className="block">
-              <span className="text-sm font-black text-slate-700">
-                Typical sleep hours
-              </span>
+              <span className="text-sm font-black text-slate-700">Typical sleep hours</span>
               <input
                 value={typicalSleepHours}
                 onChange={(event) => setTypicalSleepHours(event.target.value)}
@@ -302,9 +286,7 @@ export default function OnboardingPage() {
           </div>
 
           <label className="block">
-            <span className="text-sm font-black text-slate-700">
-              Main health focus note
-            </span>
+            <span className="text-sm font-black text-slate-700">Main health focus note</span>
             <textarea
               value={healthFocusNote}
               onChange={(event) => setHealthFocusNote(event.target.value)}

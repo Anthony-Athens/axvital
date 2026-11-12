@@ -10,21 +10,177 @@ export const metadata: Metadata = socialMetadata(
   "/privacy",
 );
 
-export default function PrivacyPage(){return <TrustPage title="Privacy Policy">
-  <p className="text-sm text-slate-500">Effective September 24, 2026</p>
-  <section><h2 className="text-xl font-semibold">Overview</h2><p>This policy explains how AXVital collects, uses, discloses, and retains information when you use its direct-to-consumer health and wellness tracking service. AXVital is not a healthcare provider or HIPAA-covered entity, and this policy does not claim HIPAA compliance.</p></section>
-  <section><h2 className="text-xl font-semibold">Information you provide</h2><p>Account information may include your email address, name, profile preferences, goals, and authentication information handled by Supabase. Health and wellness information you choose to record may include daily check-ins, nutrition, supplements, medications, exercise and workouts, habits, protocols, conditions, symptoms, episodes, experiments, notes, health events, and related timestamps or tags.</p></section>
-  <section><h2 className="text-xl font-semibold">Information generated through the service</h2><p>AXVital uses your records to produce timelines, insights, correlations, experiment comparisons, trends, and weekly summaries. These outputs may be incomplete or inaccurate and are wellness information, not medical advice.</p></section>
-  <section><h2 className="text-xl font-semibold">Optional Voice Log</h2><p>When you start a voice recording, AXVital requests microphone permission. Audio and its transcript are sent to OpenAI to transcribe your words and prepare health-event drafts. AXVital holds this information temporarily for processing and review, without saving raw recordings or a permanent transcript history. OpenAI processes this information under its applicable service terms and retention settings. Only events you explicitly confirm are saved to your account. Voice-workflow analytics contain generic actions, not recordings, transcripts, event names, doses or health values.</p></section>
-  <section><h2 className="text-xl font-semibold">Usage and technical information</h2><p>AXVital and its infrastructure providers process information needed to deliver and secure the service, such as IP address, browser and device information, timestamps, authentication sessions, request metadata, and operational errors. The app may store session cookies and limited interface preferences in browser storage. Generic product-event names may be recorded for limited feature and subscription analytics; the current product-event endpoint does not accept free-form health data.</p></section>
-  <section><h2 className="text-xl font-semibold">How information is used</h2><p>AXVital uses information to authenticate users; provide tracking, planning, analysis, experiment, recap, support, billing, export, and deletion features; maintain security and reliability; troubleshoot problems; communicate about the service; and comply with applicable obligations. AXVital does not currently include an advertising-data sale integration.</p></section>
-  <section><h2 className="text-xl font-semibold">Service providers</h2><p>Supabase provides authentication and database infrastructure; Vercel may host and deliver the application; Stripe processes subscriptions and payments; and Resend may deliver authentication, transactional, and support email. These providers process information as needed to perform their services and under their own terms. Support messages are delivered to AXVital’s configured support mailbox and may be retained by email providers.</p></section>
-  <section><h2 className="text-xl font-semibold">Payments and email</h2><p>Stripe handles payment-card entry and processing. AXVital stores billing status and provider identifiers but does not intentionally send health notes or recorded health values to Stripe. AXVital may send account, security, billing, and support communications. Contact-form submissions use your address as Reply-To, never as the message sender.</p></section>
-  <section><h2 className="text-xl font-semibold">Cookies and analytics</h2><p>Authentication cookies keep you signed in, and browser storage may retain interface preferences. AXVital uses Vercel Web Analytics for page views and a small set of generic product events, such as account creation and checkout. Private page paths are grouped together, and URL query strings are removed. Public condition marketing pages and their signup funnel can be measured using the page category and approved campaign labels. These labels are not saved to your health profile or used to infer a diagnosis or create advertising audiences. We do not send health entries, notes, names, email addresses or account and billing identifiers as analytics event data. A Google Ads base tag also loads when configured. It uses a generic page URL and title, with automatic pageviews, personalized-ad signals and Enhanced Conversions disabled in our configuration. We do not forward signup fields, account identifiers, campaign labels or health entries to it. Google may process technical network information and cookies through its tag. Generic completion events may also be retained in our database. Account creation and first paid membership can generate an internal owner email containing account email and basic signup or plan information, without health entries or payment card details.</p></section>
-  <section><h2 className="text-xl font-semibold">Retention and deletion</h2><p>Active account data is generally retained while your account exists; AXVital does not currently promise a universal time-based retention period. You may use <Link className="text-blue-700 underline" href="/settings/data">data export</Link> and, where enabled, <Link className="text-blue-700 underline" href="/settings/delete">account deletion</Link>. Deletion removes active user-owned application records after verification, but provider billing records, email, security logs, backups, and records required for fraud prevention or legal compliance may remain for their applicable retention periods. Copies you previously exported remain under your control.</p></section>
-  <section><h2 className="text-xl font-semibold">Security</h2><p>AXVital uses commercially reasonable administrative, technical, and organizational safeguards intended to protect information. No service or transmission method can guarantee complete security. Keep your credentials private and contact Support if you suspect unauthorized account access.</p></section>
-  <section><h2 className="text-xl font-semibold">Your choices</h2><p>You may choose what optional information to record, correct supported account and health information, export your data, request account deletion, manage subscription settings, and contact AXVital about privacy questions. Some information is necessary to operate an account or requested feature.</p></section>
-  <section><h2 className="text-xl font-semibold">Health information</h2><p>Health and wellness records may be sensitive. Limit entries to information you are comfortable storing and do not share account credentials. AXVital does not use your records to provide diagnosis or treatment. See the <Link className="text-blue-700 underline" href="/health-disclaimer">Health Disclaimer</Link>.</p></section>
-  <section><h2 className="text-xl font-semibold">Children</h2><p>AXVital is not directed to children under 13, and users must be legally able to consent to these terms. If you believe a child provided personal information without appropriate authorization, contact AXVital so the request can be reviewed.</p></section>
-  <section><h2 className="text-xl font-semibold">Changes and contact</h2><p>AXVital may update this policy as the service or legal requirements change. Material updates will be identified by a revised effective date and, when appropriate, additional notice. Contact AXVital through the <Link className="text-blue-700 underline" href="/contact">support form</Link> for privacy questions or requests.</p></section>
-</TrustPage>}
+export default function PrivacyPage() {
+  return (
+    <TrustPage title="Privacy Policy">
+      <p className="text-sm text-slate-500">Effective September 24, 2026</p>
+      <section>
+        <h2 className="text-xl font-semibold">Overview</h2>
+        <p>
+          This policy explains how AXVital collects, uses, discloses, and retains information when
+          you use its direct-to-consumer health and wellness tracking service. AXVital is not a
+          healthcare provider or HIPAA-covered entity, and this policy does not claim HIPAA
+          compliance.
+        </p>
+      </section>
+      <section>
+        <h2 className="text-xl font-semibold">Information you provide</h2>
+        <p>
+          Account information may include your email address, name, profile preferences, goals, and
+          authentication information handled by Supabase. Health and wellness information you choose
+          to record may include daily check-ins, nutrition, supplements, medications, exercise and
+          workouts, habits, protocols, conditions, symptoms, episodes, experiments, notes, health
+          events, and related timestamps or tags.
+        </p>
+      </section>
+      <section>
+        <h2 className="text-xl font-semibold">Information generated through the service</h2>
+        <p>
+          AXVital uses your records to produce timelines, insights, correlations, experiment
+          comparisons, trends, and weekly summaries. These outputs may be incomplete or inaccurate
+          and are wellness information, not medical advice.
+        </p>
+      </section>
+      <section>
+        <h2 className="text-xl font-semibold">Optional Voice Log</h2>
+        <p>
+          When you start a voice recording, AXVital requests microphone permission. Audio and its
+          transcript are sent to OpenAI to transcribe your words and prepare health-event drafts.
+          AXVital holds this information temporarily for processing and review, without saving raw
+          recordings or a permanent transcript history. OpenAI processes this information under its
+          applicable service terms and retention settings. Only events you explicitly confirm are
+          saved to your account. Voice-workflow analytics contain generic actions, not recordings,
+          transcripts, event names, doses or health values.
+        </p>
+      </section>
+      <section>
+        <h2 className="text-xl font-semibold">Usage and technical information</h2>
+        <p>
+          AXVital and its infrastructure providers process information needed to deliver and secure
+          the service, such as IP address, browser and device information, timestamps,
+          authentication sessions, request metadata, and operational errors. The app may store
+          session cookies and limited interface preferences in browser storage. Generic
+          product-event names may be recorded for limited feature and subscription analytics; the
+          current product-event endpoint does not accept free-form health data.
+        </p>
+      </section>
+      <section>
+        <h2 className="text-xl font-semibold">How information is used</h2>
+        <p>
+          AXVital uses information to authenticate users; provide tracking, planning, analysis,
+          experiment, recap, support, billing, export, and deletion features; maintain security and
+          reliability; troubleshoot problems; communicate about the service; and comply with
+          applicable obligations. AXVital does not currently include an advertising-data sale
+          integration.
+        </p>
+      </section>
+      <section>
+        <h2 className="text-xl font-semibold">Service providers</h2>
+        <p>
+          Supabase provides authentication and database infrastructure; Vercel may host and deliver
+          the application; Stripe processes subscriptions and payments; and Resend may deliver
+          authentication, transactional, and support email. These providers process information as
+          needed to perform their services and under their own terms. Support messages are delivered
+          to AXVital’s configured support mailbox and may be retained by email providers.
+        </p>
+      </section>
+      <section>
+        <h2 className="text-xl font-semibold">Payments and email</h2>
+        <p>
+          Stripe handles payment-card entry and processing. AXVital stores billing status and
+          provider identifiers but does not intentionally send health notes or recorded health
+          values to Stripe. AXVital may send account, security, billing, and support communications.
+          Contact-form submissions use your address as Reply-To, never as the message sender.
+        </p>
+      </section>
+      <section>
+        <h2 className="text-xl font-semibold">Cookies and analytics</h2>
+        <p>
+          Authentication cookies keep you signed in, and browser storage may retain interface
+          preferences. AXVital uses Vercel Web Analytics for page views and a small set of generic
+          product events, such as account creation and checkout. Private page paths are grouped
+          together, and URL query strings are removed. Public condition marketing pages and their
+          signup funnel can be measured using the page category and approved campaign labels. These
+          labels are not saved to your health profile or used to infer a diagnosis or create
+          advertising audiences. We do not send health entries, notes, names, email addresses or
+          account and billing identifiers as analytics event data. A Google Ads base tag also loads
+          when configured. It uses a generic page URL and title, with automatic pageviews,
+          personalized-ad signals and Enhanced Conversions disabled in our configuration. We do not
+          forward signup fields, account identifiers, campaign labels or health entries to it.
+          Google may process technical network information and cookies through its tag. Generic
+          completion events may also be retained in our database. Account creation and first paid
+          membership can generate an internal owner email containing account email and basic signup
+          or plan information, without health entries or payment card details.
+        </p>
+      </section>
+      <section>
+        <h2 className="text-xl font-semibold">Retention and deletion</h2>
+        <p>
+          Active account data is generally retained while your account exists; AXVital does not
+          currently promise a universal time-based retention period. You may use{" "}
+          <Link className="text-blue-700 underline" href="/settings/data">
+            data export
+          </Link>{" "}
+          and, where enabled,{" "}
+          <Link className="text-blue-700 underline" href="/settings/delete">
+            account deletion
+          </Link>
+          . Deletion removes active user-owned application records after verification, but provider
+          billing records, email, security logs, backups, and records required for fraud prevention
+          or legal compliance may remain for their applicable retention periods. Copies you
+          previously exported remain under your control.
+        </p>
+      </section>
+      <section>
+        <h2 className="text-xl font-semibold">Security</h2>
+        <p>
+          AXVital uses commercially reasonable administrative, technical, and organizational
+          safeguards intended to protect information. No service or transmission method can
+          guarantee complete security. Keep your credentials private and contact Support if you
+          suspect unauthorized account access.
+        </p>
+      </section>
+      <section>
+        <h2 className="text-xl font-semibold">Your choices</h2>
+        <p>
+          You may choose what optional information to record, correct supported account and health
+          information, export your data, request account deletion, manage subscription settings, and
+          contact AXVital about privacy questions. Some information is necessary to operate an
+          account or requested feature.
+        </p>
+      </section>
+      <section>
+        <h2 className="text-xl font-semibold">Health information</h2>
+        <p>
+          Health and wellness records may be sensitive. Limit entries to information you are
+          comfortable storing and do not share account credentials. AXVital does not use your
+          records to provide diagnosis or treatment. See the{" "}
+          <Link className="text-blue-700 underline" href="/health-disclaimer">
+            Health Disclaimer
+          </Link>
+          .
+        </p>
+      </section>
+      <section>
+        <h2 className="text-xl font-semibold">Children</h2>
+        <p>
+          AXVital is not directed to children under 13, and users must be legally able to consent to
+          these terms. If you believe a child provided personal information without appropriate
+          authorization, contact AXVital so the request can be reviewed.
+        </p>
+      </section>
+      <section>
+        <h2 className="text-xl font-semibold">Changes and contact</h2>
+        <p>
+          AXVital may update this policy as the service or legal requirements change. Material
+          updates will be identified by a revised effective date and, when appropriate, additional
+          notice. Contact AXVital through the{" "}
+          <Link className="text-blue-700 underline" href="/contact">
+            support form
+          </Link>{" "}
+          for privacy questions or requests.
+        </p>
+      </section>
+    </TrustPage>
+  );
+}

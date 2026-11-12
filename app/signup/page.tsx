@@ -28,7 +28,10 @@ export default function SignupPage() {
     event.preventDefault();
     if (submitting.current || submitted) return;
     const validation = passwordError(password);
-    if (validation) { setMessage(validation); return; }
+    if (validation) {
+      setMessage(validation);
+      return;
+    }
     const attribution = attributionFromSearch(window.location.search);
     trackCampaign(campaignEvents.submitted, attribution);
     submitting.current = true;
@@ -56,7 +59,8 @@ export default function SignupPage() {
         return;
       }
 
-      if (newlyCreatedSignup(data.user, startedAt, Date.now())) trackCampaign(campaignEvents.completed, attribution);
+      if (newlyCreatedSignup(data.user, startedAt, Date.now()))
+        trackCampaign(campaignEvents.completed, attribution);
       setSubmitted(true);
       if (data.session) {
         router.push("/onboarding");
@@ -76,12 +80,8 @@ export default function SignupPage() {
   return (
     <div className="mx-auto flex min-h-[calc(100dvh-10rem)] max-w-md items-center px-4 py-8">
       <section className="w-full rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-        <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-600">
-          Sign Up
-        </p>
-        <h1 className="mt-3 text-4xl font-black tracking-tight">
-          Create your baseline
-        </h1>
+        <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-600">Sign Up</p>
+        <h1 className="mt-3 text-4xl font-black tracking-tight">Create your baseline</h1>
         <p className="mt-3 leading-7 text-slate-600">
           Start with simple tracking and add more detail when it helps.
         </p>
@@ -91,25 +91,14 @@ export default function SignupPage() {
             ["Email", email, setEmail, "email", "email", true],
             ["Password", password, setPassword, "password", "new-password", true],
             ["Full name", fullName, setFullName, "text", "name", true],
-            [
-              "Preferred name",
-              preferredName,
-              setPreferredName,
-              "text",
-              "given-name",
-              false,
-            ],
+            ["Preferred name", preferredName, setPreferredName, "text", "given-name", false],
             ["Primary goal", primaryGoal, setPrimaryGoal, "text", "off", false],
           ].map(([label, value, setter, type, autocomplete, required]) => (
             <label key={label as string} className="block">
-              <span className="text-sm font-black text-slate-700">
-                {label as string}
-              </span>
+              <span className="text-sm font-black text-slate-700">{label as string}</span>
               <input
                 value={value as string}
-                onChange={(event) =>
-                  (setter as (next: string) => void)(event.target.value)
-                }
+                onChange={(event) => (setter as (next: string) => void)(event.target.value)}
                 type={type as string}
                 autoComplete={autocomplete as string}
                 required={required as boolean}
@@ -118,17 +107,44 @@ export default function SignupPage() {
                 aria-describedby={type === "password" ? "signup-password-help" : undefined}
                 className="mt-2 min-h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 text-base font-semibold outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
               />
-              {type === "password" ? <span id="signup-password-help" className="mt-2 block text-sm text-slate-600">{PASSWORD_HELP}</span> : null}
+              {type === "password" ? (
+                <span id="signup-password-help" className="mt-2 block text-sm text-slate-600">
+                  {PASSWORD_HELP}
+                </span>
+              ) : null}
             </label>
           ))}
 
           {message ? (
-            <p role="alert" className="rounded-2xl bg-amber-50 p-4 text-sm font-black text-amber-900">
+            <p
+              role="alert"
+              className="rounded-2xl bg-amber-50 p-4 text-sm font-black text-amber-900"
+            >
               {message}
             </p>
           ) : null}
 
-          <p className="text-center text-sm leading-6 text-slate-600">By creating an account, you agree to AXVital&apos;s <Link href="/terms" target="_blank" rel="noopener noreferrer" className="font-semibold text-blue-700 underline">Terms of Service<span className="sr-only"> (opens in a new tab)</span></Link> and acknowledge the <Link href="/privacy" target="_blank" rel="noopener noreferrer" className="font-semibold text-blue-700 underline">Privacy Policy<span className="sr-only"> (opens in a new tab)</span></Link>.</p>
+          <p className="text-center text-sm leading-6 text-slate-600">
+            By creating an account, you agree to AXVital&apos;s{" "}
+            <Link
+              href="/terms"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-blue-700 underline"
+            >
+              Terms of Service<span className="sr-only"> (opens in a new tab)</span>
+            </Link>{" "}
+            and acknowledge the{" "}
+            <Link
+              href="/privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-blue-700 underline"
+            >
+              Privacy Policy<span className="sr-only"> (opens in a new tab)</span>
+            </Link>
+            .
+          </p>
 
           <button
             type="submit"

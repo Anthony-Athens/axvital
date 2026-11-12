@@ -13,8 +13,13 @@ export function recoveryTracker() {
         deadline = 0;
       }
     },
-    valid(user: string | undefined, now = Date.now()) { return Boolean(user && user === userId && now < deadline); },
-    clear() { userId = undefined; deadline = 0; },
+    valid(user: string | undefined, now = Date.now()) {
+      return Boolean(user && user === userId && now < deadline);
+    },
+    clear() {
+      userId = undefined;
+      deadline = 0;
+    },
   };
 }
 

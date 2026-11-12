@@ -1,2 +1,20 @@
 import { productionOrigin } from "@/lib/seo";
-import type{MetadataRoute}from"next";export default function sitemap():MetadataRoute.Sitemap{const base=productionOrigin;return["","/pricing","/privacy","/terms","/contact","/conditions/ms","/conditions/psoriasis","/conditions/hsv"].map(path=>({url:base+path,lastModified:new Date(),changeFrequency:path?"monthly"as const:"weekly"as const,priority:path?.6:1}))}
+import type { MetadataRoute } from "next";
+export default function sitemap(): MetadataRoute.Sitemap {
+  const base = productionOrigin;
+  return [
+    "",
+    "/pricing",
+    "/privacy",
+    "/terms",
+    "/contact",
+    "/conditions/ms",
+    "/conditions/psoriasis",
+    "/conditions/hsv",
+  ].map((path) => ({
+    url: base + path,
+    lastModified: new Date(),
+    changeFrequency: path ? ("monthly" as const) : ("weekly" as const),
+    priority: path ? 0.6 : 1,
+  }));
+}

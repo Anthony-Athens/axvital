@@ -103,8 +103,7 @@ function demoDailyCheckins(userId: string) {
     const sleep_quality = pick(sleepOptions);
     const exercise_level = index % 4 === 0 ? "None" : pick(exerciseOptions.slice(1));
     const stress_level = index % 7 === 1 ? "High" : pick(stressOptions);
-    const nutrition_quality =
-      index % 6 === 0 ? "Excellent" : pick(nutritionOptions.slice(1));
+    const nutrition_quality = index % 6 === 0 ? "Excellent" : pick(nutritionOptions.slice(1));
     const alcohol = index % 8 === 5;
     const goodSleepBoost = sleep_quality === "Good" || sleep_quality === "Great" ? 1 : -1;
     const exerciseBoost = exercise_level === "None" ? -0.5 : 0.8;
@@ -114,7 +113,9 @@ function demoDailyCheckins(userId: string) {
     return {
       user_id: userId,
       checkin_date: date,
-      energy_score: boundedScore(6 + goodSleepBoost + exerciseBoost + stressDrag + alcoholDrag + Math.random() * 1.5),
+      energy_score: boundedScore(
+        6 + goodSleepBoost + exerciseBoost + stressDrag + alcoholDrag + Math.random() * 1.5,
+      ),
       mood_score: boundedScore(6 + stressDrag + goodSleepBoost + Math.random() * 1.8),
       sleep_quality,
       exercise_level,
@@ -265,14 +266,10 @@ export default function ProfilePage() {
       setPrimaryGoal(loadedProfile.primary_goal ?? "");
       setBirthMonth(loadedProfile.birth_month ? String(loadedProfile.birth_month) : "");
       setBirthYear(loadedProfile.birth_year ? String(loadedProfile.birth_year) : "");
-      setCurrentWeight(
-        loadedProfile.current_weight ? String(loadedProfile.current_weight) : "",
-      );
+      setCurrentWeight(loadedProfile.current_weight ? String(loadedProfile.current_weight) : "");
       setGoalWeight(loadedProfile.goal_weight ? String(loadedProfile.goal_weight) : "");
       setTypicalSleepHours(
-        loadedProfile.typical_sleep_hours
-          ? String(loadedProfile.typical_sleep_hours)
-          : "",
+        loadedProfile.typical_sleep_hours ? String(loadedProfile.typical_sleep_hours) : "",
       );
       setHealthFocusNote(loadedProfile.health_focus_note ?? "");
       setLoading(false);
@@ -376,9 +373,7 @@ export default function ProfilePage() {
 
       await insertDemoCheckins(supabase, checkins);
 
-      const { error: eventError } = await supabase
-        .from("health_events")
-        .insert(events);
+      const { error: eventError } = await supabase.from("health_events").insert(events);
 
       if (eventError) {
         logDevError("Failed to generate demo health events", eventError);
@@ -432,9 +427,7 @@ export default function ProfilePage() {
             <h1 className="mt-1 text-3xl font-black tracking-tight">
               {loading ? "Loading..." : displayName}
             </h1>
-            <p className="mt-1 text-sm font-semibold text-slate-500">
-              {profile?.email ?? ""}
-            </p>
+            <p className="mt-1 text-sm font-semibold text-slate-500">{profile?.email ?? ""}</p>
           </div>
         </div>
 
@@ -448,9 +441,7 @@ export default function ProfilePage() {
             />
           </label>
           <label className="block">
-            <span className="text-sm font-black text-slate-700">
-              Preferred name
-            </span>
+            <span className="text-sm font-black text-slate-700">Preferred name</span>
             <input
               value={preferredName}
               onChange={(event) => setPreferredName(event.target.value)}
@@ -458,9 +449,7 @@ export default function ProfilePage() {
             />
           </label>
           <label className="block">
-            <span className="text-sm font-black text-slate-700">
-              Primary goal
-            </span>
+            <span className="text-sm font-black text-slate-700">Primary goal</span>
             <select
               value={primaryGoal}
               onChange={(event) => setPrimaryGoal(event.target.value)}
@@ -475,19 +464,14 @@ export default function ProfilePage() {
             </select>
           </label>
           <section className="rounded-3xl border border-slate-100 bg-slate-50 p-4">
-            <h2 className="text-lg font-black tracking-tight">
-              Personalization context
-            </h2>
+            <h2 className="text-lg font-black tracking-tight">Personalization context</h2>
             <p className="mt-1 text-sm font-semibold leading-6 text-slate-500">
-              Optional details AXVital can use later to personalize your
-              baseline.
+              Optional details AXVital can use later to personalize your baseline.
             </p>
 
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
               <label className="block">
-                <span className="text-sm font-black text-slate-700">
-                  Birth month
-                </span>
+                <span className="text-sm font-black text-slate-700">Birth month</span>
                 <select
                   value={birthMonth}
                   onChange={(event) => setBirthMonth(event.target.value)}
@@ -501,9 +485,7 @@ export default function ProfilePage() {
                 </select>
               </label>
               <label className="block">
-                <span className="text-sm font-black text-slate-700">
-                  Birth year
-                </span>
+                <span className="text-sm font-black text-slate-700">Birth year</span>
                 <input
                   value={birthYear}
                   onChange={(event) => setBirthYear(event.target.value)}
@@ -515,9 +497,7 @@ export default function ProfilePage() {
 
             <div className="mt-4 grid gap-4 sm:grid-cols-3">
               <label className="block">
-                <span className="text-sm font-black text-slate-700">
-                  Current weight
-                </span>
+                <span className="text-sm font-black text-slate-700">Current weight</span>
                 <input
                   value={currentWeight}
                   onChange={(event) => setCurrentWeight(event.target.value)}
@@ -526,9 +506,7 @@ export default function ProfilePage() {
                 />
               </label>
               <label className="block">
-                <span className="text-sm font-black text-slate-700">
-                  Goal weight
-                </span>
+                <span className="text-sm font-black text-slate-700">Goal weight</span>
                 <input
                   value={goalWeight}
                   onChange={(event) => setGoalWeight(event.target.value)}
@@ -537,9 +515,7 @@ export default function ProfilePage() {
                 />
               </label>
               <label className="block">
-                <span className="text-sm font-black text-slate-700">
-                  Typical sleep hours
-                </span>
+                <span className="text-sm font-black text-slate-700">Typical sleep hours</span>
                 <input
                   value={typicalSleepHours}
                   onChange={(event) => setTypicalSleepHours(event.target.value)}
@@ -550,9 +526,7 @@ export default function ProfilePage() {
             </div>
 
             <label className="mt-4 block">
-              <span className="text-sm font-black text-slate-700">
-                Main health focus note
-              </span>
+              <span className="text-sm font-black text-slate-700">Main health focus note</span>
               <textarea
                 value={healthFocusNote}
                 onChange={(event) => setHealthFocusNote(event.target.value)}
@@ -583,12 +557,10 @@ export default function ProfilePage() {
           <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-700">
             Development Only
           </p>
-          <h2 className="mt-2 text-2xl font-black tracking-tight">
-            Demo data tools
-          </h2>
+          <h2 className="mt-2 text-2xl font-black tracking-tight">Demo data tools</h2>
           <p className="mt-2 leading-7 text-amber-900">
-            Generate or remove tagged development/test data for Dashboard and
-            Insights testing. This section is hidden in production.
+            Generate or remove tagged development/test data for Dashboard and Insights testing. This
+            section is hidden in production.
           </p>
 
           {demoMessage ? (
@@ -621,8 +593,12 @@ export default function ProfilePage() {
       <HealthProfileSummary />
       <section className="rounded-2xl border border-slate-200 bg-white p-5">
         <h2 className="text-lg font-semibold">Account controls</h2>
-        <p className="mt-2 text-sm text-slate-600">Manage security, billing, data export, account deletion, and support in Account Settings.</p>
-        <ButtonLink href="/settings" variant="secondary" className="mt-3">Open Account Settings</ButtonLink>
+        <p className="mt-2 text-sm text-slate-600">
+          Manage security, billing, data export, account deletion, and support in Account Settings.
+        </p>
+        <ButtonLink href="/settings" variant="secondary" className="mt-3">
+          Open Account Settings
+        </ButtonLink>
       </section>
     </div>
   );

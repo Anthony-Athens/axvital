@@ -65,9 +65,7 @@ export default function LoginPage() {
 
     setLoading(false);
     router.push(
-      profile?.onboarding_completed && profile.primary_goal?.trim()
-        ? "/today"
-        : "/onboarding",
+      profile?.onboarding_completed && profile.primary_goal?.trim() ? "/today" : "/onboarding",
     );
     router.refresh();
   }
@@ -75,12 +73,8 @@ export default function LoginPage() {
   return (
     <div className="mx-auto flex min-h-[calc(100dvh-10rem)] max-w-md items-center px-4 py-8">
       <section className="w-full rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-        <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-600">
-          Login
-        </p>
-        <h1 className="mt-3 text-4xl font-black tracking-tight">
-          Welcome back
-        </h1>
+        <p className="text-sm font-bold uppercase tracking-[0.18em] text-emerald-600">Login</p>
+        <h1 className="mt-3 text-4xl font-black tracking-tight">Welcome back</h1>
         <p className="mt-3 leading-7 text-slate-600">
           Sign in to save check-ins, log events, and view your AXVital profile.
         </p>
@@ -109,7 +103,12 @@ export default function LoginPage() {
             />
           </label>
 
-          <Link href="/forgot-password" className="inline-flex min-h-11 items-center rounded-lg text-sm font-semibold text-blue-700 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-600">Forgot password?</Link>
+          <Link
+            href="/forgot-password"
+            className="inline-flex min-h-11 items-center rounded-lg text-sm font-semibold text-blue-700 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-600"
+          >
+            Forgot password?
+          </Link>
 
           {message ? (
             <p className="rounded-2xl bg-amber-50 p-4 text-sm font-black text-amber-900">

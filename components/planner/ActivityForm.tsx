@@ -2,36 +2,411 @@
 
 import { SheetDialog } from "@/components/ui/SheetDialog";
 import { FormEvent, useState } from "react";
-import { ACTIVITY_TYPES, RECURRENCE_TYPES, type CreatePlannedActivityInput, type PlannedActivity } from "@/lib/planner/types";
+import {
+  ACTIVITY_TYPES,
+  RECURRENCE_TYPES,
+  type CreatePlannedActivityInput,
+  type PlannedActivity,
+} from "@/lib/planner/types";
 
-const recurrenceLabels = { none: "Does not repeat", daily: "Every day", weekdays: "Weekdays", specific_days: "Selected days", weekly: "Every week", interval: "Every X days" } as const;
+const recurrenceLabels = {
+  none: "Does not repeat",
+  daily: "Every day",
+  weekdays: "Weekdays",
+  specific_days: "Selected days",
+  weekly: "Every week",
+  interval: "Every X days",
+} as const;
 const weekdayLabels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-const units = ["minutes", "hours", "steps", "ounces", "liters", "glasses", "grams", "servings", "pages", "miles", "kilometers", "repetitions"];
+const units = [
+  "minutes",
+  "hours",
+  "steps",
+  "ounces",
+  "liters",
+  "glasses",
+  "grams",
+  "servings",
+  "pages",
+  "miles",
+  "kilometers",
+  "repetitions",
+];
 
-export function ActivityForm({ activity, initialDate, saving, onCancel, onSubmit }: { activity?: PlannedActivity | null; initialDate: string; saving: boolean; onCancel: () => void; onSubmit: (input: CreatePlannedActivityInput) => Promise<void> }) {
-  const [form, setForm] = useState<CreatePlannedActivityInput>(() => activity ? { title: activity.title, description: activity.description, activity_type: activity.activity_type, recurrence_type: activity.recurrence_type, start_date: activity.start_date, end_date: activity.end_date, scheduled_time: activity.scheduled_time?.slice(0, 5) ?? null, days_of_week: activity.days_of_week ?? [], interval_days: activity.interval_days ?? 2, is_active: activity.is_active, tracking_type: activity.tracking_type ?? "binary", target_value: activity.target_value, target_unit: activity.target_unit, minimum_value: activity.minimum_value, allow_partial_completion: activity.allow_partial_completion, habit_color: activity.habit_color, habit_icon: activity.habit_icon } : { title: "", description: "", activity_type: "habit", recurrence_type: "none", start_date: initialDate, end_date: null, scheduled_time: null, days_of_week: [], interval_days: 2, is_active: true, tracking_type: "binary", target_value: null, target_unit: null, minimum_value: null, allow_partial_completion: false, habit_color: null, habit_icon: null });
+export function ActivityForm({
+  activity,
+  initialDate,
+  saving,
+  onCancel,
+  onSubmit,
+}: {
+  activity?: PlannedActivity | null;
+  initialDate: string;
+  saving: boolean;
+  onCancel: () => void;
+  onSubmit: (input: CreatePlannedActivityInput) => Promise<void>;
+}) {
+  const [form, setForm] = useState<CreatePlannedActivityInput>(() =>
+    activity
+      ? {
+          title: activity.title,
+          description: activity.description,
+          activity_type: activity.activity_type,
+          recurrence_type: activity.recurrence_type,
+          start_date: activity.start_date,
+          end_date: activity.end_date,
+          scheduled_time: activity.scheduled_time?.slice(0, 5) ?? null,
+          days_of_week: activity.days_of_week ?? [],
+          interval_days: activity.interval_days ?? 2,
+          is_active: activity.is_active,
+          tracking_type: activity.tracking_type ?? "binary",
+          target_value: activity.target_value,
+          target_unit: activity.target_unit,
+          minimum_value: activity.minimum_value,
+          allow_partial_completion: activity.allow_partial_completion,
+          habit_color: activity.habit_color,
+          habit_icon: activity.habit_icon,
+        }
+      : {
+          title: "",
+          description: "",
+          activity_type: "habit",
+          recurrence_type: "none",
+          start_date: initialDate,
+          end_date: null,
+          scheduled_time: null,
+          days_of_week: [],
+          interval_days: 2,
+          is_active: true,
+          tracking_type: "binary",
+          target_value: null,
+          target_unit: null,
+          minimum_value: null,
+          allow_partial_completion: false,
+          habit_color: null,
+          habit_icon: null,
+        },
+  );
   const [error, setError] = useState("");
-  function set<K extends keyof CreatePlannedActivityInput>(key: K, value: CreatePlannedActivityInput[K]) { setForm((current) => ({ ...current, [key]: value })); }
-  async function submit(event: FormEvent) { event.preventDefault(); setError(""); if (!form.title.trim()) return setError("Enter an activity title."); if (form.end_date && form.end_date < form.start_date) return setError("End date cannot be before start date."); if (form.recurrence_type === "specific_days" && !form.days_of_week?.length) return setError("Select at least one weekday."); if (form.recurrence_type === "interval" && (!form.interval_days || form.interval_days < 1)) return setError("Repeat interval must be at least one day."); if (form.tracking_type !== "binary" && (!form.target_value || form.target_value <= 0)) return setError("Enter a target greater than zero."); if (form.minimum_value !== null && form.minimum_value !== undefined && (form.minimum_value < 0 || (form.target_value && form.minimum_value > form.target_value))) return setError("Minimum must be between zero and the target."); try { await onSubmit({ ...form, title: form.title.trim(), description: form.description?.trim() || null, scheduled_time: form.scheduled_time || null, end_date: form.end_date || null, days_of_week: form.recurrence_type === "specific_days" ? form.days_of_week : null, interval_days: form.recurrence_type === "interval" ? form.interval_days : null, target_value: form.tracking_type === "binary" ? null : form.target_value, target_unit: form.tracking_type === "binary" ? null : form.tracking_type === "duration" ? "minutes" : form.target_unit?.trim() || "units", minimum_value: form.tracking_type === "binary" ? null : form.minimum_value }); } catch (reason) { if (activity) setForm(current => ({ ...current, start_date: activity.start_date, scheduled_time: activity.scheduled_time?.slice(0, 5) ?? null })); setError(reason instanceof Error ? reason.message : "We couldn’t save this activity. The original date is unchanged."); } }
-  const inputClass = "mt-2 min-h-12 w-full rounded-2xl border border-slate-200 bg-white px-4 text-base font-semibold outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100";
-  return <SheetDialog wide title={activity ? "Edit activity" : "Add activity"} onClose={onCancel} saving={saving} onSubmit={submit} failureMessage="We couldn’t save this activity. Please try again." footer={<div className="flex gap-3"><button type="button" disabled={saving} onClick={onCancel} className="min-h-12 flex-1 rounded-full border border-slate-300 font-black">Cancel</button><button disabled={saving} className="min-h-12 flex-1 rounded-full bg-emerald-500 font-black text-white disabled:opacity-60">{saving ? "Saving…" : activity ? "Save changes" : "Add activity"}</button></div>}>
+  function set<K extends keyof CreatePlannedActivityInput>(
+    key: K,
+    value: CreatePlannedActivityInput[K],
+  ) {
+    setForm((current) => ({ ...current, [key]: value }));
+  }
+  async function submit(event: FormEvent) {
+    event.preventDefault();
+    setError("");
+    if (!form.title.trim()) return setError("Enter an activity title.");
+    if (form.end_date && form.end_date < form.start_date)
+      return setError("End date cannot be before start date.");
+    if (form.recurrence_type === "specific_days" && !form.days_of_week?.length)
+      return setError("Select at least one weekday.");
+    if (form.recurrence_type === "interval" && (!form.interval_days || form.interval_days < 1))
+      return setError("Repeat interval must be at least one day.");
+    if (form.tracking_type !== "binary" && (!form.target_value || form.target_value <= 0))
+      return setError("Enter a target greater than zero.");
+    if (
+      form.minimum_value !== null &&
+      form.minimum_value !== undefined &&
+      (form.minimum_value < 0 || (form.target_value && form.minimum_value > form.target_value))
+    )
+      return setError("Minimum must be between zero and the target.");
+    try {
+      await onSubmit({
+        ...form,
+        title: form.title.trim(),
+        description: form.description?.trim() || null,
+        scheduled_time: form.scheduled_time || null,
+        end_date: form.end_date || null,
+        days_of_week: form.recurrence_type === "specific_days" ? form.days_of_week : null,
+        interval_days: form.recurrence_type === "interval" ? form.interval_days : null,
+        target_value: form.tracking_type === "binary" ? null : form.target_value,
+        target_unit:
+          form.tracking_type === "binary"
+            ? null
+            : form.tracking_type === "duration"
+              ? "minutes"
+              : form.target_unit?.trim() || "units",
+        minimum_value: form.tracking_type === "binary" ? null : form.minimum_value,
+      });
+    } catch (reason) {
+      if (activity)
+        setForm((current) => ({
+          ...current,
+          start_date: activity.start_date,
+          scheduled_time: activity.scheduled_time?.slice(0, 5) ?? null,
+        }));
+      setError(
+        reason instanceof Error
+          ? reason.message
+          : "We couldn’t save this activity. The original date is unchanged.",
+      );
+    }
+  }
+  const inputClass =
+    "mt-2 min-h-12 w-full rounded-2xl border border-slate-200 bg-white px-4 text-base font-semibold outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100";
+  return (
+    <SheetDialog
+      wide
+      title={activity ? "Edit activity" : "Add activity"}
+      onClose={onCancel}
+      saving={saving}
+      onSubmit={submit}
+      failureMessage="We couldn’t save this activity. Please try again."
+      footer={
+        <div className="flex gap-3">
+          <button
+            type="button"
+            disabled={saving}
+            onClick={onCancel}
+            className="min-h-12 flex-1 rounded-full border border-slate-300 font-black"
+          >
+            Cancel
+          </button>
+          <button
+            disabled={saving}
+            className="min-h-12 flex-1 rounded-full bg-emerald-500 font-black text-white disabled:opacity-60"
+          >
+            {saving ? "Saving…" : activity ? "Save changes" : "Add activity"}
+          </button>
+        </div>
+      }
+    >
       <div className="mt-6 grid gap-5 sm:grid-cols-2">
-        <label className="font-bold sm:col-span-2">Title<input value={form.title} onChange={(e) => set("title", e.target.value)} className={inputClass} placeholder="Take creatine" /></label>
-        <label className="font-bold sm:col-span-2">Description <span className="text-slate-400">(optional)</span><textarea value={form.description ?? ""} onChange={(e) => set("description", e.target.value)} className={`${inputClass} min-h-24 py-3`} /></label>
-        <label className="font-bold">Activity type<select value={form.activity_type} onChange={(e) => set("activity_type", e.target.value as CreatePlannedActivityInput["activity_type"])} className={inputClass}>{ACTIVITY_TYPES.map((type) => <option key={type} value={type}>{type[0].toUpperCase() + type.slice(1)}</option>)}</select></label>
-        <label className="font-bold">Recurrence<select value={form.recurrence_type} onChange={(e) => set("recurrence_type", e.target.value as CreatePlannedActivityInput["recurrence_type"])} className={inputClass}>{RECURRENCE_TYPES.map((type) => <option key={type} value={type}>{recurrenceLabels[type]}</option>)}</select></label>
-        <label className="font-bold">Start date<input type="date" required value={form.start_date} onChange={(e) => set("start_date", e.target.value)} className={inputClass} /></label>
-        <label className="font-bold">Scheduled time <span className="text-slate-400">(optional)</span><input type="time" value={form.scheduled_time ?? ""} onChange={(e) => set("scheduled_time", e.target.value)} className={inputClass} /></label>
-        <label className="font-bold">End date <span className="text-slate-400">(optional)</span><input type="date" min={form.start_date} value={form.end_date ?? ""} onChange={(e) => set("end_date", e.target.value)} className={inputClass} /></label>
-        {form.activity_type === "habit" ? <fieldset className="grid gap-5 rounded-2xl border border-emerald-100 bg-emerald-50/60 p-4 sm:col-span-2 sm:grid-cols-2"><legend className="px-2 font-black text-emerald-800">Habit tracking</legend>
-          <label className="font-bold">Tracking method<select value={form.tracking_type ?? "binary"} onChange={(e) => set("tracking_type", e.target.value as CreatePlannedActivityInput["tracking_type"])} className={inputClass}><option value="binary">Yes / No</option><option value="quantity">Quantity</option><option value="duration">Duration</option></select></label>
-          {form.tracking_type !== "binary" ? <><label className="font-bold">Target value<input type="number" min="0.01" step="any" value={form.target_value ?? ""} onChange={(e) => set("target_value", e.target.value ? Number(e.target.value) : null)} className={inputClass} /></label><label className="font-bold">Unit<input list="habit-units" disabled={form.tracking_type === "duration"} value={form.tracking_type === "duration" ? "minutes" : form.target_unit ?? ""} onChange={(e) => set("target_unit", e.target.value)} className={inputClass} /><datalist id="habit-units">{units.map((unit) => <option key={unit} value={unit} />)}</datalist></label><label className="font-bold">Minimum acceptable <span className="text-slate-400">(optional)</span><input type="number" min="0" step="any" value={form.minimum_value ?? ""} onChange={(e) => set("minimum_value", e.target.value ? Number(e.target.value) : null)} className={inputClass} /></label><label className="flex min-h-12 items-center gap-3 font-bold sm:col-span-2"><input type="checkbox" checked={form.allow_partial_completion ?? false} onChange={(e) => set("allow_partial_completion", e.target.checked)} className="h-5 w-5 accent-emerald-500" /> Allow partial progress</label></> : null}
-          <label className="font-bold">Icon <span className="text-slate-400">(optional)</span><input maxLength={12} value={form.habit_icon ?? ""} onChange={(e) => set("habit_icon", e.target.value)} placeholder="e.g. water" className={inputClass} /></label><label className="font-bold">Color <span className="text-slate-400">(optional)</span><input type="color" value={form.habit_color ?? "#10b981"} onChange={(e) => set("habit_color", e.target.value)} className={`${inputClass} p-2`} /></label>
-        </fieldset> : null}
-        {form.recurrence_type === "interval" ? <label className="font-bold">Repeat every X days<input type="number" min="1" value={form.interval_days ?? 1} onChange={(e) => set("interval_days", Number(e.target.value))} className={inputClass} /></label> : null}
-        {form.recurrence_type === "specific_days" ? <fieldset className="sm:col-span-2"><legend className="font-bold">Selected weekdays</legend><div className="mt-2 grid grid-cols-4 gap-2 sm:grid-cols-7">{weekdayLabels.map((label, day) => { const selected = form.days_of_week?.includes(day); return <button key={label} type="button" aria-pressed={selected} onClick={() => set("days_of_week", selected ? form.days_of_week?.filter((value) => value !== day) : [...(form.days_of_week ?? []), day])} className={`min-h-11 rounded-xl text-sm font-black ${selected ? "bg-emerald-500 text-white" : "bg-slate-200 text-slate-700"}`}>{label}</button>; })}</div></fieldset> : null}
-        {activity ? <label className="flex min-h-12 items-center gap-3 font-bold sm:col-span-2"><input type="checkbox" checked={form.is_active} onChange={(e) => set("is_active", e.target.checked)} className="h-5 w-5 accent-emerald-500" /> Activity is active</label> : null}
+        <label className="font-bold sm:col-span-2">
+          Title
+          <input
+            value={form.title}
+            onChange={(e) => set("title", e.target.value)}
+            className={inputClass}
+            placeholder="Take creatine"
+          />
+        </label>
+        <label className="font-bold sm:col-span-2">
+          Description <span className="text-slate-400">(optional)</span>
+          <textarea
+            value={form.description ?? ""}
+            onChange={(e) => set("description", e.target.value)}
+            className={`${inputClass} min-h-24 py-3`}
+          />
+        </label>
+        <label className="font-bold">
+          Activity type
+          <select
+            value={form.activity_type}
+            onChange={(e) =>
+              set("activity_type", e.target.value as CreatePlannedActivityInput["activity_type"])
+            }
+            className={inputClass}
+          >
+            {ACTIVITY_TYPES.map((type) => (
+              <option key={type} value={type}>
+                {type[0].toUpperCase() + type.slice(1)}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="font-bold">
+          Recurrence
+          <select
+            value={form.recurrence_type}
+            onChange={(e) =>
+              set(
+                "recurrence_type",
+                e.target.value as CreatePlannedActivityInput["recurrence_type"],
+              )
+            }
+            className={inputClass}
+          >
+            {RECURRENCE_TYPES.map((type) => (
+              <option key={type} value={type}>
+                {recurrenceLabels[type]}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="font-bold">
+          Start date
+          <input
+            type="date"
+            required
+            value={form.start_date}
+            onChange={(e) => set("start_date", e.target.value)}
+            className={inputClass}
+          />
+        </label>
+        <label className="font-bold">
+          Scheduled time <span className="text-slate-400">(optional)</span>
+          <input
+            type="time"
+            value={form.scheduled_time ?? ""}
+            onChange={(e) => set("scheduled_time", e.target.value)}
+            className={inputClass}
+          />
+        </label>
+        <label className="font-bold">
+          End date <span className="text-slate-400">(optional)</span>
+          <input
+            type="date"
+            min={form.start_date}
+            value={form.end_date ?? ""}
+            onChange={(e) => set("end_date", e.target.value)}
+            className={inputClass}
+          />
+        </label>
+        {form.activity_type === "habit" ? (
+          <fieldset className="grid gap-5 rounded-2xl border border-emerald-100 bg-emerald-50/60 p-4 sm:col-span-2 sm:grid-cols-2">
+            <legend className="px-2 font-black text-emerald-800">Habit tracking</legend>
+            <label className="font-bold">
+              Tracking method
+              <select
+                value={form.tracking_type ?? "binary"}
+                onChange={(e) =>
+                  set(
+                    "tracking_type",
+                    e.target.value as CreatePlannedActivityInput["tracking_type"],
+                  )
+                }
+                className={inputClass}
+              >
+                <option value="binary">Yes / No</option>
+                <option value="quantity">Quantity</option>
+                <option value="duration">Duration</option>
+              </select>
+            </label>
+            {form.tracking_type !== "binary" ? (
+              <>
+                <label className="font-bold">
+                  Target value
+                  <input
+                    type="number"
+                    min="0.01"
+                    step="any"
+                    value={form.target_value ?? ""}
+                    onChange={(e) =>
+                      set("target_value", e.target.value ? Number(e.target.value) : null)
+                    }
+                    className={inputClass}
+                  />
+                </label>
+                <label className="font-bold">
+                  Unit
+                  <input
+                    list="habit-units"
+                    disabled={form.tracking_type === "duration"}
+                    value={form.tracking_type === "duration" ? "minutes" : (form.target_unit ?? "")}
+                    onChange={(e) => set("target_unit", e.target.value)}
+                    className={inputClass}
+                  />
+                  <datalist id="habit-units">
+                    {units.map((unit) => (
+                      <option key={unit} value={unit} />
+                    ))}
+                  </datalist>
+                </label>
+                <label className="font-bold">
+                  Minimum acceptable <span className="text-slate-400">(optional)</span>
+                  <input
+                    type="number"
+                    min="0"
+                    step="any"
+                    value={form.minimum_value ?? ""}
+                    onChange={(e) =>
+                      set("minimum_value", e.target.value ? Number(e.target.value) : null)
+                    }
+                    className={inputClass}
+                  />
+                </label>
+                <label className="flex min-h-12 items-center gap-3 font-bold sm:col-span-2">
+                  <input
+                    type="checkbox"
+                    checked={form.allow_partial_completion ?? false}
+                    onChange={(e) => set("allow_partial_completion", e.target.checked)}
+                    className="h-5 w-5 accent-emerald-500"
+                  />{" "}
+                  Allow partial progress
+                </label>
+              </>
+            ) : null}
+            <label className="font-bold">
+              Icon <span className="text-slate-400">(optional)</span>
+              <input
+                maxLength={12}
+                value={form.habit_icon ?? ""}
+                onChange={(e) => set("habit_icon", e.target.value)}
+                placeholder="e.g. water"
+                className={inputClass}
+              />
+            </label>
+            <label className="font-bold">
+              Color <span className="text-slate-400">(optional)</span>
+              <input
+                type="color"
+                value={form.habit_color ?? "#10b981"}
+                onChange={(e) => set("habit_color", e.target.value)}
+                className={`${inputClass} p-2`}
+              />
+            </label>
+          </fieldset>
+        ) : null}
+        {form.recurrence_type === "interval" ? (
+          <label className="font-bold">
+            Repeat every X days
+            <input
+              type="number"
+              min="1"
+              value={form.interval_days ?? 1}
+              onChange={(e) => set("interval_days", Number(e.target.value))}
+              className={inputClass}
+            />
+          </label>
+        ) : null}
+        {form.recurrence_type === "specific_days" ? (
+          <fieldset className="sm:col-span-2">
+            <legend className="font-bold">Selected weekdays</legend>
+            <div className="mt-2 grid grid-cols-4 gap-2 sm:grid-cols-7">
+              {weekdayLabels.map((label, day) => {
+                const selected = form.days_of_week?.includes(day);
+                return (
+                  <button
+                    key={label}
+                    type="button"
+                    aria-pressed={selected}
+                    onClick={() =>
+                      set(
+                        "days_of_week",
+                        selected
+                          ? form.days_of_week?.filter((value) => value !== day)
+                          : [...(form.days_of_week ?? []), day],
+                      )
+                    }
+                    className={`min-h-11 rounded-xl text-sm font-black ${selected ? "bg-emerald-500 text-white" : "bg-slate-200 text-slate-700"}`}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
+          </fieldset>
+        ) : null}
+        {activity ? (
+          <label className="flex min-h-12 items-center gap-3 font-bold sm:col-span-2">
+            <input
+              type="checkbox"
+              checked={form.is_active}
+              onChange={(e) => set("is_active", e.target.checked)}
+              className="h-5 w-5 accent-emerald-500"
+            />{" "}
+            Activity is active
+          </label>
+        ) : null}
       </div>
-      {error ? <p role="alert" className="mt-4 rounded-2xl bg-rose-50 p-3 font-bold text-rose-700">{error}</p> : null}
-  </SheetDialog>;
+      {error ? (
+        <p role="alert" className="mt-4 rounded-2xl bg-rose-50 p-3 font-bold text-rose-700">
+          {error}
+        </p>
+      ) : null}
+    </SheetDialog>
+  );
 }
